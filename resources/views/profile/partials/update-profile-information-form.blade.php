@@ -9,6 +9,17 @@
         </p>
     </header>
 
+    @if(session()->has('success'))
+    <div class="pb-6 text-green-600">
+         {{ session()->get('success') }}
+    </div>
+    @endif
+    @if(session()->has('error'))
+        <div class="pb-6 text-red-600">
+            {{ session()->get('error')}}
+        </div>
+    @endif
+    
     <form id="send-verification" method="post" action="{{ route('verification.send') }}">
         @csrf
     </form>
@@ -45,6 +56,23 @@
                     @endif
                 </div>
             @endif
+        </div>
+
+        <div>
+            <x-input-label for="status_id" :value="__('Status')" />
+            <select class="mt-1 block w-full rounded-md" name="status_id">
+                @foreach ($statuses as $status)
+                    <option 
+                        value="{{$status->id}}"
+                        @if ($status->id == old('status_id', $user->status_id))
+                            selected="selected"
+                        @endif
+                        >
+                        {{$status->name}}
+                    </option>                    
+                @endforeach
+            </select>
+            <x-input-error class="mt-2" :messages="$errors->get('name')" />
         </div>
 
         <div class="flex items-center gap-4">

@@ -12,6 +12,8 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
+    public $timestamps = false;
+
     /**
      * The attributes that are mass assignable.
      *
@@ -21,6 +23,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'status_id',
+        'photo'
     ];
 
     /**
@@ -42,4 +46,42 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function status(): HasMany
+    {
+        return $this->HasMany(Status::class);
+    }
+
+    public function getStatusName()
+    {
+        return Status::findOrFail($this->status_id)->name;
+    }
+
+    public function isAdmin()
+    {
+        if ($this->status_id == 1)
+            return true;
+        return false;
+    }
+
+    public function isEditor()
+    {
+        if ($this->status_id == 2)
+            return true;
+        return false;
+    }
+
+    public function isAuthor(String $id)
+    {
+        if ($this->status_id == 2 && $id == $this->id)
+            return true;
+        return false;
+    }
+
+    public function isReader()
+    {
+        if ($this->status_id == 3)
+            return true;
+        return false;
+    }
 }
