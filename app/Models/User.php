@@ -47,9 +47,9 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    public function status(): HasMany
+    public function courses(): HasMany
     {
-        return $this->HasMany(Status::class);
+        return $this->HasMany(Course::class);
     }
 
     public function getStatusName()
