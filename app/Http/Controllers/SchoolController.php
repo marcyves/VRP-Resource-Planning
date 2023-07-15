@@ -64,17 +64,36 @@ class SchoolController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(School $school)
+    public function edit(String $school_id)
     {
-        //
+        $school = School::findOrFail($school_id);
+        return view('school.edit', compact('school'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, School $school)
+    public function update(Request $request, String $school_id)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'required|max:80',
+        ]);
+        
+        try{
+            $school = School::findOrFail($school_id);
+            $school->name = $request->name;
+            $school->save();
+
+            return redirect(route('dashboard'))
+                ->with([
+                    'success' => "Ecole enregistrée avec succès"]);
+        }
+        catch (\Exception $e) {
+            dd($e);
+            return redirect()->back()
+            ->with('error', "Erreur lors de l'enregitrement de l'école");
+        }               
+
     }
 
     /**

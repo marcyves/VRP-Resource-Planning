@@ -6,10 +6,22 @@
     </x-slot>
 
     <x-nice-box color="grey-400">
+        @php
+        $gross_total_time = 0;   
+        $gross_total_budget = 0;   
+        @endphp
         @foreach ($schools as $school)
         <x-advanced-course-table school="{{$school->name}}" school_id="{{$school->id}}">
+            @php
+             $total_time = 0;   
+             $total_budget = 0;   
+            @endphp
             @foreach ($courses as $course)
             @if($course->school_id==$school->id)
+            @php
+             $total_time += $course->session_length*$course->sessions;   
+             $total_budget += $course->rate*$course->session_length*$course->sessions;   
+            @endphp
             <tr class="border-b dark:border-gray-700">
                 <th scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{$course->name}}</th>
                 <td class="px-4 py-3">{{$course->year}}</td>
@@ -42,9 +54,55 @@
             </tr>
             @endif                              
             @endforeach
+            @php
+                $gross_total_time += $total_time;
+                $gross_total_budget += $total_budget;
+            @endphp
+            <tr class="border-b dark:border-gray-700">
+                <th scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">Total</th>
+                <td class="px-4 py-3"></td>
+                <td class="px-4 py-3"></td>
+                <td class="px-4 py-3"></td>
+                <td class="px-4 py-3"></td>
+                <td class="px-4 py-3">{{$total_time}}</td>
+                <td class="px-4 py-3"></td>
+                <td class="px-4 py-3">{{$total_budget}}</td>
+                <td class="px-4 py-3 flex items-center justify-end">
+                </td>
+            </tr>
         </x-advanced-course-table>
-
     @endforeach
+    <table class="w-full text-sm text-left text-gray-500">
+        <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+            <tr>
+                <th scope="col" class="px-4 py-3"></th>
+                <th scope="col" class="px-4 py-3"></th>
+                <th scope="col" class="px-4 py-3"></th>
+                <th scope="col" class="px-4 py-3"></th>
+                <th scope="col" class="px-4 py-3"></th>
+                <th scope="col" class="px-4 py-3">Total time</th>
+                <th scope="col" class="px-4 py-3"></th>
+                <th scope="col" class="px-4 py-3">Gain</th>
+                <th scope="col" class="px-4 py-3">
+                    <span class="sr-only">Actions</span>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+    <tr class="border-b dark:border-gray-700">
+        <th scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">Total</th>
+        <td class="px-4 py-3"></td>
+        <td class="px-4 py-3"></td>
+        <td class="px-4 py-3"></td>
+        <td class="px-4 py-3"></td>
+        <td class="px-4 py-3">{{$gross_total_time}}</td>
+        <td class="px-4 py-3"></td>
+        <td class="px-4 py-3">{{$gross_total_budget}}</td>
+        <td class="px-4 py-3"></td>
+    </tr>
+        </tbody>
+    </table>
+
     </x-nice-box>
 
 </x-app-layout>
