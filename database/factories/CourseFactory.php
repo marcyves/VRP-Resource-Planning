@@ -22,8 +22,10 @@ class CourseFactory extends Factory
             'name' => 'Course: '.rand(1,10),
             'school_id' => fake()->randomElement(School::all()),
             'sessions' => 8,
-            'total_hours' => 16, 
             'session_length' => 2.0,
+            'year' => '2023',
+            'semester' => 'S1',
+            'rate' => 87.50
         ];
     }
 }

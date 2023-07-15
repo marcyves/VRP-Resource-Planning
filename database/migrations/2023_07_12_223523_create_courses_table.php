@@ -19,8 +19,10 @@ return new class extends Migration
             ->onUpdate('cascade')   
             ->onDelete('cascade');
             $table->integer('sessions');
-            $table->integer('total_hours');
             $table->float('session_length');
+            $table->string('year');
+            $table->string('semester');
+            $table->float('rate');
         });
     }
 

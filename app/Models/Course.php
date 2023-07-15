@@ -11,7 +11,7 @@ class Course extends Model
     use HasFactory;
 
     public $timestamps = false;
-    public $fillable = ['name', 'sessions', 'total_hours', 'session_length', 'school_id'];
+    public $fillable = ['name', 'sessions', 'session_length', 'school_id', 'year', 'semester', 'rate'];
 
     public function groups(): HasMany
     {

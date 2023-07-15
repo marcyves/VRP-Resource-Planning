@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\School;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class SchoolController extends Controller
 {
@@ -12,7 +13,10 @@ class SchoolController extends Controller
      */
     public function index()
     {
-        //
+        $schools = Auth::user()->getSchools();
+        $courses = $schools->getCourses('2023');
+
+        return view('dashboard', compact('schools', 'courses'));
     }
 
     /**
@@ -20,7 +24,7 @@ class SchoolController extends Controller
      */
     public function create()
     {
-        //
+        return view('school.create');
     }
 
     /**
@@ -28,7 +32,25 @@ class SchoolController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'required|max:80',
+        ]);
+        
+        try{
+            $user_id = Auth::user()->id;
+            School::create([
+                    'name' => $request->name,
+                    'user_id' => $user_id
+                ]);
+            return redirect(route('dashboard'))
+                ->with([
+                    'success' => "Ecole enregistré avec succès"]);
+        }
+        catch (\Exception $e) {
+            dd($e);
+            return redirect()->back()
+            ->with('error', "Erreur lors de l'enregitrement de l'école");
+        }               
     }
 
     /**
