@@ -99,8 +99,11 @@ class SchoolController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(School $school)
+    public function destroy(String $school_id)
     {
+        $school = School::findOrFail($school_id);
+        $school->delete();
+        
         return redirect(route('dashboard'));
     }
 }

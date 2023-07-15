@@ -119,8 +119,10 @@ class CourseController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Course $course)
+    public function destroy(String $course_id)
     {
+        $course = Course::findOrFail($course_id);
+        $course->delete();
         return redirect(route('dashboard'));
     }
 }
