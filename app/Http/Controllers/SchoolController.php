@@ -101,6 +101,6 @@ class SchoolController extends Controller
      */
     public function destroy(School $school)
     {
-        //
+        return redirect(route('dashboard'));
     }
 }

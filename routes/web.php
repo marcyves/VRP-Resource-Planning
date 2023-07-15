@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('dashboard');
 });
 
 Route::get('/dashboard', function () {
@@ -26,6 +26,8 @@ Route::get('/dashboard', function () {
 
 Route::middleware('auth')->group(function () {
     Route::resource('/school', SchoolController::class);
+
+    Route::resource('/course', CourseController::class);
     Route::get('/course/{school_id}', [CourseController::class, 'create'])->name('course.create');
     Route::post('/course/{school_id}', [CourseController::class, 'store'])->name('course.store');
     

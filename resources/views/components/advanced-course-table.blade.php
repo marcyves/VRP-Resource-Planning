@@ -16,13 +16,14 @@
                     </button>
                     <div class="flex items-center space-x-3 w-full md:w-auto">
                         <form action="{{route('school.edit', $school_id)}}" method="get">
-                            <button class="inline-flex items-center p-0.5 text-sm font-medium text-center text-gray-500 hover:text-gray-800 rounded-lg focus:outline-none dark:text-gray-400 dark:hover:text-gray-100" type="submit">
+                            <button class="inline-flex items-center p-0.5 text-sm font-medium text-center text-gray-500 hover:text-gray-800 rounded-lg focus:outline-none" type="submit">
                                 Edit
                             </button>    
                         </form>
                         <form action="{{route('school.destroy', $school_id)}}" method="post">
+                            @csrf
                             @method('delete')
-                            <button class="inline-flex items-center p-0.5 text-sm font-medium text-center text-gray-500 hover:text-gray-800 rounded-lg focus:outline-none dark:text-gray-400 dark:hover:text-gray-100" type="submit">
+                            <button class="inline-flex items-center p-0.5 text-sm font-medium text-center text-gray-500 hover:text-gray-800 rounded-lg focus:outline-none" type="submit">
                                 Delete
                             </button>    
                         </form>

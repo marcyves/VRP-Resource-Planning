@@ -72,17 +72,48 @@ class CourseController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Course $course)
+    public function edit(String $course_id)
     {
-        //
+        $course = Course::findOrFail($course_id);
+        return view('course.edit', compact('course'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Course $course)
+    public function update(Request $request, String $course_id)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'required|max:80',
+            'sessions' => 'required|min:0',
+            'session_length' => 'required|min:0',
+            'year' => 'required',
+            'semester' => 'required',
+            'rate' => 'required|min:0'
+        ]);
+
+        
+        try{
+            $course = Course::findOrFail($course_id);
+            $course->name = $request->name;
+            $course->sessions = $request->sessions;
+            $course->session_length = $request->session_length;
+            $course->year = $request->year;
+            $course->semester = $request->semester;
+            $course->rate = $request->rate;
+
+            $course->save();
+                        
+            return redirect(route('dashboard'))
+                ->with([
+                    'success' => "Cours enregistré avec succès"]);
+        }
+        catch (\Exception $e) {
+            dd($e);
+            return redirect()->back()
+            ->with('error', "Erreur lors de l'enregistrement du cours");
+        }               
+
     }
 
     /**
@@ -90,6 +121,6 @@ class CourseController extends Controller
      */
     public function destroy(Course $course)
     {
-        //
+        return redirect(route('dashboard'));
     }
 }
