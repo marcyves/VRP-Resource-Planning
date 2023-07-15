@@ -6,9 +6,10 @@
     </x-slot>
 
     <x-nice-box color="white">
-
-<form action="{{route('course.store', $course->id)}}" method="post">
+<h2>on modifie {{$course->id}}</h2>
+<form action="{{route('course.update', $course->id)}}" method="post">
     @csrf
+    @method('put')
     <x-input-label>Name</x-input-label>
     <x-text-input type="text" name="name" value="{{old('name',$course->name)}}"/>
     <x-input-label>Sessions</x-input-label>
@@ -22,7 +23,7 @@
     <x-input-label>Semester</x-input-label>
     <x-text-input type="text" name="semester"  value="{{old('semester',$course->semester)}}"/>
     <br class="my-4">
-    <x-primary-button>Create</x-primary-button>
+    <x-primary-button>Edit</x-primary-button>
 
 </form>
     </x-nice-box>

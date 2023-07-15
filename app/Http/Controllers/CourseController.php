@@ -102,7 +102,7 @@ class CourseController extends Controller
             $course->semester = $request->semester;
             $course->rate = $request->rate;
 
-            $course->save();
+            $course->update();
                         
             return redirect(route('dashboard'))
                 ->with([
