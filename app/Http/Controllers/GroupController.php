@@ -18,17 +18,36 @@ class GroupController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(String $course_id)
     {
-        //
+        return view('group.create', compact('course_id'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request, String $course_id)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'required|max:80',
+            'size' => 'required|min:0',
+        ]);
+        
+        try{
+            Group::create([
+                    'name' => $request->name,
+                    'size' => $request->size,
+                    'course_id' => $course_id
+                ]);
+            return redirect(route('dashboard'))
+                ->with([
+                    'success' => "Groupe enregistré avec succès"]);
+        }
+        catch (\Exception $e) {
+            dd($e);
+            return redirect()->back()
+            ->with('error', "Erreur lors de l'enregitrement du groupe");
+        }               
     }
 
     /**

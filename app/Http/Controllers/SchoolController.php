@@ -56,9 +56,11 @@ class SchoolController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(School $school)
+    public function show(String $school_id)
     {
-        //
+        $school = School::findOrFail($school_id);
+
+        return view('school.show', compact('school'));
     }
 
     /**

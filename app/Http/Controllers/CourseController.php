@@ -64,9 +64,12 @@ class CourseController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Course $course)
+    public function show(String $course_id)
     {
-        //
+        $course = Course::findOrFail($course_id);
+        $groups = $course->getGroups();
+
+        return view('course.show', compact('course', 'groups'));
     }
 
     /**

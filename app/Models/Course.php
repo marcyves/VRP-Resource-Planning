@@ -18,4 +18,9 @@ class Course extends Model
         return $this->HasMany(Group::class);
     }
 
+    public function getGroups()
+    {
+        return Group::where(['course_id' => $this->id])->get();
+    }
+
 }

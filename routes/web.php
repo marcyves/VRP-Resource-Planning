@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\CourseController;
+use App\Http\Controllers\GroupController;
+use App\Http\Controllers\PlanningController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SchoolController;
 use Illuminate\Support\Facades\Route;
@@ -27,9 +29,19 @@ Route::get('/dashboard', function () {
 Route::middleware('auth')->group(function () {
     Route::resource('/school', SchoolController::class);
 
-    Route::resource('/course', CourseController::class);
-    Route::get('/course/{school_id}', [CourseController::class, 'create'])->name('course.create');
+    Route::get('/course/{school_id}/create', [CourseController::class, 'create'])->name('course.create');
     Route::post('/course/{school_id}', [CourseController::class, 'store'])->name('course.store');
+    Route::get('/course/{course_id}', [CourseController::class, 'show'])->name('course.show');
+    Route::get('/course/{course_id}/edit', [CourseController::class, 'edit'])->name('course.edit');
+    Route::put('/course/{course_id}', [CourseController::class, 'update'])->name('course.update');
+    Route::delete('/course/{course_id}', [CourseController::class, 'destroy'])->name('course.destroy');
+
+    Route::get('/group/{course_id}/create', [GroupController::class, 'create'])->name('group.create');
+    Route::post('/group/{course_id}', [GroupController::class, 'store'])->name('group.store');
+
+    Route::get('/planning', [PlanningController::class, 'index'])->name('planning.index');
+    Route::get('/planning/{group_id}/create', [PlanningController::class, 'create'])->name('planning.create');
+    Route::post('/planning/{group_id}', [PlanningController::class, 'store'])->name('planning.store');
     
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

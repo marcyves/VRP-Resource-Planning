@@ -12,15 +12,17 @@ class PlanningController extends Controller
      */
     public function index()
     {
-        //
+        $planning = Planning::all();
+
+        return view('planning.index', compact('planning'));
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(String $group_id)
     {
-        //
+        return view('planning.create', compact('group_id'));
     }
 
     /**
