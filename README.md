@@ -208,6 +208,7 @@ Resources I find helpful and would like to give credit to.
 * [Font Awesome](https://fontawesome.com)
 * [React Icons](https://react-icons.github.io/react-icons/search)
 * [Tailwind documentation](https://tailwindcss.com/docs/installation)
+* [Flowbite](https://flowbite.com/)
 * [Awesome Badges](https://dev.to/envoy_/150-badges-for-github-pnk)
 
 
