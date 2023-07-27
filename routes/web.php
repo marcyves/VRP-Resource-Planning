@@ -27,6 +27,7 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
+    Route::post('/school/year', [SchoolController::class, 'index'])->name('school.year');
     Route::resource('/school', SchoolController::class);
 
     Route::get('/course/{school_id}/create', [CourseController::class, 'create'])->name('course.create');

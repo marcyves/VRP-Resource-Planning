@@ -11,12 +11,20 @@ class SchoolController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $schools = Auth::user()->getSchools();
-        $courses = $schools->getCourses('2023');
 
-        return view('dashboard', compact('schools', 'courses'));
+        
+        if(isset($request->current_year)){
+            $current_year = $request->current_year;
+        }else{
+         $current_year = 2024;
+        }
+
+        $schools = Auth::user()->getSchools();
+        $courses = $schools->getCourses($current_year);
+
+        return view('dashboard', compact('schools', 'courses', 'current_year'));
     }
 
     /**

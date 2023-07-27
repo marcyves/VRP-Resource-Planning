@@ -3,6 +3,17 @@
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             {{ __('Dashboard') }}
         </h2>
+        <form action="{{route('school.year')}}" method="post">
+            @csrf
+        <select name="current_year" class="rounded-md mt-4 py-0 pl-2 pr-8">
+            <option value="2023" @if($current_year == 2023)selected @endif>2023</option>
+            <option value="2024" @if($current_year == 2024)selected @endif>2024</option>
+        </select>
+        <button class="inline-flex items-center p-0.5 text-sm font-medium text-center text-blue-500 hover:text-gray-800 rounded-lg focus:outline-none" type="submit">
+            Show
+        </button>                    
+        </form>
+
     </x-slot>
 
     <x-nice-box color="grey-400">
