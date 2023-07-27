@@ -18,7 +18,7 @@ class SchoolController extends Controller
         if(isset($request->current_year)){
             $current_year = $request->current_year;
         }else{
-         $current_year = 2024;
+         $current_year = now()->format('Y');
         }
 
         $schools = Auth::user()->getSchools();
