@@ -39,7 +39,7 @@ class GroupController extends Controller
                     'size' => $request->size,
                     'course_id' => $course_id
                 ]);
-            return redirect(route('dashboard'))
+            return redirect(route('course.show', $course_id))
                 ->with([
                     'success' => "Groupe enregistré avec succès"]);
         }
