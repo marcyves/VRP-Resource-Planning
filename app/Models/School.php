@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 
 class School extends Model
 {
@@ -19,10 +20,19 @@ class School extends Model
         return $this->HasMany(Course::class);
     }
 
+    public function groups(): HasManyThrough
+    {
+        return $this->HasManyThrough(Group::class, Course::class);
+    }
+
+
     public function getCourses(String $year)
     {
-        return Course::where(['school_id' => $this->id,
-                'year' => $year])->sortBy('semester')->get();
+        return Course::where([
+            'school_id' => $this->id,
+            'year' => $year])
+            ->withCount('groups')
+            ->sortBy('semester')->get();
     }
         /**
      * Create a new Eloquent Collection instance.

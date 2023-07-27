@@ -1,6 +1,6 @@
 @props(['school', 'school_id'])
 <section class="bg-gray-50 p-3 sm:p-5">
-    <div class="mx-auto max-w-screen-xl px-4 lg:px-12">
+    <div class="mx-auto max-w-screen-xl px-2 lg:px-12">
         <!-- Start coding here -->
         <div class="bg-white relative shadow-md sm:rounded-lg overflow-hidden">
             <div class="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4">
@@ -35,17 +35,19 @@
             </div>
             <div class="overflow-x-auto">
                 <table class="w-full text-sm text-left text-gray-500">
-                    <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+                    <thead class="text-xs text-gray-700 uppercase bg-gray-50 text-center">
                         <tr>
-                            <th scope="col" class="px-4 py-3">Course name</th>
-                            <th scope="col" class="px-4 py-3">Year</th>
-                            <th scope="col" class="px-4 py-3">Semester</th>
-                            <th scope="col" class="px-4 py-3">Sessions</th>
-                            <th scope="col" class="px-4 py-3">Session length</th>
-                            <th scope="col" class="px-4 py-3">Total time</th>
-                            <th scope="col" class="px-4 py-3">Rate</th>
-                            <th scope="col" class="px-4 py-3">Gain</th>
-                            <th scope="col" class="px-4 py-3">
+                            <th scope="col" class="px-2 py-3">Course name</th>
+                            <th scope="col" class="px-2 py-3 text-center">Year</th>
+                            <th scope="col" class="px-2 py-3 text-center">Semester</th>
+                            <th scope="col" class="px-2 py-3 text-center">Sessions</th>
+                            <th scope="col" class="px-2 py-3 text-center">Session length</th>
+                            <th scope="col" class="px-2 py-3 text-center">Time</th>
+                            <th scope="col" class="px-2 py-3 text-center">Groups</th>
+                            <th scope="col" class="px-2 py-3 text-center">Total time</th>
+                            <th scope="col" class="px-2 py-3 text-center">Rate</th>
+                            <th scope="col" class="px-2 py-3 text-center">Gain</th>
+                            <th scope="col" class="px-2 py-3 text-center">
                                 <span class="sr-only">Actions</span>
                             </th>
                         </tr>

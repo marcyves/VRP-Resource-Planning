@@ -13,6 +13,10 @@ class Course extends Model
     public $timestamps = false;
     public $fillable = ['name', 'sessions', 'session_length', 'school_id', 'year', 'semester', 'rate'];
 
+    protected $withCount = [
+        'groups',
+    ];
+    
     public function groups(): HasMany
     {
         return $this->HasMany(Group::class);
