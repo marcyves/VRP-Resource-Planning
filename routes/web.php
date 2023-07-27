@@ -38,6 +38,7 @@ Route::middleware('auth')->group(function () {
     Route::put('/course/{course_id}', [CourseController::class, 'update'])->name('course.update');
     Route::delete('/course/{course_id}', [CourseController::class, 'destroy'])->name('course.destroy');
 
+    Route::get('/group/', [GroupController::class, 'index'])->name('group.index');
     Route::get('/group/{course_id}/create', [GroupController::class, 'create'])->name('group.create');
     Route::post('/group/{course_id}', [GroupController::class, 'store'])->name('group.store');
 
