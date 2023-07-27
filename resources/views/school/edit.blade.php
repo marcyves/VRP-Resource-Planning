@@ -13,7 +13,7 @@
     <x-input-label>Name</x-input-label>
     <x-text-input type="text" name="name" value="{{old('name',$school->name)}}"/>
     <br class="my-4">
-    <x-primary-button>Edit</x-primary-button>
+    <x-primary-button>Save</x-primary-button>
 </form>
     </x-nice-box>
 </x-app-layout>

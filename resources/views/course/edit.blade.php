@@ -23,7 +23,7 @@
     <x-input-label>Semester</x-input-label>
     <x-text-input type="text" name="semester"  value="{{old('semester',$course->semester)}}"/>
     <br class="my-4">
-    <x-primary-button>Edit</x-primary-button>
+    <x-primary-button>Save</x-primary-button>
 
 </form>
     </x-nice-box>
