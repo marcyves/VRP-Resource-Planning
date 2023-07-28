@@ -18,7 +18,7 @@
     <x-input-label>Rate</x-input-label>
     <x-text-input type="text" name="rate" />
     <x-input-label>Year</x-input-label>
-    <x-text-input type="text" name="year" />
+    <x-text-input type="text" name="year" value="{{now()->format('Y')}}"/>
     <x-input-label>Semester</x-input-label>
     <x-text-input type="text" name="semester" />
     <br class="my-4">
