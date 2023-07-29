@@ -27,10 +27,21 @@
         <x-advanced-course-table school="{{$school->name}}" school_id="{{$school->id}}">
             @php
              $total_time = 0;   
-             $total_budget = 0;   
+             $total_budget = 0;
+             $program_name = "";   
             @endphp
             @foreach ($courses as $course)
                 @if($course->school_id==$school->id)
+                @if($program_name != $course->program_name)
+                    @php
+                        $program_name = $course->program_name;
+                    @endphp
+                    <tr class="border-b">
+                        <th scope="row" class="px-2 py-3 font-medium text-gray-900 whitespace-nowrap">
+                            {{$course->program_name}}
+                        </th>
+                    </tr>
+                @endif
                 @php
                 $total_time += $course->session_length*$course->sessions*$course->groups_count;   
                 $total_budget += $course->rate*$course->session_length*$course->sessions*$course->groups_count;   

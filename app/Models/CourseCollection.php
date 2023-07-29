@@ -13,7 +13,13 @@ class CourseCollection extends Collection
         });
 
         return Course::whereIn('school_id', $list)
-                    ->where(['year' => $year])->orderBy('semester')->get();
+            ->select(['courses.*', 'programs.name as program_name'])
+            ->leftJoin('programs', 'courses.program_id', '=', 'programs.id')
+            ->withCount('groups')
+            ->where(['year' => $year])
+            ->orderBy('semester', 'asc')
+            ->orderBy('program_id', 'asc')
+            ->get();
 //        return Course::whereIn('school_id', $list )->get();
     }
 }
