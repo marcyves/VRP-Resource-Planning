@@ -13,15 +13,14 @@ class SchoolController extends Controller
      */
     public function index(Request $request)
     {
-
-        
+      
         if(isset($request->current_year)){
             $current_year = $request->current_year;
         }else{
          $current_year = now()->format('Y');
         }
 
-        $schools = Auth::user()->getSchools();
+        $schools = Auth::user()->schools()->get();
         $courses = $schools->getCourses($current_year);
 
         return view('dashboard', compact('schools', 'courses', 'current_year'));
