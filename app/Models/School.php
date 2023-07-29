@@ -25,16 +25,7 @@ class School extends Model
         return $this->HasManyThrough(Group::class, Course::class);
     }
 
-
-    public function getCourses(String $year)
-    {
-        return Course::where([
-            'school_id' => $this->id,
-            'year' => $year])
-            ->withCount('groups')
-            ->sortBy('semester')->get();
-    }
-        /**
+     /**
      * Create a new Eloquent Collection instance.
      *
      * @param  array<int, \Illuminate\Database\Eloquent\Model>  $models

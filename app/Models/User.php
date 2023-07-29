@@ -53,11 +53,6 @@ class User extends Authenticatable
         return $this->HasMany(School::class);
     }
 
-    public function getSchools()
-    {
-        return School::where(['user_id' => $this->id])->get();
-    }
-
     public function getStatusName()
     {
         return Status::findOrFail($this->status_id)->name;
