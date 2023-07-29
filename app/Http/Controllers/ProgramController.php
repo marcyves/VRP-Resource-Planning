@@ -12,7 +12,7 @@ class ProgramController extends Controller
      */
     public function index()
     {
-        $programs = Program::all();
+        $programs = Program::all()->sortBy('name');
         return view('program.index', compact('programs'));
     }
 
@@ -21,7 +21,7 @@ class ProgramController extends Controller
      */
     public function create()
     {
-        //
+        return view('program.create');
     }
 
     /**
@@ -29,7 +29,24 @@ class ProgramController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'required|max:80',
+        ]);
+
+        
+        try{
+            Program::create([
+                    'name' => $request->name,
+                        ]);
+            return redirect(route('program.index'))
+                ->with([
+                    'success' => "Programme enregistré avec succès"]);
+        }
+        catch (\Exception $e) {
+            dd($e);
+            return redirect()->back()
+            ->with('error', "Erreur lors de l'enregitrement du programme");
+        }          
     }
 
     /**
@@ -59,8 +76,10 @@ class ProgramController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Program $program)
+    public function destroy(String $program_id)
     {
-        //
+        $program = Program::findOrFail($program_id);
+        $program->delete();
+        return redirect(route('program.index'));
     }
 }
