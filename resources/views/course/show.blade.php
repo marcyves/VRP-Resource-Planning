@@ -8,6 +8,8 @@
     <x-nice-box color="white">
         <x-nice-title color="grey-200" title="{{$course->name}}"/>
         <ul class="mx-4">
+    <li>Program: {{$course->program_id}}
+    </li>
     <li>Sessions: {{$course->sessions}}
     </li>
     <li>Session length: {{$course->session_length}}

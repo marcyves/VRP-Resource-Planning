@@ -12,7 +12,8 @@ class ProgramController extends Controller
      */
     public function index()
     {
-        //
+        $programs = Program::all();
+        return view('program.index', compact('programs'));
     }
 
     /**

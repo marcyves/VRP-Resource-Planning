@@ -11,6 +11,8 @@
     @csrf
     <x-input-label>Name</x-input-label>
     <x-text-input type="text" name="name" />
+    <x-input-label>Program</x-input-label>
+    <x-text-input type="text" name="name" />
     <x-input-label>Sessions</x-input-label>
     <x-text-input type="text" name="sessions" />
     <x-input-label>Session length</x-input-label>

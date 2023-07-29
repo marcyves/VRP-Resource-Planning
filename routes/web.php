@@ -4,6 +4,7 @@ use App\Http\Controllers\CourseController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\PlanningController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ProgramController;
 use App\Http\Controllers\SchoolController;
 use Illuminate\Support\Facades\Route;
 
@@ -45,6 +46,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/planning', [PlanningController::class, 'index'])->name('planning.index');
     Route::get('/planning/{group_id}/create', [PlanningController::class, 'create'])->name('planning.create');
     Route::post('/planning/{group_id}', [PlanningController::class, 'store'])->name('planning.store');
+    
+    Route::resource('/program', ProgramController::class);
     
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
