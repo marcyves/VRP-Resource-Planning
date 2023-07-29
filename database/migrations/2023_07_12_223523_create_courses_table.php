@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('name');
             $table->foreignIdFor(School::class)->constrained()
             ->onUpdate('cascade')   
-            ->onDelete('cascade');
+            ->onDelete('restrict');
             $table->integer('sessions');
             $table->float('session_length');
             $table->string('year');

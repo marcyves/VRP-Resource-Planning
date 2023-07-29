@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('location');
             $table->foreignIdFor(Group::class)->constrained()
             ->onUpdate('cascade')   
-            ->onDelete('cascade');
+            ->onDelete('restrict');
         });
     }
 
