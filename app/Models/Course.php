@@ -4,8 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Course extends Model
 {
@@ -23,14 +23,24 @@ class Course extends Model
         return $this->HasMany(Group::class);
     }
 
-    public function program(): BelongsTo
+    public function program(): HasOne
     {
-        return $this->belongsTo(Program::class);
+        return $this->hasOne(Program::class);
     }
 
     public function getGroups()
     {
         return Group::where(['course_id' => $this->id])->get();
+    }
+
+    public static function getCourseDetails(String $course_id)
+    {
+        return Course::select('courses.*', 'programs.id as program_id', 'programs.name as program_name')
+        ->join('programs', 'courses.program_id', '=', 'programs.id')
+        ->where('courses.id', '=', $course_id)
+        ->get()[0]
+        ;
+
     }
 
 }

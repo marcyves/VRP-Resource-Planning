@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Course;
+use App\Models\Program;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -66,7 +67,7 @@ class CourseController extends Controller
      */
     public function show(String $course_id)
     {
-        $course = Course::findOrFail($course_id);
+        $course = Course::getCourseDetails($course_id);
         $groups = $course->getGroups();
 
         return view('course.show', compact('course', 'groups'));
@@ -77,8 +78,9 @@ class CourseController extends Controller
      */
     public function edit(String $course_id)
     {
-        $course = Course::findOrFail($course_id);
-        return view('course.edit', compact('course'));
+        $course = Course::getCourseDetails($course_id);
+        $programs = Program::all()->sortBy('name');
+        return view('course.edit', compact('course', 'programs'));
     }
 
     /**
@@ -104,6 +106,7 @@ class CourseController extends Controller
             $course->year = $request->year;
             $course->semester = $request->semester;
             $course->rate = $request->rate;
+            $course->program_id = $request->program_id;
 
             $course->update();
                         
@@ -116,7 +119,6 @@ class CourseController extends Controller
             return redirect()->back()
             ->with('error', "Erreur lors de l'enregistrement du cours");
         }               
-
     }
 
     /**
