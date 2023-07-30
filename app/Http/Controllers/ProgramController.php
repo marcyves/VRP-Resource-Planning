@@ -52,25 +52,46 @@ class ProgramController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Program $program)
+    public function show(String $program_id)
     {
-        //
+        $program = Program::find($program_id);
+
+        return view('program.show', compact('program'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Program $program)
+    public function edit(String $program_id)
     {
-        //
+        $program = Program::find($program_id);
+
+        return view('program.edit', compact('program'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Program $program)
+    public function update(Request $request, String $program_id)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'required|max:80',
+        ]);
+        
+        try{
+            $program = Program::findOrFail($program_id);
+            $program->name = $request->name;
+            $program->update();
+                        
+            return redirect(route('program.index'))
+                ->with([
+                    'success' => "Programme enregistré avec succès"]);
+        }
+        catch (\Exception $e) {
+            dd($e);
+            return redirect()->back()
+            ->with('error', "Erreur lors de l'enregistrement du programme");
+        }               
     }
 
     /**
