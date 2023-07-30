@@ -1,19 +1,23 @@
-<x-app-layout>
+<x-app-layout>       
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Dashboard') }}
-        </h2>
-        <form action="{{route('school.year')}}" method="post">
-            @csrf
-        <select name="current_year" class="rounded-md mt-4 py-0 pl-2 pr-8">
-            <option value="2023" @if($current_year == 2023)selected @endif>2023</option>
-            <option value="2024" @if($current_year == 2024)selected @endif>2024</option>
-        </select>
-        <button class="inline-flex items-center p-0.5 text-sm font-medium text-center text-blue-500 hover:text-gray-800 rounded-lg focus:outline-none" type="submit">
-            Show
-        </button>                    
-        </form>
-
+        <div class="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4">
+            <div class="w-full md:w-1/2 ">
+            <h2 class="inline-flex font-semibold text-xl text-gray-800 mr-4">
+                {{ __('Dashboard') }}
+            </h2>
+            <form class="inline-flex" action="{{route('school.year')}}" method="post">
+                @csrf
+            <select id="current_year" name="current_year" class="rounded-md mt-4 py-0 pl-2 pr-8" onchange="this.form.submit()">
+                <option value="2023" @if($current_year == 2023)selected @endif>2023</option>
+                <option value="2024" @if($current_year == 2024)selected @endif>2024</option>
+            </select>
+            </form>
+        </div>
+            
+        <div class="w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0">
+        <a class="p-2 text-sm border border-gray-300 rounded-md font-semibold font-medium text-center text-gray-500 hover:text-gray-800 rounded-lg focus:outline-none" 
+            href="{{route('school.create')}}">Add School</a>
+        </div>
     </x-slot>
 
     <x-nice-box color="grey-400">
