@@ -22,7 +22,9 @@ class CourseController extends Controller
      */
     public function create(String $school_id)
     {
-        return view('course.create', compact('school_id'));
+        $programs = Program::all()->sortBy('name');
+
+        return view('course.create', compact('school_id', 'programs'));
     }
 
     /**
@@ -38,13 +40,13 @@ class CourseController extends Controller
             'semester' => 'required',
             'rate' => 'required|min:0'
         ]);
-
         
         try{
             $user_id = Auth::user()->id;
             Course::create([
                     'name' => $request->name,
                     'school_id' => $school_id,
+                    'program_id' => $request->program_id,
                     'sessions' => $request->sessions,
                     'session_length' => $request->session_length,
                     'year' => $request->year,

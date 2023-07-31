@@ -12,8 +12,12 @@
     <x-input-label>Name</x-input-label>
     <x-text-input type="text" name="name" />
     <x-input-label>Program</x-input-label>
-    <x-text-input type="text" name="name" />
-    <x-input-label>Sessions</x-input-label>
+    <select name="program_id">
+        @foreach ($programs as $program)
+        <option value="{{$program->id}}">{{$program->name}}</option>                            
+        @endforeach
+    </select>
+<x-input-label>Sessions</x-input-label>
     <x-text-input type="text" name="sessions" />
     <x-input-label>Session length</x-input-label>
     <x-text-input type="text" name="session_length" />

@@ -12,7 +12,7 @@ class Course extends Model
     use HasFactory;
 
     public $timestamps = false;
-    public $fillable = ['name', 'sessions', 'session_length', 'school_id', 'year', 'semester', 'rate'];
+    public $fillable = ['name', 'sessions', 'session_length', 'school_id', 'program_id', 'year', 'semester', 'rate'];
 
     protected $withCount = [
         'groups',
