@@ -45,6 +45,8 @@ class SchoolController extends Controller
     {
         $schools = Auth::user()->schools()->get();
         //TODO remove schools with courses
+        $schools = $schools->getNoCourse();
+        
         return view('school.list', compact('schools'));
     }
 

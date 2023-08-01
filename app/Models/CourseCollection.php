@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 
 class CourseCollection extends Collection
@@ -64,6 +65,15 @@ class CourseCollection extends Collection
         }
     }
 
+    public function getNoCourse()
+    {
+        $list = $this->map(function(School $school){
+            return $school->id;
+        });
+        $schools_without_course = School::whereIn('schools.id', $list)
+        ->whereDoesntHave('courses', function (Builder $query){})->get();
+        return $schools_without_course;
+    }
         
     public function getYears()
     {
