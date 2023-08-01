@@ -8,8 +8,9 @@
             <form class="inline-flex" action="{{route('school.year')}}" method="post">
                 @csrf
             <select id="current_year" name="current_year" class="rounded-md mt-4 py-0 pl-2 pr-8" onchange="this.form.submit()">
-                <option value="2023" @if($current_year == 2023)selected @endif>2023</option>
-                <option value="2024" @if($current_year == 2024)selected @endif>2024</option>
+                @foreach ($years as $year)
+                <option value="{{$year->year}}" @if($current_year == $year->year)selected @endif>{{$year->year}}</option>
+                @endforeach                
             </select>
             </form>
         </div>

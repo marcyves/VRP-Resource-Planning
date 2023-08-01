@@ -22,8 +22,22 @@ class SchoolController extends Controller
 
         $schools = Auth::user()->schools()->get();
         $courses = $schools->getCourses($current_year);
-//dd($courses);
-        return view('dashboard', compact('courses', 'current_year'));
+        $years = $schools->getYears();
+
+        return view('dashboard', compact('courses', 'current_year', 'years'));
+    }
+
+    public function list()
+    {
+        $schools = Auth::user()->schools()->get();
+        //TODO remove schools with courses
+        return view('school.list', compact('schools'));
+    }
+
+    public function add(String $school_id)
+    {
+        $school = School::find($school_id);
+        return view('school.add', compact('school'));
     }
 
     /**

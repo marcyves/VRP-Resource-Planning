@@ -23,4 +23,17 @@ class CourseCollection extends Collection
             ->orderBy('program_name', 'asc')
             ->get();
     }
+
+        
+    public function getYears()
+    {
+        $list = $this->map(function(School $school){
+            return $school->id;
+        });
+
+        return Course::whereIn('school_id', $list)
+            ->select(['year'])
+            ->distinct()
+            ->get();
+    }
 }
