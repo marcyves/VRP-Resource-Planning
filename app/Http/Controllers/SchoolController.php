@@ -44,9 +44,8 @@ class SchoolController extends Controller
     public function list()
     {
         $schools = Auth::user()->schools()->get();
-        //TODO remove schools with courses
         $schools = $schools->getNoCourse();
-        
+
         return view('school.list', compact('schools'));
     }
 
@@ -79,7 +78,7 @@ class SchoolController extends Controller
                     'name' => $request->name,
                     'user_id' => $user_id
                 ]);
-            return redirect(route('dashboard'))
+            return redirect(route('school.list'))
                 ->with([
                     'success' => "Ecole enregistré avec succès"]);
         }
