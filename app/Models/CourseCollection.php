@@ -6,22 +6,62 @@ use Illuminate\Database\Eloquent\Collection;
 
 class CourseCollection extends Collection
 {
-    public function getCourses(String $year)
+    public function getCourses(String $year, String $semester)
     {
         $list = $this->map(function(School $school){
             return $school->id;
         });
 
-        return Course::whereIn('school_id', $list)
+        if ($year == 'all'){
+            if ($semester == 'all'){
+                return Course::whereIn('school_id', $list)
             ->select(['courses.*', 'schools.name as school_name', 'programs.name as program_name'])
             ->leftJoin('programs', 'courses.program_id', '=', 'programs.id')
             ->leftJoin('schools', 'courses.school_id', '=', 'schools.id')
             ->withCount('groups')
-            ->where(['year' => $year])
+            ->orderBy('year', 'asc')
             ->orderBy('semester', 'asc')
             ->orderBy('school_name', 'asc')
             ->orderBy('program_name', 'asc')
             ->get();
+            }else{
+                return Course::whereIn('school_id', $list)
+                ->select(['courses.*', 'schools.name as school_name', 'programs.name as program_name'])
+                ->leftJoin('programs', 'courses.program_id', '=', 'programs.id')
+                ->leftJoin('schools', 'courses.school_id', '=', 'schools.id')
+                ->withCount('groups')
+                ->where(['semester' => $semester])
+                ->orderBy('semester', 'asc')
+                ->orderBy('school_name', 'asc')
+                ->orderBy('program_name', 'asc')
+                ->get();
+            }
+        }else{
+            if ($semester == 'all'){
+                return Course::whereIn('school_id', $list)
+                ->select(['courses.*', 'schools.name as school_name', 'programs.name as program_name'])
+                ->leftJoin('programs', 'courses.program_id', '=', 'programs.id')
+                ->leftJoin('schools', 'courses.school_id', '=', 'schools.id')
+                ->withCount('groups')
+                ->where(['year' => $year])
+                ->orderBy('semester', 'asc')
+                ->orderBy('school_name', 'asc')
+                ->orderBy('program_name', 'asc')
+                ->get();
+            }else{
+                return Course::whereIn('school_id', $list)
+                ->select(['courses.*', 'schools.name as school_name', 'programs.name as program_name'])
+                ->leftJoin('programs', 'courses.program_id', '=', 'programs.id')
+                ->leftJoin('schools', 'courses.school_id', '=', 'schools.id')
+                ->withCount('groups')
+                ->where(['semester' => $semester])
+                ->where(['year' => $year])
+                ->orderBy('semester', 'asc')
+                ->orderBy('school_name', 'asc')
+                ->orderBy('program_name', 'asc')
+                ->get();
+            }
+        }
     }
 
         
@@ -32,7 +72,7 @@ class CourseCollection extends Collection
         });
 
         return Course::whereIn('school_id', $list)
-            ->select(['year'])
+            ->select(['year', 'semester'])
             ->distinct()
             ->get();
     }

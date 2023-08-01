@@ -20,11 +20,17 @@ class SchoolController extends Controller
          $current_year = now()->format('Y');
         }
 
+        if(isset($request->current_semester)){
+            $current_semester = $request->current_semester;
+        }else{
+         $current_semester = "all";
+        }
+
         $schools = Auth::user()->schools()->get();
-        $courses = $schools->getCourses($current_year);
+        $courses = $schools->getCourses($current_year, $current_semester);
         $years = $schools->getYears();
 
-        return view('dashboard', compact('courses', 'current_year', 'years'));
+        return view('dashboard', compact('courses', 'current_year', 'current_semester','years'));
     }
 
     public function list()

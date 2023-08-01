@@ -8,8 +8,18 @@
             <form class="inline-flex" action="{{route('school.year')}}" method="post">
                 @csrf
             <select id="current_year" name="current_year" class="rounded-md mt-4 py-0 pl-2 pr-8" onchange="this.form.submit()">
+                <option value="all" @if($current_year == "all")selected @endif>All</option>
                 @foreach ($years as $year)
                 <option value="{{$year->year}}" @if($current_year == $year->year)selected @endif>{{$year->year}}</option>
+                @endforeach                
+            </select>
+            </form>
+            <form class="inline-flex" action="{{route('school.semester')}}" method="post">
+                @csrf
+            <select id="current_semester" name="current_semester" class="rounded-md mt-4 py-0 pl-2 pr-8" onchange="this.form.submit()">
+                <option value="all" @if($current_year == "all")selected @endif>All</option>
+                @foreach ($years as $year)
+                <option value="{{$year->semester}}" @if($current_semester == $year->semester)selected @endif>{{$year->semester}}</option>
                 @endforeach                
             </select>
             </form>
