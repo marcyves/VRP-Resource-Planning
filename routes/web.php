@@ -28,6 +28,8 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
+    Route::get('/school/list', [SchoolController::class, 'list'])->name('school.list');
+    Route::post('/school/{school_id}/add', [SchoolController::class, 'add'])->name('school.add');
     Route::post('/school/year', [SchoolController::class, 'index'])->name('school.year');
     Route::get('/school/year', [SchoolController::class, 'index'])->name('school.default_year');
     Route::resource('/school', SchoolController::class);

@@ -22,8 +22,8 @@ class SchoolController extends Controller
 
         $schools = Auth::user()->schools()->get();
         $courses = $schools->getCourses($current_year);
-
-        return view('dashboard', compact('schools', 'courses', 'current_year'));
+//dd($courses);
+        return view('dashboard', compact('courses', 'current_year'));
     }
 
     /**

@@ -1,14 +1,14 @@
-@props(['school', 'school_id'])
+@props(['school_name', 'school_id'])
+<!-- Start advanced-course-table.blade  -->
 <section class="bg-gray-50 p-3 sm:p-5">
     <div class="mx-auto max-w-screen-xl px-2 lg:px-12">
-        <!-- Start coding here -->
         <div class="bg-white relative shadow-md sm:rounded-lg overflow-hidden">
             <div class="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4">
                 <div class="w-full md:w-1/2">
                     <form action="{{route('school.show', $school_id)}}" method="get">
                         @csrf
                         <button class="inline-flex items-center p-0.5 text-sm font-medium text-center text-blue-500 hover:text-gray-800 rounded-lg focus:outline-none" type="submit">
-                            {{$school}}
+                            {{$school_name}}
                         </button>    
                     </form>
                 </div>
@@ -40,6 +40,7 @@
                 <table class="w-full text-sm text-left text-gray-500">
                     <thead class="text-xs text-gray-700 uppercase bg-gray-50 text-center">
                         <tr>
+                            <th scope="col" class="px-2 py-3">Program</th>
                             <th scope="col" class="px-2 py-3">Course name</th>
                             <th scope="col" class="px-2 py-3 text-center">Year</th>
                             <th scope="col" class="px-2 py-3 text-center">Semester</th>
@@ -63,3 +64,4 @@
         </div>
     </div>
     </section>
+    <!-- End advanced-course-table.blade  -->
