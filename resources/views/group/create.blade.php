@@ -7,7 +7,7 @@
 
     <x-nice-box color="white">
 
-<form action="{{route('group.store', $course_id)}}" method="post">
+<form action="{{route('group.save', $course_id)}}" method="post">
     @csrf
     <x-input-label>Name</x-input-label>
     <x-text-input type="text" name="name" />

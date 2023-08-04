@@ -43,8 +43,9 @@ Route::middleware('auth')->group(function () {
     Route::delete('/course/{course_id}', [CourseController::class, 'destroy'])->name('course.destroy');
 
     Route::get('/group/', [GroupController::class, 'index'])->name('group.index');
-    Route::get('/group/{course_id}/create', [GroupController::class, 'create'])->name('group.create');
-    Route::post('/group/{course_id}', [GroupController::class, 'store'])->name('group.store');
+    Route::get('/group/{course_id}/create', [GroupController::class, 'create'])->name('group.new');
+    Route::post('/group/{course_id}', [GroupController::class, 'store'])->name('group.save');
+    Route::resource('/group', GroupController::class);
 
     Route::get('/planning', [PlanningController::class, 'index'])->name('planning.index');
     Route::get('/planning/{group_id}/create', [PlanningController::class, 'create'])->name('planning.create');

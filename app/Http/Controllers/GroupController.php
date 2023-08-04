@@ -63,24 +63,51 @@ class GroupController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Group $group)
+    public function edit(String $group_id)
     {
-        //
+        $group = Group::find($group_id);
+
+        return view('group.edit', compact('group'));        
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Group $group)
+    public function update(Request $request, String $group_id)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'required|max:80',
+            'size' => 'required|min:0',
+        ]);
+        
+        try{
+            $group = Group::findOrFail($group_id);
+            $group->name = $request->name;
+            $group->size = $request->size;
+            $group->update();
+            return redirect(route('course.show', $group->course_id))
+                ->with([
+                    'success' => "Groupe modifié avec succès"]);
+        }
+        catch (\Exception $e) {
+            dd($e);
+            return redirect()->back()
+            ->with('error', "Erreur lors de l'enregitrement du groupe");
+        }               
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Group $group)
+    public function destroy(String $group_id)
     {
-        //
+        $group = Group::findOrFail($group_id);
+        $course_id = $group->course_id;
+
+        $group->delete();
+
+        return redirect(route('course.show', $course_id))
+        ->with([
+            'success' => "Groupe effacé avec succès"]);
     }
 }

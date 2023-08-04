@@ -30,7 +30,7 @@ class Course extends Model
 
     public function getGroups()
     {
-        return Group::where(['course_id' => $this->id])->get();
+        return Group::where(['course_id' => $this->id])->orderBy('name', 'asc')->get();
     }
 
     public static function getCourseDetails(String $course_id)
