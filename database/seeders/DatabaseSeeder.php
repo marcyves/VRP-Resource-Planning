@@ -16,6 +16,7 @@ class DatabaseSeeder extends Seeder
             StatusSeeder::class,
             UserSeeder::class,
             SchoolSeeder::class,
+            ProgramSeeder::class,
             CourseSeeder::class,
             GroupSeeder::class,
         ]);

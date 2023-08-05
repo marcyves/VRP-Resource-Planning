@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Course;
+use App\Models\Program;
 use App\Models\School;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -25,6 +26,7 @@ class CourseFactory extends Factory
             'session_length' => 2.0,
             'year' => '2023',
             'semester' => 'S1',
+            'program_id' => fake()->randomElement(Program::all()),
             'rate' => 87.50
         ];
     }
