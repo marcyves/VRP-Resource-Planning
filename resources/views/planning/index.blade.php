@@ -59,7 +59,10 @@
                 @endfor
                 <!-- Afficher les jours du mois -->
                 @for ($i = $startDay; $i <= 7; $i++)
-                <div class="calCell">{{$day++}}</div>
+                <div class="calCell">
+                        {{$day++}}
+                    <x-form-planning :courses=$courses day={{$day-1}}/>
+                </div> 
                 @endfor
             </div>
         
@@ -67,7 +70,12 @@
             @while ($day <= $numDays)
                 <div class="calRow">
                 @for ($i = 1; $i <= 7 && $day <= $numDays; $i++)
-                <div class="calCell">{{$day++}}</div> 
+                <div class="calCell">
+                    <a href="">
+                        {{$day++}}
+                        <x-form-planning :courses=$courses day={{$day-1}}/>
+                    </a>
+                </div> 
                 @endfor
             </div>
             @endwhile

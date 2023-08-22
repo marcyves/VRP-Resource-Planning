@@ -4,17 +4,43 @@ namespace App\Http\Controllers;
 
 use App\Models\Planning;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PlanningController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
+
+        if(isset($request->current_year)){
+            $current_year = $request->current_year;
+            session(['current_year' => $current_year]);
+        }else {
+            $current_year = session('current_year');
+            if (!isset($current_year)) {
+                $current_year = now()->format('Y');
+            }
+        }
+
+        if(isset($request->current_semester)){
+            $current_semester = $request->current_semester;
+            session(['current_semester' => $current_semester]);
+        }else{
+            $current_semester = session('current_semester');
+            if (!isset($current_semester)) {
+                 $current_semester = "all";
+            }
+        }
+
+        $schools = Auth::user()->schools()->get();
+        $courses = $schools->getCourses($current_year, $current_semester);
+
+
         $planning = Planning::all();
 
-        return view('planning.index', compact('planning'));
+        return view('planning.index', compact('planning', 'courses'));
     }
 
     /**
