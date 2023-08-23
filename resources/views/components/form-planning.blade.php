@@ -1,32 +1,13 @@
 
-<form action="{{ route('planning.store', 1)}}" method="post" class="p-2 bg-blue-100">
+<form action="{{ route('planning.insert', $day)}}" method="post" class="p-2 bg-blue-100">
     @csrf
     <input type="hidden" name="day" value={{$day}}>
+    <input type="hidden" name="month" value={{$month}}>
+    <input type="hidden" name="year" value={{$year}}>
     <select name="course" class="rounded-md mt-4 py-0 pl-2 pr-8 overflow-clip w-28 mb-2">
         @foreach ($courses as $course)
         <option value="{{$course->id}}">{{$course->name}}</option>                            
         @endforeach
-    </select>
-    <br>
-    <select name="hour" class="rounded-md py-0 pl-2 pr-8 w-14">
-        @php
-            for($h=8;$h<20;$h++)
-            {
-        @endphp
-                <option value="{{$h}}">{{$h}}</option>
-        @php
-            }
-        @endphp
-    </select>
-    <select name="minutes" class="rounded-md py-0 pl-2 pr-8 w-14">
-        @php
-            for($m=0;$m<60;$m+=5)
-            {
-        @endphp
-                <option value="{{$m}}">{{$m}}</option>
-        @php
-            }
-        @endphp
     </select>
     <br>
     <input 

@@ -16,7 +16,7 @@
 
         <!-- (A) PERIOD SELECTOR -->
         @php
-            $months = array(); //generate all the day names according to the current locale
+            $months = array(); //generate all the month names according to the current locale
             for ($n = 0, $t = (4) * 86400; $n < 12; $n++, $t+=86400*30) //January 5, 1970
                 $months[$n] = ucfirst(date('F', $t));
 
@@ -61,7 +61,7 @@
                 @for ($i = $startDay; $i <= 7; $i++)
                 <div class="calCell">
                         {{$day++}}
-                    <x-form-planning :courses=$courses day={{$day-1}}/>
+                    <x-form-planning :courses=$courses day={{$day-1}} month={{$current_month}} year={{$current_year}}/>
                 </div> 
                 @endfor
             </div>
@@ -73,7 +73,7 @@
                 <div class="calCell">
                     <a href="">
                         {{$day++}}
-                        <x-form-planning :courses=$courses day={{$day-1}}/>
+                        <x-form-planning :courses=$courses day={{$day-1}} month={{$current_month}} year={{$current_year}}/>
                     </a>
                 </div> 
                 @endfor

@@ -49,7 +49,8 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/planning', [PlanningController::class, 'index'])->name('planning.index');
     Route::get('/planning/{group_id}/create', [PlanningController::class, 'create'])->name('planning.create');
-    Route::post('/planning/{group_id}', [PlanningController::class, 'store'])->name('planning.store');
+    Route::post('/planning/{day}', [PlanningController::class, 'insert'])->name('planning.insert');
+    Route::post('/planning', [PlanningController::class, 'store'])->name('planning.store');
     
     Route::resource('/program', ProgramController::class);
     

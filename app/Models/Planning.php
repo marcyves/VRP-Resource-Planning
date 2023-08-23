@@ -10,5 +10,5 @@ class Planning extends Model
     use HasFactory;
 
     public $timestamps = false;
-    public $fillable = ['begin', 'end', 'location'];
+    public $fillable = ['begin', 'end', 'location', 'group_id'];
 }

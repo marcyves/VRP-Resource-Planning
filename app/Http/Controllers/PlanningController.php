@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Course;
 use App\Models\Planning;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -43,6 +44,23 @@ class PlanningController extends Controller
         return view('planning.index', compact('planning', 'courses'));
     }
 
+    public function insert(Request $request)
+    {
+        $day = $request->day;
+        $month = $request->month;
+        $year = $request->year;
+
+        $date = "$year-$month-$day";
+        $course = Course::find($request->course);
+
+        //TODO check groups are not yet fully booked
+        $groups = $course->getGroups();
+        
+        $session_length = $course->session_length;
+
+        return view('planning.insert', compact('date', 'groups', 'session_length'));
+    }
+
     /**
      * Show the form for creating a new resource.
      */
@@ -56,7 +74,33 @@ class PlanningController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $group_id = $request->group;
+
+        $session_length = $request->session_length;
+
+        $date = $request->date;
+        $hour = $request->hour;
+        $minutes = $request->minutes;
+
+        $begin = date('Y-m-d H:i:s',strtotime("$date $hour:$minutes:0"));
+        $end = date('Y-m-d H:i:s',strtotime("$date $hour:$minutes:0 +$session_length hours"));
+
+        try{
+            Planning::create([
+                    'begin' => $begin,
+                    'end' => $end,
+                    'location' => 'na',
+                    'group_id' => $group_id
+                        ]);
+            return redirect(route('planning.index'))
+                ->with([
+                    'success' => "Cours enregistré avec succès"]);
+        }
+        catch (\Exception $e) {
+            dd($e);
+            return redirect()->back()
+            ->with('error', "Erreur lors de l'enregitrement du cours");
+        }     
     }
 
     /**
