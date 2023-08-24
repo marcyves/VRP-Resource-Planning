@@ -67,7 +67,7 @@
                         $tmp = "";
                         if ((int)$begin_day == $i){
                         @endphp
-                          <br>{{$event->course_name}} ({{$event->group_name}})<br>{{$event->location}}<br>
+                          <br>{{$event->short_name}} ({{$event->group_name}})<br>{{$event->location}}<br>
                         @php
                         }
                         @endphp
@@ -93,7 +93,7 @@
                         $tmp = "";
                         if ((int)$begin_day == $i){
                         @endphp
-                        <br>{{$event->course_name}} ({{$event->group_name}})<br>{{$event->location}}<br>
+                        <br>{{$event->short_name}} ({{$event->group_name}})<br>{{$event->location}}<br>
                         @php
                         }
                         @endphp

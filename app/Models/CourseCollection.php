@@ -20,7 +20,7 @@ class CourseCollection extends Collection
         $end_date   =  trim($year)."-".trim($month+1)."-0 00:00:00";
 
         return Course::whereIn('school_id', $list)
-        ->select(['begin', 'end', 'location', 'courses.name as course_name', 'groups.name as group_name'])
+        ->select(['begin', 'end', 'location', 'courses.name as course_name','courses.short_name as short_name', 'groups.name as group_name'])
         ->leftJoin('groups', 'courses.id', '=', 'groups.course_id')
         ->rightJoin('plannings', 'plannings.group_id', '=', 'groups.id')
         ->where(['year' => $year])

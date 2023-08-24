@@ -11,8 +11,10 @@
     @csrf
     <x-input-label>Name</x-input-label>
     <x-text-input type="text" name="name" />
+    <x-input-label>Short Name</x-input-label>
+    <x-text-input type="text" name="short_name" />
     <x-input-label>Program</x-input-label>
-    <select name="program_id">
+    <select name="program_id" class="rounded-md mt-0 py-0 pl-2 pr-8">
         @foreach ($programs as $program)
         <option value="{{$program->id}}">{{$program->name}}</option>                            
         @endforeach

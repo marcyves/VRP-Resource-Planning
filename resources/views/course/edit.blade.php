@@ -12,8 +12,10 @@
                 @method('put')
                 <x-input-label>Name</x-input-label>
                 <x-text-input type="text" name="name" value="{{old('name',$course->name)}}"/>
-                <x-input-label>Program</x-input-label>
-                <select name="program_id">
+                    <x-input-label>Short Name</x-input-label>
+                    <x-text-input type="text" name="short_name" value="{{old('short_name',$course->short_name)}}"/>
+                    <x-input-label>Program</x-input-label>
+                <select name="program_id" class="rounded-md mt-4 py-0 pl-2 pr-8">
                     @foreach ($programs as $program)
                     <option value="{{$program->id}}"
                         @if($program->id==$course->program_id)

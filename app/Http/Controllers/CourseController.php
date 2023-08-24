@@ -44,8 +44,9 @@ class CourseController extends Controller
         try{
             $user_id = Auth::user()->id;
             Course::create([
-                    'name' => $request->name,
-                    'school_id' => $school_id,
+                'name' => $request->name,
+                'short_name' => $request->short_name,
+                'school_id' => $school_id,
                     'program_id' => $request->program_id,
                     'sessions' => $request->sessions,
                     'session_length' => $request->session_length,
@@ -92,6 +93,7 @@ class CourseController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|max:80',
+            'short_name' => 'required|min:3',
             'sessions' => 'required|min:0',
             'session_length' => 'required|min:0',
             'year' => 'required',
@@ -103,6 +105,7 @@ class CourseController extends Controller
         try{
             $course = Course::findOrFail($course_id);
             $course->name = $request->name;
+            $course->short_name = $request->short_name;
             $course->sessions = $request->sessions;
             $course->session_length = $request->session_length;
             $course->year = $request->year;
