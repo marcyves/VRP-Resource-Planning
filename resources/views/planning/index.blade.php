@@ -6,13 +6,6 @@
     </x-slot>
 
     <x-nice-box color="white">
-        <ul>
-        @foreach ($planning as $event)
-        <li class="mx-4 my-2">
-            {{$event->begin}} ({{$event->end}}) 
-        </li> 
-        @endforeach
-        </ul>
 
         <!-- (A) PERIOD SELECTOR -->
         @php
@@ -58,10 +51,28 @@
                     <div class="calCell calBlank"></div>
                 @endfor
                 <!-- Afficher les jours du mois -->
+                @php
+                $i = $startDay;
+                @endphp
+        
                 @for ($i = $startDay; $i <= 7; $i++)
                 <div class="calCell">
-                        {{$day++}}
-                    <x-form-planning :courses=$courses day={{$day-1}} month={{$current_month}} year={{$current_year}}/>
+                    {{$day++}}
+                    @foreach ($planning as $event)
+                        @php
+                        $begin_date = explode(" ", $event->begin)[0];
+                        $begin_day = explode("-", $begin_date)[2];
+                        $end_date = explode(" ", $event->end)[0];
+                        $end_day = explode("-", $end_date)[2];
+                        $tmp = "";
+                        if ((int)$begin_day == $i){
+                        @endphp
+                          <br>{{$event->course_name}} ({{$event->group_name}})<br>{{$event->location}}<br>
+                        @php
+                        }
+                        @endphp
+                    @endforeach
+                        <x-form-planning :courses=$courses day={{$day-1}} month={{$current_month}} year={{$current_year}}/>
                 </div> 
                 @endfor
             </div>
@@ -73,6 +84,20 @@
                 <div class="calCell">
                     <a href="">
                         {{$day++}}
+                        @foreach ($planning as $event)
+                        @php
+                        $begin_date = explode(" ", $event->begin)[0];
+                        $begin_day = explode("-", $begin_date)[2];
+                        $end_date = explode(" ", $event->end)[0];
+                        $end_day = explode("-", $end_date)[2];
+                        $tmp = "";
+                        if ((int)$begin_day == $i){
+                        @endphp
+                        <br>{{$event->course_name}} ({{$event->group_name}})<br>{{$event->location}}<br>
+                        @php
+                        }
+                        @endphp
+                    @endforeach
                         <x-form-planning :courses=$courses day={{$day-1}} month={{$current_month}} year={{$current_year}}/>
                     </a>
                 </div> 

@@ -35,11 +35,14 @@ class PlanningController extends Controller
             }
         }
 
+        // Collect Courses for future planning
         $schools = Auth::user()->schools()->get();
         $courses = $schools->getCourses($current_year, $current_semester);
 
-
-        $planning = Planning::all();
+        // Collect Planning information for display
+        //TODO change and selct month
+        $current_month = now()->format('m');
+        $planning = $schools->getPlanning($current_year, $current_month);
 
         return view('planning.index', compact('planning', 'courses'));
     }
@@ -83,6 +86,7 @@ class PlanningController extends Controller
         $minutes = $request->minutes;
 
         $begin = date('Y-m-d H:i:s',strtotime("$date $hour:$minutes:0"));
+        //TODO session length is bugged
         $end = date('Y-m-d H:i:s',strtotime("$date $hour:$minutes:0 +$session_length hours"));
 
         try{

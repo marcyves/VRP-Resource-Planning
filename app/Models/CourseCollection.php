@@ -7,6 +7,31 @@ use Illuminate\Database\Eloquent\Collection;
 
 class CourseCollection extends Collection
 {
+    public function getPlanning(String $year, String $month)
+    {
+        $list = $this->map(function(School $school){
+            return $school->id;
+        });
+       
+//        $start_date =  date('Y-m-d H:i:s',strtotime(trim($year)."-".trim($month)."-0 00:00:00"));
+//        $end_date   =  date('Y-m-d H:i:s',strtotime(trim($year)."-".trim((int)$month+1)."-0 00:00:00"));
+
+        $start_date =  trim($year)."-".trim($month)."-0 00:00:00";
+        $end_date   =  trim($year)."-".trim($month+1)."-0 00:00:00";
+
+        return Course::whereIn('school_id', $list)
+        ->select(['begin', 'end', 'location', 'courses.name as course_name', 'groups.name as group_name'])
+        ->leftJoin('groups', 'courses.id', '=', 'groups.course_id')
+        ->rightJoin('plannings', 'plannings.group_id', '=', 'groups.id')
+        ->where(['year' => $year])
+        ->where('begin', '>', $start_date)
+        ->where('end', '<', $end_date)
+        ->orderBy('begin', 'asc')
+        ->orderBy('course_name', 'asc')
+        ->orderBy('group_name', 'asc')
+        ->get();
+
+    }
     public function getCourses(String $year, String $semester)
     {
         $list = $this->map(function(School $school){
