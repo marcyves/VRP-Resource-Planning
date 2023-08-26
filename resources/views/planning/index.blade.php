@@ -3,6 +3,20 @@
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             {{ __('Planning') }}
         </h2>
+        @if (\Session::has('success'))
+        <div class="text-green-400 border border-green-400 rounded-md p-4 mt-2">
+            <ul>
+                <li>{!! \Session::get('success') !!}</li>
+            </ul>
+        </div>
+    @endif
+    @if (\Session::has('error'))
+    <div class="text-red-400 border border-red-400 rounded-md p-4 mt-2">
+        <ul>
+            <li>{!! \Session::get('error') !!}</li>
+        </ul>
+    </div>
+@endif
     </x-slot>
 
     <x-nice-box color="white">

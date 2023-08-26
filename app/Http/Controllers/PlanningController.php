@@ -40,7 +40,7 @@ class PlanningController extends Controller
         $courses = $schools->getCourses($current_year, $current_semester);
 
         // Collect Planning information for display
-        //TODO change and selct month
+        //TODO change and select month
         $current_month = now()->format('m');
         $planning = $schools->getPlanning($current_year, $current_month);
 
@@ -98,7 +98,7 @@ class PlanningController extends Controller
                         ]);
             return redirect(route('planning.index'))
                 ->with([
-                    'success' => "Cours enregistré avec succès"]);
+                    'success' => "Cours enregistré avec succès le ".$begin]);
         }
         catch (\Exception $e) {
             dd($e);
@@ -118,9 +118,11 @@ class PlanningController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Planning $planning)
+    public function edit(String $id)
     {
-        //
+        $planning = Planning::findOrFail($id);
+        
+        return view('planning.edit', compact('planning'));    
     }
 
     /**
@@ -128,14 +130,17 @@ class PlanningController extends Controller
      */
     public function update(Request $request, Planning $planning)
     {
-        //
+        return redirect(route('planning.index'));
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Planning $planning)
+    public function destroy(string $id)
     {
-        //
+        $planning = Planning::findOrFail($id);
+        $planning->delete();
+        
+        return redirect(route('planning.index'));    
     }
 }
