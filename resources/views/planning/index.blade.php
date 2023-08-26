@@ -56,24 +56,10 @@
                 @endphp
         
                 @for ($i = $startDay; $i <= 7; $i++)
-                <div class="calCell">
-                    {{$day++}}
-                    @foreach ($planning as $event)
+                        <x-form-planning :courses=$courses :planning=$planning :i=$i :day=$day month={{$current_month}} year={{$current_year}}/>
                         @php
-                        $begin_date = explode(" ", $event->begin)[0];
-                        $begin_day = explode("-", $begin_date)[2];
-                        $end_date = explode(" ", $event->end)[0];
-                        $end_day = explode("-", $end_date)[2];
-                        $tmp = "";
-                        if ((int)$begin_day == $i){
-                        @endphp
-                          <br>{{$event->short_name}} ({{$event->group_name}})<br>{{$event->location}}<br>
-                        @php
-                        }
-                        @endphp
-                    @endforeach
-                        <x-form-planning :courses=$courses day={{$day-1}} month={{$current_month}} year={{$current_year}}/>
-                </div> 
+                        $day++;
+                        @endphp                    
                 @endfor
             </div>
         
@@ -81,26 +67,10 @@
             @while ($day <= $numDays)
                 <div class="calRow">
                 @for ($i = 1; $i <= 7 && $day <= $numDays; $i++)
-                <div class="calCell">
-                    <a href="">
-                        {{$day++}}
-                        @foreach ($planning as $event)
-                        @php
-                        $begin_date = explode(" ", $event->begin)[0];
-                        $begin_day = explode("-", $begin_date)[2];
-                        $end_date = explode(" ", $event->end)[0];
-                        $end_day = explode("-", $end_date)[2];
-                        $tmp = "";
-                        if ((int)$begin_day == $i){
-                        @endphp
-                        <br>{{$event->short_name}} ({{$event->group_name}})<br>{{$event->location}}<br>
-                        @php
-                        }
-                        @endphp
-                    @endforeach
-                        <x-form-planning :courses=$courses day={{$day-1}} month={{$current_month}} year={{$current_year}}/>
-                    </a>
-                </div> 
+                    <x-form-planning :courses=$courses :planning=$planning :i=$i :day=$day month={{$current_month}} year={{$current_year}}/>
+                    @php
+                    $day++;
+                    @endphp                
                 @endfor
             </div>
             @endwhile
