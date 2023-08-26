@@ -32,12 +32,14 @@ class GroupController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|max:80',
+            'short_name' => 'required|min:3',
             'size' => 'required|min:0',
         ]);
         
         try{
             Group::create([
                     'name' => $request->name,
+                    'short_name' => $request->short_name,
                     'size' => $request->size,
                     'course_id' => $course_id
                 ]);
@@ -77,12 +79,14 @@ class GroupController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|max:80',
+            'short_name' => 'required|min:3',
             'size' => 'required|min:0',
         ]);
         
         try{
             $group = Group::findOrFail($group_id);
             $group->name = $request->name;
+            $group->short_name = $request->short_name;
             $group->size = $request->size;
             $group->update();
             return redirect(route('course.show', $group->course_id))

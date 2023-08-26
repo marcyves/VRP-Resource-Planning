@@ -11,7 +11,7 @@ class Group extends Model
     use HasFactory;
 
     public $timestamps = false;
-    public $fillable = ['name', 'course_id', 'size'];
+    public $fillable = ['name', 'short_name','course_id', 'size'];
     
     public function plannings(): HasMany
     {

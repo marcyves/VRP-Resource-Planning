@@ -12,6 +12,8 @@
     @method('put')
     <x-input-label>Name</x-input-label>
     <x-text-input type="text" name="name" value="{{old('name', $group->name)}}"/>
+    <x-input-label>Short Name</x-input-label>
+    <x-text-input type="text" name="short_name" value="{{old('short_name', $group->short_name)}}"/>
     <x-input-label>Size</x-input-label>
     <x-text-input type="text" name="size" value="{{old('size', $group->size)}}"/>
     <br class="my-4">

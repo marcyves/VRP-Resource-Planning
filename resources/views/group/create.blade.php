@@ -11,6 +11,8 @@
     @csrf
     <x-input-label>Name</x-input-label>
     <x-text-input type="text" name="name" />
+    <x-input-label>Short Name</x-input-label>
+    <x-text-input type="text" name="short_name" />
     <x-input-label>Size</x-input-label>
     <x-text-input type="text" name="size" />
     <br class="my-4">
