@@ -25,6 +25,20 @@
                     <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
                         {{ $header }}
                     </div>
+                    @if (\Session::has('success'))
+                    <div class="text-green-400 border border-green-400 rounded-md p-4 my-8 mx-0">
+                        <ul>
+                            <li class="mb-2">{!! \Session::get('success') !!}</li>
+                        </ul>
+                    </div>
+                    @endif
+                    @if (\Session::has('error'))
+                    <div class="text-red-400 border border-red-400 rounded-md p-4 my-8 mx-0">
+                        <ul>
+                            <li class="mb-2">{!! \Session::get('error') !!}</li>
+                        </ul>
+                    </div>
+                    @endif            
                 </header>
             @endif
 
