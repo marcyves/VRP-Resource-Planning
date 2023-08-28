@@ -12,7 +12,7 @@ class GroupController extends Controller
      */
     public function index()
     {
-        $groups = Group::all();
+        $groups = Group::all()->sortBy('name');
 
         return view('group.index', compact('groups'));
     }
