@@ -25,6 +25,16 @@ class PlanningController extends Controller
             }
         }
 
+        if(isset($request->current_month)){
+            $current_month = $request->current_month+1;
+            session(['current_month' => $current_month]);
+        }else {
+            $current_month = session('current_month');
+            if (!isset($current_month)) {
+                $current_month = now()->format('m');
+            }
+        }
+
         if(isset($request->current_semester)){
             $current_semester = $request->current_semester;
             session(['current_semester' => $current_semester]);
@@ -37,14 +47,14 @@ class PlanningController extends Controller
 
         // Collect Courses for future planning
         $schools = Auth::user()->schools()->get();
+        $years = $schools->getYears();
+
         $courses = $schools->getCourses($current_year, $current_semester);
 
         // Collect Planning information for display
-        //TODO change and select month
-        $current_month = now()->format('m');
         $planning = $schools->getPlanning($current_year, $current_month);
-
-        return view('planning.index', compact('planning', 'courses'));
+        
+        return view('planning.index', compact('planning', 'courses', 'years', 'current_year', 'current_month'));
     }
 
     public function insert(Request $request)
@@ -98,12 +108,12 @@ class PlanningController extends Controller
                         ]);
             return redirect(route('planning.index'))
                 ->with([
-                    'success' => "Cours enregistré avec succès le ".$begin]);
+                    'success' => "Session de cours enregistrée avec succès le ".$begin]);
         }
         catch (\Exception $e) {
             dd($e);
             return redirect()->back()
-            ->with('error', "Erreur lors de l'enregitrement du cours");
+            ->with('error', "Erreur lors de l'enregitrement d'une session de cours");
         }     
     }
 

@@ -13,11 +13,9 @@ class CourseCollection extends Collection
             return $school->id;
         });
        
-//        $start_date =  date('Y-m-d H:i:s',strtotime(trim($year)."-".trim($month)."-0 00:00:00"));
-//        $end_date   =  date('Y-m-d H:i:s',strtotime(trim($year)."-".trim((int)$month+1)."-0 00:00:00"));
-
-        $start_date =  trim($year)."-".trim($month)."-0 00:00:00";
-        $end_date   =  trim($year)."-".trim($month+1)."-0 00:00:00";
+        $start_date =  trim($year)."-".substr("0".trim($month),-2)."-0 00:00:00";
+        $end_date   =  trim($year)."-".substr("0".trim($month+1),-2)."-0 00:00:00";
+        
 
         return Course::whereIn('school_id', $list)
         ->select(['plannings.id as id', 'begin', 'end', 'location', 'courses.name as course_name','courses.short_name as short_name', 'groups.name as group_name', 'groups.short_name as group_short_name'])

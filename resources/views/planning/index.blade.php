@@ -3,20 +3,6 @@
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             {{ __('Planning') }}
         </h2>
-        @if (\Session::has('success'))
-        <div class="text-green-400 border border-green-400 rounded-md p-4 mt-2">
-            <ul>
-                <li>{!! \Session::get('success') !!}</li>
-            </ul>
-        </div>
-    @endif
-    @if (\Session::has('error'))
-    <div class="text-red-400 border border-red-400 rounded-md p-4 mt-2">
-        <ul>
-            <li>{!! \Session::get('error') !!}</li>
-        </ul>
-    </div>
-@endif
     </x-slot>
 
     <x-nice-box color="white">
@@ -30,10 +16,6 @@
             $weekdays = array(); //generate all the day names according to the current locale
             for ($n = 0, $t = (4) * 86400; $n < 7; $n++, $t+=86400) //January 5, 1970 was a Monday
                 $weekdays[$n] = ucfirst(date('l', $t));
-
-            $current_month = now()->format('m')/1;
-            $current_index = $current_month - 1;
-            $current_year  =  now()->format('Y');
     
             $firstDay = mktime(0, 0, 0, $current_month, 1, $current_year);
             $numDays = date('t', $firstDay);
@@ -43,11 +25,24 @@
             $day = 1;
         @endphp
         <div id="calPeriod">
-            <select id="calMonth">
-                @foreach ($months as $index => $month)
-                    <option value="{{$index}}" @if($index==$current_index) selected @endif>{{$month}}</option>                    
-                @endforeach
-            <input type="number" id="calYear" value="{{$current_year}}">
+            <form class="inline-flex" id="calYear" action="{{route('planning.period')}}" method="post">
+                @csrf
+                <select id="current_year" name="current_year" class="rounded-md mt-4 py-0 pl-2 pr-8" onchange="this.form.submit()">
+                    <option value="all" @if($current_year == "all")selected @endif>All</option>
+                    @foreach ($years as $year)
+                    <option value="{{$year->year}}" @if($current_year == $year->year)selected @endif>{{$year->year}}</option>
+                    @endforeach                
+                </select>
+            </form>
+
+            <form class="inline-flex" action="{{route('planning.period')}}" method="post">
+                @csrf
+                <select id="calMonth" name="current_month" onchange="this.form.submit()">
+                    @foreach ($months as $index => $month)
+                        <option value="{{$index}}" @if($index==$current_month-1) selected @endif>{{$month}}</option>                    
+                    @endforeach
+                </select>
+            </form>
           </div>
       
           <!-- (B) CALENDAR -->
