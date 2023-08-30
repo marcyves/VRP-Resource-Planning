@@ -53,8 +53,13 @@ class PlanningController extends Controller
 
         // Collect Planning information for display
         $planning = $schools->getPlanning($current_year, $current_month);
-        
-        return view('planning.index', compact('planning', 'courses', 'years', 'current_year', 'current_month'));
+        $monthly_gain = 0;
+        $monthly_hours = 0;
+        foreach($planning as $event){
+            $monthly_hours += $event->session_length;
+            $monthly_gain += $event->session_length * $event->rate;
+        }        
+        return view('planning.index', compact('planning', 'courses', 'years', 'current_year', 'current_month', 'monthly_gain', 'monthly_hours'));
     }
 
     public function insert(Request $request)

@@ -1,9 +1,7 @@
 <div class="calCell px-2 pt-1 bg-blue-200 flex-col justify-stretch">
-
     <div class="bg-white px-2 py-1 border border-blue-400 rounded-md mb-1 text-blue-400 text-center">
         {{$day}}
     </div>
-
     @foreach ($planning as $event)
         @php
             $begin_date = explode(" ", $event->begin)[0];
@@ -16,7 +14,7 @@
         <div class="text-gray-400 block bg-white px-2 py-1 border border-blue-400 rounded-md mb-1">
             <div class="flex flex-row items-center justify-between">
                 <div>
-                    {{$begin_time}}: {{$event->short_name}} ({{$event->group_short_name}})
+                    {{$begin_time}} ({{$event->session_length}}h): {{$event->short_name}} ({{$event->group_short_name}})
                 </div>
                 <div class="w-full md:w-auto flex flex-col space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0">
                     <a href="{{route('planning.edit',$event->id)}}">

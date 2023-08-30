@@ -18,7 +18,18 @@ class CourseCollection extends Collection
         
 
         return Course::whereIn('school_id', $list)
-        ->select(['plannings.id as id', 'begin', 'end', 'location', 'courses.name as course_name','courses.short_name as short_name', 'groups.name as group_name', 'groups.short_name as group_short_name'])
+        ->select([
+            'plannings.id as id',
+            'begin',
+            'end',
+            'location',
+            'courses.name as course_name',
+            'courses.short_name as short_name',
+            'rate',
+            'session_length',
+            'groups.name as group_name',
+            'groups.short_name as group_short_name'
+            ])
         ->leftJoin('groups', 'courses.id', '=', 'groups.course_id')
         ->rightJoin('plannings', 'plannings.group_id', '=', 'groups.id')
         ->where(['year' => $year])
