@@ -1,4 +1,5 @@
-# plarany
+# VRP
+## Vacataire Resource Planning
 Project planification and budgeting
 <a name="readme-top"></a>
 
@@ -20,13 +21,13 @@ Project planification and budgeting
 <br />
 <div align="center">
   <a href="https://github.com/othneildrew/Best-README-Template">
-    <img src="images/logo.png" alt="Logo" width="80" height="80">
+    <img src="public/logo-XDM.png" alt="Logo" width="80" height="80">
   </a>
 
-  <h3 align="center">PLARANY</h3>
+  <h3 align="center">VRP</h3>
 
   <p align="center">
-    Project planification and budgeting
+  VRP started as a personal side projet in order to help me plan and budget my different projects. Gradually, this is evolving into an ERP System for freelancers and vacataires.
     <br />
     <a href="https://github.com/othneildrew/Best-README-Template"><strong>Explore the docs »</strong></a>
     <br />
