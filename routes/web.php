@@ -49,12 +49,11 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/planning', [PlanningController::class, 'index'])->name('planning.index');
     Route::post('/planning/period', [PlanningController::class, 'index'])->name('planning.period');
-    Route::post('/planning/billing', [PlanningController::class, 'index'])->name('planning.billing');
+    Route::post('/planning/billing', [PlanningController::class, 'billing'])->name('planning.billing');
     Route::get('/planning/{id}', [PlanningController::class, 'edit'])->name('planning.edit');
     Route::put('/planning/{id}', [PlanningController::class, 'update'])->name('planning.update');
     Route::delete('/planning/{id}', [PlanningController::class, 'destroy'])->name('planning.delete');
-    Route::get('/planning/{group_id}/create', [PlanningController::class, 'create'])->name('planning.create');
-    Route::post('/planning/{day}', [PlanningController::class, 'insert'])->name('planning.insert');
+    Route::post('/planning/{day}', [PlanningController::class, 'create'])->name('planning.create');
     Route::post('/planning', [PlanningController::class, 'store'])->name('planning.store');
     
     Route::resource('/program', ProgramController::class);

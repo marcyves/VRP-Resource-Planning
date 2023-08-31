@@ -44,7 +44,7 @@
         @endphp
     @endforeach
 
-    <form action="{{ route('planning.insert', $day)}}" method="post" class="mb-4">
+    <form action="{{ route('planning.create', $day)}}" method="post" class="mb-4">
         @csrf
         <input type="hidden" name="day" value={{$day}}>
         <input type="hidden" name="month" value={{$month}}>

@@ -11,4 +11,12 @@ class Planning extends Model
 
     public $timestamps = false;
     public $fillable = ['begin', 'end', 'location', 'group_id'];
+
+    public function getSessionLength()
+    {
+        $group = Group::findOrFail($this->group_id);
+        $course = Course::findOrFail($group->course_id);
+        
+        return $course->session_length;
+    }
 }

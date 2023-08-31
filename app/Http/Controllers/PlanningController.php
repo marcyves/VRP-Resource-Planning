@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Course;
+use App\Models\Group;
 use App\Models\Planning;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -48,7 +49,6 @@ class PlanningController extends Controller
         // Collect Courses for future planning
         $schools = Auth::user()->schools()->get();
         $years = $schools->getYears();
-
         $courses = $schools->getCourses($current_year, $current_semester);
 
         // Collect Planning information for display
@@ -62,7 +62,32 @@ class PlanningController extends Controller
         return view('planning.index', compact('planning', 'courses', 'years', 'current_year', 'current_month', 'monthly_gain', 'monthly_hours'));
     }
 
-    public function insert(Request $request)
+    /**
+     * 
+     */
+    public function billing(Request $request)
+    {
+        $current_month = $request->month;
+        $current_year = $request->year;
+        $current_semester = "all";
+
+        $schools = Auth::user()->schools()->get();
+
+        // Collect Planning information for billing
+        $planning = $schools->getPlanning($current_year, $current_month);
+        $monthly_gain = 0;
+        $monthly_hours = 0;
+        foreach($planning as $event){
+            $monthly_hours += $event->session_length;
+            $monthly_gain += $event->session_length * $event->rate;
+        }        
+
+        return view('planning.billing',compact('planning', 'current_year', 'current_month', 'monthly_gain', 'monthly_hours'));
+    }
+    /**
+     * 
+     */
+    public function create(Request $request)
     {
         $day = $request->day;
         $month = $request->month;
@@ -76,13 +101,13 @@ class PlanningController extends Controller
         
         $session_length = $course->session_length;
 
-        return view('planning.insert', compact('date', 'groups', 'session_length'));
+        return view('planning.create', compact('date', 'groups', 'session_length'));
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create(String $group_id)
+    public function createbad(String $group_id)
     {
         return view('planning.create', compact('group_id'));
     }
@@ -135,16 +160,51 @@ class PlanningController extends Controller
      */
     public function edit(String $id)
     {
+
         $planning = Planning::findOrFail($id);
-        
-        return view('planning.edit', compact('planning'));    
+
+        $group = Group::findOrFail($planning->group_id);
+        $course = Course::findOrFail($group->course_id);
+        //TODO check groups are not yet fully booked
+        $groups = $course->getGroups();
+
+        return view('planning.edit', compact('planning', 'groups'));    
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Planning $planning)
+    public function update(Request $request, Int $id)
     {
+        try{
+            $planning = Planning::findOrFail($id);
+            $session_length = $planning->GetSessionLength();
+
+            $date = $request->date;
+            $hour = $request->hour;
+            $minutes = $request->minutes;
+    
+            $begin = date('Y-m-d H:i:s',strtotime("$date $hour:$minutes:0"));
+            //TODO session length is bugged
+            $end = date('Y-m-d H:i:s',strtotime("$date $hour:$minutes:0 +$session_length hours"));
+    
+            $planning->begin = $begin;
+            $planning->end = $end;
+            $planning->group_id = $request->group_id;
+
+            $planning->save();
+                        
+            return redirect(route('planning.index'))
+                ->with([
+                    'success' => "Session modifiée avec succès"]);
+        }
+        catch (\Exception $e) {
+            dd($e);
+            return redirect()->back()
+            ->with('error', "Erreur lors de la modification de la session<br>".$e->message);
+        }               
+
+
         return redirect(route('planning.index'));
     }
 
