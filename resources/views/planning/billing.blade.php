@@ -23,14 +23,20 @@
                 @if($current_course != $event->course_name)
                     @if($current_course != "")
                         </ul>
-                        <div class="ml-4 my-4">
-                            Total = {{number_format($sub_total,2)}} €
-                        </div>
-                    </div>  
+                        <div class="flex flex-row justify-between font-semibold text-gray-600 border border-gray-300 rounded-md mt-4 py-4 bg-blue-100">
+                            <div class="mx-4">
+                                Time worked = {{$group_time}} hours
+                            </div>
+                            <div class="mx-4">
+                                Total = {{number_format($sub_total,2)}} €
+                            </div>
+                        </div>  
+                        </div>  
                     @endif
                     @php
                         $current_course = $event->course_name;
                         $sub_total = 0;
+                        $group_time = 0;
                     @endphp
                     <div class="p-2 m-2 border border-gray-400 rounded-md">
                     <h2 class="font-bold text-gray-800">{{$current_course}}</h2>
@@ -42,13 +48,19 @@
                     @endphp
                     <h3 class="font-semibold text-gray-800 ml-4">{{$current_group}}</h3>
                 @endif
-                <li class="ml-8">{{$event->begin}}</li>
+                <li class="ml-8">{{$event->begin}} ({{number_format($event->session_length,1)}} h)</li>
                 @php
                     $sub_total += $event->session_length*$event->rate;
+                    $group_time += $event->session_length;
                 @endphp
             @endforeach  
-            <div class="ml-4 my-4">
-                Total = {{number_format($sub_total,2)}} €
+            <div class="flex flex-row justify-between font-semibold text-gray-600 border border-gray-300 rounded-md mt-4 py-4 bg-blue-100">
+                <div class="mx-4">
+                    Time worked = {{$group_time}} hours
+                </div>
+                <div class="mx-4">
+                    Total = {{number_format($sub_total,2)}} €
+                </div>
             </div>  
         </div>
         <div class="flex flex-row justify-between font-semibold text-gray-600 border border-gray-300 rounded-md mt-4 py-4 bg-gray-200">
