@@ -35,9 +35,9 @@ class CourseCollection extends Collection
         ->where(['year' => $year])
         ->where('begin', '>', $start_date)
         ->where('end', '<', $end_date)
-        ->orderBy('begin', 'asc')
         ->orderBy('course_name', 'asc')
         ->orderBy('group_name', 'asc')
+        ->orderBy('begin', 'asc')
         ->get();
 
     }

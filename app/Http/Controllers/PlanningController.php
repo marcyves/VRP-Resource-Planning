@@ -85,7 +85,7 @@ class PlanningController extends Controller
         return view('planning.billing',compact('planning', 'current_year', 'current_month', 'monthly_gain', 'monthly_hours'));
     }
     /**
-     * 
+     * Show the form for creating a new resource.
      */
     public function create(Request $request)
     {
@@ -102,14 +102,6 @@ class PlanningController extends Controller
         $session_length = $course->session_length;
 
         return view('planning.create', compact('date', 'groups', 'session_length'));
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function createbad(String $group_id)
-    {
-        return view('planning.create', compact('group_id'));
     }
 
     /**
