@@ -92,7 +92,7 @@
                 Monthly gain = {{number_format($monthly_gain,2)}} €
             </div>
             <div class="mx-4">
-                Average Rate = {{number_format($monthly_gain/$monthly_hours,2)}} €
+                Average Rate = @if ($monthly_hours == 0) 0 @else {{number_format($monthly_gain/$monthly_hours,2)}} @endif€
             </div>
             <div class="justify-end">
                 <form action="{{route('planning.billing')}}" method="post">
