@@ -20,7 +20,7 @@ Project planification and budgeting
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <a href="https://github.com/othneildrew/Best-README-Template">
+  <a href="https://github.com/marcyves/VRP">
     <img src="public/logo-XDM.png" alt="Logo" width="80" height="80">
   </a>
 
@@ -29,14 +29,14 @@ Project planification and budgeting
   <p align="center">
   VRP started as a personal side projet in order to help me plan and budget my different projects. Gradually, this is evolving into an ERP System for freelancers and vacataires.
     <br />
-    <a href="https://github.com/othneildrew/Best-README-Template"><strong>Explore the docs »</strong></a>
+    <a href="https://github.com/marcyves/VRP"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="https://github.com/othneildrew/Best-README-Template">View Demo</a>
+    <a href="https://github.com/marcyves/VRP">View Demo</a>
     ·
-    <a href="https://github.com/othneildrew/Best-README-Template/issues">Report Bug</a>
+    <a href="https://github.com/marcyves/VRP/issues">Report Bug</a>
     ·
-    <a href="https://github.com/othneildrew/Best-README-Template/issues">Request Feature</a>
+    <a href="https://github.com/marcyves/VRP/issues">Request Feature</a>
   </p>
 </div>
 
@@ -107,7 +107,7 @@ _You need `composer`` to install the project and then follow the usual steps for
 
 1. Clone the repo
    ```sh
-   git clone https://github.com/marcyves/plarany.git
+   git clone https://github.com/marcyves/VRP.git
    ```
 2. Install Laravel modules
   ```sh
@@ -188,7 +188,7 @@ Distributed under the GPL 3 License. See `LICENSE.txt` for more information.
 
 Marc Augier - [@marcyves](https://twitter.com/marcyves)
 
-Project Link: [https://github.com/marcyves/plarany](https://github.com/marcyves/plarany)
+Project Link: [https://github.com/users/marcyves/projects/3](https://github.com/users/marcyves/projects/3)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -199,7 +199,7 @@ Project Link: [https://github.com/marcyves/plarany](https://github.com/marcyves/
 
 Resources I find helpful and would like to give credit to.
 
-* [Best README Template](https://github.com/othneildrew/Best-README-Template)
+* [Best README Template](https://github.com/marcyves/VRP)
 * [Choose an Open Source License](https://choosealicense.com)
 * [GitHub Emoji Cheat Sheet](https://www.webpagefx.com/tools/emoji-cheat-sheet)
 * [Malven's Flexbox Cheatsheet](https://flexbox.malven.co/)
@@ -229,15 +229,15 @@ Réalisé par [@marcyves](https://github.com/marcyves)
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 [contributors-shield]: https://img.shields.io/github/contributors/othneildrew/Best-README-Template.svg?style=for-the-badge
-[contributors-url]: https://github.com/othneildrew/Best-README-Template/graphs/contributors
+[contributors-url]: https://github.com/marcyves/VRP/graphs/contributors
 [forks-shield]: https://img.shields.io/github/forks/othneildrew/Best-README-Template.svg?style=for-the-badge
-[forks-url]: https://github.com/othneildrew/Best-README-Template/network/members
+[forks-url]: https://github.com/marcyves/VRP/network/members
 [stars-shield]: https://img.shields.io/github/stars/othneildrew/Best-README-Template.svg?style=for-the-badge
-[stars-url]: https://github.com/othneildrew/Best-README-Template/stargazers
+[stars-url]: https://github.com/marcyves/VRP/stargazers
 [issues-shield]: https://img.shields.io/github/issues/othneildrew/Best-README-Template.svg?style=for-the-badge
-[issues-url]: https://github.com/othneildrew/Best-README-Template/issues
+[issues-url]: https://github.com/marcyves/VRP/issues
 [license-shield]: https://img.shields.io/github/license/othneildrew/Best-README-Template.svg?style=for-the-badge
-[license-url]: https://github.com/othneildrew/Best-README-Template/blob/master/LICENSE.txt
+[license-url]: https://github.com/marcyves/VRP/blob/master/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/marcaugier
 [planary-screenshot]: https://raw.githubusercontent.com/marcyves/plarany/main/_doc/screencapture.png
