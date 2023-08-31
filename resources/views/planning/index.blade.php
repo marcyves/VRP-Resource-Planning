@@ -28,9 +28,8 @@
             <form class="inline-flex" id="calYear" action="{{route('planning.period')}}" method="post">
                 @csrf
                 <select id="current_year" name="current_year" class="rounded-md mt-4 py-0 pl-2 pr-8" onchange="this.form.submit()">
-                    <option value="all" @if($current_year == "all")selected @endif>All</option>
                     @foreach ($years as $year)
-                    <option value="{{$year->year}}" @if($current_year == $year->year)selected @endif>{{$year->year}}</option>
+                        <option value="{{$year->year}}" @if($current_year == $year->year)selected @endif>{{$year->year}}</option>
                     @endforeach                
                 </select>
             </form>
