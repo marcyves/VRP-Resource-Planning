@@ -2,6 +2,19 @@
     <div class="bg-white px-2 py-1 border border-blue-400 rounded-md mb-1 text-blue-400 text-center">
         {{$day}}
     </div>
+
+    <form action="{{ route('planning.create', $day)}}" method="post">
+        @csrf
+        <input type="hidden" name="day" value={{$day}}>
+        <input type="hidden" name="month" value={{$month}}>
+        <input type="hidden" name="year" value={{$year}}>
+        <select name="course" class="text-sm rounded-md mt-2 py-0 pl-2 pr-8 overflow-clip w-full mb-2"  onchange="this.form.submit()">
+            @foreach ($courses as $course)
+            <option value="{{$course->id}}">{{$course->name}}</option>                            
+            @endforeach
+        </select>
+    </form>
+
     @foreach ($planning as $event)
         @php
             $begin_date = explode(" ", $event->begin)[0];
@@ -43,17 +56,5 @@
             }
         @endphp
     @endforeach
-
-    <form action="{{ route('planning.create', $day)}}" method="post" class="mb-4">
-        @csrf
-        <input type="hidden" name="day" value={{$day}}>
-        <input type="hidden" name="month" value={{$month}}>
-        <input type="hidden" name="year" value={{$year}}>
-        <select name="course" class="rounded-md mt-4 py-0 pl-2 pr-8 overflow-clip w-28 mb-2"  onchange="this.form.submit()">
-            @foreach ($courses as $course)
-            <option value="{{$course->id}}">{{$course->name}}</option>                            
-            @endforeach
-        </select>
-    </form>
 
 </div>
