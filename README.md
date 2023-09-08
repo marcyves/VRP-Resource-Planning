@@ -1,5 +1,5 @@
 # VRP
-## Vacataire Resource Planning
+## VRP Resource Planning
 Project planification and budgeting
 <a name="readme-top"></a>
 
