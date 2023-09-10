@@ -18,6 +18,9 @@
                     <x-nav-link :href="route('planning.index')" :active="request()->routeIs('planning.index')">
                         {{ __('Planning') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('school.index')" :active="request()->routeIs('school.index')">
+                        {{ __('Schools') }}
+                    </x-nav-link>
                     <x-nav-link :href="route('program.index')" :active="request()->routeIs('program.index')">
                         {{ __('Programs') }}
                     </x-nav-link>

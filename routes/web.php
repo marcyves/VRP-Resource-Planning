@@ -24,15 +24,16 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', function () {
-    return redirect(route('school.index'));
+    return redirect(route('school.dashboard'));
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/school/list', [SchoolController::class, 'list'])->name('school.list');
     Route::get('/school/{school_id}/add', [SchoolController::class, 'add'])->name('school.add');
     Route::post('/school/semester', [SchoolController::class, 'index'])->name('school.semester');
-    Route::post('/school/year', [SchoolController::class, 'index'])->name('school.year');
-    Route::get('/school/year', [SchoolController::class, 'index'])->name('school.default_year');
+    Route::post('/school/year', [SchoolController::class, 'dashboard'])->name('school.year');
+    Route::get('/school/year', [SchoolController::class, 'dashboard'])->name('school.default_year');
+    Route::get('/school/dashboard', [SchoolController::class, 'dashboard'])->name('school.dashboard');
     Route::resource('/school', SchoolController::class);
 
     Route::get('/course/{school_id}/create', [CourseController::class, 'create'])->name('course.create');

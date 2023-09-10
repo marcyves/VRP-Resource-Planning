@@ -13,6 +13,13 @@ class SchoolController extends Controller
      */
     public function index(Request $request)
     {
+
+    }
+    /**
+     * Display a listing of the resource.
+     */
+    public function dashboard(Request $request)
+    {
       
         if(isset($request->current_year)){
             $current_year = $request->current_year;
