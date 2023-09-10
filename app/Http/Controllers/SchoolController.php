@@ -13,6 +13,9 @@ class SchoolController extends Controller
      */
     public function index(Request $request)
     {
+        $schools = Auth::user()->schools()->get();
+
+        return view('school.index', compact('schools'));
 
     }
     /**
