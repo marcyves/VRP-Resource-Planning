@@ -94,8 +94,8 @@ class CourseController extends Controller
         $validated = $request->validate([
             'name' => 'required|max:80',
             'short_name' => 'required|min:3',
-            'sessions' => 'required|min:0',
-            'session_length' => 'required|min:0',
+            'sessions' => 'required|numeric|min:0',
+            'session_length' => 'required|numeric|min:0',
             'year' => 'required',
             'semester' => 'required',
             'rate' => 'required|min:0'
