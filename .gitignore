@@ -50,3 +50,4 @@ _doc/planary-20230802.sql
 .env.planetscale
 .env.local
 .env.planary
+/_doc
