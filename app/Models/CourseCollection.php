@@ -41,7 +41,7 @@ class CourseCollection extends Collection
         ->get();
 
     }
-    public function getCourses(String $year, String $semester)
+    public function getCourses(String $year = 'all', String $semester = 'all')
     {
         $list = $this->map(function(School $school){
             return $school->id;
