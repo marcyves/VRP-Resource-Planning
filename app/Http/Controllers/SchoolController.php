@@ -104,10 +104,15 @@ class SchoolController extends Controller
      */
     public function show(String $school_id)
     {
-        $school = School::findOrFail($school_id);
-        $courses = $school->courses();
+//        $school = School::findOrFail($school_id);
+//        $courses = $school->courses()->get();
+        $school = Auth::user()->schools()->where('id', '=', $school_id)->get();
+        $courses = $school->getCourses();
 
-        return view('school.show', compact('school', 'courses'));
+        $school_name = $school[0]->name;
+        $school_id = $school[0]->id;
+
+        return view('school.show', compact('school_id', 'school_name', 'courses'));
     }
 
     /**
