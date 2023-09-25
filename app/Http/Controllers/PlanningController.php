@@ -172,7 +172,12 @@ class PlanningController extends Controller
             $planning = Planning::findOrFail($id);
             $session_length = $planning->GetSessionLength();
 
-            $date = $request->date;
+            $day = $request->day;
+            $month = $request->month;
+            $year = $request->year;
+    
+            $date = "$year-$month-$day";
+
             $hour = $request->hour;
             $minutes = $request->minutes;
     

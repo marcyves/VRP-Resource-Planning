@@ -18,22 +18,51 @@
                     >{{$group->name}}</option>
                 @endforeach
             </select>
+            @php
+            $begin_date = explode(" ", $planning->begin)[0];
+            $begin_day = explode("-", $begin_date)[2];
+            $begin_month = explode("-", $begin_date)[1];
+            $begin_year = explode("-", $begin_date)[0];
+
+            $begin_time = explode(" ", $planning->begin)[1];
+            $begin_hour = explode(":", $begin_time)[0];
+            $begin_minutes = explode(":", $begin_time)[1];
+            @endphp
+            <br>Day: 
+            <select name="day" class="rounded-md mt-4 py-0 pl-2 pr-8 overflow-clip w-15 mb-2">
+                @for($d=1;$d<32;$d++)
+                <option value="{{$d}}"
+                @if($d==$begin_day) selected @endif>{{$d}}</option>
+                @endfor
+            </select>
+
+            <select name="month" class="rounded-md mt-4 py-0 pl-2 pr-8 overflow-clip w-15 mb-2">
+                @for($m=1;$m<13;$m++)
+                <option value="{{$m}}"
+                @if($m==$begin_month) selected @endif>{{$m}}</option>
+                @endfor
+            </select>
+
+            <br>Time: 
             <select name="hour" class="rounded-md py-0 pl-2 pr-8 w-14">
                 @php
                     for($h=8;$h<20;$h++)
                     {
                 @endphp
-                        <option value="{{$h}}">{{$h}}</option>
+                        <option value="{{$h}}"
+                        @if($h==$begin_hour) selected @endif>{{$h}}</option>
                 @php
                     }
                 @endphp
             </select>
+            <input type="hidden" name="year" value="{{$begin_year}}">
             <select name="minutes" class="rounded-md py-0 pl-2 pr-8 w-14">
                 @php
                     for($m=0;$m<60;$m+=5)
                     {
                 @endphp
-                        <option value="{{$m}}">{{$m}}</option>
+                        <option value="{{$m}}"
+                        @if($m==$begin_minutes) selected @endif>{{$m}}</option>
                 @php
                     }
                 @endphp
