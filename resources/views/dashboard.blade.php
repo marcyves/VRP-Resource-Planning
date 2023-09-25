@@ -132,6 +132,7 @@
                                 </thead>
                                 <tbody>
             @endif
+            <tr>
             <td class="px-2 py-3 font-medium text-gray-900 whitespace-nowrap">{{$course->program_name}}</td>
             <th scope="row" class="px-2 py-3 font-medium text-gray-900 whitespace-nowrap">
                 <form action="{{route('course.show', $course->id)}}" method="get">
