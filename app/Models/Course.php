@@ -43,4 +43,14 @@ class Course extends Model
 
     }
 
+    public static function getCoursesForSchool(String $school_id)
+    {
+        return Course::select('courses.*')
+        ->join('schools', 'courses.school_id', '=', 'schools.id')
+        ->where('schools.id', '=', $school_id)
+        ->get()[0]
+        ;
+
+    }
+
 }

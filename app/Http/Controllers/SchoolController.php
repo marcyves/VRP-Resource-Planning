@@ -45,6 +45,8 @@ class SchoolController extends Controller
         }
 
         $schools = Auth::user()->schools()->get();
+        //TODO use $list instead of $courses
+        $list = $schools->listCourses();
         $courses = $schools->getCourses($current_year, $current_semester);
         $years = $schools->getYears();
 

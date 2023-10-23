@@ -19,6 +19,7 @@ class CourseCollection extends Collection
 
         return Course::whereIn('school_id', $list)
         ->select([
+            'schools.name as school_name',
             'plannings.id as id',
             'begin',
             'end',
@@ -32,15 +33,31 @@ class CourseCollection extends Collection
             ])
         ->leftJoin('groups', 'courses.id', '=', 'groups.course_id')
         ->rightJoin('plannings', 'plannings.group_id', '=', 'groups.id')
+        ->join('schools', 'schools.id', '=', 'school_id')
         ->where(['year' => $year])
         ->where('begin', '>', $start_date)
         ->where('end', '<', $end_date)
+        ->orderBy('school_name', 'asc')
         ->orderBy('course_name', 'asc')
         ->orderBy('group_name', 'asc')
         ->orderBy('begin', 'asc')
         ->get();
 
     }
+
+    public function listCourses()
+    {
+        $list = $this->map(function(School $school){
+            return [$school->id,
+                    $school->name,
+                    Course::getCoursesForSchool($school->id)];
+        });
+
+//        dd($list);
+
+        return $list;
+    }
+
     public function getCourses(String $year = 'all', String $semester = 'all')
     {
         $list = $this->map(function(School $school){
