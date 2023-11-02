@@ -101,7 +101,7 @@ class PlanningController extends Controller
         
         $session_length = $course->session_length;
 
-        return view('planning.create', compact('date', 'groups', 'session_length'));
+        return view('planning.create', compact('date', 'groups', 'session_length', 'course'));
     }
 
     /**
