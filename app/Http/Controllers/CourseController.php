@@ -72,8 +72,10 @@ class CourseController extends Controller
     {
         $course = Course::getCourseDetails($course_id);
         $groups = $course->getGroups();
+        $occurences = $groups->getGroupOccurences();
 
-        return view('course.show', compact('course', 'groups'));
+
+        return view('course.show', compact('course', 'groups', 'occurences'));
     }
 
     /**
