@@ -87,7 +87,7 @@
                 @endphp
                 <h3 class="font-semibold text-gray-800 ml-4">{{$current_group}}</h3>
             @endif
-            <li class="ml-8">{{$event->begin}} ({{number_format($event->session_length,1)}} h)</li>
+            <li class="ml-8">{{date_format(date_create($event->begin),'d/m/Y H:i')}}-{{date_format(date_create($event->end),'H:i')}} ({{number_format($event->session_length,1)}} h)</li>
             @php
                 $sub_total += $event->session_length*$event->rate;
                 $school_total += $event->session_length*$event->rate;
