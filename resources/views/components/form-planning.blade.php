@@ -9,6 +9,7 @@
         <input type="hidden" name="month" value={{$month}}>
         <input type="hidden" name="year" value={{$year}}>
         <select name="course" class="text-sm rounded-md mt-2 py-0 pl-2 pr-8 overflow-clip w-full mb-2"  onchange="this.form.submit()">
+            <option value="0">-->Select a course</option>
             @foreach ($courses as $course)
             <option value="{{$course->id}}">{{$course->name}}</option>                            
             @endforeach
