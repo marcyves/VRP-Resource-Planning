@@ -13,8 +13,9 @@ class GroupController extends Controller
     public function index()
     {
         $groups = Group::all()->sortBy('name');
+        $occurences = $groups->getGroupOccurences();
 
-        return view('group.index', compact('groups'));
+        return view('group.index', compact('groups', 'occurences'));
     }
 
     /**
