@@ -18,6 +18,8 @@
             $current_school = "";
             $current_course = "";
             $current_group = "";
+            $school_time = 0;
+            $school_total = 0;
         @endphp
         @foreach ($planning as $event)
             @if($current_school != $event->school_name)
@@ -30,12 +32,24 @@
                     <div class="mx-4">
                         Total = {{number_format($sub_total,2)}} €
                     </div>
-                </div>  
+                </div> 
                 @endif
 
                 @if($current_school != "")
                     </ul>
+                    <div class="flex flex-row justify-between font-semibold text-gray-600 border border-gray-300 rounded-md mt-2 py-2 bg-green-100">
+                        <div class="mx-4">
+                            Total Time worked = {{$school_time}} hours
+                        </div>
+                        <div class="mx-4">
+                            School Total = {{number_format($school_total,2)}} €
+                        </div>
                     </div>
+                    </div>
+                    @php
+                        $school_total = 0;
+                        $school_time = 0;
+                    @endphp 
                 @endif
                 <div class="p-2 m-2 border border-gray-400 rounded-md">
                 <h2 class="font-bold text-gray-800 bg-green-100 p-2 mb-2">{{$event->school_name}}</h2>
@@ -76,9 +90,12 @@
             <li class="ml-8">{{$event->begin}} ({{number_format($event->session_length,1)}} h)</li>
             @php
                 $sub_total += $event->session_length*$event->rate;
+                $school_total += $event->session_length*$event->rate;
                 $group_time += $event->session_length;
+                $school_time += $event->session_length;
             @endphp
-        @endforeach  
+        @endforeach
+
         <div class="flex flex-row justify-between font-semibold text-gray-600 border border-gray-300 rounded-md mt-2 py-2 bg-blue-100">
             <div class="mx-4">
                 Time worked = {{$group_time}} hours
@@ -87,6 +104,14 @@
                 Total = {{number_format($sub_total,2)}} €
             </div>
         </div>  
+        <div class="flex flex-row justify-between font-semibold text-gray-600 border border-gray-300 rounded-md mt-2 py-2 bg-green-100">
+            <div class="mx-4">
+                Total Time worked = {{$school_time}} hours
+            </div>
+            <div class="mx-4">
+                School Total = {{number_format($school_total,2)}} €
+            </div>
+        </div>
         </div>
         <div class="flex flex-row justify-between font-semibold text-gray-600 border border-gray-300 rounded-md mt-4 py-4 bg-gray-200">
             <div class="mx-4">
