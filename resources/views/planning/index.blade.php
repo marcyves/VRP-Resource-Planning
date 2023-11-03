@@ -60,10 +60,6 @@
                     </div>
                 @endfor
                 <!-- Afficher les jours du mois -->
-                @php
-                $i = $startDay;
-                @endphp
-        
                 @for ($i = $startDay; $i <= 7; $i++)
                         <x-form-planning :courses=$courses :planning=$planning i={{$i}} :day=$day month={{$current_month}} year={{$current_year}}/>
                         @php
