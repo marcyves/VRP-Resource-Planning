@@ -56,7 +56,8 @@
             <div class="calRow">
                 <!-- Afficher les jours avant le premier jour du mois -->
                 @for ($i = 1; $i < $startDay; $i++)
-                    <div class="calCell calBlank"></div>
+                    <div class="calCell px-2 pt-1 bg-gray-100 flex-col justify-stretch border border-black m-1">
+                    </div>
                 @endfor
                 <!-- Afficher les jours du mois -->
                 @php

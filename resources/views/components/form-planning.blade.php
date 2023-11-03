@@ -1,8 +1,8 @@
-<div class="calCell px-2 pt-1 bg-blue-200 flex-col justify-stretch">
-    <div class="bg-white px-2 py-1 border border-blue-400 rounded-md mb-1 text-blue-400 text-center">
+<div class="calCell px-2 pt-1 bg-gray-100 flex-col justify-stretch border border-black m-1">
+    <div class="bg-blue-100 mx-0 py-1 mb-1 text-blue-400 text-center">
         {{$day}}
     </div>
-
+    @if(Auth::user()->mode == "Edit")
     <form action="{{ route('planning.create', $day)}}" method="post">
         @csrf
         <input type="hidden" name="day" value={{$day}}>
@@ -15,21 +15,21 @@
             @endforeach
         </select>
     </form>
-
+    @endif
     @foreach ($planning as $event)
         @php
             $begin_date = explode(" ", $event->begin)[0];
-            $begin_time  = substr(explode(" ", $event->begin)[1], 0, 5);
             $begin_day = explode("-", $begin_date)[2];
-            $end_date = explode(" ", $event->end)[0];
-            $end_day = explode("-", $end_date)[2];
             if ((int)$begin_day == $day){
         @endphp
         <div class="text-gray-400 block bg-white px-2 py-1 border border-blue-400 rounded-md mb-1">
             <div class="flex flex-row items-center justify-between">
                 <div>
-                    {{$begin_time}} ({{$event->session_length}}h): {{$event->short_name}} ({{$event->group_short_name}})
+                    {{date_format(date_create($event->begin),'H:i')}}
+                    {{$event->short_name}} ({{$event->group_short_name}})<br>
+                    {{date_format(date_create($event->end),'H:i')}}
                 </div>
+                @if(Auth::user()->mode == "Edit")
                 <div class="w-full md:w-auto flex flex-col space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0">
                     <a href="{{route('planning.edit',$event->id)}}">
                         <button class="inline-flex items-center p-0.5 text-sm font-medium text-center text-green-500 hover:text-gray-800 rounded-lg focus:outline-none" type="submit">
@@ -50,6 +50,7 @@
                         </button>
                     </form>
                 </div>
+                @endif
             </div>
         </div>
             

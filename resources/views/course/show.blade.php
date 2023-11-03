@@ -30,9 +30,11 @@
 
     <x-nice-box color="white">
         <x-nice-title color="grey-200" title="Groups">
+        @if(Auth::user()->mode == "Edit")
             <a
             class="inline-flex items-center p-2 text-sm border border-gray-300 rounded-md font-semibold font-medium text-center text-gray-500 hover:text-gray-800 rounded-lg focus:outline-none" 
             href="{{route('group.new', $course->id)}}">New Group</a>
+        @endif
         </x-nice-title>
 
         @foreach ($groups as $group)
