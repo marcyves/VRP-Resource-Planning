@@ -59,4 +59,19 @@ class ProfileController extends Controller
 
         return Redirect::to('/');
     }
+    /**
+     * Switch Edit and Browse mode
+     */
+    public function switch(Request $request): RedirectResponse
+    {
+        if ($request->user()->mode == "Edit"){
+            $request->user()->mode = "Browse";
+        }else{
+            $request->user()->mode = "Edit";
+        }
+
+        $request->user()->save();
+
+        return Redirect::to('/');
+    }
 }

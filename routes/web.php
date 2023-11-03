@@ -60,6 +60,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('/program', ProgramController::class);
     
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::get('/profile/switch', [ProfileController::class, 'switch'])->name('profile.switch');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
