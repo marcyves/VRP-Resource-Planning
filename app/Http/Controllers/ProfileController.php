@@ -71,7 +71,7 @@ class ProfileController extends Controller
         }
 
         $request->user()->save();
-
-        return Redirect::to('/');
+        return Redirect::back();
+//        return Redirect::to('/');
     }
 }
