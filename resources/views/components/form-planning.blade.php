@@ -2,7 +2,7 @@
     <div class="bg-blue-100 mx-0 py-1 mb-1 text-blue-400 text-center">
         {{$day}}
     </div>
-    @if(Auth::user()->mode == "Edit")
+    @if(Auth::user()->getMode() == "Edit")
     <form action="{{ route('planning.create', $day)}}" method="post">
         @csrf
         <input type="hidden" name="day" value={{$day}}>
@@ -29,7 +29,7 @@
                     {{$event->short_name}} ({{$event->group_short_name}})<br>
                     {{date_format(date_create($event->end),'H:i')}}
                 </div>
-                @if(Auth::user()->mode == "Edit")
+                @if(Auth::user()->getMode() == "Edit")
                 <div class="w-full md:w-auto flex flex-col space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0">
                     <a href="{{route('planning.edit',$event->id)}}">
                         <button class="inline-flex items-center p-0.5 text-sm font-medium text-center text-green-500 hover:text-gray-800 rounded-lg focus:outline-none" type="submit">

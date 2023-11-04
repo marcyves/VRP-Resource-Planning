@@ -58,6 +58,20 @@ class User extends Authenticatable
         return Status::findOrFail($this->status_id)->name;
     }
 
+    public function getMode()
+    {
+        if($this->isAdmin() or $this->isEditor()){
+            return $this->mode;
+        }else{
+            return "Browse";
+        }
+    }
+
+    public function setMode($mode)
+    {
+        $this->mode = $mode;
+    }
+
     public function isAdmin()
     {
         if ($this->status_id == 1)

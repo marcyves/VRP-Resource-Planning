@@ -64,10 +64,10 @@ class ProfileController extends Controller
      */
     public function switch(Request $request): RedirectResponse
     {
-        if ($request->user()->mode == "Edit"){
-            $request->user()->mode = "Browse";
+        if ($request->user()->getMode() == "Edit"){
+            $request->user()->setMode("Browse");
         }else{
-            $request->user()->mode = "Edit";
+            $request->user()->setMode("Edit");
         }
 
         $request->user()->save();

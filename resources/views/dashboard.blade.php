@@ -24,7 +24,7 @@
             </select>
             </form>
         </div>
-        @if(Auth::user()->mode == "Edit")
+        @if(Auth::user()->getMode() == "Edit")
         <div class="w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0  md:items-center justify-end md:space-x-3">
             <a class="p-2 text-sm border border-gray-300 rounded-md font-semibold font-medium text-center text-gray-500 hover:text-gray-800 rounded-lg focus:outline-none" 
             href="{{route('school.create')}}">Create New School</a>
@@ -88,7 +88,7 @@
                                     </button>    
                                 </form>
                             </div>
-                            @if(Auth::user()->mode == "Edit")
+                            @if(Auth::user()->getMode() == "Edit")
                             <div class="w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0">
                                 <div class="flex items-center space-x-3 w-full md:w-auto">
                                     <form action="{{route('school.edit', $school_id)}}" method="get">
@@ -155,7 +155,7 @@
             <td class="px-2 py-3 text-center">{{$course->groups_count*$course->session_length*$course->sessions}}</td>
             <td class="px-2 py-3 text-right">@money($course->rate)</td>
             <td class="px-2 py-3 text-right">@money($course->rate*$course->session_length*$course->sessions*$course->groups_count)</td>
-            @if(Auth::user()->mode == "Edit")
+            @if(Auth::user()->getMode() == "Edit")
             <td class="px-2 py-3 flex items-center justify-end">
                 <form action="{{route('course.edit', $course->id)}}" method="get">
                     <button class="inline-flex items-center p-0.5 text-sm font-medium text-center text-green-500 hover:text-gray-800 rounded-lg focus:outline-none" type="submit">
