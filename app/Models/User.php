@@ -4,7 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -48,9 +48,9 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    public function schools(): HasMany
+    public function schools(): BelongsToMany
     {
-        return $this->HasMany(School::class);
+        return $this->belongsToMany(School::class);
     }
 
     public function getStatusName()
@@ -61,10 +61,13 @@ class User extends Authenticatable
     public function getMode()
     {
         if($this->isAdmin() or $this->isEditor()){
-            return $this->mode;
+            if($this->mode == ""){
+                $this->mode = "Edit";
+            }
         }else{
-            return "Browse";
+            $this->mode = "Browse";
         }
+        return $this->mode;
     }
 
     public function setMode($mode)
