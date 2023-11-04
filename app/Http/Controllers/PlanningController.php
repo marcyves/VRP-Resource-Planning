@@ -74,7 +74,7 @@ class PlanningController extends Controller
         $schools = Auth::user()->schools()->get();
 
         // Collect Planning information for billing
-        $planning = $schools->getPlanning($current_year, $current_month);
+        $planning = $schools->getBillingPlanning($current_year, $current_month);
         $monthly_gain = 0;
         $monthly_hours = 0;
         foreach($planning as $event){
