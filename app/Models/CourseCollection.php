@@ -14,7 +14,13 @@ class CourseCollection extends Collection
         });
        
         $start_date =  trim($year)."-".substr("0".trim($month),-2)."-0 00:00:00";
-        $end_date   =  trim($year)."-".substr("0".trim($month+1),-2)."-0 00:00:00";
+        $month++;
+        $end_year = $year;
+        if($month == "13"){
+            $month = "01";
+            $end_year++;
+        }
+        $end_date   =  trim($end_year)."-".substr("0".trim($month),-2)."-0 00:00:00";
         
 
         return Course::whereIn('school_id', $list)
