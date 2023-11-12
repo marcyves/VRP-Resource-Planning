@@ -5,6 +5,13 @@
         </h2>
     </x-slot>
 
+    @if($monthly_hours == 0)
+    <x-nice-box color="white">
+    <div class="flex flex-row font-semibold text-gray-600 border border-gray-300 rounded-md mt-4 p-4 bg-red-100">
+        No hours logged this month
+    </div>
+    </x-nice-box>
+    @else
     <x-nice-box color="white">
         <div class="flex flex-row font-semibold text-gray-600 border border-gray-300 rounded-md mt-4 py-4 bg-gray-200">
             <div class="mx-4">
@@ -20,6 +27,8 @@
             $current_group = "";
             $school_time = 0;
             $school_total = 0;
+            $group_time = 0;
+            $sub_total = 0;
         @endphp
         @foreach ($planning as $event)
             @if($current_school != $event->school_name)
@@ -125,4 +134,5 @@
             </div>
         </div>
     </x-nice-box>
+    @endif
 </x-app-layout>
