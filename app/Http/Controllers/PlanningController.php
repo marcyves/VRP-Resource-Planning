@@ -119,7 +119,9 @@ class PlanningController extends Controller
 
         $begin = date('Y-m-d H:i:s',strtotime("$date $hour:$minutes:0"));
         //TODO session length is bugged
-        $end = date('Y-m-d H:i:s',strtotime("$date $hour:$minutes:0 +$session_length hours"));
+        $add_hours = intval($session_length);
+        $add_minutes = ($session_length - $add_hours)*60;
+        $end = date('Y-m-d H:i:s',strtotime("$date $hour:$minutes:0 +$add_hours hours +$add_minutes minutes"));
 
         try{
             Planning::create([
@@ -180,10 +182,13 @@ class PlanningController extends Controller
 
             $hour = $request->hour;
             $minutes = $request->minutes;
-    
+
+            $end_hour = $request->end_hour;
+            $end_minutes = $request->end_minutes;
+
             $begin = date('Y-m-d H:i:s',strtotime("$date $hour:$minutes:0"));
             //TODO session length is bugged
-            $end = date('Y-m-d H:i:s',strtotime("$date $hour:$minutes:0 +$session_length hours"));
+            $end = date('Y-m-d H:i:s',strtotime("$date $end_hour:$end_minutes:0"));
     
             $planning->begin = $begin;
             $planning->end = $end;
