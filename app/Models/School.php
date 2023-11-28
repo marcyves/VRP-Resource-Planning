@@ -42,4 +42,9 @@ class School extends Model
         return new CourseCollection($models);
     }
 
+    public function getDocuments(String $year = 'all')
+    {
+        return Document::select()->where('school_id', '=', $this->id)->get();
+
+    }
 }

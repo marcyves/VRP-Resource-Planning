@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CourseController;
+use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\PlanningController;
 use App\Http\Controllers\ProfileController;
@@ -30,6 +31,7 @@ Route::get('/dashboard', function () {
 Route::middleware('auth')->group(function () {
     Route::get('/school/list', [SchoolController::class, 'list'])->name('school.list');
     Route::get('/school/{school_id}/add', [SchoolController::class, 'add'])->name('school.add');
+    Route::post('/school/{school_id}/document', [DocumentController::class, 'store'])->name('document.store');
     Route::post('/school/semester', [SchoolController::class, 'index'])->name('school.semester');
     Route::post('/school/year', [SchoolController::class, 'dashboard'])->name('school.year');
     Route::get('/school/year', [SchoolController::class, 'dashboard'])->name('school.default_year');
@@ -58,6 +60,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/planning', [PlanningController::class, 'store'])->name('planning.store');
     
     Route::resource('/program', ProgramController::class);
+    Route::resource('/documents', DocumentController::class);
     
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::get('/profile/switch', [ProfileController::class, 'switch'])->name('profile.switch');

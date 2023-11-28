@@ -113,8 +113,9 @@ class SchoolController extends Controller
 
         $school_name = $school[0]->name;
         $school_id = $school[0]->id;
+        $documents = $school[0]->getDocuments();
 
-        return view('school.show', compact('school_id', 'school_name', 'courses'));
+        return view('school.show', compact('school_id', 'school_name', 'courses', 'documents'));
     }
 
     /**
@@ -162,4 +163,5 @@ class SchoolController extends Controller
         
         return redirect(route('dashboard'));
     }
+
 }
