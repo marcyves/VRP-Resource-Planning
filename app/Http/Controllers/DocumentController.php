@@ -44,10 +44,14 @@ class DocumentController extends Controller
 
     public function destroy(Document $document)
     {
-        Storage::delete($this->directory.$document->file_name);
+        Storage::delete("public/".$this->directory.$document->file_name);
         $document->delete();
 
         return redirect()->back()->with('success', 'Document deleted successfully!');
     }
 
+    public function delete(Document $document)
+    {
+        return view('document.delete', compact('document'));
+    }
 }
