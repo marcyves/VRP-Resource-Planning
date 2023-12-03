@@ -78,7 +78,10 @@ class PlanningController extends Controller
         $monthly_gain = 0;
         $monthly_hours = 0;
         foreach($planning as $event){
-            $monthly_hours += $event->session_length;
+            $end   = strtotime($event->end);
+            $begin = strtotime($event->begin);
+//            $monthly_hours += $event->session_length;
+            $monthly_hours += intval(($end - $begin)/3600);
             $monthly_gain += $event->session_length * $event->rate;
         }        
 
@@ -154,7 +157,6 @@ class PlanningController extends Controller
      */
     public function edit(String $id)
     {
-
         $planning = Planning::findOrFail($id);
 
         $group = Group::findOrFail($planning->group_id);
@@ -195,7 +197,7 @@ class PlanningController extends Controller
             $planning->group_id = $request->group_id;
 
             $planning->save();
-                        
+
             return redirect(route('planning.index'))
                 ->with([
                     'success' => "Session modifiée avec succès"]);

@@ -96,12 +96,32 @@
                 @endphp
                 <h3 class="font-semibold text-gray-800 ml-4">{{$current_group}}</h3>
             @endif
-            <li class="ml-8">{{date_format(date_create($event->begin),'d/m/Y H:i')}}-{{date_format(date_create($event->end),'H:i')}} ({{number_format($event->session_length,1)}} h)</li>
             @php
-                $sub_total += $event->session_length*$event->rate;
-                $school_total += $event->session_length*$event->rate;
-                $group_time += $event->session_length;
-                $school_time += $event->session_length;
+                $end   = strtotime($event->end);
+                $begin = strtotime($event->begin);
+                $duration = intval(($end - $begin)/60)/60;
+            @endphp
+            @if(Auth::user()->getMode() == "Edit")
+            <a class="text-blue-600" href="{{route('planning.edit',$event->id, 'billing')}}">
+            @endif
+            <li class="ml-8">{{date_format(date_create($event->begin),'d/m/Y H:i')}}-{{date_format(date_create($event->end),'H:i')}} 
+            <span class="  
+                @if ($duration!=$event->session_length)
+                text-red-400
+                @else
+                text-green-400
+                @endif
+                ">
+                ({{number_format($duration,1)}} h)</span>
+            </li>
+            @if(Auth::user()->getMode() == "Edit")
+            </a>
+            @endif
+            @php
+                $sub_total += $duration*$event->rate;
+                $school_total += $duration*$event->rate;
+                $group_time += $duration;
+                $school_time += $duration;
             @endphp
         @endforeach
 
