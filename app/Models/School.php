@@ -31,6 +31,12 @@ class School extends Model
         return $this->HasManyThrough(Group::class, Course::class);
     }
 
+    public function countCourses()
+    {
+        return Course::where('school_id', $this->id)
+            ->count();
+    }
+
     public function getCourses()
     {
         return Course::where('school_id', $this->id)

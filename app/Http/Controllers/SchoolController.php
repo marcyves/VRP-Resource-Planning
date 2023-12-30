@@ -159,12 +159,18 @@ class SchoolController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(String $school_id)
+    public function destroy(School $school)
     {
-        $school = School::findOrFail($school_id);
+        if ($school->countCourses() > 0){
+            return redirect()->back()
+            ->with('error', "On ne peut pas effacer une école qui a des cours enregistrés");
+        }
+
         $school->delete();
         
-        return redirect(route('dashboard'));
+        return redirect(route('dashboard'))
+            ->with([
+            'success' => "Ecole supprimée avec succès"]);;
     }
 
 }
