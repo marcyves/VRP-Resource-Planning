@@ -45,7 +45,6 @@ class SchoolController extends Controller
         }
 
         $schools = Auth::user()->getSchools();
-//        $courses = $schools->getCourses($current_year, $current_semester);
         //TODO use $list instead of $courses
         // $list = $schools->listCourses();
         $courses = Auth::user()->getCourses($current_year, $current_semester);
@@ -107,10 +106,6 @@ class SchoolController extends Controller
      */
     public function show(School $school)
     {
-//        $school = School::findOrFail($school_id);
-//        $courses = $school->courses()->get();
-//        $school = Auth::user()->schools()->where('id', '=', $school->id)->get();
-//        dd($school);
 
         $courses = $school->getCourses();
 
