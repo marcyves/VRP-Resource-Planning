@@ -45,9 +45,10 @@ class SchoolController extends Controller
         }
 
         $schools = Auth::user()->schools()->get();
+//        $courses = $schools->getCourses($current_year, $current_semester);
         //TODO use $list instead of $courses
-        $list = $schools->listCourses();
-        $courses = $schools->getCourses($current_year, $current_semester);
+        // $list = $schools->listCourses();
+        $courses = Auth::user()->getCourses($current_year, $current_semester);
         $years = $schools->getYears();
 
         return view('dashboard', compact('courses', 'current_year', 'current_semester','years'));
