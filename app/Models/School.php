@@ -14,7 +14,7 @@ class School extends Model
     use HasFactory;
 
     public $timestamps = false;
-    public $fillable = ['name', 'user_id'];
+    public $fillable = ['name', 'company_id'];
 
     public function users(): BelongsToMany
     {
@@ -31,6 +31,19 @@ class School extends Model
         return $this->HasManyThrough(Group::class, Course::class);
     }
 
+    public function getCourses()
+    {
+        return Course::where('school_id', $this->id)
+            ->select(['courses.*', 'schools.name as school_name', 'programs.name as program_name'])
+            ->leftJoin('programs', 'courses.program_id', '=', 'programs.id')
+            ->leftJoin('schools', 'courses.school_id', '=', 'schools.id')
+            ->withCount('groups')
+            ->orderBy('year', 'asc')
+            ->orderBy('semester', 'asc')
+            ->orderBy('school_name', 'asc')
+            ->orderBy('program_name', 'asc')
+            ->get();
+    }
      /**
      * Create a new Eloquent Collection instance.
      *

@@ -13,7 +13,7 @@ class SchoolController extends Controller
      */
     public function index(Request $request)
     {
-        $schools = Auth::user()->schools()->get();
+        $schools = Auth::user()->getSchools();
 
         return view('school.index', compact('schools'));
 
@@ -44,7 +44,7 @@ class SchoolController extends Controller
             }
         }
 
-        $schools = Auth::user()->schools()->get();
+        $schools = Auth::user()->getSchools();
 //        $courses = $schools->getCourses($current_year, $current_semester);
         //TODO use $list instead of $courses
         // $list = $schools->listCourses();
@@ -56,7 +56,7 @@ class SchoolController extends Controller
 
     public function list()
     {
-        $schools = Auth::user()->schools()->get();
+        $schools = Auth::user()->getSchools();
         $schools = $schools->getNoCourse();
 
         return view('school.list', compact('schools'));
@@ -86,14 +86,14 @@ class SchoolController extends Controller
         ]);
         
         try{
-            $user_id = Auth::user()->id;
+            $company_id = Auth::user()->company_id;
             School::create([
                     'name' => $request->name,
-                    'user_id' => $user_id
+                    'company_id' => $company_id
                 ]);
             return redirect(route('school.list'))
                 ->with([
-                    'success' => "Ecole enregistré avec succès"]);
+                    'success' => "Ecole enregistrée avec succès"]);
         }
         catch (\Exception $e) {
             dd($e);
@@ -105,16 +105,18 @@ class SchoolController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(String $school_id)
+    public function show(School $school)
     {
 //        $school = School::findOrFail($school_id);
 //        $courses = $school->courses()->get();
-        $school = Auth::user()->schools()->where('id', '=', $school_id)->get();
+//        $school = Auth::user()->schools()->where('id', '=', $school->id)->get();
+//        dd($school);
+
         $courses = $school->getCourses();
 
-        $school_name = $school[0]->name;
-        $school_id = $school[0]->id;
-        $documents = $school[0]->getDocuments();
+        $school_name = $school->name;
+        $school_id = $school->id;
+        $documents = $school->getDocuments();
 
         return view('school.show', compact('school_id', 'school_name', 'courses', 'documents'));
     }

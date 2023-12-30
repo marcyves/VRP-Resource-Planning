@@ -54,6 +54,13 @@ class User extends Authenticatable
         return $this->belongsToMany(School::class);
     }
 
+    public function getSchools()
+    {
+        $company_id = $this->company_id;
+
+        return School::select(['schools.*'])->where('schools.company_id', '=', $company_id)->get();
+    }
+
     public function getCourses($current_year, $current_semester)
     {
         $company_id = $this->company_id;
