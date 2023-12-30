@@ -25,6 +25,7 @@ class User extends Authenticatable
         'email',
         'password',
         'status_id',
+        'company_id',
         'photo'
     ];
 
@@ -52,6 +53,20 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(School::class);
     }
+
+    public function getCourses($current_year, $current_semester)
+    {
+        $company_id = $this->company_id;
+
+        $schools = School::select(['schools.*'])->where('schools.company_id', '=', $company_id)->get();
+        return $schools->getCourses($current_year, $current_semester);;
+    }
+
+    public function getCompany()
+    {
+        return Company::findOrFail($this->company_id)->name;
+    }
+
 
     public function getStatusName()
     {
