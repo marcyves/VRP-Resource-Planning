@@ -47,7 +47,7 @@ class PlanningController extends Controller
         }
 
         // Collect Courses for future planning
-        $schools = Auth::user()->schools()->get();
+        $schools = Auth::user()->getSchools();
         $years = $schools->getYears();
         $courses = $schools->getCourses($current_year, $current_semester);
 
