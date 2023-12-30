@@ -155,6 +155,13 @@ See the [open issues](https://github.com/marcyves/plarany/issues) for a full lis
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
+## Online demo
+
+You can give a try to the project at 
+http://vrp.xdm-consulting.fr/
+
+email: user@xdm.fr
+password: topsecret
 
 <!-- CONTRIBUTING -->
 ## Contributing
