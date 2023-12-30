@@ -24,14 +24,6 @@
             </select>
             </form>
         </div>
-        @if(Auth::user()->getMode() == "Edit")
-        <div class="w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0  md:items-center justify-end md:space-x-3">
-            <a class="p-2 text-sm border border-gray-300 rounded-md font-semibold font-medium text-center text-gray-500 hover:text-gray-800 rounded-lg focus:outline-none" 
-            href="{{route('school.create')}}">Create New School</a>
-            <a class="p-2 text-sm border border-gray-300 rounded-md font-semibold font-medium text-center text-gray-500 hover:text-gray-800 rounded-lg focus:outline-none" 
-                href="{{route('school.list')}}">Add Existing School</a>
-        </div>
-        @endif
     </x-slot>
     <x-nice-box color="grey-400">
         @php
