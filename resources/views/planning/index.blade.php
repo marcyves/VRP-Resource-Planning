@@ -8,15 +8,7 @@
     <x-nice-box color="white">
 
         <!-- (A) PERIOD SELECTOR -->
-        @php
-            $months = array(); //generate all the month names according to the current locale
-            for ($n = 0, $t = (4) * 86400; $n < 12; $n++, $t+=86400*30) //January 5, 1970
-                $months[$n] = ucfirst(date('F', $t));
-
-            $weekdays = array(); //generate all the day names according to the current locale
-            for ($n = 0, $t = (4) * 86400; $n < 7; $n++, $t+=86400) //January 5, 1970 was a Monday
-                $weekdays[$n] = ucfirst(date('l', $t));
-    
+        @php    
             $firstDay = mktime(0, 0, 0, $current_month, 1, $current_year);
             $numDays = date('t', $firstDay);
             //$monthName = getMonthName($month);
@@ -48,7 +40,7 @@
           <div id="calWrap">
             <div class="calHead">
                 @foreach ($weekdays as $weekday)
-                <div class="calCell">{{$weekday}}</div>                    
+                <div class="calCell">{{__($weekday)}}</div>                    
                 @endforeach
             </div>
 

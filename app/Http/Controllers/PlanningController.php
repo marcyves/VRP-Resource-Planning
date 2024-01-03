@@ -7,6 +7,7 @@ use App\Models\Group;
 use App\Models\Planning;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
 class PlanningController extends Controller
 {
@@ -58,8 +59,19 @@ class PlanningController extends Controller
         foreach($planning as $event){
             $monthly_hours += $event->session_length;
             $monthly_gain += $event->session_length * $event->rate;
-        }        
-        return view('planning.index', compact('planning', 'courses', 'years', 'current_year', 'current_month', 'monthly_gain', 'monthly_hours'));
+        }     
+        //generate all the month names according to the current locale
+        $months = [];
+        for ($m=1; $m<=12; $m++) {
+            $months[] = ucfirst(Carbon::parse(mktime(0,0,0,$m, 1, date('Y')))->translatedFormat('F'));
+        }    
+        //generate all the day names according to the current locale
+        $weekdays = collect(Carbon::getDays())->map(fn($dayName) => ucfirst(Carbon::create($dayName)->dayName));
+        // Trick to have weeks starting at Monday
+        $weekdays->push($weekdays[0]);
+        $weekdays->shift();
+        
+        return view('planning.index', compact('planning', 'courses', 'years', 'months', 'weekdays','current_year', 'current_month', 'monthly_gain', 'monthly_hours'));
     }
 
     /**
