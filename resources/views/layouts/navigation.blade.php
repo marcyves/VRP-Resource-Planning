@@ -16,23 +16,23 @@
                         {{ Auth::user()->getCompany() }}
                     </x-nav-link>
                     <x-nav-link :href="route('planning.index')" :active="request()->routeIs('planning.index')">
-                        {{ __('Planning') }}
+                        {{ __('messages.planning') }}
                     </x-nav-link>
                     <x-nav-link :href="route('school.index')" :active="request()->routeIs('school.index')">
-                        {{ __('Schools') }}
+                        {{ __('messages.schools') }}
                     </x-nav-link>
                     <x-nav-link :href="route('program.index')" :active="request()->routeIs('program.index')">
-                        {{ __('Programs') }}
+                        {{ __('messages.programs') }}
                     </x-nav-link>
                     <x-nav-link :href="route('group.index')" :active="request()->routeIs('group.index')">
-                        {{ __('Groups') }}
+                        {{ __('messages.groups') }}
                     </x-nav-link>
                 </div>
             </div>
 
             <!-- Edit switch -->
             <x-nav-link :href="route('profile.switch')" :active="request()->routeIs('profile.switch')">
-                {{Auth::user()->getMode()}}
+                {{__(Auth::user()->getMode())}}
             </x-nav-link>
 
             <!-- Settings Dropdown -->

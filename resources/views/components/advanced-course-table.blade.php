@@ -33,7 +33,7 @@
                         </form>
                         <a
                         class="inline-flex items-center p-2 text-sm border border-gray-300 rounded-md font-semibold font-medium text-center text-gray-500 hover:text-gray-800 rounded-lg focus:outline-none" 
-                        href="{{route('course.create', $school_id)}}">Add Course</a>
+                        href="{{route('course.create', $school_id)}}">{{__('messages.add_course')}}</a>
                     </div>
                 </div>
                 @endif
@@ -42,17 +42,17 @@
                 <table class="w-full text-sm text-left text-gray-500">
                     <thead class="text-xs text-gray-700 uppercase bg-gray-50 text-center">
                         <tr>
-                            <th scope="col" class="px-2 py-3">Program</th>
-                            <th scope="col" class="px-2 py-3">Course name</th>
-                            <th scope="col" class="px-2 py-3 text-center">Year</th>
-                            <th scope="col" class="px-2 py-3 text-center">Semester</th>
-                            <th scope="col" class="px-2 py-3 text-center">Sessions</th>
-                            <th scope="col" class="px-2 py-3 text-center">Session length</th>
-                            <th scope="col" class="px-2 py-3 text-center">Time</th>
-                            <th scope="col" class="px-2 py-3 text-center">Groups</th>
-                            <th scope="col" class="px-2 py-3 text-center">Total time</th>
-                            <th scope="col" class="px-2 py-3 text-center">Rate</th>
-                            <th scope="col" class="px-2 py-3 text-center">Gain</th>
+                            <th scope="col" class="px-2 py-3">{{__('messages.program')}}</th>
+                            <th scope="col" class="px-2 py-3">{{__('messages.course')}}</th>
+                            <th scope="col" class="px-2 py-3 text-center">{{__('messages.year')}}</th>
+                            <th scope="col" class="px-2 py-3 text-center">{{__('messages.semester')}}</th>
+                            <th scope="col" class="px-2 py-3 text-center">{{__('messages.sessions')}}</th>
+                            <th scope="col" class="px-2 py-3 text-center">{{__('messages.session_length')}}</th>
+                            <th scope="col" class="px-2 py-3 text-center">{{__('messages.time')}}</th>
+                            <th scope="col" class="px-2 py-3 text-center">{{__('messages.groups')}}</th>
+                            <th scope="col" class="px-2 py-3 text-center">{{__('messages.total_time')}}</th>
+                            <th scope="col" class="px-2 py-3 text-center">{{__('messages.rate')}}</th>
+                            <th scope="col" class="px-2 py-3 text-center">{{__('messages.gain')}}</th>
                             <th scope="col" class="px-2 py-3 text-center">
                                 <span class="sr-only">Actions</span>
                             </th>
