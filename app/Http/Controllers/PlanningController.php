@@ -26,6 +26,7 @@ class PlanningController extends Controller
                 $current_year = now()->format('Y');
             }
         }
+        $current_year = (int) $current_year;
 
         if(isset($request->current_month)){
             $current_month = $request->current_month+1;
@@ -70,7 +71,7 @@ class PlanningController extends Controller
         // Trick to have weeks starting at Monday
         $weekdays->push($weekdays[0]);
         $weekdays->shift();
-        
+
         return view('planning.index', compact('planning', 'courses', 'years', 'months', 'weekdays','current_year', 'current_month', 'monthly_gain', 'monthly_hours'));
     }
 

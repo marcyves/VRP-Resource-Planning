@@ -178,8 +178,9 @@ class CourseCollection extends Collection
         });
 
         return Course::whereIn('school_id', $list)
-            ->select(['year', 'semester'])
+            ->select(['year'])
             ->distinct()
+            ->orderBy('year', 'asc')
             ->get();
     }
 }

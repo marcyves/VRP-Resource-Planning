@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Planning') }}
+            {{ __('messages.planning') }}
         </h2>
     </x-slot>
 
@@ -74,13 +74,13 @@
         </div>
         <div class="flex flex-row justify-between font-semibold text-gray-600 border border-gray-300 rounded-md mt-4 py-4 bg-gray-200">
             <div class="mx-4">
-                Time worked = {{$monthly_hours}} hours
+            {{ __('messages.time_worked') }} = {{$monthly_hours}} {{ __('messages.hours') }}
             </div>
             <div class="mx-4">
-                Monthly gain = {{number_format($monthly_gain,2)}} €
+            {{ __('messages.monthly_gain') }} = {{number_format($monthly_gain,2)}} €
             </div>
             <div class="mx-4">
-                Average Rate = @if ($monthly_hours == 0) 0 @else {{number_format($monthly_gain/$monthly_hours,2)}} @endif€
+            {{ __('messages.hour_rate') }} = @if ($monthly_hours == 0) 0 @else {{number_format($monthly_gain/$monthly_hours,2)}} @endif€
             </div>
             <div class="justify-end">
                 <form action="{{route('planning.billing')}}" method="post">
@@ -88,7 +88,7 @@
                     <input type="hidden" name="year" value="{{$current_year}}">
                     <input type="hidden" name="month" value="{{$current_month}}">
                     <button class="border border-gray-400 bg-white rounded-md px-4 mr-4">
-                        Billing
+                    {{ __('messages.billing') }}
                     </button>
                 </form>
             </div>
