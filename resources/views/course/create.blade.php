@@ -1,13 +1,13 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Dashboard') }}
+            {{ __('messages.course_create') }} {{$school->name}}
         </h2>
     </x-slot>
 
     <x-nice-box color="white">
 
-<form action="{{route('course.store', $school_id)}}" method="post">
+<form action="{{route('course.store', $school->id)}}" method="post">
     @csrf
     <x-input-label>Name</x-input-label>
     <x-text-input type="text" name="name" />

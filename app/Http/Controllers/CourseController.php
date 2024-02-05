@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Course;
+use App\Models\School;
 use App\Models\Program;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -22,9 +23,10 @@ class CourseController extends Controller
      */
     public function create(String $school_id)
     {
+        $school = School::find($school_id);
         $programs = Program::all()->sortBy('name');
 
-        return view('course.create', compact('school_id', 'programs'));
+        return view('course.create', compact('school', 'programs'));
     }
 
     /**
