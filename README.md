@@ -154,6 +154,13 @@ See the [open issues](https://github.com/marcyves/plarany/issues) for a full lis
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
+## Very Short Documentation
+
+### User Statuses
+  * 1 admin (for their company)
+  * 2 éditeur
+  * 3 rédacteur
+  * 4 SuperAdmin (all companies)
 
 ## Online demo
 

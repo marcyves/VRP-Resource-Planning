@@ -97,9 +97,16 @@ class User extends Authenticatable
         $this->mode = $mode;
     }
 
+    public function isSuperAdmin()
+    {
+        if ($this->status_id == 4)
+            return true;
+        return false;
+    }
+
     public function isAdmin()
     {
-        if ($this->status_id == 1)
+        if ($this->status_id == 1 or $this->status_id == 4)
             return true;
         return false;
     }
