@@ -32,6 +32,6 @@ class Bill extends Model
     protected $fillable =   [
         'id',
         'description',
-        'date_paid'
+        'paid_at'
         ];
 }

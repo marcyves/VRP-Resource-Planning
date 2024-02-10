@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('bills', function (Blueprint $table) {
             $table->string('id', 10);
             $table->string('description')->nullable();
-            $table->date('date_paid')->nullable();
+            $table->date('paid_at')->nullable();
             $table->timestamps();
 
             $table->primary('id');
