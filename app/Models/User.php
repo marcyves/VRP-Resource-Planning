@@ -74,6 +74,11 @@ class User extends Authenticatable
         return Company::findOrFail($this->company_id)->name;
     }
 
+    public function getCompanyBillPrefix()
+    {
+        return Company::findOrFail($this->company_id)->bill_prefix;
+    }
+
 
     public function getStatusName()
     {

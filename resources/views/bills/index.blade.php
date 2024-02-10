@@ -51,7 +51,9 @@
         <form action="{{route('bill.store')}}" method="post">
             @csrf
             <x-input-label>{{ __('messages.name') }}</x-input-label>
-            <x-text-input type="text" name="name" id="name" size="10"/>
+            {{$bill_id}}<x-text-input type="text" name="id" id="name" size="10"/>
+            <x-input-label>{{ __('messages.description') }}</x-input-label>
+            <x-text-input type="text" name="description" id="description" size="60"/>
             <x-primary-button>{{ __('messages.bill_create') }}</x-primary-button>
         </form>
     </x-nice-box>

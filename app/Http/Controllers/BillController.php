@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Bill;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 class BillController extends Controller
 {
@@ -13,7 +15,8 @@ class BillController extends Controller
     public function index()
     {
         $bills = Bill::all()->sortBy('id');
-        return view('bills.index', compact('bills'));
+        $bill_id = Auth::user()->getCompanyBillPrefix() . substr(Carbon::now()->year, -2);
+        return view('bills.index', compact('bills', 'bill_id'));
 
     }
 
@@ -30,7 +33,26 @@ class BillController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'id' => 'required|max:5',
+        ]);
+        
+        $bill_id =  Auth::user()->getCompanyBillPrefix() . substr(Carbon::now()->year, -2) . $request->id;
+
+        try{
+            Bill::create([
+                    'id' => $bill_id,
+                    'description' => $request->description,
+                ]);
+            return redirect(route('bill.index'))
+                ->with([
+                    'success' => "Facture enregistrée avec succès"]);
+        }
+        catch (\Exception $e) {
+            dd($e);
+            return redirect()->back()
+            ->with('error', "Erreur lors de l'enregitrement de la facture");
+        }               
     }
 
     /**
