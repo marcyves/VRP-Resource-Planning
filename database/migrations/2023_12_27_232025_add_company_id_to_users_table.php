@@ -14,7 +14,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->foreignIdFor(Company::class);
+            $table->foreignIdFor(Company::class)->constrained()
+            ->onUpdate('cascade')   
+            ->onDelete('restrict');
         });
     }
 
@@ -24,7 +26,6 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropForeign('company_user_id_foreign');
             $table->dropColumn('company_id');
         });
     }
