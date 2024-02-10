@@ -7,6 +7,8 @@ use App\Http\Controllers\PlanningController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProgramController;
 use App\Http\Controllers\SchoolController;
+use App\Http\Controllers\BillController;
+
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -60,6 +62,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/planning', [PlanningController::class, 'store'])->name('planning.store');
     
     Route::resource('/program', ProgramController::class);
+    Route::resource('/bill', BillController::class);
     Route::resource('/documents', DocumentController::class);
     
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

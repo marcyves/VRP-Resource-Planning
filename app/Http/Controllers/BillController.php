@@ -12,7 +12,9 @@ class BillController extends Controller
      */
     public function index()
     {
-        //
+        $bills = Bill::all()->sortBy('id');
+        return view('bills.index', compact('bills'));
+
     }
 
     /**
