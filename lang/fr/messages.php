@@ -32,4 +32,6 @@ return [
     'time_worked' => 'Heures travaillées',
     'hours' => 'Heures',
     'monthly_gain' => 'Gains du mois',
+    'bills' => 'Factures',
+    'bill_create' => 'Créer une facture',
 ];
