@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header" class="print:hidden">
         <h2 class="print:hidden font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Billing Preparation') }}
+            {{ __('Billing Preparation') }} {{$current_month}}/{{$current_year}}
         </h2>
     </x-slot>
 
@@ -13,14 +13,6 @@
     </x-nice-box>
     @else
     <x-nice-box color="white">
-        <div class="flex flex-row font-semibold text-gray-600 border border-gray-300 rounded-md mt-4 py-4 bg-gray-200">
-            <div class="mx-4">
-                {{$current_month}}
-            </div>
-            <div class="mx-4">
-                {{$current_year}}
-            </div>
-        </div>
         @php
             $current_school = "";
             $current_course = "";
@@ -61,7 +53,19 @@
                     @endphp 
                 @endif
                 <div class="p-2 m-2 border border-gray-400 rounded-md">
-                <h2 class="font-bold text-gray-800 bg-green-100 p-2 mb-2">{{$event->school_name}}</h2>
+                <div class="font-bold text-gray-800 bg-green-100 p-2 mb-2 flex justify-between">
+                    <h2 class="inline ml-2 pt-2">{{$event->school_name}}</h2>
+                    <form action="" class="inline">
+                    <label for="bill_id">Bill:</label>
+                    <input type="text" size="10" name="bill_id" id="bill_id"
+                    class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
+                    <label for="bill_date">Date:</label>
+                    <input type="date" name="bill_date" id="bill_date"
+                    class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
+                    <input type="submit" value="Save"
+                    class="border border-gray-400 bg-white rounded-md px-4 mr-4">
+                    </form>
+                </div>
                 <ul>
                 @php
                     $current_school = $event->school_name;
