@@ -37,12 +37,15 @@ class BillController extends Controller
             'id' => 'required|max:5',
         ]);
         
-        $bill_id =  Auth::user()->getCompanyBillPrefix() . substr(Carbon::now()->year, -2) . $request->id;
+        $company  =  Auth::user()->getCompany();
+        $bill_id =  $company->bill_prefix . substr(Carbon::now()->year, -2) . $request->id;
+
 
         try{
             Bill::create([
                     'id' => $bill_id,
                     'description' => $request->description,
+                    'company_id' => $company->id,
                 ]);
             return redirect(route('bill.index'))
                 ->with([
