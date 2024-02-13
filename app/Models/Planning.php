@@ -10,7 +10,7 @@ class Planning extends Model
     use HasFactory;
 
     public $timestamps = false;
-    public $fillable = ['begin', 'end', 'location', 'group_id'];
+    public $fillable = ['begin', 'end', 'location', 'group_id', 'bill_id'];
 
     public function getSessionLength()
     {
