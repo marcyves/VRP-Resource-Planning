@@ -20,7 +20,16 @@
             @foreach($courses[0] as $course_name => $schedules)
                 <h2 class="font-bold text-gray-800 p-2 bg-blue-100 mt-4">{{$course_name}}</h2>
                 <ul>
+                    @php
+                    $current_group = "";
+                    @endphp
                 @foreach($schedules[0] as $planning_id => $schedule)
+                    @if($current_group != $schedule['group'])
+                    @php
+                        $current_group = $schedule['group'];
+                    @endphp
+                    <h3 class="font-semibold text-gray-800 ml-4">{{$current_group}}</h3>
+                    @endif
                     @if(Auth::user()->getMode() == "Edit")
                         <a class="text-blue-600" href="{{route('planning.edit',$planning_id, 'billing')}}">
                     @endif
@@ -53,7 +62,8 @@
                 <div class="mx-4">
                     School Total = {{number_format($courses[2],2)}} €
                 </div>
-                <form action="" class="inline">
+                <form action="{{route('planning.setBill', $planning_id)}}" class="inline" method="post">
+                    @csrf
                     <label for="bill_id">Bill:</label>
                     <select name="bill_id" id="bill_id"
                     class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">

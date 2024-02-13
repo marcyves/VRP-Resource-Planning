@@ -131,7 +131,7 @@ class PlanningController extends Controller
             $monthly_hours += intval(($end - $begin)/3600);
             $monthly_gain  += $gain;
 
-            $schedules[$event->planning_id] = array( "begin" => $event->begin, "end" => $event->end, "duration" => $duration);
+            $schedules[$event->planning_id] = array( "group" => $event->group_name, "begin" => $event->begin, "end" => $event->end, "duration" => $duration);
         }
         $courses[$current_course] = array($schedules, $course_hours, $course_gain, $event->session_length);
         $schools[$current_school] = array($courses, $school_hours, $school_gain);
@@ -140,6 +140,7 @@ class PlanningController extends Controller
 
         return view('planning.billing',compact('schools', 'current_year', 'current_month', 'monthly_gain', 'monthly_hours', 'bills'));
     }
+
     /**
      * Show the form for creating a new resource.
      */
@@ -197,6 +198,17 @@ class PlanningController extends Controller
         }     
     }
 
+    /**
+     * Display the specified resource.
+     */
+    public function setBill(Request $request, String $id)
+    {
+        $planning = Planning::find($id);
+        $planning->bill_id = $request->bill_id;
+        $planning->update();
+
+        return redirect(route('planning.index'));
+    }
     /**
      * Display the specified resource.
      */
@@ -260,7 +272,6 @@ class PlanningController extends Controller
             return redirect()->back()
             ->with('error', "Erreur lors de la modification de la session<br>".$e->message);
         }               
-
 
         return redirect(route('planning.index'));
     }
