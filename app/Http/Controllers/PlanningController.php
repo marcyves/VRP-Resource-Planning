@@ -88,17 +88,57 @@ class PlanningController extends Controller
 
         // Collect Planning information for billing
         $planning = $schools->getBillingPlanning($current_year, $current_month);
-        $monthly_gain = 0;
-        $monthly_hours = 0;
-        foreach($planning as $event){
-            $end   = strtotime($event->end);
-            $begin = strtotime($event->begin);
-//            $monthly_hours += $event->session_length;
-            $monthly_hours += intval(($end - $begin)/3600);
-            $monthly_gain += $event->session_length * $event->rate;
-        }        
 
-        return view('planning.billing',compact('planning', 'current_year', 'current_month', 'monthly_gain', 'monthly_hours'));
+        $current_school = "";
+        $current_course = "";
+        $current_group = "";
+        $monthly_hours = 0;
+        $monthly_gain  = 0;
+        $schools = array();
+        $schedules = array();
+
+        foreach($planning as $event){
+
+            if($current_course != $event->course_name){
+                if($current_course != ""){
+                    $courses[$current_course] = array($schedules, $course_hours, $course_gain, $event->session_length);
+                }
+                $current_course = $event->course_name;
+                $schedules = array();
+                $course_hours  = 0;
+                $course_gain   = 0;        
+            }
+
+            if($current_school != $event->school_name){
+                if($current_school != ""){
+                    $schools[$current_school] = array($courses, $school_hours, $school_gain);
+                }
+                $current_school = $event->school_name;
+                $courses = array();
+                $school_hours  = 0;
+                $school_gain   = 0;
+            }
+
+            $end      = strtotime($event->end);
+            $begin    = strtotime($event->begin);
+            $duration = intval(($end - $begin)/60)/60;
+            $gain     = $duration * $event->rate;
+
+            $course_hours  += $duration;
+            $course_gain   += $gain;
+            $school_hours  += intval(($end - $begin)/3600);
+            $school_gain   += $gain;
+            $monthly_hours += intval(($end - $begin)/3600);
+            $monthly_gain  += $gain;
+
+            $schedules[$event->planning_id] = array( "begin" => $event->begin, "end" => $event->end, "duration" => $duration);
+        }
+        $courses[$current_course] = array($schedules, $course_hours, $course_gain, $event->session_length);
+        $schools[$current_school] = array($courses, $school_hours, $school_gain);
+
+        $bills = Auth::user()->getBills();
+
+        return view('planning.billing',compact('schools', 'current_year', 'current_month', 'monthly_gain', 'monthly_hours', 'bills'));
     }
     /**
      * Show the form for creating a new resource.
