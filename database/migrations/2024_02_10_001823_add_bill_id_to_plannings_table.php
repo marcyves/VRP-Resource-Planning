@@ -14,7 +14,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('plannings', function (Blueprint $table) {
-            $table->foreignIdFor(Bill::class)->nullable();    
+            $table->foreignIdFor(Bill::class)->nullable()->constrained()
+            ->onUpdate('cascade')   
+            ->onDelete('restrict');    
         });
     }
 
@@ -24,7 +26,6 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('plannings', function (Blueprint $table) {
-            //$table->dropForeign('bills_plannings_id_foreign');
             $table->dropColumn('bill_id');
         });
     }
