@@ -23,16 +23,19 @@ class CourseCollection extends Collection
         $end_date   =  trim($end_year)."-".substr("0".trim($month),-2)."-0 00:00:00";
         
 
-        return Course::whereIn('school_id', $list)
+        $plannings =  Course::whereIn('school_id', $list)
         ->select([
+            'plannings.id as planning_id',
+            'schools.id as school_id',
             'schools.name as school_name',
-            'plannings.id as id',
-            'begin',
-            'end',
-            'location',
             'courses.name as course_name',
+            'courses.id as course_id',
             'courses.short_name as short_name',
             'rate',
+            'begin',
+            'end',
+            'bill_id',
+            'location',
             'session_length',
             'groups.name as group_name',
             'groups.short_name as group_short_name'
@@ -48,6 +51,13 @@ class CourseCollection extends Collection
         ->orderBy('group_name', 'asc')
         ->orderBy('begin', 'asc')
         ->get();
+
+        if (count($plannings)){
+            return $plannings;
+        }else{
+            return false;
+        }
+        
 
     }
     public function getPlanning(String $year, String $month)
@@ -77,6 +87,7 @@ class CourseCollection extends Collection
             'courses.short_name as short_name',
             'rate',
             'session_length',
+            'bill_id',
             'groups.name as group_name',
             'groups.short_name as group_short_name'
             ])

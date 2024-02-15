@@ -4,8 +4,6 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-use App\Models\Company;
-
 return new class extends Migration
 {
     /**
@@ -13,10 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->foreignIdFor(Company::class)->constrained()
-            ->onUpdate('cascade')   
-            ->onDelete('restrict');
+        Schema::table('companies', function (Blueprint $table) {
+            $table->string('bill_prefix', 10);
         });
     }
 
@@ -25,8 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('company_id');
+        Schema::table('companies', function (Blueprint $table) {
+            $table->dropColumn('bill_prefix');
         });
     }
 };

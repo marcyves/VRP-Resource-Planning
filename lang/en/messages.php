@@ -31,4 +31,6 @@ return [
     'time_worked' => 'Time Worked',
     'hours' => 'Hours',
     'monthly_gain' => 'Monthly Gain',
+    'bills' => 'Bills',
+    'bill_create' => 'New Bill',
 ];

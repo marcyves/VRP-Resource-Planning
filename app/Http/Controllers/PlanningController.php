@@ -88,18 +88,92 @@ class PlanningController extends Controller
 
         // Collect Planning information for billing
         $planning = $schools->getBillingPlanning($current_year, $current_month);
-        $monthly_gain = 0;
-        $monthly_hours = 0;
-        foreach($planning as $event){
-            $end   = strtotime($event->end);
-            $begin = strtotime($event->begin);
-//            $monthly_hours += $event->session_length;
-            $monthly_hours += intval(($end - $begin)/3600);
-            $monthly_gain += $event->session_length * $event->rate;
-        }        
 
-        return view('planning.billing',compact('planning', 'current_year', 'current_month', 'monthly_gain', 'monthly_hours'));
+        if(!$planning)
+        {
+            return redirect()->back()
+            ->with('error', "Pas de cours enregistré ce mois-ci");
+        }
+
+        $current_school = "";
+        $current_course = "";
+        $current_group = "";
+        $monthly_hours = 0;
+        $monthly_gain  = 0;
+        $schools = array();
+        $schedules = array();
+
+        foreach($planning as $event){
+
+            if($current_course != $event->course_name){
+                if($current_course != ""){
+                    $courses[$current_course] = array(
+                        "schedule" => $schedules,
+                        "course_id" => $course_id,
+                        "hours"  => $course_hours,
+                        "gain"   => $course_gain,
+                        "duration" => $event->session_length);
+                }
+                $current_course = $event->course_name;
+                $course_id  = $event->course_id;
+                $schedules = array();
+                $course_hours  = 0;
+                $course_gain   = 0;        
+            }
+
+            if($current_school != $event->school_name){
+                if($current_school != ""){
+                    $schools[$current_school] = array(
+                        "courses" => $courses,
+                        "school_id" => $school_id,
+                        "hours"   => $school_hours,
+                        "gain"    => $school_gain);
+                    $school_id = $event->school_id;
+                }
+                $current_school = $event->school_name;
+                $school_id = $event->school_id;
+                $courses = array();
+                $school_hours  = 0;
+                $school_gain   = 0;
+            }
+
+            $end      = strtotime($event->end);
+            $begin    = strtotime($event->begin);
+            $duration = intval(($end - $begin)/60)/60;
+            $gain     = $duration * $event->rate;
+
+            $course_hours  += $duration;
+            $course_gain   += $gain;
+            $school_hours  += intval(($end - $begin)/3600);
+            $school_gain   += $gain;
+            $monthly_hours += intval(($end - $begin)/3600);
+            $monthly_gain  += $gain;
+
+            $schedules[$event->planning_id] = array( 
+                "group"    => $event->group_name,
+                "begin"    => $event->begin,
+                "end"      => $event->end,
+                "duration" => $duration,
+                "bill"     => $event->bill_id);
+        }
+        $courses[$current_course] = array(
+        "schedule" => $schedules,
+        "course_id" => $course_id,
+        "hours"  => $course_hours,
+        "gain"   => $course_gain,
+        "duration" => $event->session_length);
+
+        $schools[$current_school] = array(
+            "courses" => $courses,
+            "school_id" => $school_id,
+            "hours"   => $school_hours,
+            "gain"    => $school_gain);
+
+        $bills = Auth::user()->getBills();
+
+        return view('planning.billing',compact('schools', 'current_year', 'current_month', 'monthly_gain', 'monthly_hours', 'bills'));    
     }
+
     /**
      * Show the form for creating a new resource.
      */
@@ -157,6 +231,40 @@ class PlanningController extends Controller
         }     
     }
 
+    /**
+     * Display the specified resource.
+     */
+    public function setBill(Request $request)
+    {
+        $school_id = $request->school_id;
+        $course_id = $request->course_id;
+        $month = $request->month;
+        $year  = $request->year;
+
+        $start_date =  trim($year)."-".substr("0".trim($month),-2)."-0 00:00:00";
+        $month++;
+        $end_year = $year;
+
+        if($month == "13"){
+            $month = "01";
+            $end_year++;
+        }
+        
+        $end_date   =  trim($end_year)."-".substr("0".trim($month),-2)."-0 00:00:00";
+
+        $planning_list = Planning::getPlanningBySchoolAndDate($school_id, $start_date, $end_date);
+
+        foreach($planning_list as $id)
+        {
+            $planning = Planning::find($id['id']);
+            $planning->bill_id = $request->bill_id;
+            $planning->update();
+        }
+
+        return redirect(route('planning.index'))
+        ->with([
+            'success' => "Facture enregistrée avec succès"]);
+    }
     /**
      * Display the specified resource.
      */
@@ -220,7 +328,6 @@ class PlanningController extends Controller
             return redirect()->back()
             ->with('error', "Erreur lors de la modification de la session<br>".$e->message);
         }               
-
 
         return redirect(route('planning.index'));
     }

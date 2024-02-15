@@ -7,6 +7,8 @@ use App\Http\Controllers\PlanningController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProgramController;
 use App\Http\Controllers\SchoolController;
+use App\Http\Controllers\BillController;
+
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -53,6 +55,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/planning', [PlanningController::class, 'index'])->name('planning.index');
     Route::post('/planning/period', [PlanningController::class, 'index'])->name('planning.period');
     Route::post('/planning/billing', [PlanningController::class, 'billing'])->name('planning.billing');
+    Route::post('/planning/set_bill', [PlanningController::class, 'setBill'])->name('planning.setBill');
     Route::get('/planning/{id}', [PlanningController::class, 'edit'])->name('planning.edit');
     Route::put('/planning/{id}', [PlanningController::class, 'update'])->name('planning.update');
     Route::delete('/planning/{id}', [PlanningController::class, 'destroy'])->name('planning.delete');
@@ -60,6 +63,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/planning', [PlanningController::class, 'store'])->name('planning.store');
     
     Route::resource('/program', ProgramController::class);
+    Route::resource('/bill', BillController::class);
     Route::resource('/documents', DocumentController::class);
     
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
