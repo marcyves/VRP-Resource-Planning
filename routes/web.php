@@ -55,7 +55,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/planning', [PlanningController::class, 'index'])->name('planning.index');
     Route::post('/planning/period', [PlanningController::class, 'index'])->name('planning.period');
     Route::post('/planning/billing', [PlanningController::class, 'billing'])->name('planning.billing');
-    Route::post('/planning/set_bill/{id}', [PlanningController::class, 'setBill'])->name('planning.setBill');
+    Route::post('/planning/set_bill', [PlanningController::class, 'setBill'])->name('planning.setBill');
     Route::get('/planning/{id}', [PlanningController::class, 'edit'])->name('planning.edit');
     Route::put('/planning/{id}', [PlanningController::class, 'update'])->name('planning.update');
     Route::delete('/planning/{id}', [PlanningController::class, 'destroy'])->name('planning.delete');

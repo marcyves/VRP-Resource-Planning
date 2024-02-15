@@ -28,6 +28,7 @@
                     {{date_format(date_create($event->begin),'H:i')}}
                     {{$event->short_name}} ({{$event->group_short_name}})<br>
                     {{date_format(date_create($event->end),'H:i')}}
+                    <div class="text-green-400">{{$event->bill_id}}</div>
                 </div>
                 @if(Auth::user()->getMode() == "Edit")
                 <div class="w-full md:w-auto flex flex-col space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0">
