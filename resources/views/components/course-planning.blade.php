@@ -29,7 +29,10 @@
             @if(Auth::user()->getMode() == "Edit")
                 </a>
             @endif
-            {{$schedule['bill']}}
+            <a class="text-left text-gray-600"
+            href={{route('bill.show', $schedule['bill'])}}>
+                {{$schedule['bill']}}
+            </a>
             </li>
     @endforeach
     </ul>

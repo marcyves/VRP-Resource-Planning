@@ -53,7 +53,7 @@
             @csrf
             <x-input-label>{{ __('messages.name') }}</x-input-label>
             {{$bill_id}}<x-text-input type="text" name="id" id="name" size="10"/>
-            <x-input-label>{{ __('messages.description') }}</x-input-label>
+            <x-input-label>{{ __('messages.bill_description') }}</x-input-label>
             <x-text-input type="text" name="description" id="description" size="60"/>
             <x-primary-button>{{ __('messages.bill_create') }}</x-primary-button>
         </form>
