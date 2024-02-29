@@ -8,12 +8,10 @@
 
     <x-nice-box color="white">
         <div class="table w-full">
-            @foreach ($bills as $bill)
             <div class="table-row">
-            <a class="table-cell text-left  text-gray-600"
-            href={{route('bill.show', $bill)}}>
+            <span class="table-cell text-left  text-gray-600">
                 {{$bill->id}}
-            </a>
+            </span>
             <span class="table-cell text-left  text-blue-400">
                 {{$bill->description}}
             </span>
@@ -44,18 +42,61 @@
             </span>
             @endif
             </div>
+        </div>
+    </x-nice-box>
+    <x-nice-box color="white">
+        <div class="table w-full">
+            @php
+            $school = "";
+            $course = "";
+            $group = "";
+            @endphp
+            @foreach($planning as $event)
+                @if($school != $event->school_name)
+                </ul>
+                <div class="table-row">
+                <h2 class="table-cell text-left text-blue-800 font-black">
+                    @php
+                    $school = $event->school_name;
+                    @endphp
+                    {{$school}}
+                </h2>
+                </div>
+                <hr>
+                @endif
+
+                @if($course != $event->course_name)
+                <br>
+                <div class="table-row">
+                <h3 class="table-cell text-left  text-gray-800 font-black">
+                    @php
+                    $course = $event->course_name;
+                    @endphp
+                    {{$course}}
+                </h3>
+                </div>
+                @endif
+
+                @if($group != $event->group_name)
+                </ul>
+                <br>
+                <div class="table-row">
+                <h4 class="table-cell text-left  text-gray-400 font-black">
+                    @php
+                    $group = $event->group_name;
+                    @endphp
+                    {{$group}}
+</h4>
+                </div>
+                <ul>
+                @endif
+
+            <li>
+                {{date_format(date_create($event->begin),'d/m/Y H:i')}}-{{date_format(date_create($event->end),'H:i')}} 
+            </li>
             @endforeach
         </div>
     </x-nice-box>
 
-    <x-nice-box color="white">
-        <form action="{{route('bill.store')}}" method="post">
-            @csrf
-            <x-input-label>{{ __('messages.name') }}</x-input-label>
-            {{$bill_id}}<x-text-input type="text" name="id" id="name" size="10"/>
-            <x-input-label>{{ __('messages.description') }}</x-input-label>
-            <x-text-input type="text" name="description" id="description" size="60"/>
-            <x-primary-button>{{ __('messages.bill_create') }}</x-primary-button>
-        </form>
-    </x-nice-box>
+
 </x-app-layout>

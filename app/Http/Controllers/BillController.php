@@ -40,7 +40,6 @@ class BillController extends Controller
         $company  =  Auth::user()->getCompany();
         $bill_id =  $company->bill_prefix . substr(Carbon::now()->year, -2) . $request->id;
 
-
         try{
             Bill::create([
                     'id' => $bill_id,
@@ -63,7 +62,9 @@ class BillController extends Controller
      */
     public function show(Bill $bill)
     {
-        //
+        $planning = $bill->getPlanning();
+
+        return view('bills.show', compact('bill', 'planning'));
     }
 
     /**
@@ -71,7 +72,8 @@ class BillController extends Controller
      */
     public function edit(Bill $bill)
     {
-        //
+        return redirect()->back()
+        ->with('error', 'Not implemented');
     }
 
     /**
@@ -79,7 +81,8 @@ class BillController extends Controller
      */
     public function update(Request $request, Bill $bill)
     {
-        //
+        return redirect()->back()
+        ->with('error', 'Not implemented');
     }
 
     /**
@@ -87,6 +90,7 @@ class BillController extends Controller
      */
     public function destroy(Bill $bill)
     {
-        //
+        return redirect()->back()
+        ->with('error', 'Not implemented');
     }
 }
