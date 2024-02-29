@@ -60,7 +60,7 @@ class GroupController extends Controller
      */
     public function show(Group $group)
     {
-        //
+        return view('group.show', compact('group'));        
     }
 
     /**

@@ -4,9 +4,11 @@
             <div class="w-full md:w-1/2">
                     <a
                     class="inline-flex items-center p-2 text-sm border border-gray-300 rounded-md bg-white font-semibold font-medium text-center text-gray-500 hover:text-gray-800 rounded-lg focus:outline-none" 
-                    href="{{route('planning.index')}}">{{$group->name}}</a>            
+                    href="{{route('group.show', $group->id)}}">{{$group->name}}</a>            
                     ({{$group->short_name}})         
                     {{$group->size}} students
+                    Hours Forecast: {{$group->hours_planned['forecast']}}
+                    Planned: {{$group->hours_planned['planned']}}
             </div>
             @if(Auth::user()->getMode() == "Edit") 
             <div class="w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0">

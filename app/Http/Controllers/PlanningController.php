@@ -200,8 +200,17 @@ class PlanningController extends Controller
     public function store(Request $request)
     {
         $group_id = $request->group;
-
+        $time_left = Group::find($group_id)->getTimeLeft();
+        if ($time_left <= 0){
+            return redirect(route('planning.index'))
+            ->with('error', "Toutes les sessions de ce groupe sont planifiées");
+        }  
         $session_length = $request->session_length;
+
+        if($time_left < $session_length)
+        {
+            $session_length = $time_left;
+        }
 
         $date = $request->date;
         $hour = $request->hour;

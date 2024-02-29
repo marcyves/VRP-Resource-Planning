@@ -17,9 +17,11 @@
             @csrf
             <input type="hidden" name="date" value="{{$date}}">
             <input type="hidden" name="session_length" value="{{$session_length}}">
-            <select name="group" class="rounded-md mt-4 py-0 pl-2 pr-8 overflow-clip w-40 mb-2">
+            <select name="group" class="rounded-md mt-4 py-0 pl-2 pr-8 overflow-clip w-120 mb-2">
                 @foreach ($groups as $group)
-                <option value="{{$group->id}}">{{$group->name}}</option>
+                @if($group->hours_planned['forecast'] - $group->hours_planned['planned']>0)
+                <option value="{{$group->id}}">{{$group->name}} - ({{$group->hours_planned['forecast'] - $group->hours_planned['planned']}} hours left)</option>
+                @endif
                 @endforeach
             </select>
             <select name="hour" class="rounded-md py-0 pl-2 pr-8 w-14">
