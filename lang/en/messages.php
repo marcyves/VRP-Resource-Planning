@@ -33,4 +33,5 @@ return [
     'monthly_gain' => 'Monthly Gain',
     'bills' => 'Bills',
     'bill_create' => 'New Bill',
+    'bill_description' => 'Description',
 ];

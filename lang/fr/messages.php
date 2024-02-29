@@ -34,4 +34,5 @@ return [
     'monthly_gain' => 'Gains du mois',
     'bills' => 'Factures',
     'bill_create' => 'Créer une facture',
+    'bill_description' => 'Libellé',
 ];
