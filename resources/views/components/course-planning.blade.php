@@ -46,6 +46,23 @@
         <div class="mx-4 pt-2">
             Total = {{number_format($schedules['gain'],2)}} €
         </div>
+        <form action="{{route('planning.setBill')}}" class="inline" method="post">
+            @csrf
+            <input type="hidden" name="school_id" value="{{$courses['school_id']}}">
+            <input type="hidden" name="course_id" value="{{$schedules['course_id']}}">
+            <input type="hidden" name="month" value="{{$current_month}}">
+            <input type="hidden" name="year" value="{{$current_year}}">
+            <label for="bill_id">Bill:</label>
+            <select name="bill_id" id="bill_id"
+            class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
+            @foreach ($bills as $bill)
+                <option value="{{$bill->id}}">{{$bill->id}}</option>
+            @endforeach
+            </select>
+            <input type="submit" value="Save"
+            class="border border-gray-400 bg-white rounded-md px-4 mr-4">
+        </form>
+
     </div>
 @endforeach
 
@@ -56,20 +73,4 @@
 <div class="mx-4">
     School Total = {{number_format($courses['gain'],2)}} €
 </div>
-<form action="{{route('planning.setBill')}}" class="inline" method="post">
-    @csrf
-    <input type="hidden" name="school_id" value="{{$courses['school_id']}}">
-    <input type="hidden" name="course_id" value="{{$schedules['course_id']}}">
-    <input type="hidden" name="month" value="{{$current_month}}">
-    <input type="hidden" name="year" value="{{$current_year}}">
-    <label for="bill_id">Bill:</label>
-    <select name="bill_id" id="bill_id"
-    class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
-    @foreach ($bills as $bill)
-        <option value="{{$bill->id}}">{{$bill->id}}</option>
-    @endforeach
-    </select>
-    <input type="submit" value="Save"
-    class="border border-gray-400 bg-white rounded-md px-4 mr-4">
-    </form>
 </div>
