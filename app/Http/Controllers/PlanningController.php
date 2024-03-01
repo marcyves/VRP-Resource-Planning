@@ -247,8 +247,8 @@ class PlanningController extends Controller
     {
         $school_id = $request->school_id;
         $course_id = $request->course_id;
-        $month = $request->month;
-        $year  = $request->year;
+        $month = $current_month = $request->month;
+        $year = $current_year  = $request->year;
 
         $start_date =  trim($year)."-".substr("0".trim($month),-2)."-0 00:00:00";
         $month++;
@@ -261,7 +261,7 @@ class PlanningController extends Controller
         
         $end_date   =  trim($end_year)."-".substr("0".trim($month),-2)."-0 00:00:00";
 
-        $planning_list = Planning::getPlanningBySchoolAndDate($school_id, $start_date, $end_date);
+        $planning_list = Planning::getPlanningByCourseAndDate($course_id, $start_date, $end_date);
 
         foreach($planning_list as $id)
         {
@@ -270,9 +270,9 @@ class PlanningController extends Controller
             $planning->update();
         }
 
-        return redirect(route('planning.index'))
-        ->with([
-            'success' => "Facture enregistrée avec succès"]);
+        return redirect(route('planning.billing', [$current_year, $current_month]))
+            ->with([
+                'success' => "Facture enregistrée avec succès"]);
     }
     /**
      * Display the specified resource.
