@@ -5,7 +5,7 @@
         </h2>
     </x-slot>
 
-    <x-nice-box color="white">
+    <section class="nice-box">
         @isset($course)
             <form action="{{route('course.update', $course->id)}}" method="post">
                 @csrf
@@ -38,5 +38,5 @@
                 <x-primary-button>Save</x-primary-button>
             </form>
         @endisset
-    </x-nice-box>
+</section>
 </x-app-layout>

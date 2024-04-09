@@ -5,7 +5,7 @@
         </h2>
     </x-slot>
 
-    <x-nice-box color="white">
+    <section  class="nice-box">
         {{$program->name}}
-    </x-nice-box>
+    </section>
 </x-app-layout>

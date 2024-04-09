@@ -6,8 +6,8 @@
     </x-slot>
 
     @foreach ($groups as $group)
-    <x-nice-box color="white">
+    <section  class="nice-box">
     <x-group-details :group=$group :occurences=$occurences />
-    </x-nice-box>
+    </section>
     @endforeach
 </x-app-layout>

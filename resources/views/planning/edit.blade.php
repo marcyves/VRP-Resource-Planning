@@ -20,7 +20,7 @@
         $end_minutes = explode(":", $end_time)[1];
     @endphp
 
-    <x-nice-box color="white">
+    <section  class="nice-box">
         <div class="grid grid-flow-row-dense grid-cols-2 grid-rows-2">
             <div>
                 <form action="{{route('planning.update', $planning->id)}}" method="post">
@@ -107,6 +107,6 @@
             <br class="my-4">
             <x-primary-button>Plan</x-primary-button>
         </form>
-    </x-nice-box>
+    </section>
 
 </x-app-layout>

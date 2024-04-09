@@ -6,7 +6,7 @@
             </h2>
     </x-slot>
 
-    <x-nice-box color="white">
+    <section class="nice-box">
         <div class="table w-full">
             @foreach ($bills as $bill)
             <div class="table-row">
@@ -45,9 +45,9 @@
             </div>
             @endforeach
         </div>
-    </x-nice-box>
+</section>
 
-    <x-nice-box color="white">
+    <section class="nice-box">
         <form action="{{route('bill.store')}}" method="post">
             @csrf
             <x-input-label>{{ __('messages.name') }}</x-input-label>
@@ -56,5 +56,5 @@
             <x-text-input type="text" name="description" id="description" size="60"/>
             <x-primary-button>{{ __('messages.bill_create') }}</x-primary-button>
         </form>
-    </x-nice-box>
+</section>
 </x-app-layout>

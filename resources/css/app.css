@@ -2,6 +2,51 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --main-bg-color: rgb(255, 244, 195);
+  --secondary-bg-color: rgb(250, 231, 148);
+  --border-color: rgb(145, 123, 24);
+}
+
+@media print {
+  body {
+    color: black;
+    background-color: white;
+  }
+  nav{
+    display: none;
+  }
+}
+button{
+  background-color: var(--main-bg-color);
+}
+
+nav{
+  background-color: #483d02;
+  color: #ffffff;
+}
+header{
+  background-color: var(--secondary-bg-color);
+}
+
+.school-header{
+  border: 2px solid var(--border-color);
+  border-radius: 6pt;
+}
+.nice-box{
+  background-color: var(--main-bg-color);
+  margin-left: auto;
+  margin-right: auto;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+@media (min-width: 640px) {
+  .school-details {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
+
 .modal-open {
     overflow: hidden;
   }

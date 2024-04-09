@@ -5,7 +5,7 @@
         </h2>
     </x-slot>
 
-    <x-nice-box color="white">
+    <section  class="nice-box">
 
         <x-nice-title color="grey-200" title="Groups">
             <a
@@ -45,5 +45,5 @@
             <br class="my-4">
             <x-primary-button>Plan</x-primary-button>
         </form>
-    </x-nice-box>
+    </section>
 </x-app-layout>

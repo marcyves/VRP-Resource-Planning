@@ -5,7 +5,7 @@
         </h2>
     </x-slot>
 
-    <x-nice-box color="white">
+    <section  class="nice-box">
 
         <!-- (A) PERIOD SELECTOR -->
         @php    
@@ -93,6 +93,6 @@
                 </form>
             </div>
         </div>
-        </x-nice-box>
+        </section>
 
 </x-app-layout>

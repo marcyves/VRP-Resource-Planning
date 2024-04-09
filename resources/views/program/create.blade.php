@@ -5,7 +5,7 @@
         </h2>
     </x-slot>
 
-    <x-nice-box color="white">
+    <section  class="nice-box">
 
 <form action="{{route('program.store')}}" method="post">
     @csrf
@@ -14,5 +14,5 @@
     <br class="my-4">
     <x-primary-button>Create</x-primary-button>
 </form>
-    </x-nice-box>
+    </section>
 </x-app-layout>

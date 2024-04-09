@@ -5,7 +5,7 @@
         </h2>
     </x-slot>
 
-    <x-nice-box color="white">
+    <section class="nice-box">
         <div class="flex flew-row place-content-between bg-grey-200 p-2 rounded-md">
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">{{$course->name}}</h2>
             <span class="justify-end">
@@ -26,9 +26,9 @@
             <li>Year: {{$course->year}}</li>
             <li>Semester: {{$course->semester}}</li>
         </ul>       
-    </x-nice-box>
+    </section>
 
-    <x-nice-box color="white">
+    <section color="white">
         <x-nice-title color="grey-200" title="Groups">
         @if(Auth::user()->getMode() == "Edit")
             <a
@@ -41,6 +41,6 @@
         <x-group-details :group=$group :occurences=$occurences />
         @endforeach
   
-    </x-nice-box>
+    </section>
 
 </x-app-layout>

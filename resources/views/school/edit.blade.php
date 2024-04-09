@@ -5,7 +5,7 @@
         </h2>
     </x-slot>
 
-    <x-nice-box color="white">
+    <section  class="nice-box">
 
 <form action="{{route('school.update', $school->id)}}" method="post">
     @csrf
@@ -15,5 +15,5 @@
     <br class="my-4">
     <x-primary-button>Save</x-primary-button>
 </form>
-    </x-nice-box>
+    </section>
 </x-app-layout>

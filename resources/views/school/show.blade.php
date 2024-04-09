@@ -5,7 +5,15 @@
         </h2>
     </x-slot>
 
-    <x-advanced-course-table :courses=$courses :school_name=$school_name :school_id=$school_id/>
+    <section class="bg-gray-50 p-3 sm:p-5">
+    <div class="mx-auto max-w-screen-xl px-2 lg:px-12">
+        <div class="bg-white relative shadow-md sm:rounded-lg overflow-hidden">              
+        <x-school-header :school_name=$school_name :school_id=$school_id/>
+        <x-advanced-course-table :courses=$courses :school_name=$school_name :school_id=$school_id/>
+        </div>
+    </div>
+    </section>
+    
     <x-documents-school-table :documents=$documents :school_id=$school_id/>
 
     <section class="bg-gray-50 p-3 sm:p-5">
