@@ -4,13 +4,15 @@
 
 :root {
   --main-bg-color: rgb(255, 244, 195);
+  --nav-bg-color: #483d02;
   --secondary-bg-color: rgb(250, 231, 148);
   --border-color: rgb(145, 123, 24);
+  --main-text-color:rgb(68, 37, 4);
 }
 
 @media print {
   body {
-    color: black;
+    color: var(--main-text-color);
     background-color: white;
   }
   nav{
@@ -22,7 +24,7 @@ button{
 }
 
 nav{
-  background-color: #483d02;
+  background-color: var(--nav-bg-color);
   color: #ffffff;
 }
 header{
