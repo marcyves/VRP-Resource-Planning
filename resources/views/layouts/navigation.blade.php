@@ -34,6 +34,7 @@
             </div>
 
             <!-- Edit switch -->
+            
             <x-nav-link :href="route('profile.switch')" :active="request()->routeIs('profile.switch')">
                 {{__(Auth::user()->getMode())}}
             </x-nav-link>

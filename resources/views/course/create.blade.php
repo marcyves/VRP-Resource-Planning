@@ -6,32 +6,25 @@
     </x-slot>
 
     <section class="nice-box">
-
-<form action="{{route('course.store', $school->id)}}" method="post">
-    @csrf
-    <x-input-label>Name</x-input-label>
-    <x-text-input type="text" name="name" />
-    <x-input-label>Short Name</x-input-label>
-    <x-text-input type="text" name="short_name" />
-    <x-input-label>Program</x-input-label>
-    <select name="program_id" class="rounded-md mt-0 py-0 pl-2 pr-8">
-        @foreach ($programs as $program)
-        <option value="{{$program->id}}">{{$program->name}}</option>                            
-        @endforeach
-    </select>
-<x-input-label>Sessions</x-input-label>
-    <x-text-input type="text" name="sessions" />
-    <x-input-label>Session length</x-input-label>
-    <x-text-input type="text" name="session_length" />
-    <x-input-label>Rate</x-input-label>
-    <x-text-input type="text" name="rate" />
-    <x-input-label>Year</x-input-label>
-    <x-text-input type="text" name="year" value="{{now()->format('Y')}}"/>
-    <x-input-label>Semester</x-input-label>
-    <x-text-input type="text" name="semester" />
-    <br class="my-4">
-    <x-primary-button>Create</x-primary-button>
-
-</form>
+    <form action="{{route('course.store', $school->id)}}" method="post"
+    class="mx-auto max-w-screen-xl px-2 lg:px-12 shadow-md sm:rounded-lg mb-2 bg-gray-100
+         items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-2">
+        @csrf
+        <x-input-label>Name</x-input-label><x-text-input type="text" name="name" />
+        <x-input-label>Short Name</x-input-label><x-text-input type="text" name="short_name" />
+        <x-input-label>Program</x-input-label>
+        <select name="program_id" class="rounded-md mt-0 py-0 pl-2 pr-8">
+            @foreach ($programs as $program)
+            <option value="{{$program->id}}">{{$program->name}}</option>                            
+            @endforeach
+        </select>
+        <x-input-label>Sessions</x-input-label><x-text-input type="text" name="sessions" />
+        <x-input-label>Session length</x-input-label><x-text-input type="text" name="session_length" />
+        <x-input-label>Rate</x-input-label><x-text-input type="text" name="rate" />
+        <x-input-label>Year</x-input-label><x-text-input type="text" name="year" value="{{now()->format('Y')}}"/>
+        <x-input-label>Semester</x-input-label><x-text-input type="text" name="semester" />
+        <br class="my-4">
+        <x-primary-button>Create</x-primary-button>
+    </form>
 </section>
 </x-app-layout>

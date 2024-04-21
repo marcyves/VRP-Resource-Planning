@@ -14,16 +14,14 @@
     <section  class="nice-box">
         <ul>
             @foreach ($schools as $school)
-            <div class="mx-auto max-w-screen-xl px-2 lg:px-12">
-            <div class="bg-white relative shadow-md sm:rounded-lg overflow-hidden mb-2">
+            <li class="mx-auto max-w-screen-xl px-2 lg:px-12 bg-white shadow-md sm:rounded-lg overflow-hidden mb-2
+            flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-2">
                 @php
                     $school_name=$school->name;
                     $school_id=$school->id;
                 @endphp
                 <x-school-header :school_name=$school_name :school_id=$school_id/>
-            </div>
-        </div>
-
+            </li>
             @endforeach
         </ul>  
     </section>

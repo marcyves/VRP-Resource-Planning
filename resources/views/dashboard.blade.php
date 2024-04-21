@@ -69,9 +69,9 @@
                 $school_name = $course->school_name;
             @endphp
             <article class="mx-auto max-w-screen-xl px-2 lg:px-12 mb-4">
-                <div class="bg-white relative shadow-md sm:rounded-lg overflow-hidden">
+                <div class="bg-blue-100 mb-2 space-y-3 md:space-y-0 md:space-x-4 p-2
+                relative shadow-md sm:rounded-lg overflow-hidden">
                 <x-school-header :school_name=$school_name :school_id=$school_id/>
-
                 <div class="overflow-x-auto">
                     <table class="w-full text-sm text-left text-gray-500">
                         <thead class="text-xs text-gray-700 uppercase bg-gray-50 text-center">
@@ -139,9 +139,9 @@
         @endphp
     @endforeach
 
-    @php  
-    $gross_total_time += $total_time;
-    $gross_total_budget += $total_budget;
+    @php
+        $gross_total_time += $total_time;
+        $gross_total_budget += $total_budget;
     @endphp
 
     <tr class="border-b">

@@ -19,6 +19,7 @@
     display: none;
   }
 }
+
 button{
   background-color: var(--main-bg-color);
 }
@@ -31,10 +32,6 @@ header{
   background-color: var(--secondary-bg-color);
 }
 
-.school-header{
-  border: 2px solid var(--border-color);
-  border-radius: 6pt;
-}
 .nice-box{
   background-color: var(--main-bg-color);
   margin-left: auto;

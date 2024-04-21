@@ -1,5 +1,4 @@
 @props(['school_id','school_name'])
-<div class="school-header flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-2">
     <div class="w-full md:w-1/2">
         <form action="{{route('school.show', $school_id)}}" method="get">
             @csrf
@@ -33,4 +32,3 @@
         </div>
     </div>
     @endif
-</div>
