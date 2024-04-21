@@ -4,12 +4,6 @@
             <h2 class="w-full md:w-1/2 inline-flex font-semibold text-xl text-gray-800">
                 {{ __('Programs') }}
             </h2>
-            @if(Auth::user()->getMode() == "Edit")
-            <div class="w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0">
-        <a class="p-2 text-sm border border-gray-300 rounded-md font-semibold font-medium text-center text-gray-500 hover:text-gray-800 rounded-lg focus:outline-none" 
-            href="{{route('program.create')}}">Add Program</a>
-        </div>
-        @endif
     </x-slot>
 
     <section  class="nice-box">
@@ -43,4 +37,14 @@
 </ul>
     </section>
 
+    @if(Auth::user()->getMode() == "Edit")
+    <section  class="nice-box">
+        <form action="{{route('program.store')}}" method="post"
+        class="mx-auto px-6 py-2 bg-white shadow-md mb-6 flex items-center justify-items-start">
+            @csrf
+            <x-text-input class="mx-6" type="text" name="name"  placeholder="{{ __('messages.name') }}"/>
+            <x-primary-button>{{ __('messages.program_create') }}</x-primary-button>
+        </form>
+    </section>
+    @endif
 </x-app-layout>

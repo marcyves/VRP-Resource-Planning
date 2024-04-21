@@ -17,6 +17,7 @@ return [
     'add_course' => 'Ajouter un Cours',
     'program' => 'Programme',
     'programs' => 'Programmes',
+    'program_create' => 'Ajouter un nouveau programme',
     'groups' => 'Groupes',
     'year' => 'Année',
     'semester' => 'Semestre',

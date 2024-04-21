@@ -16,6 +16,7 @@ return [
     'add_course' => 'Add Course',
     'program' => 'Program',
     'programs' => 'Programs',
+    'program_create' => 'Create new program',
     'groups' => 'Groups',
     'year' => 'Year',
     'semester' => 'Semester',

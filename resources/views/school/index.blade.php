@@ -26,6 +26,7 @@
         </ul>  
     </section>
 
+    @if(Auth::user()->getMode() == "Edit")
     <section class="nice-box">
         <form action="{{route('school.store')}}" method="post" 
         class="mx-auto px-6 py-2 bg-white shadow-md mb-6 flex items-center justify-items-start">
@@ -34,5 +35,6 @@
             <x-primary-button>{{ __('messages.school_create') }}</x-primary-button>
         </form>
     </section>
+    @endif
 
 </x-app-layout>
