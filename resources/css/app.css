@@ -3,9 +3,9 @@
 @tailwind utilities;
 
 :root {
-  --main-bg-color: rgb(255, 244, 195);
-  --nav-bg-color: #483d02;
-  --secondary-bg-color: rgb(250, 231, 148);
+  --main-bg-color: rgb(199, 242, 252);
+  --nav-bg-color: #221f49;
+  --secondary-bg-color: rgb(134, 166, 241);
   --border-color: rgb(145, 123, 24);
   --main-text-color:rgb(68, 37, 4);
 }

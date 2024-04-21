@@ -27,11 +27,10 @@
     </section>
 
     <section class="nice-box">
-        <form action="{{route('school.store')}}" method="post">
+        <form action="{{route('school.store')}}" method="post" 
+        class="mx-auto px-6 py-2 bg-white shadow-md mb-6 flex items-center justify-items-start">
             @csrf
-            <x-input-label>{{ __('messages.name') }}</x-input-label>
-            <x-text-input type="text" name="name" id="name"/>
-            <br class="my-4">
+            <x-text-input class="mx-6" type="text" name="name" id="name" placeholder="{{ __('messages.name') }}"/>
             <x-primary-button>{{ __('messages.school_create') }}</x-primary-button>
         </form>
     </section>
