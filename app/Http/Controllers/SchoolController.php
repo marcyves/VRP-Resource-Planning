@@ -13,6 +13,16 @@ class SchoolController extends Controller
      */
     public function index(Request $request)
     {
+        $schools = Auth::user()->getSchools();
+
+        return view('school.index', compact('schools'));
+
+    }
+    /**
+     * Display a listing of the resource.
+     */
+    public function dashboard(Request $request)
+    {
       
         if(isset($request->current_year)){
             $current_year = $request->current_year;
@@ -34,8 +44,10 @@ class SchoolController extends Controller
             }
         }
 
-        $schools = Auth::user()->schools()->get();
-        $courses = $schools->getCourses($current_year, $current_semester);
+        $schools = Auth::user()->getSchools();
+        //TODO use $list instead of $courses
+        // $list = $schools->listCourses();
+        $courses = Auth::user()->getCourses($current_year, $current_semester);
         $years = $schools->getYears();
 
         return view('dashboard', compact('courses', 'current_year', 'current_semester','years'));
@@ -43,7 +55,7 @@ class SchoolController extends Controller
 
     public function list()
     {
-        $schools = Auth::user()->schools()->get();
+        $schools = Auth::user()->getSchools();
         $schools = $schools->getNoCourse();
 
         return view('school.list', compact('schools'));
@@ -56,14 +68,6 @@ class SchoolController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        return view('school.create');
-    }
-
-    /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
@@ -73,14 +77,14 @@ class SchoolController extends Controller
         ]);
         
         try{
-            $user_id = Auth::user()->id;
+            $company_id = Auth::user()->company_id;
             School::create([
                     'name' => $request->name,
-                    'user_id' => $user_id
+                    'company_id' => $company_id
                 ]);
             return redirect(route('school.list'))
                 ->with([
-                    'success' => "Ecole enregistré avec succès"]);
+                    'success' => "Ecole enregistrée avec succès"]);
         }
         catch (\Exception $e) {
             dd($e);
@@ -92,11 +96,16 @@ class SchoolController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(String $school_id)
+    public function show(School $school)
     {
-        $school = School::findOrFail($school_id);
 
-        return view('school.show', compact('school'));
+        $courses = $school->getCourses();
+
+        $school_name = $school->name;
+        $school_id = $school->id;
+        $documents = $school->getDocuments();
+
+        return view('school.show', compact('school_id', 'school_name', 'courses', 'documents'));
     }
 
     /**
@@ -137,11 +146,18 @@ class SchoolController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(String $school_id)
+    public function destroy(School $school)
     {
-        $school = School::findOrFail($school_id);
+        if ($school->countCourses() > 0){
+            return redirect()->back()
+            ->with('error', "On ne peut pas effacer une école qui a des cours enregistrés");
+        }
+
         $school->delete();
         
-        return redirect(route('dashboard'));
+        return redirect(route('dashboard'))
+            ->with([
+            'success' => "Ecole supprimée avec succès"]);;
     }
+
 }

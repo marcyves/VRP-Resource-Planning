@@ -5,15 +5,17 @@
         </h2>
     </x-slot>
 
-    <x-nice-box color="white">
+    <section class="nice-box">
         @isset($course)
             <form action="{{route('course.update', $course->id)}}" method="post">
                 @csrf
                 @method('put')
                 <x-input-label>Name</x-input-label>
                 <x-text-input type="text" name="name" value="{{old('name',$course->name)}}"/>
-                <x-input-label>Program</x-input-label>
-                <select name="program_id">
+                    <x-input-label>Short Name</x-input-label>
+                    <x-text-input type="text" name="short_name" value="{{old('short_name',$course->short_name)}}"/>
+                    <x-input-label>Program</x-input-label>
+                <select name="program_id" class="rounded-md mt-4 py-0 pl-2 pr-8">
                     @foreach ($programs as $program)
                     <option value="{{$program->id}}"
                         @if($program->id==$course->program_id)
@@ -36,5 +38,5 @@
                 <x-primary-button>Save</x-primary-button>
             </form>
         @endisset
-    </x-nice-box>
+</section>
 </x-app-layout>

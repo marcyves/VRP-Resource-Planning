@@ -45,5 +45,8 @@ yarn-error.log
 
 .DS_Store
 plarany
+.env.local
+.env.planary
+/_doc
 _doc/
 .env.planetscale

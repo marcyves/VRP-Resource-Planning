@@ -7,7 +7,114 @@ use Illuminate\Database\Eloquent\Collection;
 
 class CourseCollection extends Collection
 {
-    public function getCourses(String $year, String $semester)
+    public function getBillingPlanning(String $year, String $month)
+    {
+        $list = $this->map(function(School $school){
+            return $school->id;
+        });
+       
+        $start_date =  trim($year)."-".substr("0".trim($month),-2)."-0 00:00:00";
+        $month++;
+        $end_year = $year;
+        if($month == "13"){
+            $month = "01";
+            $end_year++;
+        }
+        $end_date   =  trim($end_year)."-".substr("0".trim($month),-2)."-0 00:00:00";
+        
+
+        $plannings =  Course::whereIn('school_id', $list)
+        ->select([
+            'plannings.id as planning_id',
+            'schools.id as school_id',
+            'schools.name as school_name',
+            'courses.name as course_name',
+            'courses.id as course_id',
+            'courses.short_name as short_name',
+            'rate',
+            'begin',
+            'end',
+            'bill_id',
+            'location',
+            'session_length',
+            'groups.name as group_name',
+            'groups.short_name as group_short_name'
+            ])
+        ->leftJoin('groups', 'courses.id', '=', 'groups.course_id')
+        ->rightJoin('plannings', 'plannings.group_id', '=', 'groups.id')
+        ->join('schools', 'schools.id', '=', 'school_id')
+        ->where(['year' => $year])
+        ->where('begin', '>', $start_date)
+        ->where('end', '<', $end_date)
+        ->orderBy('school_name', 'asc')
+        ->orderBy('course_name', 'asc')
+        ->orderBy('group_name', 'asc')
+        ->orderBy('begin', 'asc')
+        ->get();
+
+        if (count($plannings)){
+            return $plannings;
+        }else{
+            return false;
+        }
+        
+
+    }
+    public function getPlanning(String $year, String $month)
+    {
+        $list = $this->map(function(School $school){
+            return $school->id;
+        });
+       
+        $start_date =  trim($year)."-".substr("0".trim($month),-2)."-0 00:00:00";
+        $month++;
+        $end_year = $year;
+        if($month == "13"){
+            $month = "01";
+            $end_year++;
+        }
+        $end_date   =  trim($end_year)."-".substr("0".trim($month),-2)."-0 00:00:00";
+        
+
+        return Course::whereIn('school_id', $list)
+        ->select([
+            'schools.name as school_name',
+            'plannings.id as id',
+            'begin',
+            'end',
+            'location',
+            'courses.name as course_name',
+            'courses.short_name as short_name',
+            'rate',
+            'session_length',
+            'bill_id',
+            'groups.name as group_name',
+            'groups.short_name as group_short_name'
+            ])
+        ->leftJoin('groups', 'courses.id', '=', 'groups.course_id')
+        ->rightJoin('plannings', 'plannings.group_id', '=', 'groups.id')
+        ->join('schools', 'schools.id', '=', 'school_id')
+        ->where(['year' => $year])
+        ->where('begin', '>', $start_date)
+        ->where('end', '<', $end_date)
+        ->orderBy('begin', 'asc')
+        ->get();
+    }
+
+    public function listCourses()
+    {
+        $list = $this->map(function(School $school){
+            return [$school->id,
+                    $school->name,
+                    Course::getCoursesForSchool($school->id)];
+        });
+
+//        dd($list);
+
+        return $list;
+    }
+
+    public function getCourses(String $year = 'all', String $semester = 'all')
     {
         $list = $this->map(function(School $school){
             return $school->id;
@@ -82,8 +189,9 @@ class CourseCollection extends Collection
         });
 
         return Course::whereIn('school_id', $list)
-            ->select(['year', 'semester'])
+            ->select(['year'])
             ->distinct()
+            ->orderBy('year', 'asc')
             ->get();
     }
 }

@@ -4,7 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -25,6 +25,7 @@ class User extends Authenticatable
         'email',
         'password',
         'status_id',
+        'company_id',
         'photo'
     ];
 
@@ -48,9 +49,39 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    public function schools(): HasMany
+    public function schools(): BelongsToMany
     {
-        return $this->HasMany(School::class);
+        return $this->belongsToMany(School::class);
+    }
+
+    public function getSchools()
+    {
+        $company_id = $this->company_id;
+
+        return School::select(['schools.*'])->where('schools.company_id', '=', $company_id)->get();
+    }
+
+    public function getCourses($current_year, $current_semester)
+    {
+        $company_id = $this->company_id;
+
+        $schools = School::select(['schools.*'])->where('schools.company_id', '=', $company_id)->get();
+        return $schools->getCourses($current_year, $current_semester);;
+    }
+
+    public function getCompany()
+    {
+        return Company::findOrFail($this->company_id);
+    }
+
+    public function getCompanyBillPrefix()
+    {
+        return Company::findOrFail($this->company_id)->bill_prefix;
+    }
+
+    public function getBills()
+    {
+        return Bill::all();
     }
 
     public function getStatusName()
@@ -58,9 +89,33 @@ class User extends Authenticatable
         return Status::findOrFail($this->status_id)->name;
     }
 
+    public function getMode()
+    {
+        if($this->isAdmin() or $this->isEditor()){
+            if($this->mode == ""){
+                $this->mode = "Edit";
+            }
+        }else{
+            $this->mode = "Browse";
+        }
+        return $this->mode;
+    }
+
+    public function setMode($mode)
+    {
+        $this->mode = $mode;
+    }
+
+    public function isSuperAdmin()
+    {
+        if ($this->status_id == 4)
+            return true;
+        return false;
+    }
+
     public function isAdmin()
     {
-        if ($this->status_id == 1)
+        if ($this->status_id == 1 or $this->status_id == 4)
             return true;
         return false;
     }

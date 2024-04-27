@@ -1,4 +1,5 @@
-# plarany
+# VRP
+## VRP Resource Planning
 Project planification and budgeting
 <a name="readme-top"></a>
 
@@ -19,23 +20,23 @@ Project planification and budgeting
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <a href="https://github.com/othneildrew/Best-README-Template">
-    <img src="images/logo.png" alt="Logo" width="80" height="80">
+  <a href="https://github.com/marcyves/VRP">
+    <img src="public/logo-XDM.png" alt="Logo" width="80" height="80">
   </a>
 
-  <h3 align="center">PLARANY</h3>
+  <h3 align="center">VRP</h3>
 
   <p align="center">
-    Project planification and budgeting
+  VRP started as a personal side projet in order to help me plan and budget my different projects. Gradually, this is evolving into an ERP System for freelancers and vacataires.
     <br />
-    <a href="https://github.com/othneildrew/Best-README-Template"><strong>Explore the docs »</strong></a>
+    <a href="https://github.com/marcyves/VRP"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="https://github.com/othneildrew/Best-README-Template">View Demo</a>
+    <a href="https://github.com/marcyves/VRP">View Demo</a>
     ·
-    <a href="https://github.com/othneildrew/Best-README-Template/issues">Report Bug</a>
+    <a href="https://github.com/marcyves/VRP/issues">Report Bug</a>
     ·
-    <a href="https://github.com/othneildrew/Best-README-Template/issues">Request Feature</a>
+    <a href="https://github.com/marcyves/VRP/issues">Request Feature</a>
   </p>
 </div>
 
@@ -106,7 +107,7 @@ _You need `composer`` to install the project and then follow the usual steps for
 
 1. Clone the repo
    ```sh
-   git clone https://github.com/marcyves/plarany.git
+   git clone https://github.com/marcyves/VRP.git
    ```
 2. Install Laravel modules
   ```sh
@@ -153,7 +154,21 @@ See the [open issues](https://github.com/marcyves/plarany/issues) for a full lis
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
+## Very Short Documentation
 
+### User Statuses
+  * 1 admin (for their company)
+  * 2 éditeur
+  * 3 rédacteur
+  * 4 SuperAdmin (all companies)
+
+## Online demo
+
+You can give a try to the project at 
+http://vrp.xdm-consulting.fr/
+
+email: user@xdm.fr
+password: topsecret
 
 <!-- CONTRIBUTING -->
 ## Contributing
@@ -187,7 +202,7 @@ Distributed under the GPL 3 License. See `LICENSE.txt` for more information.
 
 Marc Augier - [@marcyves](https://twitter.com/marcyves)
 
-Project Link: [https://github.com/marcyves/plarany](https://github.com/marcyves/plarany)
+Project Link: [https://github.com/users/marcyves/projects/3](https://github.com/users/marcyves/projects/3)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -198,7 +213,7 @@ Project Link: [https://github.com/marcyves/plarany](https://github.com/marcyves/
 
 Resources I find helpful and would like to give credit to.
 
-* [Best README Template](https://github.com/othneildrew/Best-README-Template)
+* [Best README Template](https://github.com/marcyves/VRP)
 * [Choose an Open Source License](https://choosealicense.com)
 * [GitHub Emoji Cheat Sheet](https://www.webpagefx.com/tools/emoji-cheat-sheet)
 * [Malven's Flexbox Cheatsheet](https://flexbox.malven.co/)
@@ -214,20 +229,29 @@ Resources I find helpful and would like to give credit to.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
+## vous avez aimé ?
+Pourquoi pas me remercier en m'offrant un café ?
+
+<a href="https://www.buymeacoffee.com/marcyves" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-blue.png" alt="Buy Me A Coffee" width="210" ></a>
+
+Réalisé par [@marcyves](https://github.com/marcyves)
+
+## Notice
+
 
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 [contributors-shield]: https://img.shields.io/github/contributors/othneildrew/Best-README-Template.svg?style=for-the-badge
-[contributors-url]: https://github.com/othneildrew/Best-README-Template/graphs/contributors
+[contributors-url]: https://github.com/marcyves/VRP/graphs/contributors
 [forks-shield]: https://img.shields.io/github/forks/othneildrew/Best-README-Template.svg?style=for-the-badge
-[forks-url]: https://github.com/othneildrew/Best-README-Template/network/members
+[forks-url]: https://github.com/marcyves/VRP/network/members
 [stars-shield]: https://img.shields.io/github/stars/othneildrew/Best-README-Template.svg?style=for-the-badge
-[stars-url]: https://github.com/othneildrew/Best-README-Template/stargazers
+[stars-url]: https://github.com/marcyves/VRP/stargazers
 [issues-shield]: https://img.shields.io/github/issues/othneildrew/Best-README-Template.svg?style=for-the-badge
-[issues-url]: https://github.com/othneildrew/Best-README-Template/issues
+[issues-url]: https://github.com/marcyves/VRP/issues
 [license-shield]: https://img.shields.io/github/license/othneildrew/Best-README-Template.svg?style=for-the-badge
-[license-url]: https://github.com/othneildrew/Best-README-Template/blob/master/LICENSE.txt
+[license-url]: https://github.com/marcyves/VRP/blob/master/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/marcaugier
 [planary-screenshot]: https://raw.githubusercontent.com/marcyves/plarany/main/_doc/screencapture.png

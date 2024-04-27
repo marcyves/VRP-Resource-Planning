@@ -12,7 +12,7 @@ class Course extends Model
     use HasFactory;
 
     public $timestamps = false;
-    public $fillable = ['name', 'sessions', 'session_length', 'school_id', 'program_id', 'year', 'semester', 'rate'];
+    public $fillable = ['name', 'short_name','sessions', 'session_length', 'school_id', 'program_id', 'year', 'semester', 'rate'];
 
     protected $withCount = [
         'groups',
@@ -30,7 +30,7 @@ class Course extends Model
 
     public function getGroups()
     {
-        return Group::where(['course_id' => $this->id])->get();
+        return Group::where(['course_id' => $this->id])->orderBy('name', 'asc')->get();
     }
 
     public static function getCourseDetails(String $course_id)
@@ -38,6 +38,16 @@ class Course extends Model
         return Course::select('courses.*', 'programs.id as program_id', 'programs.name as program_name')
         ->join('programs', 'courses.program_id', '=', 'programs.id')
         ->where('courses.id', '=', $course_id)
+        ->get()[0]
+        ;
+
+    }
+
+    public static function getCoursesForSchool(String $school_id)
+    {
+        return Course::select('courses.*')
+        ->join('schools', 'courses.school_id', '=', 'schools.id')
+        ->where('schools.id', '=', $school_id)
         ->get()[0]
         ;
 

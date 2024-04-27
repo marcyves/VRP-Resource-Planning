@@ -1,11 +1,14 @@
 <?php
 
 use App\Http\Controllers\CourseController;
+use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\PlanningController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProgramController;
 use App\Http\Controllers\SchoolController;
+use App\Http\Controllers\BillController;
+
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -24,15 +27,17 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', function () {
-    return redirect(route('school.index'));
+    return redirect(route('school.dashboard'));
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/school/list', [SchoolController::class, 'list'])->name('school.list');
     Route::get('/school/{school_id}/add', [SchoolController::class, 'add'])->name('school.add');
+    Route::post('/school/{school_id}/document', [DocumentController::class, 'store'])->name('document.store');
     Route::post('/school/semester', [SchoolController::class, 'index'])->name('school.semester');
-    Route::post('/school/year', [SchoolController::class, 'index'])->name('school.year');
-    Route::get('/school/year', [SchoolController::class, 'index'])->name('school.default_year');
+    Route::post('/school/year', [SchoolController::class, 'dashboard'])->name('school.year');
+    Route::get('/school/year', [SchoolController::class, 'dashboard'])->name('school.default_year');
+    Route::get('/school/dashboard', [SchoolController::class, 'dashboard'])->name('school.dashboard');
     Route::resource('/school', SchoolController::class);
 
     Route::get('/course/{school_id}/create', [CourseController::class, 'create'])->name('course.create');
@@ -43,16 +48,26 @@ Route::middleware('auth')->group(function () {
     Route::delete('/course/{course_id}', [CourseController::class, 'destroy'])->name('course.destroy');
 
     Route::get('/group/', [GroupController::class, 'index'])->name('group.index');
-    Route::get('/group/{course_id}/create', [GroupController::class, 'create'])->name('group.create');
-    Route::post('/group/{course_id}', [GroupController::class, 'store'])->name('group.store');
+    Route::get('/group/{course_id}/create', [GroupController::class, 'create'])->name('group.new');
+    Route::post('/group/{course_id}', [GroupController::class, 'store'])->name('group.save');
+    Route::resource('/group', GroupController::class);
 
     Route::get('/planning', [PlanningController::class, 'index'])->name('planning.index');
-    Route::get('/planning/{group_id}/create', [PlanningController::class, 'create'])->name('planning.create');
-    Route::post('/planning/{group_id}', [PlanningController::class, 'store'])->name('planning.store');
+    Route::post('/planning/period', [PlanningController::class, 'index'])->name('planning.period');
+    Route::post('/planning/billing', [PlanningController::class, 'billing'])->name('planning.billing');
+    Route::post('/planning/set_bill', [PlanningController::class, 'setBill'])->name('planning.setBill');
+    Route::get('/planning/{id}', [PlanningController::class, 'edit'])->name('planning.edit');
+    Route::put('/planning/{id}', [PlanningController::class, 'update'])->name('planning.update');
+    Route::delete('/planning/{id}', [PlanningController::class, 'destroy'])->name('planning.delete');
+    Route::post('/planning/{day}', [PlanningController::class, 'create'])->name('planning.create');
+    Route::post('/planning', [PlanningController::class, 'store'])->name('planning.store');
     
     Route::resource('/program', ProgramController::class);
+    Route::resource('/bill', BillController::class);
+    Route::resource('/documents', DocumentController::class);
     
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::get('/profile/switch', [ProfileController::class, 'switch'])->name('profile.switch');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });

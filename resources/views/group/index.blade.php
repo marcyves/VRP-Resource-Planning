@@ -5,11 +5,9 @@
         </h2>
     </x-slot>
 
-    <x-nice-box color="white">
-        <ul>
-        @foreach ($groups as $group)
-            <li>{{$group->name}}</li>            
-        @endforeach
-        </ul>
-    </x-nice-box>
+    @foreach ($groups as $group)
+    <section  class="nice-box">
+    <x-group-details :group=$group :occurences=$occurences />
+    </section>
+    @endforeach
 </x-app-layout>

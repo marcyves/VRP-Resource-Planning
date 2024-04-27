@@ -17,7 +17,7 @@ class ProgramFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'name' => 'Program: '.rand(1,10)
         ];
     }
 }
