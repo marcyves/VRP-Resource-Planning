@@ -1,14 +1,13 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{$school_name}} Details
+            {{$school_name}}
         </h2>
     </x-slot>
 
     <section class="bg-gray-50 p-3 sm:p-5">
     <div class="mx-auto max-w-screen-xl px-2 lg:px-12">
         <div class="bg-white relative shadow-md sm:rounded-lg overflow-hidden">              
-        <x-school-header :school_name=$school_name :school_id=$school_id/>
         <x-advanced-course-table :courses=$courses :school_name=$school_name :school_id=$school_id/>
         </div>
     </div>
