@@ -12,4 +12,8 @@ class Company extends Model
     public $timestamps = false;
     public $fillable = ['name'];
 
+    public function schools(): HasMany
+    {
+        return $this->HasMany(School::class);
+    }
 }
