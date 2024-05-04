@@ -37,9 +37,6 @@ class SchoolResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('company_id')
-                    ->numeric()
-                    ->sortable(),
                 Tables\Columns\TextColumn::make('company.name')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('name')
