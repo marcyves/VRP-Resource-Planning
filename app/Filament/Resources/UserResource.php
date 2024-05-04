@@ -62,8 +62,7 @@ class UserResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('photo')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('status_id')
-                    ->numeric()
+                Tables\Columns\TextColumn::make('status.name')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
@@ -75,8 +74,7 @@ class UserResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('mode')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('company_id')
-                    ->numeric()
+                Tables\Columns\TextColumn::make('company.name')
                     ->sortable(),
             ])
             ->filters([
