@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
@@ -23,9 +24,14 @@ class Course extends Model
         return $this->HasMany(Group::class);
     }
 
-    public function program(): HasOne
+    public function program(): BelongsTo
     {
-        return $this->hasOne(Program::class);
+        return $this->BelongsTo(Program::class);
+    }
+
+    public function school(): BelongsTo
+    {
+        return $this->BelongsTo(School::class);
     }
 
     public function getGroups()

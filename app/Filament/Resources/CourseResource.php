@@ -59,8 +59,11 @@ class CourseResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('school_id')
-                    ->numeric()
+                Tables\Columns\TextColumn::make('short_name')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('school.name')
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('program.name')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('sessions')
                     ->numeric()
@@ -69,17 +72,14 @@ class CourseResource extends Resource
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('year')
+                    ->sortable() 
                     ->searchable(),
                 Tables\Columns\TextColumn::make('semester')
+                    ->sortable() 
                     ->searchable(),
                 Tables\Columns\TextColumn::make('rate')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('program_id')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('short_name')
-                    ->searchable(),
             ])
             ->filters([
                 //
