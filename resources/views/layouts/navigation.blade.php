@@ -39,6 +39,13 @@
                 {{__(Auth::user()->getMode())}}
             </x-nav-link>
 
+            <!-- Link to admin (Filament) -->
+            @if(Auth::user()->getStatusName() == 'Super Admin')
+            <x-nav-link :href="route('filament.admin.pages.dashboard')" :active="request()->routeIs('filament.admin.pages.dashboard')">
+            {{ __('Admin') }}
+            </x-nav-link>
+            @endif
+
             <!-- Settings Dropdown -->
             <div class="hidden sm:flex sm:items-center sm:ml-6">
                 <x-dropdown align="right" width="48">
