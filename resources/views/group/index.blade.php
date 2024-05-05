@@ -6,7 +6,7 @@
     </x-slot>
 
     @foreach ($groups as $group)
-    <section  class="nice-box">
+    <section  class="nice-page">
     <x-group-details :group=$group :occurences=$occurences />
     </section>
     @endforeach

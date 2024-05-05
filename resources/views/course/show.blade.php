@@ -5,7 +5,7 @@
         </h2>
     </x-slot>
 
-    <section class="nice-box">
+    <section class="nice-page">
         <div class="flex flew-row place-content-between bg-grey-200 p-2 rounded-md">
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">{{$course->name}}</h2>
             <span class="justify-end">

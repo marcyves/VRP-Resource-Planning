@@ -6,14 +6,14 @@
     </x-slot>
 
     @if($monthly_hours == 0)
-    <section  class="nice-box">
+    <section  class="nice-page">
     <div class="flex flex-row font-semibold text-gray-600 border border-gray-300 rounded-md mt-4 p-4 bg-red-100">
         No hours logged this month
     </div>
     </section>
     @else
         @foreach($schools as $school => $courses)
-        <section  class="nice-box">
+        <section  class="nice-page">
             <div class="font-bold text-gray-800 bg-green-100 p-2 mb-2 flex justify-between">
                 <h2 class="inline ml-2 pt-2">{{$school}}</h2>
             </div>
@@ -86,7 +86,7 @@
             </div>
             </section>
         @endforeach
-        <section  class="nice-box">
+        <section  class="nice-page">
         <div class="flex flex-row justify-between font-semibold text-gray-600 border border-gray-300 rounded-md mt-4 py-4 bg-gray-200">
             <div class="mx-4">
                 Time worked = {{$monthly_hours}} hours

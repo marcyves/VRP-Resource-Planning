@@ -5,7 +5,7 @@
         </h2>
     </x-slot>
 
-    <section  class="nice-box">
+    <section  class="nice-page">
 
         <x-nice-title color="grey-200" title="Groups">
             <a

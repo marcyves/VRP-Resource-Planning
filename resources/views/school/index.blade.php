@@ -11,7 +11,7 @@
         @endif
     </x-slot>
 
-    <section  class="nice-box">
+    <section  class="nice-page">
         <ul>
             @foreach ($schools as $school)
             <li class="mx-auto max-w-screen-xl px-2 lg:px-12 bg-white shadow-md sm:rounded-lg overflow-hidden mb-2
@@ -27,7 +27,7 @@
     </section>
 
     @if(Auth::user()->getMode() == "Edit")
-    <section class="nice-box">
+    <section class="nice-page">
         <form action="{{route('school.store')}}" method="post" 
         class="mx-auto px-6 py-2 bg-white shadow-md mb-6 flex items-center justify-items-start">
             @csrf

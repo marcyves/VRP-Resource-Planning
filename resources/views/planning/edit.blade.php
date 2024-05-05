@@ -20,7 +20,7 @@
         $end_minutes = explode(":", $end_time)[1];
     @endphp
 
-    <section  class="nice-box">
+    <section  class="nice-page">
         <div class="grid grid-flow-row-dense grid-cols-2 grid-rows-2">
             <div>
                 <form action="{{route('planning.update', $planning->id)}}" method="post">

@@ -26,7 +26,7 @@
         </div>
     </x-slot>
 
-    <section class="nice-box">
+    <section class="nice-page">
     @php
         $gross_total_time = 0;   
         $gross_total_budget = 0;
@@ -39,14 +39,9 @@
         @foreach ($courses as $course)
             @if($school_name != $course->school_name)
                 @if($school_count > 0)
-                    <tr class="border-b">
+                    <tr class="font-semibold">
                         <th scope="row" class="px-2 py-3 font-medium text-gray-900 whitespace-nowrap">Total</th>
-                        <td class="px-2 py-3"></td>
-                        <td class="px-2 py-3"></td>
-                        <td class="px-2 py-3"></td>
-                        <td class="px-2 py-3"></td>
-                        <td class="px-2 py-3"></td>
-                        <td class="px-2 py-3"></td>
+                        <td class="px-2 py-3" colspan="6"></td>
                         <td class="px-2 py-3 text-center">{{$total_time}}</td>
                         <td class="px-2 py-3"></td>
                         <td class="px-2 py-3 text-center">@money($total_budget)</td>
@@ -78,7 +73,6 @@
                             <tr>
                                 <th scope="col" class="px-2 py-3">{{__('messages.program')}}</th>
                                 <th scope="col" class="px-2 py-3">{{__('messages.course')}}</th>
-                                <th scope="col" class="px-2 py-3 text-center">{{__('messages.year')}}</th>
                                 <th scope="col" class="px-2 py-3 text-center">{{__('messages.semester')}}</th>
                                 <th scope="col" class="px-2 py-3 text-center">{{__('messages.sessions')}}</th>
                                 <th scope="col" class="px-2 py-3 text-center">{{__('messages.session_length')}}</th>
@@ -103,7 +97,6 @@
                         </button>    
                     </form>
                 </th>
-                <td class="px-2 py-3 text-center">{{$course->year}}</td>
                 <td class="px-2 py-3 text-center">{{$course->semester}}</td>
                 <td class="px-2 py-3 text-center">{{$course->sessions}}</td>
                 <td class="px-2 py-3 text-center">{{$course->session_length}}</td>

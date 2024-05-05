@@ -6,7 +6,7 @@
             </h2>
     </x-slot>
 
-    <section class="nice-box">
+    <section class="nice-page">
         <div class="table w-full">
             @foreach ($bills as $bill)
             <div class="table-row">
@@ -47,7 +47,7 @@
         </div>
 </section>
 
-    <section class="nice-box">
+    <section class="nice-page">
         <form action="{{route('bill.store')}}" method="post">
             @csrf
             <x-input-label>{{ __('messages.name') }}</x-input-label>
