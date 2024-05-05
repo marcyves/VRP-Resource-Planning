@@ -50,3 +50,4 @@ plarany
 /_doc
 _doc/
 .env.planetscale
+production.env
