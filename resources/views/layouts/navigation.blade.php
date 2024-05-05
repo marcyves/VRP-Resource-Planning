@@ -40,7 +40,7 @@
             </x-nav-link>
 
             <!-- Link to admin (Filament) -->
-            @if(Auth::user()->getStatusName() == 'Super Admin')
+            @if(Auth::user()->getStatusName() == 'admin')
             <x-nav-link :href="route('filament.admin.pages.dashboard')" :active="request()->routeIs('filament.admin.pages.dashboard')">
             {{ __('Admin') }}
             </x-nav-link>
