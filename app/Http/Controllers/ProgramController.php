@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Program;
+use App\Models\Course;
 use Illuminate\Http\Request;
 
 class ProgramController extends Controller
@@ -55,8 +56,9 @@ class ProgramController extends Controller
     public function show(String $program_id)
     {
         $program = Program::find($program_id);
+        $courses = Course::where('program_id', '=', $program_id)->get();
 
-        return view('program.show', compact('program'));
+        return view('program.show', compact('program', 'courses'));
     }
 
     /**

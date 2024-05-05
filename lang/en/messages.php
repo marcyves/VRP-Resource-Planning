@@ -12,6 +12,7 @@ return [
     'schools_list' => 'List Schools',
     'schools_empty_list' => 'List Schools without course',
     'course' => 'Course',
+    'course_list' => 'Course List',
     'course_create' => 'Course Creation',
     'add_course' => 'Add Course',
     'program' => 'Program',

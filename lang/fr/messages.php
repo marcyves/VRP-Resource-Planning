@@ -13,6 +13,7 @@ return [
     'schools_list' => 'Liste des écoles',
     'schools_empty_list' => 'Liste des écoles sans cours',
     'course' => 'Cours',
+    'course_list' => 'Liste des Cours',
     'course_create' => 'Création d\'un cours',
     'add_course' => 'Ajouter un Cours',
     'program' => 'Programme',

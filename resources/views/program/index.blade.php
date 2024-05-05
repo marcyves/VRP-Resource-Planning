@@ -11,7 +11,12 @@
             @foreach ($programs as $program)
             <li class="mx-auto max-w-screen-xl px-2 lg:px-12 bg-white shadow-md sm:rounded-lg overflow-hidden mb-2
             flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-2">
-                <span class="table-cell text-left  text-gray-600">{{$program->name}}</span>
+                <form action="{{route('program.show', $program->id)}}" method="get">
+                    @csrf
+                    <button class="inline-flex items-center p-0.5 text-sm font-medium text-center text-blue-500 hover:text-gray-800 rounded-lg focus:outline-none" type="submit">
+                        {{$program->name}}
+                    </button>    
+                </form>
                 @if(Auth::user()->getMode() == "Edit")
                 <span class="table-cell text-right">
                     <form class="inline" action="{{route('program.edit', $program->id)}}" method="get">

@@ -19,12 +19,41 @@
             </span>
         </div>
         <ul class="mx-4">
-            <li>Program: {{$course->program_name}}</li>
-            <li>Sessions: {{$course->sessions}}</li>
-            <li>Session length: {{$course->session_length}}</li>
-            <li>Rate: {{$course->rate}}</li>
-            <li>Year: {{$course->year}}</li>
-            <li>Semester: {{$course->semester}}</li>
+            <li>
+                <label class="font-semibold text-gray-800 leading-tight">
+                Program: 
+                </label>
+                <a class="inline-flex items-center p-0.5 text-sm font-medium text-center text-blue-500 hover:text-gray-800 rounded-lg focus:outline-none"
+                    href="{{route('program.show', $course->program_id)}}">
+                    {{$course->program_name}}
+                </a>
+            </li>
+            <li>
+            <label class="font-semibold text-gray-800 leading-tight">
+                Sessions: 
+            </label>
+            {{$course->sessions}}</li>
+            <li>
+            <label class="font-semibold text-gray-800 leading-tight">
+            Session length: 
+            </label>    
+            {{$course->session_length}}</li>
+            <li>
+            <label class="font-semibold text-gray-800 leading-tight">
+            Rate: 
+            </label>
+            {{$course->rate}}</li>
+            <li>
+            <label class="font-semibold text-gray-800 leading-tight">
+            Year: 
+            </label>
+            {{$course->year}}</li>
+            <li>
+            <label class="font-semibold text-gray-800 leading-tight">
+            Semester: 
+            </label>
+            {{$course->semester}}
+            </li>
         </ul>       
     </section>
 
