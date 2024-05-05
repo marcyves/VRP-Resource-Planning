@@ -54,6 +54,7 @@ class School extends Model
             ->orderBy('semester', 'asc')
             ->orderBy('school_name', 'asc')
             ->orderBy('program_name', 'asc')
+            ->orderBy('name', 'asc')
             ->get();
     }
      /**
