@@ -28,15 +28,22 @@
     
             @foreach ($courses as $course)
             <tr>
-                <td class="px-2 py-3 font-medium text-gray-900 whitespace-nowrap">{{$course->program_name}}</td>
-                <th scope="row" class="px-2 py-3 font-medium text-gray-900 whitespace-nowrap">
+                <td class="px-2 py-3 font-medium text-gray-900 whitespace-nowrap">
+                    <form action="{{route('program.show', $course->program_id)}}" method="get">
+                        @csrf
+                        <button class="inline-flex items-center p-0.5 text-sm font-medium text-center text-blue-500 hover:text-gray-800 rounded-lg focus:outline-none" type="submit">
+                            {{$course->program_name}}
+                        </button>    
+                    </form>
+                </td>
+                <td scope="row" class="px-2 py-3 font-medium text-gray-900 whitespace-nowrap">
                     <form action="{{route('course.show', $course->id)}}" method="get">
                         @csrf
                         <button class="inline-flex items-center p-0.5 text-sm font-medium text-center text-blue-500 hover:text-gray-800 rounded-lg focus:outline-none" type="submit">
                             {{$course->name}}
                         </button>    
                     </form>
-                </th>
+                </td>
                 <td class="px-2 py-3 text-center">{{$course->year}}</td>
                 <td class="px-2 py-3 text-center">{{$course->semester}}</td>
                 <td class="px-2 py-3 text-center">{{$course->sessions}}</td>
