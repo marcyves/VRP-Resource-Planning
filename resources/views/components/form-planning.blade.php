@@ -23,7 +23,7 @@
             $begin_day = explode("-", $begin_date)[2];
             if ((int)$begin_day == $day){
         @endphp
-        <div class="text-gray-400 block bg-white rounded-md mb-2">
+        <div class="text-gray-600 block bg-white rounded-md mb-2">
             <div class="flex flex-col items-start pl-1 justify-between text-wrap text-xs">
                 <div class="justify-start">
                     {{date_format(date_create($event->begin),'H:i')}}: {{$event->short_name}} ({{$event->group_short_name}})
