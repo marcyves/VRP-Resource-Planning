@@ -1,4 +1,4 @@
-<div class="calCell px-2 pt-1 bg-gray-100 flex-col justify-stretch border border-black m-1">
+<div class="calCell">
     <div class="bg-blue-100 mx-0 py-1 mb-1 text-blue-400 text-center">
         {{$day}}
     </div>
@@ -9,39 +9,42 @@
         <input type="hidden" name="month" value={{$month}}>
         <input type="hidden" name="year" value={{$year}}>
         <select name="course" class="text-sm rounded-md mt-2 py-0 pl-2 pr-8 overflow-clip w-full mb-2"  onchange="this.form.submit()">
-            <option value="0">-->Select a course</option>
+            <option value="0">--&gt; Course?</option>
             @foreach ($courses as $course)
             <option value="{{$course->id}}">{{$course->name}}</option>                            
             @endforeach
         </select>
     </form>
     @endif
+
     @foreach ($planning as $event)
         @php
             $begin_date = explode(" ", $event->begin)[0];
             $begin_day = explode("-", $begin_date)[2];
             if ((int)$begin_day == $day){
         @endphp
-        <div class="text-gray-400 block bg-white px-2 py-1 border border-blue-400 rounded-md mb-1">
-            <div class="flex flex-row items-center justify-between">
-                <div>
-                    {{date_format(date_create($event->begin),'H:i')}}
-                    {{$event->short_name}} ({{$event->group_short_name}})<br>
-                    {{date_format(date_create($event->end),'H:i')}}
-                    <div class="text-green-400">{{$event->bill_id}}</div>
+        <div class="text-gray-400 block bg-white rounded-md mb-2">
+            <div class="flex flex-col items-start pl-1 justify-between text-wrap text-xs">
+                <div class="justify-start">
+                    {{date_format(date_create($event->begin),'H:i')}}: {{$event->short_name}} ({{$event->group_short_name}})
                 </div>
+                <div class="justify-start">
+                    {{date_format(date_create($event->end),'H:i')}}
+                </div>
+                <div class="text-green-400">
+                    {{$event->bill_id}}
+                </div>
+            </div>
                 @if(Auth::user()->getMode() == "Edit")
-                <div class="w-full md:w-auto flex flex-col space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0">
-                    <a href="{{route('planning.edit',$event->id)}}">
+                    <a class="inline" href="{{route('planning.edit',$event->id)}}">
                         <button class="inline-flex items-center p-0.5 text-sm font-medium text-center text-green-500 hover:text-gray-800 rounded-lg focus:outline-none" type="submit">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
                             </svg>
                         </button>
                     </a>
-                </div>
-                <div class="w-full md:w-auto flex flex-col space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0">
-                    <form action="{{route('planning.delete',$event->id)}}" method="post">
+                    <form action="{{route('planning.delete',$event->id)}}" method="post"
+                    class="inline">
                         @csrf
                         @method('delete')
                         <button class="inline-flex items-center p-0.5 text-sm font-medium text-center text-red-500 hover:text-gray-800 rounded-lg focus:outline-none" type="submit">
@@ -50,11 +53,8 @@
                             </svg>                                  
                         </button>
                     </form>
-                </div>
                 @endif
-            </div>
-        </div>
-            
+        </div>  
         @php
             }
         @endphp

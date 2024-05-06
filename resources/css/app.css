@@ -2,12 +2,21 @@
 @tailwind components;
 @tailwind utilities;
 
+* {
+  font-family: Arial, Helvetica, sans-serif;
+  box-sizing: border-box;
+}
+
 :root {
   --main-bg-color: rgb(199, 242, 252);
   --nav-bg-color: #221f49;
   --secondary-bg-color: rgb(134, 166, 241);
-  --border-color: rgb(145, 123, 24);
+  --border-color: rgb(83, 140, 233);
   --main-text-color:rgb(68, 37, 4);
+/* calendar */  
+  --bg-color-a: #3b39af; /* page header + form label */
+  --bg-color-b: #404040; /* calendar header */
+  --bg-color-c: #d73a3a; /* buttons */
 }
 
 @media print {
@@ -18,6 +27,11 @@
   nav{
     display: none;
   }
+}
+
+body {
+  padding: 0; 
+  margin: 0;
 }
 
 button{
@@ -241,20 +255,7 @@ main{
 
   /* Calendar */
   /* (A) ENTIRE PAGE */
-* {
-  font-family: Arial, Helvetica, sans-serif;
-  box-sizing: border-box;
-}
-body {
-  position: relative;
-  padding: 0; margin: 0;
-  overflow-x: hidden;
-}
-:root {
-  --bg-color-a: #3b39af; /* page header + form label */
-  --bg-color-b: #404040; /* calendar header */
-  --bg-color-c: #d73a3a; /* buttons */
-}
+
 .hide { display: none !important; }
 
 /* (B) PERIOD SELECTOR */
@@ -277,13 +278,18 @@ body {
 /* (C) CALENDAR */
 /* (C1) SHARED */
 .calHead, .calRow { display: flex; }
-.calCell { width: 14.2857%; }
+.calCell {
+  width: 14.3%;
+  margin: 1px;
+}
 
 /* (C2) HEADER - DAY NAMES */
 .calHead .calCell {
-  color: #fff; background: var(--bg-color-b);
-  font-weight: 700; text-align: center;
-  padding: 15px 0;
+  color: #fff; 
+  background: var(--secondary-bg-color);
+  font-weight: 700; 
+  text-align: center;
+  padding: 8px 0;
 }
 
 /* (C3) BODY - INDIVIDUAL DAYS */
@@ -291,7 +297,7 @@ body {
 .calToday { background: #feffd3; }
 .calToday .cellDate { color: #ff9b9b; }
 .calBody .calCell {
-  border: 1px solid #f5f5f5;
+  border: 1px solid var(--border-color);
   min-height: 80px;
 }
 .cellDate, .evt { padding: 5px; }
