@@ -80,18 +80,44 @@ class PlanningController extends Controller
      */
     public function billing(Request $request)
     {
-        $current_month = $request->month;
-        $current_year = $request->year;
-        $current_semester = "all";
+        if(isset($request->current_year)){
+            $current_year = $request->current_year;
+            session(['current_year' => $current_year]);
+        }else {
+            $current_year = session('current_year');
+            if (!isset($current_year)) {
+                $current_year = now()->format('Y');
+            }
+        }
+        $current_year = (int) $current_year;
 
+        if(isset($request->current_month)){
+            $current_month = $request->current_month+1;
+            session(['current_month' => $current_month]);
+        }else {
+            $current_month = session('current_month');
+            if (!isset($current_month)) {
+                $current_month = now()->format('m');
+            }
+        }
+
+        $current_semester = "all";
         $schools = Auth::user()->schools()->get();
+        $years = Auth::user()->getSchools()->getYears();
+        //generate all the month names according to the current locale
+        $months = [];
+        for ($m=1; $m<=12; $m++) {
+            $months[] = ucfirst(Carbon::parse(mktime(0,0,0,$m, 1, date('Y')))->translatedFormat('F'));
+        }
 
         // Collect Planning information for billing
         $planning = $schools->getBillingPlanning($current_year, $current_month);
 
         if(!$planning)
         {
-            return redirect()->back()
+            $monthly_hours = 0;
+            return view('planning.billing',compact('schools', 'current_year', 'current_month', 'monthly_hours','years', 'months'))
+//            return redirect()->back()
             ->with('error', "Pas de cours enregistré ce mois-ci");
         }
 
@@ -169,9 +195,9 @@ class PlanningController extends Controller
             "hours"   => $school_hours,
             "gain"    => $school_gain);
 
-        $bills = Auth::user()->getBills();
-
-        return view('planning.billing',compact('schools', 'current_year', 'current_month', 'monthly_gain', 'monthly_hours', 'bills'));    
+        $bills = Auth::user()->getBills();    
+        
+        return view('planning.billing',compact('schools', 'current_year', 'current_month', 'monthly_gain', 'monthly_hours', 'bills', 'years', 'months'));    
     }
 
     /**

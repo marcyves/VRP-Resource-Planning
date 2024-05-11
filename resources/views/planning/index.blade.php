@@ -82,16 +82,6 @@
             <div class="mx-4">
             {{ __('messages.hour_rate') }} = @if ($monthly_hours == 0) 0 @else {{number_format($monthly_gain/$monthly_hours,2)}} @endif€
             </div>
-            <div class="justify-end">
-                <form action="{{route('planning.billing')}}" method="post">
-                    @csrf
-                    <input type="hidden" name="year" value="{{$current_year}}">
-                    <input type="hidden" name="month" value="{{$current_month}}">
-                    <button class="border border-gray-400 bg-white rounded-md px-4 mr-4">
-                    {{ __('messages.billing') }}
-                    </button>
-                </form>
-            </div>
         </div>
         </section>
 

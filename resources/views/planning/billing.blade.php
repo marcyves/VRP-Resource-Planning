@@ -5,20 +5,39 @@
         </h2>
     </x-slot>
 
-    @if($monthly_hours == 0)
     <section  class="nice-page">
-    <div class="flex flex-row font-semibold text-gray-600 border border-gray-300 rounded-md mt-4 p-4 bg-red-100">
-        No hours logged this month
-    </div>
+        <!-- (A) PERIOD SELECTOR -->
+        <div id="calPeriod">
+            <form class="inline-flex" id="calYear" action="{{route('planning.billing')}}" method="get">
+                @csrf
+                <select id="current_year" name="current_year" class="rounded-md mt-4 py-0 pl-2 pr-8" onchange="this.form.submit()">
+                    @foreach ($years as $year)
+                        <option value="{{$year->year}}" @if($current_year == $year->year)selected @endif>{{$year->year}}</option>
+                    @endforeach                
+                </select>
+            </form>
+
+            <form class="inline-flex" action="{{route('planning.billing')}}" method="get">
+                @csrf
+                <select id="current_month" name="current_month" onchange="this.form.submit()">
+                    @foreach ($months as $index => $month)
+                        <option value="{{$index}}" @if($index==$current_month-1) selected @endif>{{$month}}</option>                    
+                    @endforeach
+                </select>
+            </form>
+        </div>
+
+    @if($monthly_hours == 0)
+        <div class="font-semibold text-gray-600 border border-gray-300 rounded-md mt-4 p-4 bg-red-100">
+            No hours logged this month
+        </div>
     </section>
     @else
         @foreach($schools as $school => $courses)
-        <section  class="nice-page">
-            <div class="font-bold text-gray-800 bg-green-100 p-2 mb-2 flex justify-between">
+            <div class="font-bold text-gray-800 bg-green-100 p-2 mb-2 flex flex-col justify-between border border-gray-300 rounded-md ">
                 <h2 class="inline ml-2 pt-2">{{$school}}</h2>
-            </div>
             @foreach($courses['courses'] as $course_name => $schedules)
-                <h2 class="font-bold text-gray-800 p-2 bg-blue-100 mt-4">{{$course_name}}</h2>
+                <h2 class="font-bold text-gray-800 p-2 bg-blue-200 mt-4"> - {{$course_name}}</h2>
                 <ul>
                     @php
                     $current_group = "";
@@ -51,7 +70,7 @@
                 @endforeach
                 </ul>
 
-                <div class="flex flex-row justify-between font-semibold text-gray-600 border border-gray-300 rounded-md mt-2 py-2 bg-blue-100">
+                <div class="flex flex-row justify-between font-semibold text-gray-600 mt-2 py-2 bg-blue-200">
                     <div class="mx-4 pt-2">
                         Time worked = {{$schedules['hours']}} hours
                     </div>
@@ -60,6 +79,7 @@
                     </div>
                 </div>
             @endforeach
+</div>
             <div class="flex flex-row justify-between font-semibold text-gray-600 border border-gray-300 rounded-md mt-2 py-2 bg-green-100">
                 <div class="mx-4">
                     Total Time worked = {{$courses['hours']}} hours
