@@ -6,26 +6,7 @@
     </x-slot>
 
     <section  class="nice-page">
-        <!-- (A) PERIOD SELECTOR -->
-        <div id="calPeriod">
-            <form class="inline-flex" id="calYear" action="{{route('planning.billing')}}" method="get">
-                @csrf
-                <select id="current_year" name="current_year" class="rounded-md mt-4 py-0 pl-2 pr-8" onchange="this.form.submit()">
-                    @foreach ($years as $year)
-                        <option value="{{$year->year}}" @if($current_year == $year->year)selected @endif>{{$year->year}}</option>
-                    @endforeach                
-                </select>
-            </form>
-
-            <form class="inline-flex" action="{{route('planning.billing')}}" method="get">
-                @csrf
-                <select id="current_month" name="current_month" onchange="this.form.submit()">
-                    @foreach ($months as $index => $month)
-                        <option value="{{$index}}" @if($index==$current_month-1) selected @endif>{{$month}}</option>                    
-                    @endforeach
-                </select>
-            </form>
-        </div>
+        <x-period-selector :years=$years :months=$months current_year={{$current_year}} current_month={{$current_month}} route="planning.billing"/>
 
     @if($monthly_hours == 0)
         <div class="font-semibold text-gray-600 border border-gray-300 rounded-md mt-4 p-4 bg-red-100">

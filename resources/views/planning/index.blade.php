@@ -16,26 +16,7 @@
 
             $day = 1;
         @endphp
-        <div id="calPeriod">
-            <form class="inline-flex" id="calYear" action="{{route('planning.period')}}" method="post">
-                @csrf
-                <select id="current_year" name="current_year" class="rounded-md mt-4 py-0 pl-2 pr-8" onchange="this.form.submit()">
-                    @foreach ($years as $year)
-                        <option value="{{$year->year}}" @if($current_year == $year->year)selected @endif>{{$year->year}}</option>
-                    @endforeach                
-                </select>
-            </form>
-
-            <form class="inline-flex" action="{{route('planning.period')}}" method="post">
-                @csrf
-                <select id="calMonth" name="current_month" onchange="this.form.submit()">
-                    @foreach ($months as $index => $month)
-                        <option value="{{$index}}" @if($index==$current_month-1) selected @endif>{{$month}}</option>                    
-                    @endforeach
-                </select>
-            </form>
-          </div>
-      
+        <x-period-selector :years=$years :months=$months current_year={{$current_year}} current_month={{$current_month}} route="planning.period"/>
           <!-- (B) CALENDAR -->
           <div id="calWrap">
             <div class="calHead">
