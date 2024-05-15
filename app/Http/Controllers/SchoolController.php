@@ -82,14 +82,17 @@ class SchoolController extends Controller
                     'name' => $request->name,
                     'company_id' => $company_id
                 ]);
-            return redirect(route('school.list'))
-                ->with([
-                    'success' => "Ecole enregistrée avec succès"]);
+
+            session()->flash('success', 'Ecole '.$request->name.' enregistrée avec succès.');
+
+            return redirect(route('school.list'));
         }
         catch (\Exception $e) {
             dd($e);
-            return redirect()->back()
-            ->with('error', "Erreur lors de l'enregitrement de l'école");
+            
+            session()->flash('danger', "Erreur lors de l'enregitrement de l'école ".$request->name.'.');
+            
+            return redirect()->back();
         }               
     }
 
@@ -131,14 +134,16 @@ class SchoolController extends Controller
             $school->name = $request->name;
             $school->save();
 
-            return redirect(route('dashboard'))
-                ->with([
-                    'success' => "Ecole enregistrée avec succès"]);
+            session()->flash('success', 'Ecole '.$request->name.' modifiée avec succès.');
+
+            return redirect(route('dashboard'));
         }
         catch (\Exception $e) {
             dd($e);
-            return redirect()->back()
-            ->with('error', "Erreur lors de l'enregitrement de l'école");
+
+            session()->flash('danger', "Erreur lors de la modification de l'école ".$request->name.'.');
+
+            return redirect()->back();
         }               
 
     }
@@ -149,15 +154,14 @@ class SchoolController extends Controller
     public function destroy(School $school)
     {
         if ($school->countCourses() > 0){
-            return redirect()->back()
-            ->with('error', "On ne peut pas effacer une école qui a des cours enregistrés");
+
+            session()->flash('danger', "On ne peut pas effacer une école qui a des cours enregistrés.");
+            return redirect()->back();
         }
 
         $school->delete();
-        
-        return redirect(route('dashboard'))
-            ->with([
-            'success' => "Ecole supprimée avec succès"]);;
+        session()->flash('warning', "Ecole supprimée avec succès.");
+        return redirect()->back();
     }
 
 }

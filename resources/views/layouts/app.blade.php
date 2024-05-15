@@ -28,27 +28,16 @@
             @include('layouts.navigation')
 
             <!-- Page Heading -->
-            @if (isset($header))
                 <header>
                     <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                        {{ $header }}
-                    @if (\Session::has('success'))
-                    <div class="text-green-400 border border-green-400 rounded-md p-4 my-8 mx-0">
-                        <ul>
-                            <li class="mb-2">{!! \Session::get('success') !!}</li>
-                        </ul>
-                    </div>
-                    @endif
-                    @if (\Session::has('error'))
-                    <div class="text-red-400 border border-red-400 rounded-md p-4 my-8 mx-0">
-                        <ul>
-                            <li class="mb-2">{!! \Session::get('error') !!}</li>
-                        </ul>
-                    </div>
-                    @endif        
-                </div>    
+                        @if (isset($header))
+                            {{ $header }}
+                        @endif
+                        <x-alert type="success" class="bg-green-700 text-green-100 border border-green-400 rounded-md p-4 my-8 mx-0" />
+                        <x-alert type="warning" class="bg-yellow-700 text-yellow-100 border-yellow-400 rounded-md p-4 my-8 mx-0" />
+                        <x-alert type="danger" class="bg-red-700 text-red-100 border-red-400 rounded-md p-4 my-8 mx-0" />
+                    </div>    
                 </header>
-            @endif
 
             <!-- Page Content -->
             <main>

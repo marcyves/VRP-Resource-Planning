@@ -116,9 +116,11 @@ class PlanningController extends Controller
         if(!$planning)
         {
             $monthly_hours = 0;
-            return view('planning.billing',compact('schools', 'current_year', 'current_month', 'monthly_hours','years', 'months'))
+
+            session()->flash('danger', "Pas de cours enregistré ce mois-ci.");
+
+            return view('planning.billing',compact('schools', 'current_year', 'current_month', 'monthly_hours','years', 'months'));
 //            return redirect()->back()
-            ->with('error', "Pas de cours enregistré ce mois-ci");
         }
 
         $current_school = "";
@@ -246,14 +248,16 @@ class PlanningController extends Controller
                     'location' => 'na',
                     'group_id' => $group_id
                         ]);
-            return redirect(route('planning.index'))
-                ->with([
-                    'success' => "Session de cours enregistrée avec succès le ".$begin]);
+
+                session()->flash('success', "Session de cours enregistrée avec succès le ".$begin.".");
+
+                return redirect(route('planning.index'));
         }
         catch (\Exception $e) {
             dd($e);
-            return redirect()->back()
-            ->with('error', "Erreur lors de l'enregitrement d'une session de cours");
+            session()->flash('danger', "Erreur lors de l'enregitrement d'une session de cours.");
+
+            return redirect()->back();
         }     
     }
 
@@ -287,9 +291,9 @@ class PlanningController extends Controller
             $planning->update();
         }
 
-        return redirect(route('planning.index'))
-        ->with([
-            'success' => "Facture enregistrée avec succès"]);
+        session()->flash('success', "Facture enregistrée avec succès.");
+
+        return redirect(route('planning.index'));
     }
     /**
      * Display the specified resource.
@@ -345,14 +349,16 @@ class PlanningController extends Controller
 
             $planning->save();
 
-            return redirect(route('planning.index'))
-                ->with([
-                    'success' => "Session modifiée avec succès"]);
+            session()->flash('success', "Session modifiée avec succès.");
+
+            return redirect(route('planning.index'));
         }
         catch (\Exception $e) {
             dd($e);
-            return redirect()->back()
-            ->with('error', "Erreur lors de la modification de la session<br>".$e->message);
+
+            session()->flash('danger', "Erreur lors de la modification de la session<br>".$e->message.".");
+
+            return redirect()->back();
         }               
 
         return redirect(route('planning.index'));
