@@ -39,14 +39,16 @@ class ProgramController extends Controller
             Program::create([
                     'name' => $request->name,
                         ]);
-            return redirect(route('program.index'))
-                ->with([
-                    'success' => "Programme enregistré avec succès"]);
+
+            session()->flash('success', "Programme enregistré avec succès.");
+
+            return redirect(route('program.index'));
         }
         catch (\Exception $e) {
             dd($e);
-            return redirect()->back()
-            ->with('error', "Erreur lors de l'enregitrement du programme");
+            session()->flash('danger', "Erreur lors de l'enregitrement du programme.");
+
+            return redirect()->back();
         }          
     }
 
@@ -84,15 +86,16 @@ class ProgramController extends Controller
             $program = Program::findOrFail($program_id);
             $program->name = $request->name;
             $program->update();
+
+            session()->flash('success', "Programme modifié avec succès.");
                         
-            return redirect(route('program.index'))
-                ->with([
-                    'success' => "Programme enregistré avec succès"]);
+            return redirect(route('program.index'));
         }
         catch (\Exception $e) {
             dd($e);
-            return redirect()->back()
-            ->with('error', "Erreur lors de l'enregistrement du programme");
+            session()->flash('danger', "Erreur lors de l'enregitrement du programme.");
+
+            return redirect()->back();
         }               
     }
 

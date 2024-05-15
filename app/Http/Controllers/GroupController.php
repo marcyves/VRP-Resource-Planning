@@ -44,14 +44,16 @@ class GroupController extends Controller
                     'size' => $request->size,
                     'course_id' => $course_id
                 ]);
-            return redirect(route('course.show', $course_id))
-                ->with([
-                    'success' => "Groupe enregistré avec succès"]);
+
+            session()->flash('success', "Groupe enregistré avec succès.");
+
+            return redirect(route('course.show', $course_id));
         }
         catch (\Exception $e) {
             dd($e);
-            return redirect()->back()
-            ->with('error', "Erreur lors de l'enregitrement du groupe");
+            session()->flash('danger', "Erreur lors de l'enregitrement du groupe.");
+
+            return redirect()->back();
         }               
     }
 
@@ -90,14 +92,16 @@ class GroupController extends Controller
             $group->short_name = $request->short_name;
             $group->size = $request->size;
             $group->update();
-            return redirect(route('course.show', $group->course_id))
-                ->with([
-                    'success' => "Groupe modifié avec succès"]);
+
+            session()->flash('success', "Groupe modifié avec succès.");
+
+            return redirect(route('course.show', $group->course_id));
         }
         catch (\Exception $e) {
             dd($e);
-            return redirect()->back()
-            ->with('error', "Erreur lors de l'enregitrement du groupe");
+            session()->flash('danger', "Erreur lors de l'enregitrement du groupe.");
+
+            return redirect()->back();
         }               
     }
 
@@ -111,8 +115,8 @@ class GroupController extends Controller
 
         $group->delete();
 
-        return redirect(route('course.show', $course_id))
-        ->with([
-            'success' => "Groupe effacé avec succès"]);
+        session()->flash('success', "Groupe effacé avec succès.");
+
+        return redirect(route('course.show', $course_id));
     }
 }

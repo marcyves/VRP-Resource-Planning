@@ -47,14 +47,17 @@ class BillController extends Controller
                     'description' => $request->description,
                     'company_id' => $company->id,
                 ]);
-            return redirect(route('bill.index'))
-                ->with([
-                    'success' => "Facture enregistrée avec succès"]);
+                
+            session()->flash('success', "Facture $bill_id enregistrée avec succès.");
+
+            return redirect(route('bill.index'));
         }
         catch (\Exception $e) {
             dd($e);
-            return redirect()->back()
-            ->with('error', "Erreur lors de l'enregitrement de la facture");
+
+            session()->flash('danger', "Erreur lors de l'enregitrement de la facture.");
+
+            return redirect()->back();
         }               
     }
 

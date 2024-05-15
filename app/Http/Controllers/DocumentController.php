@@ -39,7 +39,9 @@ class DocumentController extends Controller
             'file_name' => $fileName
         ]);
 
-        return redirect()->back()->with('success', 'Document added successfully!');
+        session()->flash('success', "Document added successfully.");
+
+        return redirect()->back();
     }
 
     public function destroy(Document $document)
@@ -47,7 +49,9 @@ class DocumentController extends Controller
         Storage::delete("public/".$this->directory.$document->file_name);
         $document->delete();
 
-        return redirect()->back()->with('success', 'Document deleted successfully!');
+        session()->flash('success', "Document deleted successfully.");
+
+        return redirect()->back();
     }
 
     public function delete(Document $document)

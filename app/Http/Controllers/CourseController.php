@@ -56,14 +56,16 @@ class CourseController extends Controller
                     'semester' => $request->semester,
                     'rate' => $request->rate,
                         ]);
-            return redirect(route('dashboard'))
-                ->with([
-                    'success' => "Cours enregistré avec succès"]);
+
+            session()->flash('success', "Cours ".$request->name." enregistré avec succès.");
+
+            return redirect(route('dashboard'));
         }
         catch (\Exception $e) {
             dd($e);
-            return redirect()->back()
-            ->with('error', "Erreur lors de l'enregitrement du cours");
+            session()->flash('danger', "Erreur lors de l'enregitrement du cours.");
+
+            return redirect()->back();
         }               
     }
 
@@ -118,15 +120,16 @@ class CourseController extends Controller
             $course->program_id = $request->program_id;
 
             $course->update();
-                        
-            return redirect(route('dashboard'))
-                ->with([
-                    'success' => "Cours enregistré avec succès"]);
+
+            session()->flash('success', "Cours enregistré avec succès.");
+
+            return redirect(route('dashboard'));
         }
         catch (\Exception $e) {
             dd($e);
-            return redirect()->back()
-            ->with('error', "Erreur lors de l'enregistrement du cours");
+            session()->flash('danger', "Erreur lors de l'enregitrement du cours.");
+
+            return redirect()->back();
         }               
     }
 
