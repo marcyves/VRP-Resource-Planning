@@ -1,5 +1,5 @@
 <div class="calCell">
-    <div class="bg-blue-100 mx-0 py-1 mb-1 text-blue-400 text-center">
+    <div class="bg-blue-200 mx-0 py-1 mb-1 text-blue-800 text-center">
         {{$day}}
     </div>
     @if(Auth::user()->getMode() == "Edit")
