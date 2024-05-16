@@ -15,9 +15,12 @@ class BillController extends Controller
     public function index()
     {
         $bills = Bill::all()->sortBy('id');
-        $bill_id = Auth::user()->getCompanyBillPrefix() . substr(Carbon::now()->year, -2);
-        return view('bills.index', compact('bills', 'bill_id'));
+        $last_bill = $bills->keys()->last();
+        $next_bill = substr($bills[$last_bill]->id, -3) +1;
 
+        $bill_id = Auth::user()->getCompanyBillPrefix() . substr(Carbon::now()->year, -2) . $next_bill;
+
+        return view('bills.index', compact('bills', 'bill_id'));
     }
 
     /**

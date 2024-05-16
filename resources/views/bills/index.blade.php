@@ -50,11 +50,11 @@
     <section class="nice-page">
         <form action="{{route('bill.store')}}" method="post">
             @csrf
-            <x-input-label>{{ __('messages.name') }}</x-input-label>
-            {{$bill_id}}<x-text-input type="text" name="id" id="name" size="10"/>
-            <x-input-label>{{ __('messages.description') }}</x-input-label>
-            <x-text-input type="text" name="description" id="description" size="60"/>
-            <x-primary-button>{{ __('messages.bill_create') }}</x-primary-button>
+                <x-input-label>{{ __('messages.bill_id') }}: {{$bill_id}}</x-input-label> 
+                <input type="hidden" name="id" id="name" value="{{$bill_id}}">
+                <x-input-label>{{ __('messages.description') }}</x-input-label>
+                <x-text-input type="text" name="description" id="description" size="60"/>
+                <x-primary-button>{{ __('messages.bill_create') }}</x-primary-button>
         </form>
 </section>
 </x-app-layout>
