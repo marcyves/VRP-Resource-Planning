@@ -29,7 +29,7 @@
             <div class="calRow">
                 <!-- Afficher les jours avant le premier jour du mois -->
                 @for ($i = 1; $i < $startDay; $i++)
-                    <div class="calCell px-2 pt-1 bg-gray-100 flex-col justify-stretch border border-black m-1">
+                    <div class="calCell px-2 pt-1 bg-gray-100 flex-col justify-stretch m-1">
                     </div>
                 @endfor
                 <!-- Afficher les jours du mois -->
@@ -53,7 +53,7 @@
             </div>
             @endwhile
         </div>
-        <div class="flex flex-row justify-between font-semibold text-gray-600 border border-gray-300 rounded-md mt-4 py-4 bg-gray-200">
+        <div class="flex flex-row justify-between font-semibold text-gray-600 mt-4 py-4 bg-gray-200">
             <div class="mx-4">
             {{ __('messages.time_worked') }} = {{$monthly_hours}} {{ __('messages.hours') }}
             </div>
