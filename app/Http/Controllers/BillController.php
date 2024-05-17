@@ -37,11 +37,11 @@ class BillController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'id' => 'required|max:5',
+            'id' => 'required',
         ]);
         
         $company  =  Auth::user()->getCompany();
-        $bill_id =  $company->bill_prefix . substr(Carbon::now()->year, -2) . $request->id;
+        $bill_id =  $request->id;
 
 
         try{
