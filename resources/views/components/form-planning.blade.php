@@ -8,7 +8,7 @@
         <input type="hidden" name="day" value={{$day}}>
         <input type="hidden" name="month" value={{$month}}>
         <input type="hidden" name="year" value={{$year}}>
-        <select name="course" class="text-sm rounded-md mt-2 py-0 pl-2 pr-8 overflow-clip w-full mb-2"  onchange="this.form.submit()">
+        <select name="course" class="course-select my-box"  onchange="this.form.submit()">
             <option value="0">--&gt; Course?</option>
             @foreach ($courses as $course)
             <option value="{{$course->id}}">{{$course->name}}</option>                            
@@ -23,7 +23,7 @@
             $begin_day = explode("-", $begin_date)[2];
             if ((int)$begin_day == $day){
         @endphp
-        <div class="text-gray-600 block bg-white rounded-md mb-2">
+        <div class="course-booking my-box">
             <div class="flex flex-col items-start pl-1 justify-between text-wrap text-xs">
                 <div class="justify-start">
                     {{date_format(date_create($event->begin),'H:i')}}: {{$event->short_name}} ({{$event->group_short_name}})

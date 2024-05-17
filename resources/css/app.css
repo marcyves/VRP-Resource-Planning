@@ -256,6 +256,23 @@ main{
 
 .hide { display: none !important; }
 
+.my-box{
+  box-shadow: 3px 3px 1px 1px rgba(118, 85, 158, 0.338);
+  border: 0;
+  border-radius: 4pt;
+  padding: 2pt 4pt;
+  margin: 2pt 8pt 6pt 8pt;
+  width: 90%;
+  font-size: smaller;
+}
+
+.course-select{
+  background-color: var(--secondary-bg-color);
+}
+.course-booking{
+  background-color: white;
+  color: --var(--main-text-color);
+}
 /* (B) PERIOD SELECTOR */
 #calPeriod {
   padding: 15px;
