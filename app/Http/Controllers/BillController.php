@@ -49,6 +49,7 @@ class BillController extends Controller
                     'id' => $bill_id,
                     'description' => $request->description,
                     'company_id' => $company->id,
+                    'amount' => $request->amount,
                 ]);
                 
             session()->flash('success', "Facture $bill_id enregistrée avec succès.");

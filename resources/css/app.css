@@ -45,6 +45,12 @@ header{
   background-color: var(--secondary-bg-color);
 }
 
+.grid-container {
+  display: grid;
+  gap: 50px;
+  grid-template-columns: auto auto auto auto auto; 
+}
+
 .nice-box{
   padding: 0.5rem 1rem 0.5rem 1rem;
 }

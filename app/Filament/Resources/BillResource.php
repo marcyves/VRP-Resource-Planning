@@ -23,10 +23,15 @@ class BillResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('description')
+                Forms\Components\TextInput::make('id')
+                    ->maxLength(20),
+                    Forms\Components\TextInput::make('description')
                     ->maxLength(255),
                 Forms\Components\DatePicker::make('paid_at'),
                 Forms\Components\TextInput::make('company_id')
+                    ->required()
+                    ->numeric(),
+                Forms\Components\TextInput::make('amount')
                     ->required()
                     ->numeric(),
             ]);
@@ -53,6 +58,9 @@ class BillResource extends Resource
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('company_id')
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('amount')
                     ->numeric()
                     ->sortable(),
             ])
