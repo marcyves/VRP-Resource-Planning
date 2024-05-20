@@ -284,6 +284,7 @@ main{
   padding: 15px;
   background: var(--bg-color-a);
 }
+
 #calPeriod input, #calPeriod select {
   font-size: 24px;
   border: 0; outline: none;
@@ -304,6 +305,11 @@ main{
   margin: 1px;
 }
 
+.calDay{
+  background-color: #fbfbe4;
+  min-height: 10rem;
+}
+
 /* (C2) HEADER - DAY NAMES */
 .calHead .calCell {
   color: #fff; 
@@ -314,7 +320,9 @@ main{
 }
 
 /* (C3) BODY - INDIVIDUAL DAYS */
-.calBlank { background: #eee; }
+.calBlank { 
+  background: #eee; 
+}
 .calToday { background: #feffd3; }
 .calToday .cellDate { color: #ff9b9b; }
 .calBody .calCell {

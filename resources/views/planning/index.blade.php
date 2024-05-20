@@ -29,7 +29,7 @@
             <div class="calRow">
                 <!-- Afficher les jours avant le premier jour du mois -->
                 @for ($i = 1; $i < $startDay; $i++)
-                    <div class="calCell px-2 pt-1 bg-gray-100 flex-col justify-stretch m-1">
+                    <div class="calBlank calCell">
                     </div>
                 @endfor
                 <!-- Afficher les jours du mois -->
@@ -52,6 +52,7 @@
                 @endfor
             </div>
             @endwhile
+
         </div>
         <div class="flex flex-row justify-between font-semibold text-gray-600 mt-4 py-4 bg-gray-200">
             <div class="mx-4">

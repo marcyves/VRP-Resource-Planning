@@ -1,4 +1,4 @@
-<div class="calCell">
+<div class="calCell calDay">
     <div class="bg-blue-200 mx-0 py-1 mb-1 text-blue-800 text-center">
         {{$day}}
     </div>
