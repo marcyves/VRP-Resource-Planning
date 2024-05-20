@@ -14,11 +14,18 @@ class BillController extends Controller
      */
     public function index()
     {
-        $bills = Bill::all()->sortBy('id');
-        $last_bill = $bills->keys()->last();
-        $next_bill = substr($bills[$last_bill]->id, -3) +1;
+        $user = Auth::user();
+        $bills = $user->getBills();
 
-        $bill_id = Auth::user()->getCompanyBillPrefix() . substr(Carbon::now()->year, -2) . $next_bill;
+        if($bills->isNotEmpty($bills)){
+            $last_bill = $bills->keys()->last();
+            $next_bill = substr($bills[$last_bill]->id, -3) +1;
+        }else{
+            $next_bill = "001";
+        }
+
+
+        $bill_id = $user->getCompanyBillPrefix() . substr(Carbon::now()->year, -2) . $next_bill;
 
         return view('bills.index', compact('bills', 'bill_id'));
     }

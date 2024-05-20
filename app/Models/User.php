@@ -92,7 +92,7 @@ class User extends Authenticatable
 
     public function getBills()
     {
-        return Bill::all();
+        return Bill::where('company_id', $this->company_id)->orderBy('id')->get();
     }
 
     public function getStatusName()
