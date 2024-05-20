@@ -40,6 +40,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/school/dashboard', [SchoolController::class, 'dashboard'])->name('school.dashboard');
     Route::resource('/school', SchoolController::class);
 
+    Route::get('documents/delete/{document}', [DocumentController::class, 'delete'])->name('documents.delete');
+
     Route::get('/course/{school_id}/create', [CourseController::class, 'create'])->name('course.create');
     Route::post('/course/{school_id}', [CourseController::class, 'store'])->name('course.store');
     Route::get('/course/{course_id}', [CourseController::class, 'show'])->name('course.show');
