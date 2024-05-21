@@ -11,7 +11,7 @@
         <select name="course" class="course-select my-box"  onchange="this.form.submit()">
             <option value="0">--&gt; Course?</option>
             @foreach ($courses as $course)
-            <option value="{{$course->id}}">{{$course->name}}</option>                            
+            <option value="{{$course->id}}">({{$course->school_name}}) {{$course->name}}</option>                            
             @endforeach
         </select>
     </form>

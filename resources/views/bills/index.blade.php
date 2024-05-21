@@ -82,16 +82,20 @@
         </div>  
 </section>
 
+    @if(Auth::user()->getMode() == "Edit")
     <section class="nice-page">
-        <form action="{{route('bill.store')}}" method="post">
+    <form action="{{route('bill.store')}}" method="post"
+        class="mx-auto px-6 py-2 bg-white shadow-md mb-6 flex flex-col justify-items-start">
             @csrf
-                <x-input-label>{{ __('messages.bill_id') }}: {{$bill_id}}</x-input-label> 
+            <x-input-label class="py-4">{{ __('messages.bill_id') }}: {{$bill_id}}</x-input-label> 
                 <input type="hidden" name="id" id="name" value="{{$bill_id}}">
-                <x-input-label>{{ __('messages.description') }}</x-input-label>
-                <x-text-input type="text" name="description" id="description" size="60"/>
+                <x-input-label >{{ __('messages.description') }}</x-input-label>
+                <x-text-input class="my-4" type="text" name="description" id="description" size="60"/>
                 <x-input-label>{{ __('messages.gain') }}</x-input-label>
-                <x-text-input type="text" name="amount" id="amount" size="20"/>
+                <x-text-input class="my-4" type="text" name="amount" id="amount" size="20"/>
                 <x-primary-button>{{ __('messages.bill_create') }}</x-primary-button>
         </form>
-</section>
+    </section>
+    @endif
+
 </x-app-layout>
