@@ -51,7 +51,7 @@
                 <x-text-input type="text" name="semester"  value="{{old('semester',$course->semester)}}"/>
                 </div>
                 <div class="flex-row">
-                <x-primary-button>Save</x-primary-button>
+                <x-primary-button>{{ __('messages.update') }}</x-primary-button>
                 </div>
             </form>
         @endisset

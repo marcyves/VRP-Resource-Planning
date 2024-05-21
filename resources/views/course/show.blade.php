@@ -62,7 +62,7 @@
         @if(Auth::user()->getMode() == "Edit")
             <a
             class="inline-flex items-center p-2 text-sm border border-gray-300 rounded-md font-semibold font-medium text-center text-gray-500 hover:text-gray-800 rounded-lg focus:outline-none" 
-            href="{{route('group.new', $course->id)}}">New Group</a>
+            href="{{route('group.new', $course->id)}}">{{ __('messages.group_create') }}</a>
         @endif
         </x-nice-title>
 
