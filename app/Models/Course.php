@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
+use Illuminate\Support\Facades\Auth;
+
 class Course extends Model
 {
     use HasFactory;
@@ -58,5 +60,19 @@ class Course extends Model
         ;
 
     }
+
+    public static function getProgramCoursesForCompany(String $program_id)
+    {
+        $company = Auth::user()->getCompany();
+
+        return Course::select('courses.*')
+        ->join('schools', 'courses.school_id', '=', 'schools.id')
+        ->where('schools.company_id', '=', $company->id)
+        ->where('program_id', '=', $program_id)
+        ->get()
+        ;
+
+    }
+
 
 }

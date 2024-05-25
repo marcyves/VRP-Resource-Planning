@@ -58,7 +58,7 @@ class ProgramController extends Controller
     public function show(String $program_id)
     {
         $program = Program::find($program_id);
-        $courses = Course::where('program_id', '=', $program_id)->get();
+        $courses = Course::getProgramCoursesForCompany($program_id);
 
         return view('program.show', compact('program', 'courses'));
     }
