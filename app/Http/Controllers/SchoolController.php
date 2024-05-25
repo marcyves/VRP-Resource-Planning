@@ -13,6 +13,11 @@ class SchoolController extends Controller
      */
     public function index(Request $request)
     {
+        session()->forget('course');
+        session()->forget('course_id');
+        session()->forget('school');
+        session()->forget('school_id');
+
         $schools = Auth::user()->getSchools();
 
         return view('school.index', compact('schools'));
@@ -23,6 +28,8 @@ class SchoolController extends Controller
      */
     public function dashboard(Request $request)
     {
+        session()->forget('course');
+        session()->forget('course_id');
         session()->forget('school');
         session()->forget('school_id');
       

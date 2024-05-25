@@ -45,7 +45,7 @@ class CourseController extends Controller
         
         try{
             $user_id = Auth::user()->id;
-            Course::create([
+            $course = Course::create([
                 'name' => $request->name,
                 'short_name' => $request->short_name,
                 'school_id' => $school_id,
@@ -59,6 +59,7 @@ class CourseController extends Controller
 
             session()->flash('success', "Cours ".$request->name." enregistré avec succès.");
             session()->put('course', $request->name);
+            session()->put('course_id', $course->id);
 
             return redirect(route('dashboard'));
         }
@@ -79,6 +80,7 @@ class CourseController extends Controller
         $school = School::find($course->school_id);
 
         session()->put('course', $course->name);
+        session()->put('course_id', $course->id);
         session()->put('school_id', $course->school_id);
         session()->put('school', $school->name);
 
@@ -96,6 +98,7 @@ class CourseController extends Controller
     {
         $course = Course::getCourseDetails($course_id);
         session()->put('course', $course->name);
+        session()->put('course_id', $course->id);
 
         $programs = Program::all()->sortBy('name');
         return view('course.edit', compact('course', 'programs'));
@@ -132,6 +135,7 @@ class CourseController extends Controller
 
             session()->flash('success', "Cours ".$course->name." enregistré avec succès.");
             session()->put('course', $course->name);
+            session()->put('course_id', $course->id);
 
             return redirect(route('dashboard'));
         }
@@ -150,6 +154,7 @@ class CourseController extends Controller
     {
         $course = Course::findOrFail($course_id);
         session()->forget('course');
+        session()->forget('course_id');
         $course->delete();
         return redirect(route('dashboard'));
     }
