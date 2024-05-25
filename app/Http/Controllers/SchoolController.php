@@ -23,6 +23,8 @@ class SchoolController extends Controller
      */
     public function dashboard(Request $request)
     {
+        session()->forget('school');
+        session()->forget('school_id');
       
         if(isset($request->current_year)){
             $current_year = $request->current_year;
@@ -64,6 +66,10 @@ class SchoolController extends Controller
     public function add(String $school_id)
     {
         $school = School::find($school_id);
+
+        session()->put('school', $school->name);
+        session()->put('school_id', $school->id);
+
         return view('school.add', compact('school'));
     }
 
@@ -78,12 +84,14 @@ class SchoolController extends Controller
         
         try{
             $company_id = Auth::user()->company_id;
-            School::create([
+            $school = School::create([ 
                     'name' => $request->name,
                     'company_id' => $company_id
                 ]);
 
-            session()->flash('success', 'Ecole '.$request->name.' enregistrée avec succès.');
+            session()->flash('success', 'Ecole '.$school->name.' enregistrée avec succès.');
+            session()->put('school', $school->name);
+            session()->put('school_id', $school->id);
 
             return redirect(route('school.list'));
         }
@@ -104,6 +112,9 @@ class SchoolController extends Controller
 
         $courses = $school->getCourses();
 
+        session()->put('school', $school->name);
+        session()->put('school_id', $school->id);
+
         $school_name = $school->name;
         $school_id = $school->id;
         $documents = $school->getDocuments();
@@ -117,6 +128,9 @@ class SchoolController extends Controller
     public function edit(String $school_id)
     {
         $school = School::findOrFail($school_id);
+        session()->put('school', $school->name);
+        session()->put('school_id', $school->id);
+
         return view('school.edit', compact('school'));
     }
 
@@ -132,6 +146,10 @@ class SchoolController extends Controller
         try{
             $school = School::findOrFail($school_id);
             $school->name = $request->name;
+            session()->put('school_id', $school_id);
+
+            session()->put('school', $school->name);
+
             $school->save();
 
             session()->flash('success', 'Ecole '.$request->name.' modifiée avec succès.');
@@ -158,9 +176,13 @@ class SchoolController extends Controller
             session()->flash('danger', "On ne peut pas effacer une école qui a des cours enregistrés.");
             return redirect()->back();
         }
+        session()->forget('school');
+        session()->forget('school_id');
 
         $school->delete();
+        
         session()->flash('warning', "Ecole supprimée avec succès.");
+        
         return redirect()->back();
     }
 

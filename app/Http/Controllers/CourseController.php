@@ -58,6 +58,7 @@ class CourseController extends Controller
                         ]);
 
             session()->flash('success', "Cours ".$request->name." enregistré avec succès.");
+            session()->put('course', $request->name);
 
             return redirect(route('dashboard'));
         }
@@ -75,6 +76,8 @@ class CourseController extends Controller
     public function show(String $course_id)
     {
         $course = Course::getCourseDetails($course_id);
+        session()->put('course', $course->name);
+
         $groups = $course->getGroups();
         $occurences = $groups->getGroupOccurences();
 
@@ -88,6 +91,8 @@ class CourseController extends Controller
     public function edit(String $course_id)
     {
         $course = Course::getCourseDetails($course_id);
+        session()->put('course', $course->name);
+
         $programs = Program::all()->sortBy('name');
         return view('course.edit', compact('course', 'programs'));
     }
@@ -121,7 +126,8 @@ class CourseController extends Controller
 
             $course->update();
 
-            session()->flash('success', "Cours enregistré avec succès.");
+            session()->flash('success', "Cours ".$course->name." enregistré avec succès.");
+            session()->put('course', $course->name);
 
             return redirect(route('dashboard'));
         }
@@ -139,6 +145,7 @@ class CourseController extends Controller
     public function destroy(String $course_id)
     {
         $course = Course::findOrFail($course_id);
+        session()->forget('course');
         $course->delete();
         return redirect(route('dashboard'));
     }

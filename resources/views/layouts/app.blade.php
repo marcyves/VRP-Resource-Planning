@@ -19,14 +19,12 @@
         <!-- Scripts -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
         <script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js' type='text/javascript'></script>
-
         <script src="https://unpkg.com/@material-tailwind/html@latest/scripts/dialog.js"></script>
-    
     </head>
     <body class="font-sans antialiased">
         <div class="min-h-screen bg-gray-100">
             @include('layouts.navigation')
-
+            @include('layouts.breadcrumbs')
             <!-- Page Heading -->
                 <header>
                     <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
