@@ -76,7 +76,11 @@ class CourseController extends Controller
     public function show(String $course_id)
     {
         $course = Course::getCourseDetails($course_id);
+        $school = School::find($course->school_id);
+
         session()->put('course', $course->name);
+        session()->put('school_id', $course->school_id);
+        session()->put('school', $school->name);
 
         $groups = $course->getGroups();
         $occurences = $groups->getGroupOccurences();
