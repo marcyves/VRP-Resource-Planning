@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Group;
+use App\Models\GroupCourse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class GroupController extends Controller
 {
@@ -12,7 +14,9 @@ class GroupController extends Controller
      */
     public function index()
     {
-        $groups = Group::all()->sortBy('name');
+        $user = Auth::user();
+        $groups = $user->getGroups();
+
         $occurences = $groups->getGroupOccurences();
 
         return view('group.index', compact('groups', 'occurences'));
@@ -37,17 +41,24 @@ class GroupController extends Controller
             'size' => 'required|min:0',
         ]);
         
+        $company_id = Auth::user()->company_id;
+
         try{
             Group::create([
                     'name' => $request->name,
                     'short_name' => $request->short_name,
                     'size' => $request->size,
-                    'course_id' => $course_id
+                    'course_id' => $course_id,
+                    'company_id' => $company_id,
                 ]);
 
             session()->flash('success', "Groupe enregistré avec succès.");
 
-            return redirect(route('course.show', $course_id));
+            if ($course_id == 0){
+                return redirect(route('group.index'));
+            }else{
+                return redirect(route('course.show', $course_id));
+            }
         }
         catch (\Exception $e) {
             dd($e);
@@ -58,11 +69,27 @@ class GroupController extends Controller
     }
 
     /**
+     * Link the specified group to the current course.
+     */
+    public function link(String $group_id)
+    {
+        $course_id = session()->get('course_id');
+        GroupCourse::create([
+            'course_id' => $course_id,
+            'group_id' => $group_id
+        ]);
+
+        return redirect()->back();
+    }
+
+    /**
      * Display the specified resource.
      */
     public function show(Group $group)
     {
-        //
+        $courses = $group->getCourses();
+
+        return view('group.show', compact('courses', 'group'));
     }
 
     /**
@@ -71,8 +98,10 @@ class GroupController extends Controller
     public function edit(String $group_id)
     {
         $group = Group::find($group_id);
+        $user = Auth::user();
+        $courses = $user->getCourses(now()->format('Y'), 'all');
 
-        return view('group.edit', compact('group'));        
+        return view('group.edit', compact('group', 'courses'));        
     }
 
     /**
@@ -93,9 +122,11 @@ class GroupController extends Controller
             $group->size = $request->size;
             $group->update();
 
+            //TODO add group_course record to link them
+
             session()->flash('success', "Groupe modifié avec succès.");
 
-            return redirect(route('course.show', $group->course_id));
+            return redirect(route('course.show', $request->course_id));
         }
         catch (\Exception $e) {
             dd($e);

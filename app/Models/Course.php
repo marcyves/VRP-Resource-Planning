@@ -36,10 +36,23 @@ class Course extends Model
         return $this->BelongsTo(School::class);
     }
 
-    public function getGroups()
+    public function getGroupsV1()
     {
         return Group::where(['course_id' => $this->id])->orderBy('name', 'asc')->get();
     }
+
+    public function getGroups()
+    {
+        $company = Auth::user()->getCompany();
+
+        return Group::select(['groups.*'])
+        ->join('group_course', 'group_id', '=', 'groups.id')
+        ->where('group_course.course_id', '=', $this->id)
+        ->orderBy('groups.name')
+        ->get();
+    }
+
+
 
     public static function getCourseDetails(String $course_id)
     {

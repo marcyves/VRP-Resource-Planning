@@ -3,7 +3,7 @@
     <div class="w-full md:w-1/2">
             <a
             class="inline-flex items-center p-2 text-sm border border-gray-300 rounded-md bg-white font-semibold font-medium text-center text-gray-500 hover:text-gray-800 rounded-lg focus:outline-none" 
-            href="{{route('planning.index')}}">{{$group->name}}</a>            
+            href="{{route('group.show', $group->id)}}">{{$group->name}}</a>            
             ({{$group->short_name}})         
             {{$group->size}} students
     </div>

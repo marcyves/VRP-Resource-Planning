@@ -76,7 +76,10 @@ class User extends Authenticatable
     {
         $company_id = $this->company_id;
 
-        $schools = School::select(['schools.*'])->where('schools.company_id', '=', $company_id)->get();
+        $schools = School::select(['schools.*'])
+                        ->where('schools.company_id', '=', $company_id)
+                        ->get();
+
         return $schools->getCourses($current_year, $current_semester);;
     }
 
@@ -93,6 +96,11 @@ class User extends Authenticatable
     public function getBills()
     {
         return Bill::where('company_id', $this->company_id)->orderBy('id')->get();
+    }
+
+    public function getGroups()
+    {
+        return Group::where('company_id', $this->company_id)->orderBy('name')->get();
     }
 
     public function getStatusName()
