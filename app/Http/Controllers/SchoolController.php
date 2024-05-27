@@ -119,6 +119,9 @@ class SchoolController extends Controller
 
         $courses = $school->getCourses();
 
+        session()->forget('course');
+        session()->forget('course_id');
+
         session()->put('school', $school->name);
         session()->put('school_id', $school->id);
 
