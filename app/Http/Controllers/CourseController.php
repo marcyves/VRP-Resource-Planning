@@ -81,12 +81,12 @@ class CourseController extends Controller
 
         session()->put('course', $course->name);
         session()->put('course_id', $course->id);
+        
         session()->put('school_id', $course->school_id);
         session()->put('school', $school->name);
 
         $groups = $course->getGroups();
-        $available_groups = Auth::user()->getGroups();
-
+        $available_groups = $course->getAvailableGroups();
         $occurences = $groups->getGroupOccurences();
 
         return view('course.show', compact('course', 'groups', 'available_groups', 'occurences'));

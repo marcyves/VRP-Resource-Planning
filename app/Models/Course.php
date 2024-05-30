@@ -41,9 +41,13 @@ class Course extends Model
         return Group::where(['course_id' => $this->id])->orderBy('name', 'asc')->get();
     }
 
+    /*
+
+    Get all groups connected to the course
+
+    */
     public function getGroups()
     {
-        $company = Auth::user()->getCompany();
 
         return Group::select(['groups.*'])
         ->join('group_course', 'group_id', '=', 'groups.id')
@@ -52,6 +56,24 @@ class Course extends Model
         ->get();
     }
 
+    /*
+
+    Get all groups available to the user not connected to the course
+
+    */
+    public function getAvailableGroups()
+    {
+        $company = Auth::user()->getCompany();
+
+        return Group::where('company_id', $company->id)
+            ->whereNotIn('groups.id', Group::select(['groups.id'])
+                ->join('group_course', 'group_id', '=', 'groups.id')
+                ->where('group_course.course_id', '=', $this->id)
+                ->orderBy('groups.name')
+                ->get())
+            ->orderBy('name')
+            ->get();
+    }
 
 
     public static function getCourseDetails(String $course_id)

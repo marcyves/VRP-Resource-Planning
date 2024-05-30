@@ -83,6 +83,27 @@ class GroupController extends Controller
     }
 
     /**
+     * Remove the specified resource from storage.
+     */
+    public function unlink(String $group_id)
+    {
+        $course_id = session()->get('course_id');
+
+        $group_link = GroupCourse::where([
+            'course_id' => $course_id,
+            'group_id' => $group_id
+        ])->get()[0];
+
+        $group_link = GroupCourse::findOrFail($group_link->id);
+        $group_link->delete();
+
+        session()->flash('success', "Groupe libéré avec succès.");
+
+        return redirect()->back();
+
+    }
+
+    /**
      * Display the specified resource.
      */
     public function show(Group $group)
@@ -142,12 +163,11 @@ class GroupController extends Controller
     public function destroy(String $group_id)
     {
         $group = Group::findOrFail($group_id);
-        $course_id = $group->course_id;
 
         $group->delete();
 
         session()->flash('success', "Groupe effacé avec succès.");
 
-        return redirect(route('course.show', $course_id));
+        return redirect()->back();
     }
 }

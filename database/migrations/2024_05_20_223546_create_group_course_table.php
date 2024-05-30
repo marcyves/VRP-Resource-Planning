@@ -15,6 +15,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('group_course', function (Blueprint $table) {
+            $table->id();
             $table->foreignIdFor(Group::class)->constrained()
             ->onUpdate('cascade')   
             ->onDelete('restrict');
@@ -23,8 +24,6 @@ return new class extends Migration
             ->onDelete('restrict');
 
             $table->timestamps();
-
-            $table->primary(['group_id', 'course_id']);
         });
     }
 

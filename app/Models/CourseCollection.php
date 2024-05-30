@@ -131,6 +131,7 @@ class CourseCollection extends Collection
             ->orderBy('semester', 'asc')
             ->orderBy('school_name', 'asc')
             ->orderBy('program_name', 'asc')
+            ->orderBy('name', 'asc')
             ->get();
             }else{
                 return Course::whereIn('school_id', $list)
@@ -142,6 +143,7 @@ class CourseCollection extends Collection
                 ->orderBy('semester', 'asc')
                 ->orderBy('school_name', 'asc')
                 ->orderBy('program_name', 'asc')
+                ->orderBy('name', 'asc')
                 ->get();
             }
         }else{
@@ -155,6 +157,7 @@ class CourseCollection extends Collection
                 ->orderBy('semester', 'asc')
                 ->orderBy('school_name', 'asc')
                 ->orderBy('program_name', 'asc')
+                ->orderBy('name', 'asc')
                 ->get();
             }else{
                 return Course::whereIn('school_id', $list)
@@ -167,6 +170,7 @@ class CourseCollection extends Collection
                 ->orderBy('semester', 'asc')
                 ->orderBy('school_name', 'asc')
                 ->orderBy('program_name', 'asc')
+                ->orderBy('name', 'asc')
                 ->get();
             }
         }
