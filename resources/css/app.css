@@ -8,6 +8,7 @@
 
 :root {
   --main-bg-color: rgb(199, 242, 252);
+  --box-bg-color: rgb(102, 224, 251);
   --nav-bg-color: #221f49;
   --secondary-bg-color: rgb(134, 166, 241);
   --border-color: rgb(83, 140, 233);
@@ -52,7 +53,11 @@ header{
 }
 
 .nice-box{
+  margin: 6px 12px;
+  border-radius: 6px;
+  box-shadow: 8px 8px 2px 1px rgba(8, 42, 196, 0.2);
   padding: 0.5rem 1rem 0.5rem 1rem;
+  background-color: var(--box-bg-color);
 }
 
 .nice-page{
