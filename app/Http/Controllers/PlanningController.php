@@ -54,7 +54,9 @@ class PlanningController extends Controller
         $courses = $schools->getCourses($current_year, $current_semester);
 
         // Collect Planning information for display
-        $planning = $schools->getPlanning($current_year, $current_month);
+        //$planning = $schools->getPlanning($current_year, $current_month);
+        $planning = Planning::getDetails($current_year, $current_month);
+        
         $monthly_gain = 0;
         $monthly_hours = 0;
         foreach($planning as $event){
@@ -120,7 +122,7 @@ class PlanningController extends Controller
             session()->flash('danger', "Pas de cours enregistré ce mois-ci.");
 
             return view('planning.billing',compact('schools', 'current_year', 'current_month', 'monthly_hours','years', 'months'));
-//            return redirect()->back()
+            //            return redirect()->back()
         }
 
         $current_school = "";
@@ -228,6 +230,7 @@ class PlanningController extends Controller
     public function store(Request $request)
     {
         $group_id = $request->group;
+        $course_id = $request->course;
 
         $session_length = $request->session_length;
 
@@ -246,7 +249,8 @@ class PlanningController extends Controller
                     'begin' => $begin,
                     'end' => $end,
                     'location' => 'na',
-                    'group_id' => $group_id
+                    'group_id' => $group_id,
+                    'course_id' => $course_id,
                         ]);
 
                 session()->flash('success', "Session de cours enregistrée avec succès le ".$begin.".");
