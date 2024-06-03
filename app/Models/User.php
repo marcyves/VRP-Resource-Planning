@@ -98,9 +98,11 @@ class User extends Authenticatable
         return Bill::where('company_id', $this->company_id)->orderBy('id')->get();
     }
 
-    public function getGroups()
+    public function getGroups(Bool $active = true )
     {
-        return Group::where('company_id', $this->company_id)->orderBy('name')->get();
+        return Group::where('company_id', $this->company_id)
+            ->where('active', $active)
+            ->orderBy('name')->get();
     }
 
     public function getStatusName()

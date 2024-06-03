@@ -16,10 +16,11 @@ class GroupController extends Controller
     {
         $user = Auth::user();
         $groups = $user->getGroups();
+        $inactive = $user->getGroups(false);
 
         $occurences = $groups->getGroupOccurences();
 
-        return view('group.index', compact('groups', 'occurences'));
+        return view('group.index', compact('groups', 'occurences', 'inactive'));
     }
 
     /**
@@ -78,6 +79,19 @@ class GroupController extends Controller
             'course_id' => $course_id,
             'group_id' => $group_id
         ]);
+
+        return redirect()->back();
+    }
+
+    /**
+     * Switch the specified group active status.
+     */
+    public function switch(String $group_id)
+    {
+        $group = Group::find($group_id);
+
+        $group->active = !$group->active;
+        $group->save();
 
         return redirect()->back();
     }
