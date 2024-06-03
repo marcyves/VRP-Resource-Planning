@@ -52,6 +52,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/group', [GroupController::class, 'index'])->name('group.index');
     Route::get('/group/{course_id}/create', [GroupController::class, 'create'])->name('group.new');
     Route::get('/group/link/{group_id}', [GroupController::class, 'link'])->name('group.link');
+    Route::get('/group/switch/{group_id}', [GroupController::class, 'switch'])->name('group.switch');
     Route::delete('/group/unlink/{group_id}', [GroupController::class, 'unlink'])->name('group.unlink');
     Route::post('/group/{course_id}', [GroupController::class, 'store'])->name('group.save');
     Route::resource('/group', GroupController::class);
