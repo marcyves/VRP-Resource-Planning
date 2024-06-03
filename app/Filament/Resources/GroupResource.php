@@ -26,15 +26,17 @@ class GroupResource extends Resource
                 Forms\Components\TextInput::make('name')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('course_id')
-                    ->required()
-                    ->numeric(),
                 Forms\Components\TextInput::make('size')
                     ->required()
                     ->numeric(),
                 Forms\Components\TextInput::make('short_name')
                     ->required()
                     ->maxLength(255),
+                Forms\Components\TextInput::make('company_id')
+                    ->required()
+                    ->numeric(),
+                Forms\Components\Toggle::make('active')
+                    ->required(),
             ]);
     }
 
@@ -44,14 +46,16 @@ class GroupResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('course_id')
-                    ->numeric()
-                    ->sortable(),
                 Tables\Columns\TextColumn::make('size')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('short_name')
                     ->searchable(),
+                Tables\Columns\TextColumn::make('company_id')
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\IconColumn::make('active')
+                    ->boolean(),
             ])
             ->filters([
                 //
