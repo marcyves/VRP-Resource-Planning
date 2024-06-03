@@ -23,7 +23,7 @@ class Course extends Model
     
     public function groups(): HasMany
     {
-        return $this->HasMany(Group::class);
+        return $this->HasMany(GroupCourse::class);
     }
 
     public function program(): BelongsTo
@@ -34,11 +34,6 @@ class Course extends Model
     public function school(): BelongsTo
     {
         return $this->BelongsTo(School::class);
-    }
-
-    public function getGroupsV1()
-    {
-        return Group::where(['course_id' => $this->id])->orderBy('name', 'asc')->get();
     }
 
     /*
