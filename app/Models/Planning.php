@@ -66,7 +66,7 @@ class Planning extends Model
     {
         return Planning::select([ 'plannings.id' ])
         ->rightJoin('groups', 'plannings.group_id', '=', 'groups.id')
-        ->where(['groups.course_id' => $course_id])
+        ->where(['plannings.course_id' => $course_id])
         ->where('begin', '>', $start_date)
         ->where('end', '<', $end_date)
         ->get();
@@ -76,7 +76,7 @@ class Planning extends Model
     {
         return Planning::select([ 'plannings.id' ])
         ->rightJoin('groups', 'plannings.group_id', '=', 'groups.id')
-        ->rightJoin('courses', 'groups.course_id', '=', 'courses.id')
+        ->rightJoin('courses', 'plannings.course_id', '=', 'courses.id')
         ->where(['courses.school_id' => $school_id])
         ->where('begin', '>', $start_date)
         ->where('end', '<', $end_date)

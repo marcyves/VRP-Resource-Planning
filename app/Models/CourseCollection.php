@@ -40,8 +40,8 @@ class CourseCollection extends Collection
             'groups.name as group_name',
             'groups.short_name as group_short_name'
             ])
-        ->leftJoin('groups', 'courses.id', '=', 'groups.course_id')
-        ->rightJoin('plannings', 'plannings.group_id', '=', 'groups.id')
+        ->join('plannings', 'plannings.course_id', '=', 'courses.id')
+        ->join('groups', 'plannings.group_id', '=', 'groups.id')
         ->join('schools', 'schools.id', '=', 'school_id')
         ->where(['year' => $year])
         ->where('begin', '>', $start_date)
@@ -78,8 +78,8 @@ class CourseCollection extends Collection
 
         return Course::whereIn('school_id', $list)
         ->select([
-            'schools.name as school_name',
             'plannings.id as id',
+            'schools.name as school_name',
             'begin',
             'end',
             'location',
@@ -91,9 +91,11 @@ class CourseCollection extends Collection
             'groups.name as group_name',
             'groups.short_name as group_short_name'
             ])
-        ->leftJoin('groups', 'courses.id', '=', 'groups.course_id')
-        ->rightJoin('plannings', 'plannings.group_id', '=', 'groups.id')
+        ->join('group_course', 'courses.id', '=', 'group_course.course_id')
+        ->join('groups', 'groups.id', '=', 'group_course.group_id')
+        ->join('plannings', 'plannings.group_id', '=', 'groups.id')
         ->join('schools', 'schools.id', '=', 'school_id')
+        ->where('plannings.course_id', '=', 'courses.id')
         ->where(['year' => $year])
         ->where('begin', '>', $start_date)
         ->where('end', '<', $end_date)
@@ -126,7 +128,7 @@ class CourseCollection extends Collection
             ->select(['courses.*', 'schools.name as school_name', 'programs.name as program_name'])
             ->leftJoin('programs', 'courses.program_id', '=', 'programs.id')
             ->leftJoin('schools', 'courses.school_id', '=', 'schools.id')
-            ->withCount('groups')
+            //->withCount('groups')
             ->orderBy('year', 'asc')
             ->orderBy('semester', 'asc')
             ->orderBy('school_name', 'asc')
@@ -138,7 +140,7 @@ class CourseCollection extends Collection
                 ->select(['courses.*', 'schools.name as school_name', 'programs.name as program_name'])
                 ->leftJoin('programs', 'courses.program_id', '=', 'programs.id')
                 ->leftJoin('schools', 'courses.school_id', '=', 'schools.id')
-                ->withCount('groups')
+                //->withCount('groups')
                 ->where(['semester' => $semester])
                 ->orderBy('semester', 'asc')
                 ->orderBy('school_name', 'asc')
@@ -152,7 +154,7 @@ class CourseCollection extends Collection
                 ->select(['courses.*', 'schools.name as school_name', 'programs.name as program_name'])
                 ->leftJoin('programs', 'courses.program_id', '=', 'programs.id')
                 ->leftJoin('schools', 'courses.school_id', '=', 'schools.id')
-                ->withCount('groups')
+                ////->withCount('groups')
                 ->where(['year' => $year])
                 ->orderBy('semester', 'asc')
                 ->orderBy('school_name', 'asc')
@@ -164,7 +166,7 @@ class CourseCollection extends Collection
                 ->select(['courses.*', 'schools.name as school_name', 'programs.name as program_name'])
                 ->leftJoin('programs', 'courses.program_id', '=', 'programs.id')
                 ->leftJoin('schools', 'courses.school_id', '=', 'schools.id')
-                ->withCount('groups')
+                //->withCount('groups')
                 ->where(['semester' => $semester])
                 ->where(['year' => $year])
                 ->orderBy('semester', 'asc')
