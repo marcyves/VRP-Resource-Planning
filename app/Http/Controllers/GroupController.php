@@ -51,6 +51,7 @@ class GroupController extends Controller
                     'size' => $request->size,
                     'course_id' => $course_id,
                     'company_id' => $company_id,
+                    'active' => false,
                 ]);
 
             session()->flash('success', "Groupe enregistré avec succès.");
