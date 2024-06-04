@@ -49,7 +49,7 @@ class School extends Model
             ->select(['courses.*', 'schools.name as school_name', 'programs.name as program_name'])
             ->leftJoin('programs', 'courses.program_id', '=', 'programs.id')
             ->leftJoin('schools', 'courses.school_id', '=', 'schools.id')
-            ->withCount('groups')
+            //->withCount('groups')
             ->orderBy('year', 'asc')
             ->orderBy('semester', 'asc')
             ->orderBy('school_name', 'asc')
