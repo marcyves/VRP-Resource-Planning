@@ -15,7 +15,10 @@
         @vite([
             'resources/css/app.css',
             'resources/js/app.js'])
-
+        <!-- Until I find what is wrong with the build process -->
+        <link href="/build/assets/app.css" rel="stylesheet">
+        <script src="/build/assets/app.js" type='text/javascript'>
+        
         <!-- Scripts -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
         <script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js' type='text/javascript'></script>
