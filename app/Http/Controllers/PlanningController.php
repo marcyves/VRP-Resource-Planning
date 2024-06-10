@@ -313,13 +313,21 @@ class PlanningController extends Controller
     public function edit(String $id)
     {
         $planning = Planning::findOrFail($id);
-
-        $group = Group::findOrFail($planning->group_id);
-        $course = Course::findOrFail($group->course_id);
+        $current_group = Group::find($planning->group_id);
+        $course = Course::findOrFail($planning->course_id);
         //TODO check groups are not yet fully booked
-        $groups = $course->getGroups();
+        $groups = Group::all();
+        
+        /*
+        select()
+        ->join('group_course', 'groups.id', '=', 'group_course.group_id')
+        ->where('group_course.course_id', '=', $course->id)
+        ->orderBy('nam', 'asc')
+        ->get();
+        */
+        $courses = Auth::user()->getCourses();
 
-        return view('planning.edit', compact('planning', 'groups'));    
+        return view('planning.edit', compact('planning', 'current_group', 'groups', 'courses'));    
     }
 
     /**
@@ -363,7 +371,7 @@ class PlanningController extends Controller
             session()->flash('danger', "Erreur lors de la modification de la session<br>".$e->message.".");
 
             return redirect()->back();
-        }               
+        }
 
         return redirect(route('planning.index'));
     }
@@ -373,9 +381,20 @@ class PlanningController extends Controller
      */
     public function destroy(string $id)
     {
-        $planning = Planning::findOrFail($id);
-        $planning->delete();
-        
+        try{
+            $planning = Planning::findOrFail($id);
+            $planning->delete();
+    
+            session()->flash('success', "Session effacée avec succès.");
+        }
+        catch (\Exception $e) {
+            dd($e);
+            
+            session()->flash('danger', "Erreur lors de l'effacement de la session<br>".$e->message.".");
+
+            return redirect()->back();
+        }
+
         return redirect(route('planning.index'));    
     }
 }
