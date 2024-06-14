@@ -17,6 +17,15 @@
   --bg-color-a: #3b39af; /* page header + form label */
   --bg-color-b: #404040; /* calendar header */
   --bg-color-c: #d73a3a; /* buttons */
+/* animation */
+  --shadow-color: #3b498a;
+  --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-colored: 0 4px 6px -1px var(--shadow-color), 0 2px 4px -2px var(--shadow-color);
+  --ring-offset-width: 0px;
+  --ring-offset-color: #fff;
+  --ring-color: rgb(59 130 246 / 0.5);
+  --ring-offset-shadow: 0 0 #0000;
+  --ring-shadow: 0 0 #0000;
 }
 
 @media print {
@@ -397,4 +406,67 @@ main{
   border: 0; padding: 10px; margin: 10px 2px 0 0;
   color: #fff; background: var(--bg-color-c);
   cursor: pointer;
+}
+
+/* Animations */
+.list{
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 12px 0 5px 0;
+  width: 100%;
+}
+.card {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px;
+  background-color: white;
+  border-radius: 0.5rem;
+  box-shadow: var(--ring-offset-shadow), var(--ring-shadow), var(--shadow);
+  cursor: pointer;
+}
+.card-content {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+}
+.card-content-text {
+  padding: 12px 8px;
+  min-width: 200px;
+}
+.card-content-text .card-title {
+  margin-bottom: 4px;
+  font-size: 16px;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.card-content-text .card-subtitle {
+  font-size: 15px;
+  font-weight: 300;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.card-content-end {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  box-sizing: border-box;
+}
+.card-content-end .price {
+  margin-top: 30px;
+  font-size: 15px;
+  font-weight: 700;
+}
+.card-content-end .check {
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+  overflow: hidden;
+  transition: width 1s;
+  border-radius: 0 1em 1em 0;
 }
