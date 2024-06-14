@@ -21,18 +21,31 @@
     @endphp
 
     <section  class="nice-page">
+        <h2>{{$current_group->name}}</h2>
         <div class="grid grid-flow-row-dense grid-cols-2 grid-rows-2">
             <div>
                 <form action="{{route('planning.update', $planning->id)}}" method="post">
                     @csrf
                     @method('put')
+                    <label>Group</label>
+                    {{$planning->group_id}}
                     <select name="group_id" class="rounded-md mt-4 py-0 pl-2 pr-8 overflow-clip w-40 mb-2">
                         @foreach ($groups as $group)
                         <option value="{{$group->id}}"
                             @if($group->id == $planning->group_id)
                             selected
                             @endif
-                            >{{$group->name}}</option>
+                            >{{$group->id}} {{$group->name}}</option>
+                        @endforeach
+                    </select>
+                    <label>Course</label>
+                    <select name="course_id" class="rounded-md mt-4 py-0 pl-2 pr-8 overflow-clip w-40 mb-2">
+                        @foreach ($courses as $course)
+                        <option value="{{$course->id}}"
+                            @if($course->id == $planning->course_id)
+                            selected
+                            @endif
+                            >{{$course->name}}</option>
                         @endforeach
                     </select>
             </div>
