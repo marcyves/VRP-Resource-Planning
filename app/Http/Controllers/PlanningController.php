@@ -104,7 +104,7 @@ class PlanningController extends Controller
         }
 
         $current_semester = "all";
-        $schools = Auth::user()->schools()->get();
+        $schools = Auth::user()->getSchools();
         $years = Auth::user()->getSchools()->getYears();
         //generate all the month names according to the current locale
         $months = [];
