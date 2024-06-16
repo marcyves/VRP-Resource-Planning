@@ -6,16 +6,13 @@
     </x-slot>
 
     <section class="nice-page">
-    <article  class="nice-box">
-        <ul>
+        <ul class="list">
         @foreach ($groups as $group)
-            <li class="mx-auto max-w-screen-xl px-2 lg:px-12 bg-white shadow-md sm:rounded-lg overflow-hidden mb-2
-            flex flex-row md:flex-col justify-between space-y-3 md:space-y-0 md:space-x-4 p-2">
-            <x-group-details :group=$group :occurences=$occurences />
+            <li class="card">
+            <x-group-details :group=$group :occurences=$occurences :active=true/>
             </li>
         @endforeach
         </ul>
-        </article>
     </section>
 
 
@@ -46,9 +43,8 @@
         <h2 class="font-semibold text-xl text-gray-800 leading-tight py-4">Groupes Archivés</h2>
         <ul>
         @foreach ($inactive as $group)
-            <li class="mx-auto max-w-screen-xl px-2 lg:px-12 bg-white shadow-md sm:rounded-lg overflow-hidden mb-2
-            flex flex-row md:flex-col justify-between space-y-3 md:space-y-0 md:space-x-4 p-2">
-            <x-group-details :group=$group :occurences=$occurences />
+            <li class="card">
+            <x-group-details :group=$group :occurences=$occurences :active=false/>
             </li>
         @endforeach
         </ul>

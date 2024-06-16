@@ -11,8 +11,10 @@
   --box-bg-color: rgb(102, 224, 251);
   --nav-bg-color: #221f49;
   --secondary-bg-color: rgb(134, 166, 241);
-  --border-color: rgb(83, 140, 233);
-  --main-text-color:rgb(68, 37, 4);
+  --border-color: #538ce9;
+  --main-text-color:#442504;
+  --icon-green: #0e7e0e;
+  --icon-grey: #a2a2a2;
 /* calendar */  
   --bg-color-a: #3b39af; /* page header + form label */
   --bg-color-b: #404040; /* calendar header */
@@ -45,6 +47,28 @@ body {
 
 button{
   background-color: var(--main-bg-color);
+}
+
+.icon:hover{
+  background-color: var(--icon-grey);
+}
+
+.icon{
+  padding: 0 4px;
+  margin: 2px;
+  width: 1.8em;
+  height: 1.8em;
+  border: solid var(--icon-grey);
+  border-width: thin;
+  border-radius: 4px;
+}
+
+.green{
+  filter: invert(21%) sepia(99%) saturate(3880%) hue-rotate(98deg) brightness(96%) contrast(89%);
+}
+
+.red{
+  filter: invert(12%) sepia(72%) saturate(5368%) hue-rotate(356deg) brightness(121%) contrast(120%);
 }
 
 nav{
@@ -412,16 +436,18 @@ main{
 .list{
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  margin: 12px 0 5px 0;
+  gap: 6px;
+  margin: 6px 0;
   width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 .card {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  padding: 8px;
+  padding: 6px;
   background-color: white;
   border-radius: 0.5rem;
   box-shadow: var(--ring-offset-shadow), var(--ring-shadow), var(--shadow);
@@ -433,34 +459,32 @@ main{
   flex-direction: row;
 }
 .card-content-text {
-  padding: 12px 8px;
+  margin: 0 8px;
   min-width: 200px;
 }
 .card-content-text .card-title {
-  margin-bottom: 4px;
+  color: var(--bg-color-a);
+  margin-bottom: 2px;
   font-size: 16px;
-  font-weight: 500;
+  font-weight: 600;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 .card-content-text .card-subtitle {
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 300;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  margin-left: 12px;
+  margin-bottom: 6px;
 }
 .card-content-end {
   display: flex;
   gap: 15px;
   align-items: center;
   box-sizing: border-box;
-}
-.card-content-end .price {
-  margin-top: 30px;
-  font-size: 15px;
-  font-weight: 700;
 }
 .card-content-end .check {
   display: flex;
@@ -469,4 +493,5 @@ main{
   overflow: hidden;
   transition: width 1s;
   border-radius: 0 1em 1em 0;
+  padding: 0 6px;
 }

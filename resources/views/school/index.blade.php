@@ -14,7 +14,7 @@
     <section  class="nice-page">
         <ul class="list">
             @foreach ($schools as $school)
-            <li class="card">
+            <li>
                 <x-school-header :school_name="$school->name" :school_id="$school->id"/>
             </li>
             @endforeach
