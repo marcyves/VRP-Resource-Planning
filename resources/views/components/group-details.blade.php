@@ -24,7 +24,7 @@
             @if($active)
             <img src="/icons/arrow-down.svg" alt="Down">
             @else
-            <img src="/icons/arrow-up.svg" alt="Down">
+            <img src="/icons/arrow-up.svg" alt="Up">
             @endif
             </button>    
         </form>
