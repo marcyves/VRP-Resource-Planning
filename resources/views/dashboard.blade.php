@@ -68,7 +68,7 @@
                 relative shadow-md sm:rounded-lg overflow-hidden">
                 <x-school-header :school_name=$school_name :school_id=$school_id/>
                 <div class="overflow-x-auto">
-                    <table class="w-full text-sm text-left text-gray-500">
+                    <table class="w-full text-sm text-left text-gray-500 mt-2">
                         <thead class="text-xs text-gray-700 uppercase bg-gray-50 text-center">
                             <tr>
                                 <th scope="col" class="px-2 py-3">{{__('messages.program')}}</th>
