@@ -7,8 +7,8 @@
 }
 
 :root {
-  --main-bg-color: rgb(199, 242, 252);
-  --box-bg-color: rgb(102, 224, 251);
+  --main-bg-color: rgba(199, 242, 252, 0.5);
+  --box-bg-color: rgba(102, 224, 251, 0.5);
   --nav-bg-color: #221f49;
   --secondary-bg-color: rgb(134, 166, 241);
   --border-color: #538ce9;
@@ -43,8 +43,65 @@
 body {
   padding: 0; 
   margin: 0;
+  width: 100%;
+  height: 100vh;
+  align-items: center;
+  justify-content: center;
+  background-size: 300% 300%;
+  background-image: linear-gradient(-45deg, rgb(59, 88, 233) 10%, rgb(100, 222, 233) 25%, rgb(255, 255, 255) 51%, #151bb7 100%);
+  -webkit-animation: AnimateBG 20s ease infinite;
+          animation: AnimateBG 20s ease infinite;
 }
 
+@-webkit-keyframes AnimateBG {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes AnimateBG {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+nav{
+  background-color: var(--nav-bg-color);
+  color: #ffffff;
+}
+
+header{
+  background-color: var(--secondary-bg-color);
+}
+
+main{
+  background-color: var(--main-bg-color);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+footer{
+  font-size: small;
+  color: rgb(118, 117, 117);
+  border-top: solid 1px;
+  background: rgba(150, 150, 150, 0.5);
+  width: 100%;
+  height: 40px;
+  padding-top: 10px;
+  text-align: center;
+}
 button{
   background-color: var(--main-bg-color);
 }
@@ -71,14 +128,6 @@ button{
   filter: invert(12%) sepia(72%) saturate(5368%) hue-rotate(356deg) brightness(121%) contrast(120%);
 }
 
-nav{
-  background-color: var(--nav-bg-color);
-  color: #ffffff;
-}
-header{
-  background-color: var(--secondary-bg-color);
-}
-
 .grid-container {
   display: grid;
   gap: 50px;
@@ -97,11 +146,7 @@ header{
   padding: 1rem;
 }
 
-main{
-  background-color: var(--main-bg-color);
-  margin-left: auto;
-  margin-right: auto;
-}
+
 
 .nice-form {
   display: flex;
