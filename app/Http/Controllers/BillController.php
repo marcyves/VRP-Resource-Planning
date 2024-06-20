@@ -45,6 +45,7 @@ class BillController extends Controller
     {
         $validated = $request->validate([
             'id' => 'required',
+            'description' => 'required'
         ]);
         
         $company  =  Auth::user()->getCompany();
@@ -85,7 +86,7 @@ class BillController extends Controller
      */
     public function edit(Bill $bill)
     {
-        //
+        return view('bills.edit', compact('bill'));
     }
 
     /**
@@ -93,7 +94,28 @@ class BillController extends Controller
      */
     public function update(Request $request, Bill $bill)
     {
-        //
+        $validated = $request->validate([
+            'id' => 'required',
+            'description' => 'required'
+        ]);
+
+        try{
+            $bill->description = $request->description;
+            $bill->amount = $request->amount;
+
+            $bill->save();
+
+            session()->flash('success', 'Facture '.$request->id.' modifiée avec succès.');
+
+            return redirect(route('bill.index'));
+        }
+        catch (\Exception $e) {
+            dd($e);
+
+            session()->flash('danger', "Erreur lors de la modification de l'école ".$request->name.'.');
+
+            return redirect()->back();
+        }       
     }
 
     /**
