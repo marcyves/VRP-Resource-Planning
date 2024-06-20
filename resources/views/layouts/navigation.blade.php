@@ -30,21 +30,41 @@
                     <x-nav-link :href="route('bill.index')" :active="request()->routeIs('bill.index')">
                         {{ __('messages.bills') }}
                     </x-nav-link>
+                <!-- Edit switch -->
+                <div class='inline-flex items-center px-1 pt-1'>
+                    <div class="toggle-container edit">
+                    @if(Auth::user()->getMode() == "Editer")
+                        <input class="toggle-checkbox toggled-once" type="checkbox" id="edit-toggle">
+                    @else
+                        <input class="toggle-checkbox" type="checkbox" id="edit-toggle">
+                    @endif
+                    {{Auth::user()->getMode() }}
+                        <div class="toggle-track">  
+                            <div class="toggle-thumb"></div>
+                        </div>
+                    </div>
                 </div>
-            </div>
+<script>
+const checkbox = document.getElementById('edit-toggle');
 
-            <!-- Edit switch -->
-            
-            <x-nav-link :href="route('profile.switch')" :active="request()->routeIs('profile.switch')">
-                {{__(Auth::user()->getMode())}}
-            </x-nav-link>
+const detectToggleOnce = (e) => {
+    e.target.classList.add('toggled-once');
+    let url = "{{ route('profile.switch') }}";
+    document.location.href=url;
+};
 
-            <!-- Link to admin (Filament) -->
-            @if(Auth::user()->getStatusName() == 'admin')
-            <x-nav-link :href="route('filament.admin.pages.dashboard')" :active="request()->routeIs('filament.admin.pages.dashboard')">
-            {{ __('Admin') }}
-            </x-nav-link>
-            @endif
+checkbox.addEventListener('click', detectToggleOnce, { once: true });
+
+</script>
+
+
+                    <!-- Link to admin (Filament) -->
+                    @if(Auth::user()->getStatusName() == 'admin')
+                    <x-nav-link :href="route('filament.admin.pages.dashboard')" :active="request()->routeIs('filament.admin.pages.dashboard')">
+                    {{ __('Admin') }}
+                    </x-nav-link>
+                    @endif
+                </div>
 
             <!-- Settings Dropdown -->
             <div class="hidden sm:flex sm:items-center sm:ml-6">
