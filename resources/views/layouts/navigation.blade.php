@@ -32,9 +32,9 @@
                     </x-nav-link>
                 <!-- Edit switch -->
                 <div class='inline-flex items-center px-1 pt-1'>
-                    <div class="toggle-container edit">
-                    @if(Auth::user()->getMode() == "Editer")
-                        <input class="toggle-checkbox toggled-once" type="checkbox" id="edit-toggle">
+                    <div class="toggle-container edit toggled-once">
+                    @if(Auth::user()->getMode() == "Edit")
+                        <input class="toggle-checkbox toggled-once" type="checkbox" id="edit-toggle" checked>
                     @else
                         <input class="toggle-checkbox" type="checkbox" id="edit-toggle">
                     @endif
