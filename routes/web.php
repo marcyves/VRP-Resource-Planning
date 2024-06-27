@@ -23,7 +23,12 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return redirect(route('login'));
+    try {
+        \DB::connection()->getPDO();
+        return redirect(route('login'));
+    } catch (\Exception $e) {
+        return view('maintenance');
+    }
 });
 
 Route::get('/dashboard', function () {
