@@ -43,15 +43,21 @@ class GroupController extends Controller
         ]);
         
         $company_id = Auth::user()->company_id;
+        $active = false;
+
+        if($course_id ==0 && session('course_id') != null){
+            $course_id = session('course_id');
+            $active = true;
+        }
 
         try{
-            Group::create([
+            $group = Group::create([
                     'name' => $request->name,
                     'short_name' => $request->short_name,
                     'size' => $request->size,
                     'course_id' => $course_id,
                     'company_id' => $company_id,
-                    'active' => false,
+                    'active' => $active,
                 ]);
 
             session()->flash('success', "Groupe enregistré avec succès.");
@@ -59,12 +65,18 @@ class GroupController extends Controller
             if ($course_id == 0){
                 return redirect(route('group.index'));
             }else{
+
+                GroupCourse::create([
+                    'group_id' => $group->id,
+                    'course_id' => $course_id
+                ]);
+
                 return redirect(route('course.show', $course_id));
             }
         }
         catch (\Exception $e) {
             dd($e);
-            session()->flash('danger', "Erreur lors de l'enregitrement du groupe.");
+            session()->flash('danger', "Erreur lors de l'enregistrement du groupe.");
 
             return redirect()->back();
         }               

@@ -36,6 +36,10 @@ class Course extends Model
         return $this->BelongsTo(School::class);
     }
 
+    public function getSchool(){
+
+        return School::find($this->school_id);
+    }
     /*
 
     Get all groups connected to the course
