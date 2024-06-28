@@ -216,6 +216,14 @@ class PlanningController extends Controller
         $date = "$year-$month-$day";
         $course = Course::find($request->course);
 
+        session()->put('course', $course->name);
+        session()->put('course_id', $course->id);
+
+        $school = $course->getSchool();
+
+        session()->put('school', $school->name);
+        session()->put('school_id', $school->id);
+
         //TODO check groups are not yet fully booked
         $groups = $course->getGroups();
         
