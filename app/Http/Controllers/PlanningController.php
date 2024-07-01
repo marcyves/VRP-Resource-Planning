@@ -374,7 +374,7 @@ class PlanningController extends Controller
             return redirect(route('planning.index'));
         }
         catch (\Exception $e) {
-            dd($e);
+//            dd($e);
 
             session()->flash('danger', "Erreur lors de la modification de la session<br>".$e->message.".");
 
