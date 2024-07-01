@@ -16,7 +16,7 @@
 
             $day = 1;
         @endphp
-        <x-period-selector :years=$years :months=$months current_year={{$current_year}} current_month={{$current_month}} route="planning.period"/>
+        <x-period-selector :years=$years :months=$months current_year={{$current_year}} current_month={{$current_month}} route="planning.index"/>
           <!-- (B) CALENDAR -->
           <div id="calWrap">
             <div class="calHead">
