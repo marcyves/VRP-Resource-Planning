@@ -10,7 +10,7 @@
         </select>
     </form>
 
-    <form class="inline-flex" action="{{route('planning.billing')}}" method="get">
+    <form class="inline-flex" action="{{route($route)}}" method="get">
         @csrf
         <select id="current_month" name="current_month" onchange="this.form.submit()">
             @foreach ($months as $index => $month)
