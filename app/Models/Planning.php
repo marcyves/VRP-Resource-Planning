@@ -16,7 +16,7 @@ class Planning extends Model
     public function getSessionLength()
     {
         $group = Group::findOrFail($this->group_id);
-        $course = Course::findOrFail($group->course_id);
+        $course = Course::findOrFail($this->course_id);
         
         return $course->session_length;
     }
