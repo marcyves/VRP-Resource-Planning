@@ -396,7 +396,7 @@ class PlanningController extends Controller
             session()->flash('success', "Session effacée avec succès.");
         }
         catch (\Exception $e) {
-            dd($e);
+//            dd($e);
             
             session()->flash('danger', "Erreur lors de l'effacement de la session<br>".$e->message.".");
 
