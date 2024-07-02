@@ -366,6 +366,7 @@ class PlanningController extends Controller
             $planning->begin = $begin;
             $planning->end = $end;
             $planning->group_id = $request->group_id;
+            $planning->course_id = $request->course_id;
 
             $planning->save();
 
