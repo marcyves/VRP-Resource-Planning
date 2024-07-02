@@ -18,9 +18,16 @@ class GroupController extends Controller
         $groups = $user->getGroups();
         $inactive = $user->getGroups(false);
 
+        $list = $groups->map(function(Group $group){
+            return $group->id;
+        });
+
+        $courses = GroupCourse::whereIn('group_id', $list)
+            ->join('courses', 'courses.id', '=', 'group_course.course_id');
+
         $occurences = $groups->getGroupOccurences();
 
-        return view('group.index', compact('groups', 'occurences', 'inactive'));
+        return view('group.index', compact('groups', 'occurences', 'inactive', 'courses'));
     }
 
     /**
@@ -191,9 +198,22 @@ class GroupController extends Controller
     {
         $group = Group::findOrFail($group_id);
 
-        $group->delete();
+        try{
 
-        session()->flash('success', "Groupe effacé avec succès.");
+            $group->delete();
+
+            session()->flash('success', "Groupe effacé avec succès.");
+    
+        }
+        catch (\Exception $e) {
+            if($e->getCode() == 23000){
+                session()->flash('danger', "Le groupe ne peut être effacé, il est utilisé dans un cours.");
+
+            }else{
+                // Unknown error
+                session()->flash('danger', $e->getMessage());
+            }
+        }      
 
         return redirect()->back();
     }
