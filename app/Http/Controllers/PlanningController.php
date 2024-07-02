@@ -375,10 +375,8 @@ class PlanningController extends Controller
             return redirect(route('planning.index'));
         }
         catch (\Exception $e) {
-//            dd($e);
-
-            session()->flash('danger', "Erreur lors de la modification de la session<br>".$e->message.".");
-
+            session()->flash('danger', "Erreur lors de la modification de la session");
+            //session()->flash('danger', $e->getMessage());
             return redirect()->back();
         }
 
@@ -397,10 +395,8 @@ class PlanningController extends Controller
             session()->flash('success', "Session effacée avec succès.");
         }
         catch (\Exception $e) {
-//            dd($e);
-            
-            session()->flash('danger', "Erreur lors de l'effacement de la session<br>".$e->message.".");
-
+            session()->flash('danger', "Erreur lors de l'effacement de la session.");
+            //session()->flash('danger', $e->getMessage());
             return redirect()->back();
         }
 

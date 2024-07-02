@@ -141,9 +141,8 @@ class CourseController extends Controller
             return redirect(route('dashboard'));
         }
         catch (\Exception $e) {
-            dd($e);
-            session()->flash('danger', "Erreur lors de l'enregitrement du cours.");
-
+            session()->flash('danger', "Erreur lors de l'enregistrement du cours.");
+            //session()->flash('danger', $e->getMessage());
             return redirect()->back();
         }               
     }
@@ -153,10 +152,17 @@ class CourseController extends Controller
      */
     public function destroy(String $course_id)
     {
-        $course = Course::findOrFail($course_id);
-        session()->forget('course');
-        session()->forget('course_id');
-        $course->delete();
-        return redirect(route('dashboard'));
+        try{
+            $course = Course::findOrFail($course_id);
+            session()->forget('course');
+            session()->forget('course_id');
+            $course->delete();
+            return redirect(route('dashboard'));
+        }
+        catch (\Exception $e) {
+            session()->flash('danger', "Erreur lors de la suppression du cours.");
+            //session()->flash('danger', $e->getMessage());
+            return redirect()->back();
+        }                   
     }
 }
