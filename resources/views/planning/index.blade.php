@@ -34,7 +34,7 @@
                 @endfor
                 <!-- Afficher les jours du mois -->
                 @for ($i = $startDay; $i <= 7; $i++)
-                        <x-form-planning :courses=$courses :planning=$planning i={{$i}} :day=$day month={{$current_month}} year={{$current_year}}/>
+                        <x-form-planning :schools=$schools :courses=$courses :planning=$planning i={{$i}} :day=$day month={{$current_month}} year={{$current_year}}/>
                         @php
                         $day++;
                         @endphp                    
@@ -45,7 +45,7 @@
             @while ($day <= $numDays)
                 <div class="calRow">
                 @for ($i = 1; $i <= 7 && $day <= $numDays; $i++)
-                    <x-form-planning :courses=$courses :planning=$planning i={{$i}} :day=$day month={{$current_month}} year={{$current_year}}/>
+                    <x-form-planning :schools=$schools :courses=$courses :planning=$planning i={{$i}} :day=$day month={{$current_month}} year={{$current_year}}/>
                     @php
                     $day++;
                     @endphp                

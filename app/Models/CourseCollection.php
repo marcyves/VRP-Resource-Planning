@@ -142,7 +142,6 @@ class CourseCollection extends Collection
                 ->leftJoin('schools', 'courses.school_id', '=', 'schools.id')
                 ->withCount('groups')
                 ->where(['semester' => $semester])
-                ->orderBy('semester', 'asc')
                 ->orderBy('school_name', 'asc')
                 ->orderBy('program_name', 'asc')
                 ->orderBy('name', 'asc')
@@ -169,10 +168,8 @@ class CourseCollection extends Collection
                 ->withCount('groups')
                 ->where(['semester' => $semester])
                 ->where(['year' => $year])
-                ->orderBy('semester', 'asc')
                 ->orderBy('school_name', 'asc')
                 ->orderBy('program_name', 'asc')
-                ->orderBy('name', 'asc')
                 ->get();
             }
         }

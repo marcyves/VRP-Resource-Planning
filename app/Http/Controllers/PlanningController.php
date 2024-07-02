@@ -52,7 +52,6 @@ class PlanningController extends Controller
         $schools = Auth::user()->getSchools();
         $years = $schools->getYears();
         $courses = $schools->getCourses($current_year, $current_semester);
-
         // Collect Planning information for display
         //$planning = $schools->getPlanning($current_year, $current_month);
         $planning = Planning::getDetails($current_year, $current_month);
@@ -74,7 +73,7 @@ class PlanningController extends Controller
         $weekdays->push($weekdays[0]);
         $weekdays->shift();
 
-        return view('planning.index', compact('planning', 'courses', 'years', 'months', 'weekdays','current_year', 'current_month', 'monthly_gain', 'monthly_hours'));
+        return view('planning.index', compact('planning', 'schools', 'courses', 'years', 'months', 'weekdays','current_year', 'current_month', 'monthly_gain', 'monthly_hours'));
     }
 
     /**
@@ -226,7 +225,6 @@ class PlanningController extends Controller
 
         //TODO check groups are not yet fully booked
         $groups = $course->getGroups();
-        
         $session_length = $course->session_length;
 
         return view('planning.create', compact('date', 'groups', 'session_length', 'course'));

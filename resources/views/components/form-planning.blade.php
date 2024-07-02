@@ -9,9 +9,14 @@
         <input type="hidden" name="month" value={{$month}}>
         <input type="hidden" name="year" value={{$year}}>
         <select name="course" class="course-select my-box"  onchange="this.form.submit()">
-            <option value="0">--&gt; Course?</option>
-            @foreach ($courses as $course)
-            <option value="{{$course->id}}">({{$course->school_name}}) {{$course->name}}</option>                            
+            <option value disabled selected>-- Select a Course --</option>
+            @foreach($schools as $school)
+                <option disabled>{{$school->name}}</option>                            
+                @foreach ($courses as $course)
+                    @if($school->id == $course->school_id)
+                    <option value="{{$course->id}}"> -({{ $course->program_name }}) {{$course->name}}</option>
+                    @endif
+                @endforeach
             @endforeach
         </select>
     </form>
