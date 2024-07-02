@@ -45,6 +45,13 @@
         @foreach ($inactive as $group)
             <li class="card">
             <x-group-details :group=$group :occurences=$occurences :active=false/>
+            <ul>
+            @foreach($courses as $course)
+                @if($group->id == $course.group_id)
+                <li>{{ $course->name }}</li>
+                @endif
+            @endforeach
+            </ul>
             </li>
         @endforeach
         </ul>
