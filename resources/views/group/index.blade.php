@@ -45,6 +45,7 @@
         @foreach ($inactive as $group)
             <li class="card">
             <x-group-details :group=$group :occurences=$occurences :active=false/>
+            </li>
             <ul>
             @foreach($courses as $course)
                 @if($group->id == $course.group_id)
@@ -52,7 +53,7 @@
                 @endif
             @endforeach
             </ul>
-            </li>
+            
         @endforeach
         </ul>
         </article>
