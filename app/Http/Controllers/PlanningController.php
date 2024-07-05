@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\School;
 use App\Models\Course;
 use App\Models\Group;
 use App\Models\Planning;
@@ -48,10 +49,34 @@ class PlanningController extends Controller
             }
         }
 
-        // Collect Courses for future planning
-        $schools = Auth::user()->getSchools();
-        $years = $schools->getYears();
-        $courses = $schools->getCourses($current_year, $current_semester);
+        if( $school_id = session()->get('school_id')){
+            $schools = School::find($school_id);
+            $years  = Course::where('school_id', $school_id)
+            ->select(['year'])
+            ->distinct()
+            ->orderBy('year', 'asc')
+            ->get();
+            if( $course_id = session()->get('course_id')){
+                $courses = Course::select(['courses.*', 'programs.name as program_name'])
+                    ->where('courses.id', '=', $course_id)
+                    ->leftJoin('programs', 'courses.program_id', '=', 'programs.id')
+                    ->orderBy('year', 'asc')
+                    ->orderBy('semester', 'asc')
+                    ->orderBy('program_name', 'asc')
+                    ->orderBy('name', 'asc')
+                    ->get();
+                $mode = 'selected';
+            }else{
+                $courses = $schools->getCourses();
+                $mode = 'single';
+            }
+        }else{
+            // Collect Courses for future planning
+            $schools = Auth::user()->getSchools();
+            $years = $schools->getYears();
+            $courses = $schools->getCourses($current_year, $current_semester);
+            $mode = 'multi';
+        }
         // Collect Planning information for display
         //$planning = $schools->getPlanning($current_year, $current_month);
         $planning = Planning::getDetails($current_year, $current_month);
@@ -73,7 +98,7 @@ class PlanningController extends Controller
         $weekdays->push($weekdays[0]);
         $weekdays->shift();
 
-        return view('planning.index', compact('planning', 'schools', 'courses', 'years', 'months', 'weekdays','current_year', 'current_month', 'monthly_gain', 'monthly_hours'));
+        return view('planning.index', compact('planning', 'schools', 'courses', 'years', 'months', 'weekdays','current_year', 'current_month', 'monthly_gain', 'monthly_hours', 'mode'));
     }
 
     /**

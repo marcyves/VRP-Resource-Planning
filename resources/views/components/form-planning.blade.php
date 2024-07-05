@@ -10,6 +10,17 @@
         <input type="hidden" name="year" value={{$year}}>
         <select name="course" class="course-select my-box"  onchange="this.form.submit()">
             <option value disabled selected>-- Select a Course --</option>
+            @if($mode == 'selected')
+            <option disabled>{{$schools->name}}</option>
+                @foreach ($courses as $course)
+                    <option selected value="{{$course->id}}"> -({{ $course->program_name }}) {{$course->name}}</option>
+                @endforeach
+            @elseif($mode == 'single')
+            <option disabled>{{$schools->name}}</option>  
+                @foreach ($courses as $course)
+                    <option value="{{$course->id}}"> -({{ $course->program_name }}) {{$course->name}}</option>
+                @endforeach
+            @else
             @foreach($schools as $school)
                 <option disabled>{{$school->name}}</option>                            
                 @foreach ($courses as $course)
@@ -18,6 +29,7 @@
                     @endif
                 @endforeach
             @endforeach
+            @endif
         </select>
     </form>
     @endif
