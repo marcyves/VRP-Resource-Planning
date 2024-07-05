@@ -111,8 +111,6 @@ class CourseCollection extends Collection
                     Course::getCoursesForSchool($school->id)];
         });
 
-//        dd($list);
-
         return $list;
     }
 
