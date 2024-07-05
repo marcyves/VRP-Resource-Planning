@@ -39,13 +39,13 @@
         @foreach ($courses as $course)
             @if($school_name != $course->school_name)
                 @if($school_count > 0)
-                    <tr class="font-semibold">
-                        <th scope="row" class="px-2 py-3 font-medium text-gray-900 whitespace-nowrap">Total</th>
-                        <td class="px-2 py-3" colspan="6"></td>
-                        <td class="px-2 py-3 text-center">{{$total_time}}</td>
-                        <td class="px-2 py-3"></td>
-                        <td class="px-2 py-3 text-center">@money($total_budget)</td>
-                        <td class="px-2 py-3 flex items-center justify-end">
+                    <tr class="footer">
+                        <th scope="row">Total</th>
+                        <td colspan="6"></td>
+                        <td>{{$total_time}}</td>
+                        <td></td>
+                        <td>@money($total_budget)</td>
+                        <td class="flex items-center justify-end">
                         </td>
                     </tr>
                     </tbody>
@@ -68,19 +68,19 @@
                 relative shadow-md sm:rounded-lg overflow-hidden">
                 <x-school-header :school_name=$school_name :school_id=$school_id/>
                 <div class="overflow-x-auto">
-                    <table class="w-full text-sm text-left text-gray-500 mt-2">
+                    <table class="w-full text-sm text-gray-500 mt-2">
                         <thead class="text-xs text-gray-700 uppercase bg-gray-50 text-center">
                             <tr>
-                                <th scope="col" class="px-2 py-3">{{__('messages.program')}}</th>
-                                <th scope="col" class="px-2 py-3">{{__('messages.course')}}</th>
-                                <th scope="col" class="px-2 py-3 text-center">{{__('messages.semester')}}</th>
-                                <th scope="col" class="px-2 py-3 text-center">{{__('messages.sessions')}}</th>
-                                <th scope="col" class="px-2 py-3 text-center">{{__('messages.session_length')}}</th>
-                                <th scope="col" class="px-2 py-3 text-center">{{__('messages.time')}}</th>
-                                <th scope="col" class="px-2 py-3 text-center">{{__('messages.groups')}}</th>
-                                <th scope="col" class="px-2 py-3 text-center">{{__('messages.total_time')}}</th>
-                                <th scope="col" class="px-2 py-3 text-center">{{__('messages.rate')}}</th>
-                                <th scope="col" class="px-2 py-3 text-center">{{__('messages.gain')}}</th>
+                                <th scope="col">{{__('messages.program')}}</th>
+                                <th scope="col">{{__('messages.course')}}</th>
+                                <th scope="col">{{__('messages.semester')}}</th>
+                                <th scope="col">{{__('messages.sessions')}}</th>
+                                <th scope="col">{{__('messages.session_length')}}</th>
+                                <th scope="col">{{__('messages.time')}}</th>
+                                <th scope="col">{{__('messages.groups')}}</th>
+                                <th scope="col">{{__('messages.total_time')}}</th>
+                                <th scope="col">{{__('messages.rate')}}</th>
+                                <th scope="col">{{__('messages.gain')}}</th>
                                     <span class="sr-only">Actions</span>
                                 </th>
                             </tr>
@@ -88,7 +88,7 @@
                         <tbody>
             @endif
             <tr>
-                <td class="px-2 py-3 font-medium text-gray-900 whitespace-nowrap">
+                <td class="font-medium text-gray-900 whitespace-nowrap text-left">
                 <form action="{{route('program.show', $course->program_id)}}" method="get">
                         @csrf
                         <button class="inline-flex items-center p-0.5 text-sm font-medium text-center text-blue-500 hover:text-gray-800 rounded-lg focus:outline-none" type="submit">
@@ -96,7 +96,7 @@
                         </button>    
                     </form>
                 </td>
-                <th scope="row" class="px-2 py-3 font-medium text-gray-900 whitespace-nowrap">
+                <th scope="row" class="font-medium text-gray-900 whitespace-nowrap text-left">
                     <form action="{{route('course.show', $course->id)}}" method="get">
                         @csrf
                         <button class="inline-flex items-center p-0.5 text-sm font-medium text-center text-blue-500 hover:text-gray-800 rounded-lg focus:outline-none" type="submit">
@@ -104,16 +104,16 @@
                         </button>    
                     </form>
                 </th>
-                <td class="px-2 py-3 text-center">{{$course->semester}}</td>
-                <td class="px-2 py-3 text-center">{{$course->sessions}}</td>
-                <td class="px-2 py-3 text-center">{{$course->session_length}}</td>
-                <td class="px-2 py-3 text-center">{{$course->session_length*$course->sessions}}</td>
-                <td class="px-2 py-3 text-center">{{$course->groups_count}}</td>
-                <td class="px-2 py-3 text-center">{{$course->groups_count*$course->session_length*$course->sessions}}</td>
-                <td class="px-2 py-3 text-right">@money($course->rate)</td>
-                <td class="px-2 py-3 text-right">@money($course->rate*$course->session_length*$course->sessions*$course->groups_count)</td>
+                <td>{{$course->semester}}</td>
+                <td>{{$course->sessions}}</td>
+                <td>{{$course->session_length}}</td>
+                <td>{{$course->session_length*$course->sessions}}</td>
+                <td>{{$course->groups_count}}</td>
+                <td>{{$course->groups_count*$course->session_length*$course->sessions}}</td>
+                <td class="text-right">@money($course->rate)</td>
+                <td class="text-right">@money($course->rate*$course->session_length*$course->sessions*$course->groups_count)</td>
                 @if(Auth::user()->getMode() == "Edit")
-                <td class="px-2 py-3 flex items-center justify-end">
+                <td class="flex items-center justify-end">
                     <form action="{{route('course.edit', $course->id)}}" method="get">
                         <x-button-edit/>
                     </form>
@@ -136,18 +136,18 @@
         $gross_total_budget += $total_budget;
     @endphp
 
-    <tr class="border-b">
-        <th scope="row" class="px-2 py-3 font-medium text-gray-900 whitespace-nowrap">Total</th>
-        <td class="px-2 py-3"></td>
-        <td class="px-2 py-3"></td>
-        <td class="px-2 py-3"></td>
-        <td class="px-2 py-3"></td>
-        <td class="px-2 py-3"></td>
-        <td class="px-2 py-3"></td>
-        <td class="px-2 py-3 text-center">{{__('messages.total_time')}}</td>
-        <td class="px-2 py-3"></td>
-        <td class="px-2 py-3 text-center">@money($total_budget)</td>
-        <td class="px-2 py-3 flex items-center justify-end">
+    <tr class="footer">
+        <th scope="row">Total</th>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>{{__('messages.total_time')}}</td>
+        <td></td>
+        <td>@money($total_budget)</td>
+        <td class="flex items-center justify-end">
         </td>
     </tr>
                                             </tbody>
@@ -159,15 +159,15 @@
     <table class="w-full text-sm text-left text-gray-500">
         <thead class="text-xs text-gray-600 uppercase bg-gray-50">
             <tr>
-                <th scope="col" class="px-2 py-3"></th>
-                <th scope="col" class="px-2 py-3"></th>
-                <th scope="col" class="px-2 py-3">{{__('messages.total_time')}}</th>
-                <th scope="col" class="px-2 py-3">{{$gross_total_time}}</th>
-                <th scope="col" class="px-2 py-3">{{__('messages.total_gain')}}</th>
-                <th scope="col" class="px-2 py-3">@money($gross_total_budget)</th>
-                <th scope="col" class="px-2 py-3">{{__('messages.hour_rate')}}</th>
-                <th scope="col" class="px-2 py-3">@money($gross_total_budget/$gross_total_time)</th>
-                <th scope="col" class="px-2 py-3"></th>
+                <th scope="col"></th>
+                <th scope="col"></th>
+                <th scope="col">{{__('messages.total_time')}}</th>
+                <th scope="col">{{$gross_total_time}}</th>
+                <th scope="col">{{__('messages.total_gain')}}</th>
+                <th scope="col">@money($gross_total_budget)</th>
+                <th scope="col">{{__('messages.hour_rate')}}</th>
+                <th scope="col">@money($gross_total_budget/$gross_total_time)</th>
+                <th scope="col"></th>
             </tr>
         </thead>
     </table>

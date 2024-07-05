@@ -53,6 +53,20 @@ body {
           animation: AnimateBG 20s ease infinite;
 }
 
+:is(tbody, table) > tr:nth-child(odd) {
+  background-color: rgba(85, 50, 192, 0.1);
+}
+
+tr.footer{
+  font-weight: bold;
+  background-color: rgba(85, 50, 192, 0.2);
+}
+
+td, th {
+  padding: 0.3em 0.2em; /* or 0.5em 1em... or any value different from 0 */
+  text-align: center;
+}
+
 @-webkit-keyframes AnimateBG {
   0% {
     background-position: 0% 50%;
@@ -90,6 +104,7 @@ main{
   background-color: var(--main-bg-color);
   margin-left: auto;
   margin-right: auto;
+  font-size: 1.25rem;
 }
 
 footer{
