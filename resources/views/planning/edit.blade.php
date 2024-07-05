@@ -68,7 +68,7 @@
             Begin: 
             <select name="hour" class="rounded-md py-0 pl-2 pr-8 w-20">
                 @php
-                    for($h=8;$h<20;$h++)
+                    for($h=8;$h<22;$h++)
                     {
                 @endphp
                         <option value="{{$h}}"
@@ -94,7 +94,7 @@
             End: 
             <select name="end_hour" class="rounded-md py-0 pl-2 pr-8 w-20">
                 @php
-                    for($h=8;$h<20;$h++)
+                    for($h=8;$h<22;$h++)
                     {
                 @endphp
                         <option value="{{$h}}"
