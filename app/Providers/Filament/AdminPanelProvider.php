@@ -59,6 +59,12 @@ class AdminPanelProvider extends PanelProvider
                 NavigationItem::make('Retour VRP')
                     ->url('/', shouldOpenInNewTab: false)
                     ->icon('heroicon-c-arrow-left-start-on-rectangle')
+            ])
+            ->navigationItems([
+                NavigationItem::make('Translation')
+                    ->url('/translate', shouldOpenInNewTab: false)
+                    ->icon('heroicon-c-arrow-left-start-on-rectangle')
             ]);
+
     }
 }

@@ -9,6 +9,7 @@
         "blade-ui-kit/blade-ui-kit": "^0.6.2",
         "filament/filament": "^3.2",
         "guzzlehttp/guzzle": "^7.2",
+        "joedixon/laravel-translation": "^2.2",
         "laravel/framework": "^10.10",
         "laravel/sanctum": "^3.2",
         "laravel/tinker": "^2.8"
