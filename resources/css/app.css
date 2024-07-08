@@ -159,6 +159,9 @@ button{
 
 .nice-page{
   padding: 1rem;
+  max-width: 1400px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 
@@ -499,8 +502,6 @@ button{
   gap: 6px;
   margin: 6px 0;
   width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
 }
 .card {
   display: flex;

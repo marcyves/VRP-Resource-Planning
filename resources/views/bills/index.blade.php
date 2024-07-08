@@ -6,6 +6,8 @@
             </h2>
     </x-slot>
 
+            <article class="">
+
     <section class="nice-page">
         <table class="bg-blue-100 w-full mb-8">
             @php

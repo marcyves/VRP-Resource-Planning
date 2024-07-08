@@ -63,7 +63,7 @@
                 $school_id = $course->school_id;
                 $school_name = $course->school_name;
             @endphp
-            <article class="mx-auto max-w-screen-xl px-2 lg:px-12 mb-4">
+            <article class="nice-page">
                 <div class="bg-blue-100 mb-2 space-y-3 md:space-y-0 md:space-x-4 p-2
                 relative shadow-md sm:rounded-lg overflow-hidden">
                 <x-school-header :school_name=$school_name :school_id=$school_id/>
