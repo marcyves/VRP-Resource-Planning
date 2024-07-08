@@ -29,6 +29,7 @@ return [
 
     'groups' => 'Groups',
     'group_create' => 'Create Group',
+    'groups_list' => 'Groups List',
 
     'billing' => 'Billing',
     'bills' => 'Bills',
