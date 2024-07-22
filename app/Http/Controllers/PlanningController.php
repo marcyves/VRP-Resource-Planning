@@ -275,6 +275,9 @@ class PlanningController extends Controller
         $add_minutes = ($session_length - $add_hours)*60;
         $end = date('Y-m-d H:i:s',strtotime("$date $hour:$minutes:0 +$add_hours hours +$add_minutes minutes"));
 
+        session()->remove('course');
+        session()->remove('course_id');
+        
         try{
             Planning::create([
                     'begin' => $begin,
