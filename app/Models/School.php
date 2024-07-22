@@ -43,9 +43,10 @@ class School extends Model
             ->count();
     }
 
-    public function getCourses()
+    public function getCourses(String $year = 'all')
     {
-        return Course::where('school_id', $this->id)
+        if($year == 'all'){
+            return Course::where('school_id', $this->id)
             ->select(['courses.*', 'schools.name as school_name', 'programs.name as program_name'])
             ->leftJoin('programs', 'courses.program_id', '=', 'programs.id')
             ->leftJoin('schools', 'courses.school_id', '=', 'schools.id')
@@ -56,6 +57,19 @@ class School extends Model
             ->orderBy('program_name', 'asc')
             ->orderBy('name', 'asc')
             ->get();
+        }else{
+        return Course::where('school_id', $this->id)
+            ->select(['courses.*', 'schools.name as school_name', 'programs.name as program_name'])
+            ->leftJoin('programs', 'courses.program_id', '=', 'programs.id')
+            ->leftJoin('schools', 'courses.school_id', '=', 'schools.id')
+            ->withCount('groups')
+            ->where('year', '=', $year)
+            ->orderBy('semester', 'asc')
+            ->orderBy('school_name', 'asc')
+            ->orderBy('program_name', 'asc')
+            ->orderBy('name', 'asc')
+            ->get();
+        }
     }
      /**
      * Create a new Eloquent Collection instance.

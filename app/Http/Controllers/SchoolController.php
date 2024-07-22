@@ -118,7 +118,8 @@ class SchoolController extends Controller
     public function show(School $school)
     {
 
-        $courses = $school->getCourses();
+        $year = session()->get('current_year');
+        $courses = $school->getCourses($year);
 
         session()->forget('course');
         session()->forget('course_id');
