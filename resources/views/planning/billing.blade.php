@@ -16,19 +16,19 @@
     @else
         @foreach($schools as $school => $courses)
             <div class="font-bold text-gray-800 bg-green-100 p-2 mb-2 flex flex-col justify-between border border-gray-300 rounded-md ">
-                <h2 class="inline ml-2 pt-2">{{$school}}</h2>
+            <h2 class="inline ml-2 pt-2">{{$school}}</h2>
             @foreach($courses['courses'] as $course_name => $schedules)
+                @php
+                $current_group = "";
+                @endphp
                 <h2 class="font-bold text-gray-800 p-2 bg-blue-200 mt-4"> - {{$course_name}}</h2>
                 <ul>
-                    @php
-                    $current_group = "";
-                    @endphp
                 @foreach($schedules['schedule'] as $planning_id => $schedule)
                     @if($current_group != $schedule['group'])
-                    @php
-                        $current_group = $schedule['group'];
-                    @endphp
-                    <h3 class="font-semibold text-gray-800 ml-4">{{$current_group}}</h3>
+                        @php
+                            $current_group = $schedule['group'];
+                        @endphp
+                        <h3 class="font-semibold text-gray-800 ml-4">{{$current_group}}</h3>
                     @endif
                     <li class="ml-8">
                     @if(Auth::user()->getMode() == "Edit")
@@ -37,9 +37,9 @@
                     {{date_format(date_create($schedule['begin']),'d/m/Y H:i')}}-{{date_format(date_create($schedule['end']),'H:i')}} 
                     <span class="  
                     @if ($schedule['duration']!=$schedules['duration'])
-                    text-red-400
+                        text-red-400
                     @else
-                    text-green-400
+                        text-green-400
                     @endif
                     ">
                     ({{number_format($schedule['duration'],1)}} h)</span>
@@ -60,7 +60,7 @@
                     </div>
                 </div>
             @endforeach
-</div>
+            </div>
             <div class="flex flex-row justify-between font-semibold text-gray-600 border border-gray-300 rounded-md mt-2 py-2 bg-green-100">
                 <div class="mx-4">
                     Total Time worked = {{$courses['hours']}} hours
@@ -85,8 +85,9 @@
                     class="border border-gray-400 bg-white rounded-md px-4 mr-4">
                     </form>
             </div>
-            </section>
         @endforeach
+        </section>
+
         <section  class="nice-page">
         <div class="flex flex-row justify-between font-semibold text-gray-600 border border-gray-300 rounded-md mt-4 py-4 bg-gray-200">
             <div class="mx-4">
