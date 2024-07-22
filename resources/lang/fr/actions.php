@@ -80,7 +80,7 @@ return array (
   'save_and_return' => 'Enregistrer et retourner',
   'search' => 'Recherche',
   'select' => 'Sélectionner',
-  'select_all' => 'Tout sélectionner',
+  'select_all' => 'Tout',
   'send' => 'Envoyer',
   'settings' => 'Paramètres',
   'show' => 'Montrer',
