@@ -59,8 +59,8 @@ class PlanningController extends Controller
             if( $course_id = session()->get('course_id')){
                 $courses = Course::select(['courses.*', 'programs.name as program_name'])
                     ->where('courses.id', '=', $course_id)
+                    -where('year', '=', $current_year)
                     ->leftJoin('programs', 'courses.program_id', '=', 'programs.id')
-                    ->orderBy('year', 'asc')
                     ->orderBy('semester', 'asc')
                     ->orderBy('program_name', 'asc')
                     ->orderBy('name', 'asc')
