@@ -7,6 +7,7 @@ relative shadow-md sm:rounded-lg overflow-hidden">
             <tr>
                 <th scope="col">{{__('messages.program')}}</th>
                 <th scope="col">{{__('messages.course')}}</th>
+                <th scope="col">{{__('messages.year')}}</th>
                 <th scope="col">{{__('messages.semester')}}</th>
                 <th scope="col">{{__('messages.sessions')}}</th>
                 <th scope="col">{{__('messages.session_length')}}</th>
