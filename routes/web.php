@@ -8,6 +8,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProgramController;
 use App\Http\Controllers\SchoolController;
 use App\Http\Controllers\BillController;
+use App\Http\Controllers\DateSelectionController;
 
 use Illuminate\Support\Facades\Route;
 
@@ -36,6 +37,7 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
+    Route::post('/select', [DateSelectionController::class, 'index'])->name('date.select');
     Route::get('/school/list', [SchoolController::class, 'list'])->name('school.list');
     Route::get('/school/{school_id}/add', [SchoolController::class, 'add'])->name('school.add');
     Route::post('/school/{school_id}/document', [DocumentController::class, 'store'])->name('document.store');

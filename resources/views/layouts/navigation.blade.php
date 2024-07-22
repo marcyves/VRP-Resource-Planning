@@ -62,7 +62,7 @@ checkbox.addEventListener('click', detectToggleOnce, { once: true });
     $years = session('years');
 @endphp
 <!-- Period selector -->
-            <form class="nav-form" action="{{route('school.year')}}" method="post">
+            <form class="nav-form" action="{{route('date.select')}}" method="post">
                 @csrf
                 <select id="current_year" name="current_year" onchange="this.form.submit()">
                     <option value="all" @if($current_year == "all")selected @endif>{{ __('actions.select_all')}}</option>
@@ -71,7 +71,7 @@ checkbox.addEventListener('click', detectToggleOnce, { once: true });
                     @endforeach                
                 </select>
             </form>
-            <form class="nav-form" action="{{route('school.semester')}}" method="post">
+            <form class="nav-form" action="{{route('date.select')}}" method="post">
                 @csrf
                 <select id="current_semester" name="current_semester" onchange="this.form.submit()">
                     <option value="all" @if($current_year == "all")selected @endif>{{ __('actions.select_all')}}</option>
