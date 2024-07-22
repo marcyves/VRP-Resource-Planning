@@ -32,32 +32,33 @@ class SchoolController extends Controller
         session()->forget('course_id');
         session()->forget('school');
         session()->forget('school_id');
-      
+        
         if(isset($request->current_year)){
             $current_year = $request->current_year;
-            session(['current_year' => $current_year]);
         }else {
             $current_year = session('current_year');
             if (!isset($current_year)) {
                 $current_year = now()->format('Y');
             }
         }
+        session()->put('current_year', $current_year);
 
         if(isset($request->current_semester)){
             $current_semester = $request->current_semester;
-            session(['current_semester' => $current_semester]);
         }else{
             $current_semester = session('current_semester');
             if (!isset($current_semester)) {
                  $current_semester = "all";
             }
         }
+        session()->put('current_semester', $current_semester);
 
         $schools = Auth::user()->getSchools();
         //TODO use $list instead of $courses
         // $list = $schools->listCourses();
         $courses = Auth::user()->getCourses($current_year, $current_semester);
         $years = $schools->getYears();
+        session()->put('years', $years);
 
         return view('dashboard', compact('courses', 'current_year', 'current_semester','years'));
     }

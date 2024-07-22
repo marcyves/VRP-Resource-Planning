@@ -656,3 +656,14 @@ button{
     transform: translateX(0) scale(1);
   }
 }
+
+.nav-form{
+  display: inline-flex;
+  color: var(--main-text-color);
+  }
+.nav-form select{
+  font-size: smaller;
+  border-radius: 8px;
+  padding: 0 8px;
+  margin: 1rem;
+}
