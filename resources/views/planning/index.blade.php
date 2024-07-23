@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('messages.planning') }} {{ date("F", mktime(0, 0, 0, $current_month, 1)) }} {{$current_year}}
+            {{ __('messages.planning') }} @monthName($current_month) {{$current_year}}
         </h2>
     </x-slot>
 
