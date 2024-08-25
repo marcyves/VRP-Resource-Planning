@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\School;
 use App\Models\Course;
 use App\Models\Group;
+use App\Models\GroupCourse;
 use App\Models\Planning;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -56,10 +57,11 @@ class PlanningController extends Controller
             ->distinct()
             ->orderBy('year', 'asc')
             ->get();
+           
             if( $course_id = session()->get('course_id')){
                 $courses = Course::select(['courses.*', 'programs.name as program_name'])
                     ->where('courses.id', '=', $course_id)
-                    -where('year', '=', $current_year)
+                    ->where('year', '=', $current_year)
                     ->leftJoin('programs', 'courses.program_id', '=', 'programs.id')
                     ->orderBy('semester', 'asc')
                     ->orderBy('program_name', 'asc')
@@ -263,6 +265,53 @@ class PlanningController extends Controller
         $group_id = $request->group;
         $course_id = $request->course;
 
+        if($group_id == 0){
+            $validated = $request->validate([
+                'name' => 'required|max:80',
+                'short_name' => 'required|min:3',
+                'size' => 'required|min:0',
+            ]);
+            
+            $company_id = Auth::user()->company_id;
+            $active = false;
+    
+            if($course_id ==0 && session('course_id') != null){
+                $course_id = session('course_id');
+                $active = true;
+            }
+    
+            try{
+                $group = Group::create([
+                        'name' => $request->name,
+                        'short_name' => $request->short_name,
+                        'size' => $request->size,
+                        'course_id' => $course_id,
+                        'company_id' => $company_id,
+                        'active' => $active,
+                    ]);
+
+                $group_id = $group->id;
+    
+                session()->flash('success', "Groupe enregistré avec succès.");
+    
+                if ($course_id == 0){
+                    session()->flash('danger', "Pas de cours sélectionné");
+                    return redirect()->back();
+                }else{
+                    GroupCourse::create([
+                        'group_id' => $group->id,
+                        'course_id' => $course_id
+                    ]);    
+                }
+            }
+            catch (\Exception $e) {
+                dd($e);
+                session()->flash('danger', "Erreur lors de l'enregistrement du groupe.");
+    
+                return redirect()->back();
+            }         
+        }
+
         $session_length = $request->session_length;
 
         $date = $request->date;
@@ -398,15 +447,13 @@ class PlanningController extends Controller
 
             session()->flash('success', "Session modifiée avec succès.");
 
-            return redirect(route('planning.index'));
         }
         catch (\Exception $e) {
             session()->flash('danger', "Erreur lors de la modification de la session");
             //session()->flash('danger', $e->getMessage());
             return redirect()->back();
         }
-
-        return redirect(route('planning.index'));
+        return redirect(route('planning.billing'));
     }
 
     /**
