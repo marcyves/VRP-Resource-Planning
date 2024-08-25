@@ -106,7 +106,7 @@ class SchoolController extends Controller
         catch (\Exception $e) {
             dd($e);
             
-            session()->flash('danger', "Erreur lors de l'enregitrement de l'école ".$request->name.'.');
+            session()->flash('danger', "Erreur lors de l'enregistrement de l'école ".$request->name.'.');
             
             return redirect()->back();
         }               
