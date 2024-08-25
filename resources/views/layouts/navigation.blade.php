@@ -12,11 +12,11 @@
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                        {{ Auth::user()->getCompany()->name }}
-                    </x-nav-link>
                     <x-nav-link :href="route('planning.index')" :active="request()->routeIs('planning.index')">
                         {{ __('messages.planning') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('planning.billing')" :active="request()->routeIs('planning.billing')">
+                        {{ __('messages.billing') }}
                     </x-nav-link>
                     <x-nav-link :href="route('school.index')" :active="request()->routeIs('school.index')">
                         {{ __('messages.schools') }}
@@ -30,14 +30,64 @@
                     <x-nav-link :href="route('bill.index')" :active="request()->routeIs('bill.index')">
                         {{ __('messages.bills') }}
                     </x-nav-link>
+                <!-- Edit switch -->
+                <div class='inline-flex items-center px-1 pt-1'>
+                    <div class="toggle-container edit toggled-once">
+                    @if(Auth::user()->getMode() == "Edit")
+                        <input class="toggle-checkbox toggled-once" type="checkbox" id="edit-toggle" checked>
+                    @else
+                        <input class="toggle-checkbox" type="checkbox" id="edit-toggle">
+                    @endif
+                    {{Auth::user()->getMode() }}
+                        <div class="toggle-track">  
+                            <div class="toggle-thumb"></div>
+                        </div>
+                    </div>
                 </div>
-            </div>
+<script>
+const checkbox = document.getElementById('edit-toggle');
 
-            <!-- Edit switch -->
-            
-            <x-nav-link :href="route('profile.switch')" :active="request()->routeIs('profile.switch')">
-                {{__(Auth::user()->getMode())}}
-            </x-nav-link>
+const detectToggleOnce = (e) => {
+    e.target.classList.add('toggled-once');
+    let url = "{{ route('profile.switch') }}";
+    document.location.href=url;
+};
+
+checkbox.addEventListener('click', detectToggleOnce, { once: true });
+
+</script>
+@php
+    $current_year = session('current_year');
+    $current_semester = session('current_semester');
+    $years = session('years');
+@endphp
+<!-- Period selector -->
+            <form class="nav-form" action="{{route('date.select')}}" method="post">
+                @csrf
+                <select id="current_year" name="current_year" onchange="this.form.submit()">
+                    <option value="all" @if($current_year == "all")selected @endif>{{ __('actions.select_all')}}</option>
+                    @foreach ($years as $year)
+                    <option value="{{$year->year}}" @if($current_year == $year->year)selected @endif>{{$year->year}}</option>
+                    @endforeach                
+                </select>
+            </form>
+            <form class="nav-form" action="{{route('date.select')}}" method="post">
+                @csrf
+                <select id="current_semester" name="current_semester" onchange="this.form.submit()">
+                    <option value="all" @if($current_year == "all")selected @endif>{{ __('actions.select_all')}}</option>
+                    @foreach ($years as $year)
+                    <option value="{{$year->semester}}" @if($current_semester == $year->semester)selected @endif>{{$year->semester}}</option>
+                    @endforeach                
+                </select>
+            </form>
+
+                    <!-- Link to admin (Filament) -->
+                    @if(Auth::user()->getStatusName() == 'admin')
+                    <x-nav-link :href="route('filament.admin.pages.dashboard')" :active="request()->routeIs('filament.admin.pages.dashboard')">
+                    {{ __('Admin') }}
+                    </x-nav-link>
+                    @endif
+                </div>
 
             <!-- Settings Dropdown -->
             <div class="hidden sm:flex sm:items-center sm:ml-6">
@@ -89,7 +139,7 @@
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-            {{ Auth::user()->getCompany() }}
+            {{ Auth::user()->getCompany()->name }}
             </x-responsive-nav-link>
         </div>
 

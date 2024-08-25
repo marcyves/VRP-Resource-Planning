@@ -1,11 +1,11 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('messages.planning') }}
+            {{ __('messages.planning') }} @monthName($current_month) {{$current_year}}
         </h2>
     </x-slot>
 
-    <section  class="nice-box">
+    <section  class="nice-page">
 
         <!-- (A) PERIOD SELECTOR -->
         @php    
@@ -16,26 +16,7 @@
 
             $day = 1;
         @endphp
-        <div id="calPeriod">
-            <form class="inline-flex" id="calYear" action="{{route('planning.period')}}" method="post">
-                @csrf
-                <select id="current_year" name="current_year" class="rounded-md mt-4 py-0 pl-2 pr-8" onchange="this.form.submit()">
-                    @foreach ($years as $year)
-                        <option value="{{$year->year}}" @if($current_year == $year->year)selected @endif>{{$year->year}}</option>
-                    @endforeach                
-                </select>
-            </form>
-
-            <form class="inline-flex" action="{{route('planning.period')}}" method="post">
-                @csrf
-                <select id="calMonth" name="current_month" onchange="this.form.submit()">
-                    @foreach ($months as $index => $month)
-                        <option value="{{$index}}" @if($index==$current_month-1) selected @endif>{{$month}}</option>                    
-                    @endforeach
-                </select>
-            </form>
-          </div>
-      
+        <x-period-selector :years=$years :months=$months current_year={{$current_year}} current_month={{$current_month}} route="planning.index"/>
           <!-- (B) CALENDAR -->
           <div id="calWrap">
             <div class="calHead">
@@ -48,12 +29,12 @@
             <div class="calRow">
                 <!-- Afficher les jours avant le premier jour du mois -->
                 @for ($i = 1; $i < $startDay; $i++)
-                    <div class="calCell px-2 pt-1 bg-gray-100 flex-col justify-stretch border border-black m-1">
+                    <div class="calBlank calCell">
                     </div>
                 @endfor
                 <!-- Afficher les jours du mois -->
                 @for ($i = $startDay; $i <= 7; $i++)
-                        <x-form-planning :courses=$courses :planning=$planning i={{$i}} :day=$day month={{$current_month}} year={{$current_year}}/>
+                        <x-form-planning :mode=$mode :schools=$schools :courses=$courses :planning=$planning i={{$i}} :day=$day month={{$current_month}} year={{$current_year}}/>
                         @php
                         $day++;
                         @endphp                    
@@ -64,15 +45,16 @@
             @while ($day <= $numDays)
                 <div class="calRow">
                 @for ($i = 1; $i <= 7 && $day <= $numDays; $i++)
-                    <x-form-planning :courses=$courses :planning=$planning i={{$i}} :day=$day month={{$current_month}} year={{$current_year}}/>
+                    <x-form-planning :mode=$mode :schools=$schools :courses=$courses :planning=$planning i={{$i}} :day=$day month={{$current_month}} year={{$current_year}}/>
                     @php
                     $day++;
                     @endphp                
                 @endfor
             </div>
             @endwhile
+
         </div>
-        <div class="flex flex-row justify-between font-semibold text-gray-600 border border-gray-300 rounded-md mt-4 py-4 bg-gray-200">
+        <div class="flex flex-row justify-between font-semibold text-gray-600 mt-4 py-4 bg-gray-200">
             <div class="mx-4">
             {{ __('messages.time_worked') }} = {{$monthly_hours}} {{ __('messages.hours') }}
             </div>
@@ -81,16 +63,6 @@
             </div>
             <div class="mx-4">
             {{ __('messages.hour_rate') }} = @if ($monthly_hours == 0) 0 @else {{number_format($monthly_gain/$monthly_hours,2)}} @endif€
-            </div>
-            <div class="justify-end">
-                <form action="{{route('planning.billing')}}" method="post">
-                    @csrf
-                    <input type="hidden" name="year" value="{{$current_year}}">
-                    <input type="hidden" name="month" value="{{$current_month}}">
-                    <button class="border border-gray-400 bg-white rounded-md px-4 mr-4">
-                    {{ __('messages.billing') }}
-                    </button>
-                </form>
             </div>
         </div>
         </section>

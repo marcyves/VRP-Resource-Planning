@@ -5,7 +5,7 @@
         </h2>
     </x-slot>
 
-    <section  class="nice-box">
+    <section  class="nice-page">
 
 <form action="{{route('program.update', $program->id)}}" method="post">
     @csrf
@@ -13,7 +13,7 @@
     <x-input-label>Name</x-input-label>
     <x-text-input type="text" name="name" value="{{old('name',$program->name)}}"/>
     <br class="my-4">
-    <x-primary-button>Modify</x-primary-button>
+    <x-primary-button>{{ __('messages.update') }}</x-primary-button>
 </form>
     </section>
 </x-app-layout>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Program;
+use App\Models\Course;
 use Illuminate\Http\Request;
 
 class ProgramController extends Controller
@@ -38,14 +39,16 @@ class ProgramController extends Controller
             Program::create([
                     'name' => $request->name,
                         ]);
-            return redirect(route('program.index'))
-                ->with([
-                    'success' => "Programme enregistré avec succès"]);
+
+            session()->flash('success', "Programme enregistré avec succès.");
+
+            return redirect(route('program.index'));
         }
         catch (\Exception $e) {
             dd($e);
-            return redirect()->back()
-            ->with('error', "Erreur lors de l'enregitrement du programme");
+            session()->flash('danger', "Erreur lors de l'enregitrement du programme.");
+
+            return redirect()->back();
         }          
     }
 
@@ -55,8 +58,9 @@ class ProgramController extends Controller
     public function show(String $program_id)
     {
         $program = Program::find($program_id);
+        $courses = Course::getProgramCoursesForCompany($program_id);
 
-        return view('program.show', compact('program'));
+        return view('program.show', compact('program', 'courses'));
     }
 
     /**
@@ -82,15 +86,16 @@ class ProgramController extends Controller
             $program = Program::findOrFail($program_id);
             $program->name = $request->name;
             $program->update();
+
+            session()->flash('success', "Programme modifié avec succès.");
                         
-            return redirect(route('program.index'))
-                ->with([
-                    'success' => "Programme enregistré avec succès"]);
+            return redirect(route('program.index'));
         }
         catch (\Exception $e) {
             dd($e);
-            return redirect()->back()
-            ->with('error', "Erreur lors de l'enregistrement du programme");
+            session()->flash('danger', "Erreur lors de l'enregitrement du programme.");
+
+            return redirect()->back();
         }               
     }
 

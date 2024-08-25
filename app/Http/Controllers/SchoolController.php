@@ -13,6 +13,11 @@ class SchoolController extends Controller
      */
     public function index(Request $request)
     {
+        session()->forget('course');
+        session()->forget('course_id');
+        session()->forget('school');
+        session()->forget('school_id');
+
         $schools = Auth::user()->getSchools();
 
         return view('school.index', compact('schools'));
@@ -23,32 +28,37 @@ class SchoolController extends Controller
      */
     public function dashboard(Request $request)
     {
-      
+        session()->forget('course');
+        session()->forget('course_id');
+        session()->forget('school');
+        session()->forget('school_id');
+        
         if(isset($request->current_year)){
             $current_year = $request->current_year;
-            session(['current_year' => $current_year]);
         }else {
             $current_year = session('current_year');
             if (!isset($current_year)) {
                 $current_year = now()->format('Y');
             }
         }
+        session()->put('current_year', $current_year);
 
         if(isset($request->current_semester)){
             $current_semester = $request->current_semester;
-            session(['current_semester' => $current_semester]);
         }else{
             $current_semester = session('current_semester');
             if (!isset($current_semester)) {
                  $current_semester = "all";
             }
         }
+        session()->put('current_semester', $current_semester);
 
         $schools = Auth::user()->getSchools();
         //TODO use $list instead of $courses
         // $list = $schools->listCourses();
         $courses = Auth::user()->getCourses($current_year, $current_semester);
         $years = $schools->getYears();
+        session()->put('years', $years);
 
         return view('dashboard', compact('courses', 'current_year', 'current_semester','years'));
     }
@@ -64,6 +74,10 @@ class SchoolController extends Controller
     public function add(String $school_id)
     {
         $school = School::find($school_id);
+
+        session()->put('school', $school->name);
+        session()->put('school_id', $school->id);
+
         return view('school.add', compact('school'));
     }
 
@@ -78,18 +92,23 @@ class SchoolController extends Controller
         
         try{
             $company_id = Auth::user()->company_id;
-            School::create([
+            $school = School::create([ 
                     'name' => $request->name,
                     'company_id' => $company_id
                 ]);
-            return redirect(route('school.list'))
-                ->with([
-                    'success' => "Ecole enregistrée avec succès"]);
+
+            session()->flash('success', 'Ecole '.$school->name.' enregistrée avec succès.');
+            session()->put('school', $school->name);
+            session()->put('school_id', $school->id);
+
+            return redirect(route('school.list'));
         }
         catch (\Exception $e) {
             dd($e);
-            return redirect()->back()
-            ->with('error', "Erreur lors de l'enregitrement de l'école");
+            
+            session()->flash('danger', "Erreur lors de l'enregitrement de l'école ".$request->name.'.');
+            
+            return redirect()->back();
         }               
     }
 
@@ -99,7 +118,14 @@ class SchoolController extends Controller
     public function show(School $school)
     {
 
-        $courses = $school->getCourses();
+        $year = session()->get('current_year');
+        $courses = $school->getCourses($year);
+
+        session()->forget('course');
+        session()->forget('course_id');
+
+        session()->put('school', $school->name);
+        session()->put('school_id', $school->id);
 
         $school_name = $school->name;
         $school_id = $school->id;
@@ -114,6 +140,9 @@ class SchoolController extends Controller
     public function edit(String $school_id)
     {
         $school = School::findOrFail($school_id);
+        session()->put('school', $school->name);
+        session()->put('school_id', $school->id);
+
         return view('school.edit', compact('school'));
     }
 
@@ -129,16 +158,22 @@ class SchoolController extends Controller
         try{
             $school = School::findOrFail($school_id);
             $school->name = $request->name;
+            session()->put('school_id', $school_id);
+
+            session()->put('school', $school->name);
+
             $school->save();
 
-            return redirect(route('dashboard'))
-                ->with([
-                    'success' => "Ecole enregistrée avec succès"]);
+            session()->flash('success', 'Ecole '.$request->name.' modifiée avec succès.');
+
+            return redirect(route('dashboard'));
         }
         catch (\Exception $e) {
             dd($e);
-            return redirect()->back()
-            ->with('error', "Erreur lors de l'enregitrement de l'école");
+
+            session()->flash('danger', "Erreur lors de la modification de l'école ".$request->name.'.');
+
+            return redirect()->back();
         }               
 
     }
@@ -149,15 +184,18 @@ class SchoolController extends Controller
     public function destroy(School $school)
     {
         if ($school->countCourses() > 0){
-            return redirect()->back()
-            ->with('error', "On ne peut pas effacer une école qui a des cours enregistrés");
+
+            session()->flash('danger', "On ne peut pas effacer une école qui a des cours enregistrés.");
+            return redirect()->back();
         }
+        session()->forget('school');
+        session()->forget('school_id');
 
         $school->delete();
         
-        return redirect(route('dashboard'))
-            ->with([
-            'success' => "Ecole supprimée avec succès"]);;
+        session()->flash('warning', "Ecole supprimée avec succès.");
+        
+        return redirect()->back();
     }
 
 }

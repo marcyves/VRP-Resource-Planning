@@ -5,7 +5,7 @@
         </h2>
     </x-slot>
 
-    <section  class="nice-box">
+    <section  class="nice-page">
 
         <x-nice-title color="grey-200" title="Groups">
             <a
@@ -16,6 +16,7 @@
         <form action="{{route('planning.store')}}" method="post">
             @csrf
             <input type="hidden" name="date" value="{{$date}}">
+            <input type="hidden" name="course" value="{{$course->id}}">
             <input type="hidden" name="session_length" value="{{$session_length}}">
             <select name="group" class="rounded-md mt-4 py-0 pl-2 pr-8 overflow-clip w-40 mb-2">
                 @foreach ($groups as $group)

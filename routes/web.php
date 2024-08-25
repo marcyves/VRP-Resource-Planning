@@ -8,6 +8,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProgramController;
 use App\Http\Controllers\SchoolController;
 use App\Http\Controllers\BillController;
+use App\Http\Controllers\DateSelectionController;
 
 use Illuminate\Support\Facades\Route;
 
@@ -23,7 +24,12 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return redirect(route('login'));
+    try {
+        \DB::connection()->getPDO();
+        return redirect(route('login'));
+    } catch (\Exception $e) {
+        return view('maintenance');
+    }
 });
 
 Route::get('/dashboard', function () {
@@ -31,6 +37,7 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
+    Route::post('/select', [DateSelectionController::class, 'index'])->name('date.select');
     Route::get('/school/list', [SchoolController::class, 'list'])->name('school.list');
     Route::get('/school/{school_id}/add', [SchoolController::class, 'add'])->name('school.add');
     Route::post('/school/{school_id}/document', [DocumentController::class, 'store'])->name('document.store');
@@ -40,6 +47,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/school/dashboard', [SchoolController::class, 'dashboard'])->name('school.dashboard');
     Route::resource('/school', SchoolController::class);
 
+    Route::get('documents/delete/{document}', [DocumentController::class, 'delete'])->name('documents.delete');
+
     Route::get('/course/{school_id}/create', [CourseController::class, 'create'])->name('course.create');
     Route::post('/course/{school_id}', [CourseController::class, 'store'])->name('course.store');
     Route::get('/course/{course_id}', [CourseController::class, 'show'])->name('course.show');
@@ -47,14 +56,17 @@ Route::middleware('auth')->group(function () {
     Route::put('/course/{course_id}', [CourseController::class, 'update'])->name('course.update');
     Route::delete('/course/{course_id}', [CourseController::class, 'destroy'])->name('course.destroy');
 
-    Route::get('/group/', [GroupController::class, 'index'])->name('group.index');
+    Route::get('/group', [GroupController::class, 'index'])->name('group.index');
     Route::get('/group/{course_id}/create', [GroupController::class, 'create'])->name('group.new');
+    Route::get('/group/link/{group_id}', [GroupController::class, 'link'])->name('group.link');
+    Route::get('/group/switch/{group_id}', [GroupController::class, 'switch'])->name('group.switch');
+    Route::delete('/group/unlink/{group_id}', [GroupController::class, 'unlink'])->name('group.unlink');
     Route::post('/group/{course_id}', [GroupController::class, 'store'])->name('group.save');
     Route::resource('/group', GroupController::class);
 
     Route::get('/planning', [PlanningController::class, 'index'])->name('planning.index');
     Route::post('/planning/period', [PlanningController::class, 'index'])->name('planning.period');
-    Route::post('/planning/billing', [PlanningController::class, 'billing'])->name('planning.billing');
+    Route::get('/planning/billing', [PlanningController::class, 'billing'])->name('planning.billing');
     Route::post('/planning/set_bill', [PlanningController::class, 'setBill'])->name('planning.setBill');
     Route::get('/planning/{id}', [PlanningController::class, 'edit'])->name('planning.edit');
     Route::put('/planning/{id}', [PlanningController::class, 'update'])->name('planning.update');

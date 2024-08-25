@@ -25,7 +25,6 @@ Homestead.json
 # Laravel 10 default
 /.phpunit.cache
 /node_modules
-/public/build
 /public/hot
 /public/storage
 /storage/*.key
@@ -50,3 +49,4 @@ plarany
 /_doc
 _doc/
 .env.planetscale
+.env.prod

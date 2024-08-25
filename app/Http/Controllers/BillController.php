@@ -14,10 +14,20 @@ class BillController extends Controller
      */
     public function index()
     {
-        $bills = Bill::all()->sortBy('id');
-        $bill_id = Auth::user()->getCompanyBillPrefix() . substr(Carbon::now()->year, -2);
-        return view('bills.index', compact('bills', 'bill_id'));
+        $user = Auth::user();
+        $bills = $user->getBills();
 
+        if($bills->isNotEmpty($bills)){
+            $last_bill = $bills->keys()->last();
+            $next_bill = substr($bills[$last_bill]->id, -3) +1;
+        }else{
+            $next_bill = "001";
+        }
+
+
+        $bill_id = $user->getCompanyBillPrefix() . substr(Carbon::now()->year, -2) . $next_bill;
+
+        return view('bills.index', compact('bills', 'bill_id'));
     }
 
     /**
@@ -34,11 +44,12 @@ class BillController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'id' => 'required|max:5',
+            'id' => 'required',
+            'description' => 'required'
         ]);
         
         $company  =  Auth::user()->getCompany();
-        $bill_id =  $company->bill_prefix . substr(Carbon::now()->year, -2) . $request->id;
+        $bill_id =  $request->id;
 
 
         try{
@@ -46,15 +57,19 @@ class BillController extends Controller
                     'id' => $bill_id,
                     'description' => $request->description,
                     'company_id' => $company->id,
+                    'amount' => $request->amount,
                 ]);
-            return redirect(route('bill.index'))
-                ->with([
-                    'success' => "Facture enregistrée avec succès"]);
+                
+            session()->flash('success', "Facture $bill_id enregistrée avec succès.");
+
+            return redirect(route('bill.index'));
         }
         catch (\Exception $e) {
             dd($e);
-            return redirect()->back()
-            ->with('error', "Erreur lors de l'enregitrement de la facture");
+
+            session()->flash('danger', "Erreur lors de l'enregitrement de la facture.");
+
+            return redirect()->back();
         }               
     }
 
@@ -71,7 +86,7 @@ class BillController extends Controller
      */
     public function edit(Bill $bill)
     {
-        //
+        return view('bills.edit', compact('bill'));
     }
 
     /**
@@ -79,7 +94,28 @@ class BillController extends Controller
      */
     public function update(Request $request, Bill $bill)
     {
-        //
+        $validated = $request->validate([
+            'id' => 'required',
+            'description' => 'required'
+        ]);
+
+        try{
+            $bill->description = $request->description;
+            $bill->amount = $request->amount;
+
+            $bill->save();
+
+            session()->flash('success', 'Facture '.$request->id.' modifiée avec succès.');
+
+            return redirect(route('bill.index'));
+        }
+        catch (\Exception $e) {
+            dd($e);
+
+            session()->flash('danger', "Erreur lors de la modification de l'école ".$request->name.'.');
+
+            return redirect()->back();
+        }       
     }
 
     /**

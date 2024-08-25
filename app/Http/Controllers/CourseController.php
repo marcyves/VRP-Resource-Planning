@@ -45,7 +45,7 @@ class CourseController extends Controller
         
         try{
             $user_id = Auth::user()->id;
-            Course::create([
+            $course = Course::create([
                 'name' => $request->name,
                 'short_name' => $request->short_name,
                 'school_id' => $school_id,
@@ -56,14 +56,18 @@ class CourseController extends Controller
                     'semester' => $request->semester,
                     'rate' => $request->rate,
                         ]);
-            return redirect(route('dashboard'))
-                ->with([
-                    'success' => "Cours enregistré avec succès"]);
+
+            session()->flash('success', "Cours ".$request->name." enregistré avec succès.");
+            session()->put('course', $request->name);
+            session()->put('course_id', $course->id);
+
+            return redirect(route('dashboard'));
         }
         catch (\Exception $e) {
             dd($e);
-            return redirect()->back()
-            ->with('error', "Erreur lors de l'enregitrement du cours");
+            session()->flash('danger', "Erreur lors de l'enregitrement du cours.");
+
+            return redirect()->back();
         }               
     }
 
@@ -73,11 +77,19 @@ class CourseController extends Controller
     public function show(String $course_id)
     {
         $course = Course::getCourseDetails($course_id);
+        $school = School::find($course->school_id);
+
+        session()->put('course', $course->name);
+        session()->put('course_id', $course->id);
+        
+        session()->put('school_id', $course->school_id);
+        session()->put('school', $school->name);
+
         $groups = $course->getGroups();
+        $available_groups = $course->getAvailableGroups();
         $occurences = $groups->getGroupOccurences();
 
-
-        return view('course.show', compact('course', 'groups', 'occurences'));
+        return view('course.show', compact('course', 'groups', 'available_groups', 'occurences'));
     }
 
     /**
@@ -86,6 +98,9 @@ class CourseController extends Controller
     public function edit(String $course_id)
     {
         $course = Course::getCourseDetails($course_id);
+        session()->put('course', $course->name);
+        session()->put('course_id', $course->id);
+
         $programs = Program::all()->sortBy('name');
         return view('course.edit', compact('course', 'programs'));
     }
@@ -118,15 +133,17 @@ class CourseController extends Controller
             $course->program_id = $request->program_id;
 
             $course->update();
-                        
-            return redirect(route('dashboard'))
-                ->with([
-                    'success' => "Cours enregistré avec succès"]);
+
+            session()->flash('success', "Cours ".$course->name." enregistré avec succès.");
+            session()->put('course', $course->name);
+            session()->put('course_id', $course->id);
+
+            return redirect(route('dashboard'));
         }
         catch (\Exception $e) {
-            dd($e);
-            return redirect()->back()
-            ->with('error', "Erreur lors de l'enregistrement du cours");
+            session()->flash('danger', "Erreur lors de l'enregistrement du cours.");
+            //session()->flash('danger', $e->getMessage());
+            return redirect()->back();
         }               
     }
 
@@ -135,8 +152,17 @@ class CourseController extends Controller
      */
     public function destroy(String $course_id)
     {
-        $course = Course::findOrFail($course_id);
-        $course->delete();
-        return redirect(route('dashboard'));
+        try{
+            $course = Course::findOrFail($course_id);
+            session()->forget('course');
+            session()->forget('course_id');
+            $course->delete();
+            return redirect(route('dashboard'));
+        }
+        catch (\Exception $e) {
+            session()->flash('danger', "Erreur lors de la suppression du cours.");
+            //session()->flash('danger', $e->getMessage());
+            return redirect()->back();
+        }                   
     }
 }

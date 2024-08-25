@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Group;
+use App\Models\GroupCourse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class GroupController extends Controller
 {
@@ -12,10 +14,20 @@ class GroupController extends Controller
      */
     public function index()
     {
-        $groups = Group::all()->sortBy('name');
+        $user = Auth::user();
+        $groups = $user->getGroups();
+        $inactive = $user->getGroups(false);
+
+        $list = $groups->map(function(Group $group){
+            return $group->id;
+        });
+
+        $courses = GroupCourse::whereIn('group_id', $list)
+            ->join('courses', 'courses.id', '=', 'group_course.course_id');
+
         $occurences = $groups->getGroupOccurences();
 
-        return view('group.index', compact('groups', 'occurences'));
+        return view('group.index', compact('groups', 'occurences', 'inactive', 'courses'));
     }
 
     /**
@@ -37,22 +49,92 @@ class GroupController extends Controller
             'size' => 'required|min:0',
         ]);
         
+        $company_id = Auth::user()->company_id;
+        $active = false;
+
+        if($course_id ==0 && session('course_id') != null){
+            $course_id = session('course_id');
+            $active = true;
+        }
+
         try{
-            Group::create([
+            $group = Group::create([
                     'name' => $request->name,
                     'short_name' => $request->short_name,
                     'size' => $request->size,
+                    'course_id' => $course_id,
+                    'company_id' => $company_id,
+                    'active' => $active,
+                ]);
+
+            session()->flash('success', "Groupe enregistré avec succès.");
+
+            if ($course_id == 0){
+                return redirect(route('group.index'));
+            }else{
+
+                GroupCourse::create([
+                    'group_id' => $group->id,
                     'course_id' => $course_id
                 ]);
-            return redirect(route('course.show', $course_id))
-                ->with([
-                    'success' => "Groupe enregistré avec succès"]);
+
+                return redirect(route('course.show', $course_id));
+            }
         }
         catch (\Exception $e) {
             dd($e);
-            return redirect()->back()
-            ->with('error', "Erreur lors de l'enregitrement du groupe");
+            session()->flash('danger', "Erreur lors de l'enregistrement du groupe.");
+
+            return redirect()->back();
         }               
+    }
+
+    /**
+     * Link the specified group to the current course.
+     */
+    public function link(String $group_id)
+    {
+        $course_id = session()->get('course_id');
+        GroupCourse::create([
+            'course_id' => $course_id,
+            'group_id' => $group_id
+        ]);
+
+        return redirect()->back();
+    }
+
+    /**
+     * Switch the specified group active status.
+     */
+    public function switch(String $group_id)
+    {
+        $group = Group::find($group_id);
+
+        $group->active = !$group->active;
+        $group->save();
+
+        return redirect()->back();
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function unlink(String $group_id)
+    {
+        $course_id = session()->get('course_id');
+
+        $group_link = GroupCourse::where([
+            'course_id' => $course_id,
+            'group_id' => $group_id
+        ])->get()[0];
+
+        $group_link = GroupCourse::findOrFail($group_link->id);
+        $group_link->delete();
+
+        session()->flash('success', "Groupe libéré avec succès.");
+
+        return redirect()->back();
+
     }
 
     /**
@@ -60,7 +142,9 @@ class GroupController extends Controller
      */
     public function show(Group $group)
     {
-        //
+        $courses = $group->getCourses();
+
+        return view('group.show', compact('courses', 'group'));
     }
 
     /**
@@ -69,8 +153,10 @@ class GroupController extends Controller
     public function edit(String $group_id)
     {
         $group = Group::find($group_id);
+        $user = Auth::user();
+        $courses = $user->getCourses(now()->format('Y'), 'all');
 
-        return view('group.edit', compact('group'));        
+        return view('group.edit', compact('group', 'courses'));        
     }
 
     /**
@@ -90,14 +176,18 @@ class GroupController extends Controller
             $group->short_name = $request->short_name;
             $group->size = $request->size;
             $group->update();
-            return redirect(route('course.show', $group->course_id))
-                ->with([
-                    'success' => "Groupe modifié avec succès"]);
+
+            //TODO add group_course record to link them
+
+            session()->flash('success', "Groupe modifié avec succès.");
+
+            return redirect(route('course.show', $request->course_id));
         }
         catch (\Exception $e) {
             dd($e);
-            return redirect()->back()
-            ->with('error', "Erreur lors de l'enregitrement du groupe");
+            session()->flash('danger', "Erreur lors de l'enregitrement du groupe.");
+
+            return redirect()->back();
         }               
     }
 
@@ -107,12 +197,24 @@ class GroupController extends Controller
     public function destroy(String $group_id)
     {
         $group = Group::findOrFail($group_id);
-        $course_id = $group->course_id;
 
-        $group->delete();
+        try{
 
-        return redirect(route('course.show', $course_id))
-        ->with([
-            'success' => "Groupe effacé avec succès"]);
+            $group->delete();
+
+            session()->flash('success', "Groupe effacé avec succès.");
+    
+        }
+        catch (\Exception $e) {
+            if($e->getCode() == 23000){
+                session()->flash('danger', "Le groupe ne peut être effacé, il est utilisé dans un cours.");
+
+            }else{
+                // Unknown error
+                session()->flash('danger', $e->getMessage());
+            }
+        }      
+
+        return redirect()->back();
     }
 }

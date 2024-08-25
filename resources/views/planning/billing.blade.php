@@ -1,34 +1,34 @@
 <x-app-layout>
     <x-slot name="header" class="print:hidden">
         <h2 class="print:hidden font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Billing Preparation') }} {{$current_month}}/{{$current_year}}
+            {{ __('Billing Preparation') }} @monthName($current_month) {{$current_year}}
         </h2>
     </x-slot>
 
+    <section  class="nice-page">
+        <x-period-selector :years=$years :months=$months current_year={{$current_year}} current_month={{$current_month}} route="planning.billing"/>
+
     @if($monthly_hours == 0)
-    <section  class="nice-box">
-    <div class="flex flex-row font-semibold text-gray-600 border border-gray-300 rounded-md mt-4 p-4 bg-red-100">
-        No hours logged this month
-    </div>
+        <div class="font-semibold text-gray-600 border border-gray-300 rounded-md mt-4 p-4 bg-red-100">
+            No hours logged this month
+        </div>
     </section>
     @else
         @foreach($schools as $school => $courses)
-        <section  class="nice-box">
-            <div class="font-bold text-gray-800 bg-green-100 p-2 mb-2 flex justify-between">
-                <h2 class="inline ml-2 pt-2">{{$school}}</h2>
-            </div>
+            <div class="font-bold text-gray-800 bg-green-100 p-2 mb-2 flex flex-col justify-between border border-gray-300 rounded-md ">
+            <h2 class="inline ml-2 pt-2">{{$school}}</h2>
             @foreach($courses['courses'] as $course_name => $schedules)
-                <h2 class="font-bold text-gray-800 p-2 bg-blue-100 mt-4">{{$course_name}}</h2>
+                @php
+                $current_group = "";
+                @endphp
+                <h2 class="font-bold text-gray-800 p-2 bg-blue-200 mt-4"> - {{$course_name}}</h2>
                 <ul>
-                    @php
-                    $current_group = "";
-                    @endphp
                 @foreach($schedules['schedule'] as $planning_id => $schedule)
                     @if($current_group != $schedule['group'])
-                    @php
-                        $current_group = $schedule['group'];
-                    @endphp
-                    <h3 class="font-semibold text-gray-800 ml-4">{{$current_group}}</h3>
+                        @php
+                            $current_group = $schedule['group'];
+                        @endphp
+                        <h3 class="font-semibold text-gray-800 ml-4">{{$current_group}}</h3>
                     @endif
                     <li class="ml-8">
                     @if(Auth::user()->getMode() == "Edit")
@@ -37,9 +37,9 @@
                     {{date_format(date_create($schedule['begin']),'d/m/Y H:i')}}-{{date_format(date_create($schedule['end']),'H:i')}} 
                     <span class="  
                     @if ($schedule['duration']!=$schedules['duration'])
-                    text-red-400
+                        text-red-400
                     @else
-                    text-green-400
+                        text-green-400
                     @endif
                     ">
                     ({{number_format($schedule['duration'],1)}} h)</span>
@@ -51,7 +51,7 @@
                 @endforeach
                 </ul>
 
-                <div class="flex flex-row justify-between font-semibold text-gray-600 border border-gray-300 rounded-md mt-2 py-2 bg-blue-100">
+                <div class="flex flex-row justify-between font-semibold text-gray-600 mt-2 py-2 bg-blue-200">
                     <div class="mx-4 pt-2">
                         Time worked = {{$schedules['hours']}} hours
                     </div>
@@ -60,6 +60,7 @@
                     </div>
                 </div>
             @endforeach
+            </div>
             <div class="flex flex-row justify-between font-semibold text-gray-600 border border-gray-300 rounded-md mt-2 py-2 bg-green-100">
                 <div class="mx-4">
                     Total Time worked = {{$courses['hours']}} hours
@@ -84,9 +85,10 @@
                     class="border border-gray-400 bg-white rounded-md px-4 mr-4">
                     </form>
             </div>
-            </section>
         @endforeach
-        <section  class="nice-box">
+        </section>
+
+        <section  class="nice-page">
         <div class="flex flex-row justify-between font-semibold text-gray-600 border border-gray-300 rounded-md mt-4 py-4 bg-gray-200">
             <div class="mx-4">
                 Time worked = {{$monthly_hours}} hours

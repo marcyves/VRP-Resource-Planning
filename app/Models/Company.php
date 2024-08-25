@@ -10,6 +10,15 @@ class Company extends Model
     use HasFactory;
 
     public $timestamps = false;
-    public $fillable = ['name'];
+    public $fillable = ['name', 'bill_prefix'];
 
+    public function schools(): HasMany
+    {
+        return $this->HasMany(School::class);
+    }
+
+    public function users(): HasMany
+    {
+        return $this->HasMany(User::class);
+    }
 }

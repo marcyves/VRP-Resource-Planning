@@ -5,7 +5,7 @@
         </h2>
     </x-slot>
 
-    <section  class="nice-box">
+    <section  class="nice-page">
 
 <form action="{{route('group.save', $course_id)}}" method="post">
     @csrf

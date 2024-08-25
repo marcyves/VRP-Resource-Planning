@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -54,6 +55,16 @@ class User extends Authenticatable
         return $this->belongsToMany(School::class);
     }
 
+    public function company(): BelongsTo
+    {
+        return $this->BelongsTo(Company::class);
+    }
+
+    public function status(): BelongsTo
+    {
+        return $this->BelongsTo(Status::class);
+    }
+
     public function getSchools()
     {
         $company_id = $this->company_id;
@@ -61,11 +72,22 @@ class User extends Authenticatable
         return School::select(['schools.*'])->where('schools.company_id', '=', $company_id)->get();
     }
 
-    public function getCourses($current_year, $current_semester)
+    public function getCourses($current_year = "all", $current_semester = "all")
     {
+        if(!isset($current_year)){
+            $current_year = now()->format('Y');
+        }
+
+        if (!isset($current_semester)) {
+                $current_semester = "all";
+        }
+
         $company_id = $this->company_id;
 
-        $schools = School::select(['schools.*'])->where('schools.company_id', '=', $company_id)->get();
+        $schools = School::select(['schools.*'])
+                        ->where('schools.company_id', '=', $company_id)
+                        ->get();
+
         return $schools->getCourses($current_year, $current_semester);;
     }
 
@@ -81,7 +103,14 @@ class User extends Authenticatable
 
     public function getBills()
     {
-        return Bill::all();
+        return Bill::where('company_id', $this->company_id)->orderBy('id')->get();
+    }
+
+    public function getGroups(Bool $active = true )
+    {
+        return Group::where('company_id', $this->company_id)
+            ->where('active', $active)
+            ->orderBy('name')->get();
     }
 
     public function getStatusName()

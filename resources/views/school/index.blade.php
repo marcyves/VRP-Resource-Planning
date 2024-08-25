@@ -11,23 +11,18 @@
         @endif
     </x-slot>
 
-    <section  class="nice-box">
-        <ul>
+    <section  class="nice-page">
+        <ul class="list">
             @foreach ($schools as $school)
-            <li class="mx-auto max-w-screen-xl px-2 lg:px-12 bg-white shadow-md sm:rounded-lg overflow-hidden mb-2
-            flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-2">
-                @php
-                    $school_name=$school->name;
-                    $school_id=$school->id;
-                @endphp
-                <x-school-header :school_name=$school_name :school_id=$school_id/>
+            <li>
+                <x-school-header :school_name="$school->name" :school_id="$school->id"/>
             </li>
             @endforeach
         </ul>  
     </section>
 
     @if(Auth::user()->getMode() == "Edit")
-    <section class="nice-box">
+    <section class="nice-page">
         <form action="{{route('school.store')}}" method="post" 
         class="mx-auto px-6 py-2 bg-white shadow-md mb-6 flex items-center justify-items-start">
             @csrf

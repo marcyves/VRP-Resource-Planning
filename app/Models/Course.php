@@ -4,8 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+
+use Illuminate\Support\Facades\Auth;
 
 class Course extends Model
 {
@@ -20,18 +23,57 @@ class Course extends Model
     
     public function groups(): HasMany
     {
-        return $this->HasMany(Group::class);
+        return $this->HasMany(GroupCourse::class);
     }
 
-    public function program(): HasOne
+    public function program(): BelongsTo
     {
-        return $this->hasOne(Program::class);
+        return $this->BelongsTo(Program::class);
     }
 
+    public function school(): BelongsTo
+    {
+        return $this->BelongsTo(School::class);
+    }
+
+    public function getSchool(){
+
+        return School::find($this->school_id);
+    }
+    /*
+
+    Get all groups connected to the course
+
+    */
     public function getGroups()
     {
-        return Group::where(['course_id' => $this->id])->orderBy('name', 'asc')->get();
+
+        return Group::select(['groups.*'])
+        ->join('group_course', 'group_id', '=', 'groups.id')
+        ->where('group_course.course_id', '=', $this->id)
+        ->orderBy('groups.name')
+        ->get();
     }
+
+    /*
+
+    Get all groups available to the user not connected to the course
+
+    */
+    public function getAvailableGroups()
+    {
+        $company = Auth::user()->getCompany();
+
+        return Group::where('company_id', $company->id)
+            ->whereNotIn('groups.id', Group::select(['groups.id'])
+                ->join('group_course', 'group_id', '=', 'groups.id')
+                ->where('group_course.course_id', '=', $this->id)
+                ->orderBy('groups.name')
+                ->get())
+            ->orderBy('name')
+            ->get();
+    }
+
 
     public static function getCourseDetails(String $course_id)
     {
@@ -52,5 +94,19 @@ class Course extends Model
         ;
 
     }
+
+    public static function getProgramCoursesForCompany(String $program_id)
+    {
+        $company = Auth::user()->getCompany();
+
+        return Course::select('courses.*')
+        ->join('schools', 'courses.school_id', '=', 'schools.id')
+        ->where('schools.company_id', '=', $company->id)
+        ->where('program_id', '=', $program_id)
+        ->get()
+        ;
+
+    }
+
 
 }

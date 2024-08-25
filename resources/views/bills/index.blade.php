@@ -6,55 +6,90 @@
             </h2>
     </x-slot>
 
-    <section class="nice-box">
-        <div class="table w-full">
+            <article class="">
+
+    <section class="nice-page">
+        <table class="bg-blue-100 w-full mb-8">
+            @php
+            $total = 0;
+            @endphp
+            <tr class="bg-white text-blue-600 p-8">
+                <td class="text-center px-2">
+                ID
+                </td>
+                <td class="text-center px-2">
+                    Description
+                </td>
+                <td class=" text-center px-2">
+                    Montant
+                </td>
+                <td class=" text-center px-2">
+                    Date facturation
+                </td>
+                <td class=" text-center px-2">
+                    Date Paiement
+                </td>
+                @if(Auth::user()->getMode() == "Edit")
+                <td class=" text-center px-2">
+                    Actions
+                </td>
+                @endif
+</tr>
             @foreach ($bills as $bill)
-            <div class="table-row">
-            <span class="table-cell text-left  text-gray-600">
-                {{$bill->id}}
-            </span>
-            <span class="table-cell text-left  text-blue-400">
-                {{$bill->description}}
-            </span>
-            <span class="table-cell text-left  text-gray-400">
-                Created: {{$bill->created_at}}
-            </span>
-            <span class="table-cell text-left  text-gray-400">
-                Paid: {{$bill->paid_at}}
-            </span>
-            @if(Auth::user()->getMode() == "Edit")
-            <span class="table-cell text-right">
-                <form class="inline" action="{{route('bill.edit', $bill->id)}}" method="get">
-                    <button class="inline-flex items-center p-0.5 text-sm font-medium text-center text-green-500 hover:text-gray-800 rounded-lg focus:outline-none" type="submit">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
-                          </svg>                                  
-                    </button>    
-                </form>
-                <form class="inline" action="{{route('bill.destroy', $bill->id)}}" method="post">
-                    @csrf
-                    @method('delete')
-                    <button class="inline-flex items-center p-0.5 text-sm font-medium text-center text-red-500 hover:text-gray-800 rounded-lg focus:outline-none" type="submit">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
-                          </svg>                                  
-                    </button>    
-                </form>
-            </span>
-            @endif
-            </div>
+            <tr>
+                <td class="basis-20  text-right text-gray-600 pr-4">
+                    {{$bill->id}}
+                </td>
+                <td class="grow text-left  text-blue-400">
+                    {{$bill->description}}
+                </td>
+                <td class=" text-right  text-blue-400 pr-4">
+                    @money($bill->amount) €
+                    @php
+                    $total += $bill->amount;
+                    @endphp
+                </td>
+                <td class=" text-left  text-gray-400">
+                    {{$bill->created_at}}
+                </td>
+                <td class=" text-left  text-gray-400">
+                    Paid: {{$bill->paid_at}}
+                </td>
+                @if(Auth::user()->getMode() == "Edit")
+                <td class=" text-right">
+                    <form class="inline" action="{{route('bill.edit', $bill->id)}}" method="get">
+                    <x-button-edit/>
+                    </form>
+                    <form class="inline" action="{{route('bill.destroy', $bill->id)}}" method="post">
+                        @csrf
+                        @method('delete')
+                        <x-button-delete />    
+                    </form>
+                </td>
+                @endif
+</tr>
             @endforeach
-        </div>
+</table>
+
+        <div class="my-box course-booking">
+            {{ __('messages.total_gain')}} : @money($total) €
+        </div>  
 </section>
 
-    <section class="nice-box">
-        <form action="{{route('bill.store')}}" method="post">
+    @if(Auth::user()->getMode() == "Edit")
+    <section class="nice-page">
+    <form action="{{route('bill.store')}}" method="post"
+        class="mx-auto px-6 py-2 bg-white shadow-md mb-6 flex flex-col justify-items-start">
             @csrf
-            <x-input-label>{{ __('messages.name') }}</x-input-label>
-            {{$bill_id}}<x-text-input type="text" name="id" id="name" size="10"/>
-            <x-input-label>{{ __('messages.description') }}</x-input-label>
-            <x-text-input type="text" name="description" id="description" size="60"/>
-            <x-primary-button>{{ __('messages.bill_create') }}</x-primary-button>
+            <x-input-label class="py-4">{{ __('messages.bill_id') }}: {{$bill_id}}</x-input-label> 
+                <input type="hidden" name="id" id="name" value="{{$bill_id}}">
+                <x-input-label >{{ __('messages.description') }}</x-input-label>
+                <x-text-input class="my-4" type="text" name="description" id="description" size="60"/>
+                <x-input-label>{{ __('messages.gain') }}</x-input-label>
+                <x-text-input class="my-4" type="text" name="amount" id="amount" size="20"/>
+                <x-primary-button>{{ __('messages.bill_create') }}</x-primary-button>
         </form>
-</section>
+    </section>
+    @endif
+
 </x-app-layout>
