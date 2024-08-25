@@ -9,6 +9,7 @@ use App\Models\Document;
 class DocumentController extends Controller
 {
     protected $directory = "data_store/";
+    
     public function show(Document $document)
     {
         $pathToFile = "storage/".$this->directory.$document->file_name;
