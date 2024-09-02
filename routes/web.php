@@ -4,6 +4,7 @@ use App\Http\Controllers\CourseController;
 use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\PlanningController;
+use App\Http\Controllers\BillingController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProgramController;
 use App\Http\Controllers\SchoolController;
@@ -65,15 +66,20 @@ Route::middleware('auth')->group(function () {
     Route::resource('/group', GroupController::class);
 
     Route::get('/planning', [PlanningController::class, 'index'])->name('planning.index');
+    Route::get('/planning/previous', [PlanningController::class, 'previous'])->name('planning.previous');
+    Route::get('/planning/next', [PlanningController::class, 'next'])->name('planning.next');
     Route::post('/planning/period', [PlanningController::class, 'index'])->name('planning.period');
-    Route::get('/planning/billing', [PlanningController::class, 'billing'])->name('planning.billing');
-    Route::post('/planning/set_bill', [PlanningController::class, 'setBill'])->name('planning.setBill');
     Route::get('/planning/{id}', [PlanningController::class, 'edit'])->name('planning.edit');
     Route::put('/planning/{id}', [PlanningController::class, 'update'])->name('planning.update');
     Route::delete('/planning/{id}', [PlanningController::class, 'destroy'])->name('planning.delete');
     Route::post('/planning/{day}', [PlanningController::class, 'create'])->name('planning.create');
     Route::post('/planning', [PlanningController::class, 'store'])->name('planning.store');
-    
+
+    Route::get('/billing', [BillingController::class, 'billing'])->name('billing.index');
+    Route::get('/billing/previous', [BillingController::class, 'previous'])->name('billing.previous');
+    Route::get('/billing/next', [BillingController::class, 'next'])->name('billing.next');
+    Route::post('/billing/set_bill', [BillingController::class, 'setBill'])->name('billing.setBill');
+
     Route::resource('/program', ProgramController::class);
     Route::resource('/bill', BillController::class);
     Route::resource('/documents', DocumentController::class);

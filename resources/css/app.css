@@ -133,6 +133,7 @@ button{
   border: solid var(--icon-grey);
   border-width: thin;
   border-radius: 4px;
+  color: white;
 }
 
 .green{

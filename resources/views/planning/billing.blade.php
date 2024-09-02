@@ -6,7 +6,7 @@
     </x-slot>
 
     <section  class="nice-page">
-        <x-period-selector :years=$years :months=$months current_year={{$current_year}} current_month={{$current_month}} route="planning.billing"/>
+        <x-period-selector :years=$years :months=$months current_year={{$current_year}} current_month={{$current_month}} route="billing"/>
 
     @if($monthly_hours == 0)
         <div class="font-semibold text-gray-600 border border-gray-300 rounded-md mt-4 p-4 bg-red-100">
@@ -68,7 +68,7 @@
                 <div class="mx-4">
                     School Total = {{number_format($courses['gain'],2)}} €
                 </div>
-                <form action="{{route('planning.setBill')}}" class="inline" method="post">
+                <form action="{{route('billing.setBill')}}" class="inline" method="post">
                     @csrf
                     <input type="hidden" name="school_id" value="{{$courses['school_id']}}">
                     <input type="hidden" name="course_id" value="{{$schedules['course_id']}}">

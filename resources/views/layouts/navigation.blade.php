@@ -15,7 +15,7 @@
                     <x-nav-link :href="route('planning.index')" :active="request()->routeIs('planning.index')">
                         {{ __('messages.planning') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('planning.billing')" :active="request()->routeIs('planning.billing')">
+                    <x-nav-link :href="route('billing.index')" :active="request()->routeIs('billing.index')">
                         {{ __('messages.billing') }}
                     </x-nav-link>
                     <x-nav-link :href="route('school.index')" :active="request()->routeIs('school.index')">
