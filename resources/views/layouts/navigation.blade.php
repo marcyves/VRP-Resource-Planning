@@ -66,21 +66,13 @@ checkbox.addEventListener('click', detectToggleOnce, { once: true });
                 @csrf
                 <select id="current_year" name="current_year" onchange="this.form.submit()">
                     <option value="all" @if($current_year == "all")selected @endif>{{ __('actions.select_all')}}</option>
+                    @isset($years)
                     @foreach ($years as $year)
                     <option value="{{$year->year}}" @if($current_year == $year->year)selected @endif>{{$year->year}}</option>
-                    @endforeach                
+                    @endforeach                                        
+                    @endisset
                 </select>
             </form>
-            <form class="nav-form" action="{{route('date.select')}}" method="post">
-                @csrf
-                <select id="current_semester" name="current_semester" onchange="this.form.submit()">
-                    <option value="all" @if($current_year == "all")selected @endif>{{ __('actions.select_all')}}</option>
-                    @foreach ($years as $year)
-                    <option value="{{$year->semester}}" @if($current_semester == $year->semester)selected @endif>{{$year->semester}}</option>
-                    @endforeach                
-                </select>
-            </form>
-
                     <!-- Link to admin (Filament) -->
                     @if(Auth::user()->getStatusName() == 'admin')
                     <x-nav-link :href="route('filament.admin.pages.dashboard')" :active="request()->routeIs('filament.admin.pages.dashboard')">
