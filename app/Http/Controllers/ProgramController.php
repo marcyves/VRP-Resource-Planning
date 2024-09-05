@@ -45,7 +45,7 @@ class ProgramController extends Controller
             return redirect(route('program.index'));
         }
         catch (\Exception $e) {
-            dd($e);
+            // dd($e);
             session()->flash('danger', "Erreur lors de l'enregitrement du programme.");
 
             return redirect()->back();
@@ -92,7 +92,7 @@ class ProgramController extends Controller
             return redirect(route('program.index'));
         }
         catch (\Exception $e) {
-            dd($e);
+            // dd($e);
             session()->flash('danger', "Erreur lors de l'enregitrement du programme.");
 
             return redirect()->back();

@@ -82,7 +82,7 @@ class GroupController extends Controller
             }
         }
         catch (\Exception $e) {
-            dd($e);
+            // dd($e);
             session()->flash('danger', "Erreur lors de l'enregistrement du groupe.");
 
             return redirect()->back();
@@ -184,7 +184,7 @@ class GroupController extends Controller
             return redirect(route('course.show', $request->course_id));
         }
         catch (\Exception $e) {
-            dd($e);
+            // dd($e);
             session()->flash('danger', "Erreur lors de l'enregitrement du groupe.");
 
             return redirect()->back();

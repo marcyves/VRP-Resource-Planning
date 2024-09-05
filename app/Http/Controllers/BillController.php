@@ -65,7 +65,7 @@ class BillController extends Controller
             return redirect(route('bill.index'));
         }
         catch (\Exception $e) {
-            dd($e);
+            // dd($e);
 
             session()->flash('danger', "Erreur lors de l'enregitrement de la facture.");
 
@@ -110,7 +110,7 @@ class BillController extends Controller
             return redirect(route('bill.index'));
         }
         catch (\Exception $e) {
-            dd($e);
+            // dd($e);
 
             session()->flash('danger', "Erreur lors de la modification de l'école ".$request->name.'.');
 

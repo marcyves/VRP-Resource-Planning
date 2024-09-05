@@ -64,7 +64,7 @@ class CourseController extends Controller
             return redirect(route('dashboard'));
         }
         catch (\Exception $e) {
-            dd($e);
+            // dd($e);
             session()->flash('danger', "Erreur lors de l'enregitrement du cours.");
 
             return redirect()->back();
