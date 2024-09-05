@@ -114,7 +114,7 @@
                         </div>
                     </div>
                     <form action="{{route('group.link', $group->id)}}" method="get" class="card-content-end">
-                        <button class="icon green" type="submit">
+                        <button class="cool-box icon green" type="submit">
                         <img src="/icons/arrow-up.svg" alt="Up">
                         </button>    
                     </form>

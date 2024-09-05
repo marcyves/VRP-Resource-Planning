@@ -20,7 +20,7 @@
 <div class="card-content-end">
     <div class="check">
         <form action="{{route('group.switch', $group->id)}}" method="get">
-            <button class="icon green" type="submit">
+            <button class="cool-box icon green" type="submit">
             @if($active)
             <img src="/icons/arrow-down.svg" alt="Down">
             @else

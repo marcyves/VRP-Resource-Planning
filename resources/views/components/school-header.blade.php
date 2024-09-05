@@ -20,7 +20,7 @@
                 <x-button-delete/>
             </form>
             <a
-            class="inline-flex items-center p-2 text-sm border border-gray-300 rounded-md font-semibold font-medium text-center text-gray-500 hover:text-gray-800 rounded-lg focus:outline-none" 
+            class="cool-box"
             href="{{route('course.create', $school_id)}}">{{__('messages.add_course')}}</a>
         </div>
     </div>

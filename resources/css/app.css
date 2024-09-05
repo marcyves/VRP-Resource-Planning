@@ -117,23 +117,41 @@ footer{
   padding-top: 10px;
   text-align: center;
 }
+
 button{
   background-color: var(--main-bg-color);
 }
 
-.icon:hover{
-  background-color: var(--icon-grey);
-}
-
-.icon{
-  padding: 0 4px;
-  margin: 2px;
-  width: 1.8em;
-  height: 1.8em;
+.cool-box{
+  margin: 6px 2px;
   border: solid var(--icon-grey);
   border-width: thin;
   border-radius: 4px;
   color: white;
+}
+
+a.cool-box{
+  display: inline-flex;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--main-text-color);
+  padding: 2px 4px;
+  text-align: center;
+  align-items: center;
+
+  line-height: 0.8rem;
+}
+
+.cool-box:hover{
+  background-color: var(--icon-grey);
+}
+
+.icon{
+  width: 1.8em;
+}
+
+.icon img{
+  padding: 6px;
 }
 
 .green{
@@ -389,8 +407,9 @@ button{
 
 #calPeriod input, #calPeriod select {
   font-size: 24px;
-  border: 0; outline: none;
-  color: #fff; background: 0;
+  outline: none;
+  color: #fff;
+  background: 0;
   cursor: pointer;
 }
 #calPeriod option { color: #000; }
