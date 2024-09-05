@@ -56,6 +56,11 @@ class BillingController extends Controller
 
         if(isset($request->current_month)){
             $current_month = $request->current_month;
+            if($current_month < 1){
+                $current_month += 12;
+                $current_year -= 1;
+                session(['current_year' => $current_year]);
+            }
             session(['current_month' => $current_month]);
         }else {
             $current_month = session('current_month');
@@ -81,6 +86,11 @@ class BillingController extends Controller
 
         if(isset($request->current_month)){
             $current_month = $request->current_month+2;
+            if ($current_month > 11){
+                $current_month -= 12;
+                $current_year += 1;
+                session(['current_year' => $current_year]);
+            }
             session(['current_month' => $current_month]);
         }else {
             $current_month = session('current_month');
