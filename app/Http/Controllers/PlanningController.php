@@ -18,6 +18,15 @@ class PlanningController extends Controller
      */
     public function index(Request $request)
     {
+        if(isset($request->current_semester)){
+            $current_semester = $request->current_semester;
+            session(['current_semester' => $current_semester]);
+        }else{
+            $current_semester = session('current_semester');
+            if (!isset($current_semester)) {
+                 $current_semester = "all";
+            }
+        }
 
         if(isset($request->current_year)){
             $current_year = $request->current_year;
@@ -40,7 +49,7 @@ class PlanningController extends Controller
             }
         }
 
-        return $this->buildPlanning($current_month, $current_year);
+        return $this->buildPlanning($current_semester, $current_month, $current_year);
     }
 
     public function previous(Request $request)
