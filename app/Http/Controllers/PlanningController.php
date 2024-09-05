@@ -412,7 +412,7 @@ class PlanningController extends Controller
             //session()->flash('danger', $e->getMessage());
             return redirect()->back();
         }
-        return redirect(route('planning.billing'));
+        return redirect(route('billing.index'));
     }
 
     /**
