@@ -119,6 +119,10 @@ class SchoolController extends Controller
     {
 
         $year = session()->get('current_year');
+        if (!isset($year)) {
+            $year = now()->format('Y');
+        }
+
         $courses = $school->getCourses($year);
 
         session()->forget('course');
