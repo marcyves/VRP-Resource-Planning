@@ -19,6 +19,7 @@ class UserSeeder extends Seeder
             'email_verified_at' => now(),
             'mode' => 'Edit',
             'company_id' => 2,
+            'status_id' => 1,
             'password' => '$2y$10$CgeZsj4zB1rlJcaL4a9IIuqvIR2aZ/t9pd4cMzi.welkWS1UOUBX2', // topsecret
         ]);
         
