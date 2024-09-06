@@ -17,6 +17,8 @@ class UserSeeder extends Seeder
             'name' => 'Marc',
             'email' => 'm@xdm.fr',
             'email_verified_at' => now(),
+            'mode' => 'Edit',
+            'company_id' => 2,
             'password' => '$2y$10$CgeZsj4zB1rlJcaL4a9IIuqvIR2aZ/t9pd4cMzi.welkWS1UOUBX2', // topsecret
         ]);
         

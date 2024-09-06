@@ -15,10 +15,12 @@ class CompanySeeder extends Seeder
     public function run(): void
     {
         Company::factory()->create([
-            'name' => 'Demo Company'
+            'name' => 'Demo Company',
+            'bill_prefix' => "DEMO"
         ]);
         Company::factory()->create([
-            'name' => 'XDM Consulting'
+            'name' => 'XDM Consulting',
+            'bill_prefix' => "XDM"
         ]);
     }
 }
