@@ -183,8 +183,6 @@ a.cool-box{
   margin-right: auto;
 }
 
-
-
 .nice-form {
   display: flex;
   flex-direction: column;
@@ -401,11 +399,26 @@ a.cool-box{
 }
 /* (B) PERIOD SELECTOR */
 #calPeriod {
+  display: flex;
+  justify-content: space-between;
   padding: 15px;
   background: var(--bg-color-a);
 }
 
-#calPeriod input, #calPeriod select {
+.calSelect{
+  font-size: 24px;
+  outline: none;
+  color: #fff;
+  background: 0;
+  cursor: pointer;
+}
+
+.period-form{
+  line-height: 2em;
+  display:inline-box;
+}
+
+#calPeriod input {
   font-size: 24px;
   outline: none;
   color: #fff;
@@ -681,6 +694,7 @@ a.cool-box{
   display: inline-flex;
   color: var(--main-text-color);
   }
+
 .nav-form select{
   font-size: smaller;
   border-radius: 8px;

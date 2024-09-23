@@ -136,6 +136,16 @@ class PlanningController extends Controller
 
     private function buildPlanning($current_semester, $current_month, $current_year){
 
+        if(isset($request->current_day)){
+            $current_day = $request->current_day+1;
+            session(['current_day' => $current_day]);
+        }else {
+            $current_day = session('current_day');
+            if (!isset($current_day)) {
+                $current_day = now()->format('d');
+            }
+        }
+
         if( $school_id = session()->get('school_id')){
             $schools = School::find($school_id);
             $years  = Course::where('school_id', $school_id)
@@ -186,7 +196,20 @@ class PlanningController extends Controller
         $weekdays->push($weekdays[0]);
         $weekdays->shift();
 
-        return view('planning.index', compact('planning', 'schools', 'courses', 'years', 'months', 'weekdays','current_year', 'current_month', 'monthly_gain', 'monthly_hours', 'mode'));
+        return view('planning.index', compact(
+            'planning',
+            'schools',
+            'courses',
+            'years',
+            'months',
+            'weekdays',
+            'current_year',
+            'current_month',
+            'current_day',
+            'monthly_gain',
+            'monthly_hours',
+            'mode'
+        ));
     }
 
     /**
@@ -194,11 +217,7 @@ class PlanningController extends Controller
      */
     public function create(Request $request)
     {
-        $day = $request->day;
-        $month = $request->month;
-        $year = $request->year;
-
-        $date = "$year-$month-$day";
+        $date = $request->date;
         $course = Course::find($request->course);
 
         session()->put('course', $course->name);
@@ -276,6 +295,10 @@ class PlanningController extends Controller
         $date = $request->date;
         $hour = $request->hour;
         $minutes = $request->minutes;
+
+        session(['current_year' => substr($date,4)]);
+        session(['current_month' => substr($date, 5, 2)]);
+        session(['current_day' => substr($date,-2)]);
 
         $begin = date('Y-m-d H:i:s',strtotime("$date $hour:$minutes:0"));
         //TODO session length is bugged

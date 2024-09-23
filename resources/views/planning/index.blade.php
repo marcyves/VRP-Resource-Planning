@@ -13,10 +13,12 @@
             $numDays = date('t', $firstDay);
             //$monthName = getMonthName($month);
             $startDay = date('N', $firstDay);
-
             $day = 1;
         @endphp
+        <div id="calPeriod">
         <x-period-selector :years=$years :months=$months current_year={{$current_year}} current_month={{$current_month}} route="planning"/>
+        <x-form-select-planning :mode=$mode :schools=$schools :courses=$courses :planning=$planning day={{$current_day}} month={{$current_month}} year={{$current_year}}/>
+        </div>
           <!-- (B) CALENDAR -->
           <div id="calWrap">
             <div class="calHead">
