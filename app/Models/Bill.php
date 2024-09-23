@@ -36,4 +36,12 @@ class Bill extends Model
         'paid_at',
         'company_id'
         ];
+
+    public static function getAmount($year){
+        return Bill::where('created_at', '>', "$year-01-01")->where('created_at', '<', "$year-12-31")->sum('amount');
+    }
+
+    public static function getCount($year){
+        return Bill::where('created_at', '>', "$year-01-01")->where('created_at', '<', "$year-12-31")->count();
+    }
 }

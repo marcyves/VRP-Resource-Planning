@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\School;
+use App\Models\Bill;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -60,7 +61,10 @@ class SchoolController extends Controller
         $years = $schools->getYears();
         session()->put('years', $years);
 
-        return view('dashboard', compact('courses', 'current_year', 'current_semester','years'));
+        $bills_amount = Bill::getAmount($current_year);
+        $bills_count = Bill::getCount($current_year);
+
+        return view('dashboard', compact('courses', 'current_year', 'current_semester','years', 'bills_amount', 'bills_count'));
     }
 
     public function list()
