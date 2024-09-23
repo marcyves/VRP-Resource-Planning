@@ -6,8 +6,9 @@
     </x-slot>
 
     <section  class="nice-page">
+        <div id="calPeriod">
         <x-period-selector :years=$years :months=$months current_year={{$current_year}} current_month={{$current_month}} route="billing"/>
-
+    </div>
     @if($monthly_hours == 0)
         <div class="font-semibold text-gray-600 border border-gray-300 rounded-md mt-4 p-4 bg-red-100">
             No hours logged this month
