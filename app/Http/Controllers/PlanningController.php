@@ -296,7 +296,7 @@ class PlanningController extends Controller
         $hour = $request->hour;
         $minutes = $request->minutes;
 
-        session(['current_year' => substr($date,4)]);
+        session(['current_year' => substr($date,0, 4)]);
         session(['current_month' => substr($date, 5, 2)]);
         session(['current_day' => substr($date,-2)]);
 
