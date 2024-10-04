@@ -18,6 +18,8 @@
                 <x-text-input class="my-4" type="text" name="description" id="description" size="60" value="{{ $bill->description }}"/>
                 <x-input-label>{{ __('messages.gain') }}</x-input-label>
                 <x-text-input class="my-4" type="text" name="amount" id="amount" size="20" value="{{ $bill->amount }}"/>
+                <x-input-label>{{ __('messages.created_at') }}</x-input-label>
+                <x-text-input class="my-4" type="text" name="created_at" id="created_at" size="20" value="{{ $bill->created_at }}"/>
                 <x-primary-button>{{ __('messages.update') }}</x-primary-button>
         </form>
     </section>

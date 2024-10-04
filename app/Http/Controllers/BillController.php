@@ -102,6 +102,7 @@ class BillController extends Controller
         try{
             $bill->description = $request->description;
             $bill->amount = $request->amount;
+            $bill->created_at = $request->created_at;
 
             $bill->save();
 
@@ -123,6 +124,16 @@ class BillController extends Controller
      */
     public function destroy(Bill $bill)
     {
-        //
+        try{
+            $bill->delete();
+            session()->flash('success', "Facture ".$bill->id." supprimée avec succès.");
+            return redirect()->back();
+//            return redirect(route('dashboard'));
+        }
+        catch (\Exception $e) {
+            session()->flash('danger', "Erreur lors de la suppression de la facture.");
+            //session()->flash('danger', $e->getMessage());
+            return redirect()->back();
+        }   
     }
 }
