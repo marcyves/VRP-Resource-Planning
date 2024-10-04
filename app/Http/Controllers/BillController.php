@@ -103,6 +103,7 @@ class BillController extends Controller
             $bill->description = $request->description;
             $bill->amount = $request->amount;
             $bill->created_at = $request->created_at;
+            $bill->paid_at = $request->paid_at;
 
             $bill->save();
 

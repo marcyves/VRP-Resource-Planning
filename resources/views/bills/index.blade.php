@@ -12,6 +12,7 @@
         <table class="bg-blue-100 w-full mb-8">
             @php
             $total = 0;
+            $total_payed = 0;
             @endphp
             <tr class="bg-white text-blue-600 p-8">
                 <td class="text-center px-2">
@@ -47,6 +48,9 @@
                     @money($bill->amount) €
                     @php
                     $total += $bill->amount;
+                    if($bill->paid_at != null){
+                        $total_payed += $bill->amount;
+                    }
                     @endphp
                 </td>
                 <td class=" text-left  text-gray-400">
@@ -73,6 +77,9 @@
 
         <div class="my-box course-booking">
             {{ __('messages.total_gain')}} : @money($total) €
+        </div>  
+        <div class="my-box course-booking">
+            {{ __('messages.total_payed')}} : @money($total_payed) €
         </div>  
 </section>
 

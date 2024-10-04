@@ -62,9 +62,10 @@ class SchoolController extends Controller
         session()->put('years', $years);
 
         $bills_amount = Bill::getAmount($current_year);
+        $bills_payed_amount = Bill::getPayedAmount($current_year);
         $bills_count = Bill::getCount($current_year);
 
-        return view('dashboard', compact('courses', 'current_year', 'current_semester','years', 'bills_amount', 'bills_count'));
+        return view('dashboard', compact('courses', 'current_year', 'current_semester','years', 'bills_amount', 'bills_payed_amount', 'bills_count'));
     }
 
     public function list()
