@@ -524,7 +524,6 @@ a.cool-box{
 /* Animations */
 .list{
   display: flex;
-  flex-wrap: wrap;
   justify-content: stretch;
   gap: 6px;
   margin: 6px 0;
