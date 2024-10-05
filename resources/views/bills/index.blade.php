@@ -61,6 +61,9 @@
                 </td>
                 @if(Auth::user()->getMode() == "Edit")
                 <td class=" text-right">
+                    <form class="inline" action="{{route('bill.payed', $bill->id)}}" method="get">
+                    <x-button-payed/>
+                    </form>
                     <form class="inline" action="{{route('bill.edit', $bill->id)}}" method="get">
                     <x-button-edit/>
                     </form>

@@ -120,6 +120,20 @@ class BillController extends Controller
         }       
     }
 
+    public function payed(String $bill_id)
+    {
+        try{
+            $bill = Bill::findOrFail($bill_id);
+            $bill->paid_at = Carbon::now();
+            $bill->save();
+            session()->flash('success', "Facture ".$bill->id." payée avec succès.");
+            return redirect()->back();
+        }
+        catch (\Exception $e) {
+            session()->flash('danger', "Erreur lors du payement de la facture: ".$e->getMessage());
+            return redirect()->back();
+        }   
+    }
     /**
      * Remove the specified resource from storage.
      */

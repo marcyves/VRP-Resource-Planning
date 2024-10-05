@@ -81,6 +81,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/billing/set_bill', [BillingController::class, 'setBill'])->name('billing.setBill');
 
     Route::resource('/program', ProgramController::class);
+
+    Route::get('/bill/payed/{bill_id}', [BillController::class, 'payed'])->name('bill.payed');
     Route::resource('/bill', BillController::class);
     Route::resource('/documents', DocumentController::class);
     
