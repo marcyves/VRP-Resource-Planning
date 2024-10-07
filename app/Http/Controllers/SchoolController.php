@@ -61,9 +61,9 @@ class SchoolController extends Controller
         $years = $schools->getYears();
         session()->put('years', $years);
 
-        $bills_amount = Bill::getAmount($current_year);
-        $bills_payed_amount = Bill::getPayedAmount($current_year);
-        $bills_count = Bill::getCount($current_year);
+        $bills_amount = Auth::user()->getBillsAmountPerYear($current_year);
+        $bills_payed_amount = Auth::user()->getBillsPayedAmountPerYear($current_year);
+        $bills_count = Auth::user()->getBillsCountPerYear($current_year);
 
         return view('dashboard', compact('courses', 'current_year', 'current_semester','years', 'bills_amount', 'bills_payed_amount', 'bills_count'));
     }

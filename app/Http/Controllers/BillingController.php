@@ -2,11 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\School;
-use App\Models\Course;
-use App\Models\Group;
-use App\Models\GroupCourse;
-use App\Models\Planning;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;

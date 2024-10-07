@@ -107,6 +107,27 @@ class User extends Authenticatable
         return Bill::where('company_id', $this->company_id)->orderBy('id')->get();
     }
 
+    public function getBillsAmountPerYear($year)
+    {
+        return Bill::where('company_id', $this->company_id)
+            ->where('created_at', '>', "$year-01-01")->where('created_at', '<', "$year-12-31")->sum('amount');
+
+    }
+
+    public function getBillsPayedAmountPerYear($year)
+    {
+        return Bill::where('company_id', $this->company_id)
+            ->where('created_at', '>', "$year-01-01")->where('created_at', '<', "$year-12-31")
+            ->where('paid_at', '>', "$year-01-01")->where('paid_at', '<', "$year-12-31")
+            ->sum('amount');
+    }
+
+    public function getBillsCountPerYear($year){
+        return Bill::where('company_id', $this->company_id)
+            ->where('created_at', '>', "$year-01-01")
+            ->where('created_at', '<', "$year-12-31")
+            ->count();
+    }
     public function getGroups(Bool $active = true )
     {
         return Group::where('company_id', $this->company_id)
