@@ -50,10 +50,17 @@
                     <x-form-planning :mode=$mode :schools=$schools :courses=$courses :planning=$planning i={{$i}} :day=$day month={{$current_month}} year={{$current_year}}/>
                     @php
                     $day++;
-                    @endphp                
+                    @endphp          
                 @endfor
-            </div>
-            @endwhile
+                @if($i<=7)
+                    <!-- Afficher les jours avant le premier jour du mois -->
+                    @for ($j = $i; $j <=7; $j++)
+                        <div class="calBlank calCell">
+                        </div>
+                    @endfor
+                @endif
+            </div>                    
+        @endwhile
 
         </div>
         <div class="flex flex-row justify-between font-semibold text-gray-600 mt-4 py-4 bg-gray-200">
