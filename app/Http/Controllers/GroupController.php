@@ -65,6 +65,7 @@ class GroupController extends Controller
                     'course_id' => $course_id,
                     'company_id' => $company_id,
                     'active' => $active,
+                    'year' => $request->year,
                 ]);
 
             session()->flash('success', "Groupe enregistré avec succès.");
@@ -175,6 +176,7 @@ class GroupController extends Controller
             $group->name = $request->name;
             $group->short_name = $request->short_name;
             $group->size = $request->size;
+            $group->year = $request->year;
             $group->update();
 
             //TODO add group_course record to link them

@@ -55,7 +55,7 @@ class Planning extends Model
         ->join('courses', 'courses.id', '=', 'plannings.course_id')
         ->join('schools', 'schools.id', '=', 'school_id')
         ->whereIn('school_id', $list)
-        ->where(['year' => $year])
+        ->where(['courses.year' => $year])
         ->where('begin', '>', $start_date)
         ->where('end', '<', $end_date)
         ->orderBy('begin', 'asc')

@@ -3,7 +3,7 @@
     <div class="card-title">
             <a href="{{route('group.show', $group->id)}}">{{$group->name}}</a>            
             ({{$group->short_name}})         
-            {{$group->size}} students
+            {{$group->size}} students - {{$group->year}}
     </div>
     <ul class="card-subtitle">
         @foreach($occurences as $occurence)

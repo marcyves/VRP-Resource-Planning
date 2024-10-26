@@ -29,7 +29,11 @@
             @error('size')
             <div class="bg-red-700 text-red-100 border-red-400 rounded-md px-4 py-2">{{ $message }}</div>
             @enderror
-                        
+            <x-text-input type="text" name="year" id="year" placeholder="{{ __('messages.year') }}" value="{{old('year', $group->year)}}"/>
+            @error('year')
+            <div class="bg-red-700 text-red-100 border-red-400 rounded-md px-4 py-2">{{ $message }}</div>
+            @enderror
+                            
             <x-primary-button>{{ __('messages.update') }}</x-primary-button>
         </form>
     </section>
