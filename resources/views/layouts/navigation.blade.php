@@ -2,7 +2,6 @@
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
-            <div class="flex">
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
                     <a href="{{ route('dashboard') }}">
@@ -44,24 +43,24 @@
                         </div>
                     </div>
                 </div>
-<script>
-const checkbox = document.getElementById('edit-toggle');
+                <script>
+                const checkbox = document.getElementById('edit-toggle');
 
-const detectToggleOnce = (e) => {
-    e.target.classList.add('toggled-once');
-    let url = "{{ route('profile.switch') }}";
-    document.location.href=url;
-};
+                const detectToggleOnce = (e) => {
+                    e.target.classList.add('toggled-once');
+                    let url = "{{ route('profile.switch') }}";
+                    document.location.href=url;
+                };
 
-checkbox.addEventListener('click', detectToggleOnce, { once: true });
+                checkbox.addEventListener('click', detectToggleOnce, { once: true });
 
-</script>
-@php
-    $current_year = session('current_year');
-    $current_semester = session('current_semester');
-    $years = session('years');
-@endphp
-<!-- Period selector -->
+                </script>
+                @php
+                    $current_year = session('current_year');
+                    $current_semester = session('current_semester');
+                    $years = session('years');
+                @endphp
+                <!-- Period selector -->
             <form class="nav-form" action="{{route('date.select')}}" method="post">
                 @csrf
                 <select id="current_year" name="current_year" onchange="this.form.submit()">
@@ -124,7 +123,7 @@ checkbox.addEventListener('click', detectToggleOnce, { once: true });
                     </svg>
                 </button>
             </div>
-        </div>
+        
     </div>
 
     <!-- Responsive Navigation Menu -->

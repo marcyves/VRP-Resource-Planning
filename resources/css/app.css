@@ -40,13 +40,17 @@
   }
 }
 
-body {
-  padding: 0; 
-  margin: 0;
+html, body {
+  min-height: 100vh;
   width: 100%;
+  padding: 0;
+  margin: 0;
+}
+
+body {
   height: 100vh;
-  align-items: center;
-  justify-content: center;
+  display: flex;
+  flex-direction: column;
   background-size: 300% 300%;
   background-image: linear-gradient(-45deg, rgb(59, 88, 233) 10%, rgb(100, 222, 233) 25%, rgb(255, 255, 255) 51%, #151bb7 100%);
   -webkit-animation: AnimateBG 20s ease infinite;
@@ -98,20 +102,101 @@ nav{
 
 header{
   background-color: var(--secondary-bg-color);
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+  padding: 8px;
+}
+
+header h2{
+  margin-left: 1rem;
+  font-weight: bolder;
+  font-size: larger;
+}
+.breadcrumb{
+  font-weight: bolder;
+  font-size: larger;
+  width: 100%;
+  background-color: var(--nav-bg-color);
+  color: white;
+}
+.list{
+  display: flex;
+  margin: 12px 0;
+  gap: 20%;
+}
+
+.card {
+  background-color: white;
+  box-shadow: var(--ring-offset-shadow), var(--ring-shadow), var(--shadow);
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px;
+  border-radius: 0.5rem;
+  cursor: pointer;
+}
+
+.card-content {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+}
+.card-content-text {
+  margin: 0 8px;
+  min-width: 200px;
+}
+.card-content-text .card-title {
+  color: var(--bg-color-a);
+  margin-bottom: 2px;
+  font-size: 16px;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.card-content-text .card-subtitle {
+  font-size: 14px;
+  font-weight: 300;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-left: 12px;
+  margin-bottom: 6px;
+}
+.card-content-end {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  box-sizing: border-box;
+}
+.card-content-end .check {
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+  overflow: hidden;
+  transition: width 1s;
+  border-radius: 0 1em 1em 0;
+  padding: 0 6px;
 }
 
 main{
   background-color: var(--main-bg-color);
+  box-shadow: 8px 8px 2px 1px rgba(8, 42, 196, 0.2);
+  margin-top: 4px;
   margin-left: auto;
   margin-right: auto;
   font-size: 1.25rem;
+  flex-grow: 1;
+  width: 90%;
+  border-radius: 4px;
 }
 
 footer{
   font-size: small;
   color: rgb(118, 117, 117);
-  border-top: solid 1px;
-  background: rgba(150, 150, 150, 0.5);
   width: 100%;
   height: 40px;
   padding-top: 10px;
@@ -387,8 +472,12 @@ a.cool-box{
   background-color: var(--secondary-bg-color);
 }
 .course-booking{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
   background-color: white;
   color: --var(--main-text-color);
+  width: 95%;
 }
 /* (B) PERIOD SELECTOR */
 #calPeriod {
@@ -519,69 +608,6 @@ a.cool-box{
   border: 0; padding: 10px; margin: 10px 2px 0 0;
   color: #fff; background: var(--bg-color-c);
   cursor: pointer;
-}
-
-/* Animations */
-.list{
-  display: flex;
-  justify-content: stretch;
-  gap: 6px;
-  margin: 6px 0;
-}
-
-.card {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  padding: 6px;
-  background-color: white;
-  border-radius: 0.5rem;
-  box-shadow: var(--ring-offset-shadow), var(--ring-shadow), var(--shadow);
-  cursor: pointer;
-}
-
-.card-content {
-  display: flex;
-  justify-content: space-between;
-  flex-direction: row;
-}
-.card-content-text {
-  margin: 0 8px;
-  min-width: 200px;
-}
-.card-content-text .card-title {
-  color: var(--bg-color-a);
-  margin-bottom: 2px;
-  font-size: 16px;
-  font-weight: 600;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.card-content-text .card-subtitle {
-  font-size: 14px;
-  font-weight: 300;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  margin-left: 12px;
-  margin-bottom: 6px;
-}
-.card-content-end {
-  display: flex;
-  gap: 15px;
-  align-items: center;
-  box-sizing: border-box;
-}
-.card-content-end .check {
-  display: flex;
-  flex-direction: row;
-  height: 100%;
-  overflow: hidden;
-  transition: width 1s;
-  border-radius: 0 1em 1em 0;
-  padding: 0 6px;
 }
 
 /*

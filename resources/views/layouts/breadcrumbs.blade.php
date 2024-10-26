@@ -1,4 +1,4 @@
-<nav class="mx-auto px-4 py-2">
+<nav class="breadcrumb">
     <ul>
         <li class="inline p-2">
         <a href="{{route('dashboard')}}" class="inline-flex items-center p-0.5 text-sm font-medium hover:text-gray-400 focus:outline-none">

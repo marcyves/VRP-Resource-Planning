@@ -1,7 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4">
-            <h2 class="w-full md:w-1/2 inline-flex font-semibold text-xl text-gray-800">
+            <h2>
                 {{ __('Programs') }}
             </h2>
     </x-slot>

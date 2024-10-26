@@ -35,8 +35,10 @@ return array (
   'size' => 'taille',
   'time' => 'Durée du cours',
   'time_worked' => 'Heures travaillées',
-  'total_gain' => 'Montant total',
+  'total_gain' => 'Total',
   'total_time' => 'Durée totale',
+  'total_payed' => 'Payé',
+  'total_balance' => 'Solde',
   'update' => 'Modifier',
   'year' => 'Année',
 );

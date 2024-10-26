@@ -15,7 +15,6 @@
         </ul>
     </section>
 
-
     @if(Auth::user()->getMode() == "Edit")
     <section class="nice-page">
         <form action="{{route('group.save', 0)}}" method="post" 
@@ -31,6 +30,10 @@
             @enderror
             <x-text-input type="text" name="size" id="size" placeholder="{{ __('messages.size') }}"/>
             @error('size')
+            <div class="bg-red-700 text-red-100 border-red-400 rounded-md px-4 py-2">{{ $message }}</div>
+            @enderror            
+            <x-text-input type="text" name="year" id="year" placeholder="{{ __('messages.year') }}"/>
+            @error('year')
             <div class="bg-red-700 text-red-100 border-red-400 rounded-md px-4 py-2">{{ $message }}</div>
             @enderror            
             <x-primary-button>{{ __('messages.group_create') }}</x-primary-button>

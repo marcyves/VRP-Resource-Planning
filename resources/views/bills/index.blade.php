@@ -1,12 +1,9 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4">
-            <h2 class="w-full md:w-1/2 inline-flex font-semibold text-xl text-gray-800">
+            <h2>
                 {{ __('messages.bills') }}
             </h2>
     </x-slot>
-
-            <article class="">
 
     <section class="nice-page">
         <table class="bg-blue-100 w-full mb-8">
@@ -79,10 +76,15 @@
 </table>
 
         <div class="my-box course-booking">
+            <div class="flex flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4">
             {{ __('messages.total_gain')}} : @money($total) €
-        </div>  
-        <div class="my-box course-booking">
+            </div>
+            <div class="flex flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4">
             {{ __('messages.total_payed')}} : @money($total_payed) €
+            </div>
+            <div class="flex flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4">
+            {{ __('messages.total_balance')}} : @money($total - $total_payed) €
+            </div>
         </div>  
 </section>
 
