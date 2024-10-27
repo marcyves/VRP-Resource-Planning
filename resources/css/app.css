@@ -121,10 +121,12 @@ header h2{
   background-color: var(--nav-bg-color);
   color: white;
 }
+
 .list{
   display: flex;
+  flex-wrap: wrap;
+  width: 100%;
   margin: 12px 0;
-  gap: 20%;
 }
 
 .card {
@@ -135,6 +137,8 @@ header h2{
   justify-content: space-between;
   align-items: center;
   padding: 6px;
+  margin: 6px;
+  min-width: 30%;
   border-radius: 0.5rem;
   cursor: pointer;
 }
