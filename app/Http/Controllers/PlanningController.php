@@ -228,7 +228,6 @@ class PlanningController extends Controller
         session()->put('school', $school->name);
         session()->put('school_id', $school->id);
 
-        //TODO check groups are not yet fully booked
         $groups = $course->getGroups();
         $session_length = $course->session_length;
 
