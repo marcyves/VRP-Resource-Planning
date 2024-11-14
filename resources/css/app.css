@@ -726,3 +726,14 @@ a.cool-box{
   margin: 1rem;
   min-width: 4.5rem;
 }
+
+.maintenance-notice{
+  padding: 1rem;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.maintenance-notice h2 {
+ font-size: larger;
+ font-weight: 900;
+}
