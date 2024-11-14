@@ -24,6 +24,7 @@ class SchoolController extends Controller
         return view('school.index', compact('schools'));
 
     }
+    
     /**
      * Display a listing of the resource.
      */
@@ -54,9 +55,7 @@ class SchoolController extends Controller
         }
         session()->put('current_semester', $current_semester);
 
-        $schools = Auth::user()->getSchools();
-        //TODO use $list instead of $courses
-        // $list = $schools->listCourses();
+        $schools = Auth::user()->getSchools($current_year);
         $courses = Auth::user()->getCourses($current_year, $current_semester);
         $years = $schools->getYears();
         session()->put('years', $years);
@@ -65,7 +64,7 @@ class SchoolController extends Controller
         $bills_payed_amount = Auth::user()->getBillsPayedAmountPerYear($current_year);
         $bills_count = Auth::user()->getBillsCountPerYear($current_year);
 
-        return view('dashboard', compact('courses', 'current_year', 'current_semester','years', 'bills_amount', 'bills_payed_amount', 'bills_count'));
+        return view('dashboard', compact('schools', 'courses', 'current_year', 'current_semester','years', 'bills_amount', 'bills_payed_amount', 'bills_count'));
     }
 
     public function list()

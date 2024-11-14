@@ -14,15 +14,7 @@
         @endphp
         <article class="school-box">
         <x-school-header :school_name=$school_name :school_id=$school_id />
-        <x-dashboard-table-begin/>
-        @foreach ($courses as $course)
-            <x-dashboard-table-row :course=$course />
-            @php
-                $total_time += $course->session_length * $course->sessions * $course->groups_count;
-                $total_budget += $course->rate * $course->session_length * $course->sessions * $course->groups_count;
-            @endphp
-        @endforeach
-        <x-dashboard-table-end :total_budget=$total_budget :total_time=$total_time />
+        <x-advanced-course-table :courses=$courses :school_name=$school_name :school_id=$school_id/>
     </article>
     </section>
 
