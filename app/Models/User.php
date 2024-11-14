@@ -66,11 +66,25 @@ class User extends Authenticatable
         return $this->BelongsTo(Status::class);
     }
 
-    public function getSchools()
+    public function getSchools($year = 'all')
     {
         $company_id = $this->company_id;
 
-        return School::select(['schools.*'])->where('schools.company_id', '=', $company_id)->get();
+        if($year == 'all')
+        {
+            return School::select(['schools.*'])->where('schools.company_id', '=', $company_id)
+                ->orderBy('schools.name')
+                ->get();
+        } else {
+            return School::select(['schools.*'])->where('schools.company_id', '=', $company_id)
+            ->join('courses', 'courses.school_id', '=', 'schools.id')
+            ->where('courses.year', '=', $year)
+            ->distinct()
+            ->orderBy('schools.name')
+            ->get();
+        }
+
+
     }
 
     public function getCourses($current_year = "all", $current_semester = "all")
