@@ -194,8 +194,7 @@ main{
   margin-right: auto;
   font-size: 1.25rem;
   flex-grow: 1;
-  width: 90%;
-  border-radius: 4px;
+  width: 98%;
 }
 
 footer{
@@ -265,11 +264,39 @@ a.cool-box{
   background-color: var(--box-bg-color);
 }
 
-.nice-page{
+.section-box{
   padding: 1rem;
-  max-width: 1400px;
+  max-width: 90%;
   margin-left: auto;
   margin-right: auto;
+}
+
+.school-box{
+  padding: 1rem;
+  margin-bottom: 6px;
+  border-radius: 6px;
+  background-color: var(--main-bg-color);
+}
+
+.school-table{
+  color: var(--main-text-color);
+  font-size: 0.9rem;
+  line-height: 1.25rem;
+  width: 100%;
+  margin-top: 0.5rem;
+}
+
+.school-table th{
+  font-weight: bold;
+}
+.school-table thead{
+  background-color: white;
+  border-radius: 60px;
+}
+
+.school-table tbody{
+  font-weight: normal;
+  border-radius: 6px;
 }
 
 .nice-form {
