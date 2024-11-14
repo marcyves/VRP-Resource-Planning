@@ -2,32 +2,32 @@
     <x-slot name="header">
         <div class="flex">
             <h2 class="font-semibold text-xl text-gray-800 leading-tight grow py-2">
-                {{$school_name}}
+                {{__('messages.school_details')}}
             </h2>
-            @if(Auth::user()->getMode() == "Edit")
-                <div class="flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0">
-                    <div class="flex items-center space-x-3 w-full md:w-auto">
-                        <form action="{{route('school.edit', $school_id)}}" method="get">
-<x-button-edit/>
-                        </form>
-                        <form action="{{route('school.destroy', $school_id)}}" method="post">
-                            @csrf
-                            @method('delete')
-<x-button-delete/>
-                        </form>
-                        <a
-                        class="inline-flex items-center p-2 text-sm border border-gray-300 rounded-md font-semibold font-medium text-center text-gray-500 hover:text-gray-800 rounded-lg focus:outline-none" 
-                        href="{{route('course.create', $school_id)}}">{{__('messages.add_course')}}</a>
-                    </div>
-                </div>
-            @endif
         </div>
     </x-slot>
 
-    <section class="nice-page">
-        <x-advanced-course-table :courses=$courses :school_name=$school_name :school_id=$school_id/>   
-        <x-documents-school-table :documents=$documents :school_id=$school_id/>
+    <section class="section-box">
+        @php
+            $total_time = 0;
+            $total_budget = 0;
+        @endphp
+        <article class="school-box">
+        <x-school-header :school_name=$school_name :school_id=$school_id />
+        <x-dashboard-table-begin/>
+        @foreach ($courses as $course)
+            <x-dashboard-table-row :course=$course />
+            @php
+                $total_time += $course->session_length * $course->sessions * $course->groups_count;
+                $total_budget += $course->rate * $course->session_length * $course->sessions * $course->groups_count;
+            @endphp
+        @endforeach
+        <x-dashboard-table-end :total_budget=$total_budget :total_time=$total_time />
+    </article>
+    </section>
 
+    <section class="section-box">
+        <x-documents-school-table :documents=$documents :school_id=$school_id/>
     <div class="mx-auto max-w-screen-xl px-2 lg:px-12">
         <div class="bg-white relative shadow-md sm:rounded-lg overflow-hidden">
             <div class="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4">

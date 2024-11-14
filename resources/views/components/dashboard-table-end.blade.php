@@ -1,10 +1,10 @@
-@props(['total_budget'])
+@props(['total_budget', 'total_time'])
     <tr class="footer">
         <th scope="row">{{ __('messages.total') }}</th>
         <td></td>
         <td></td>
-        <td></td>
-        <td></td>
+        <td>{{ __('messages.session_length') }}</td>
+        <td>{{$total_time}}</td>
         <td></td>
         <td></td>
         <td>{{ __('messages.gain') }}</td>

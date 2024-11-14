@@ -2,25 +2,7 @@
 <!-- Start advanced-course-table.blade  -->
 <div class="bg-blue-100 mb-2 p-4 space-y-3 md:space-y-0 md:space-x-4 p-2
 relative shadow-md sm:rounded-lg overflow-hidden">
-    <table class="w-full text-sm text-gray-500 mt-2">
-        <thead class="text-xs text-gray-700 uppercase bg-gray-50 text-center">
-            <tr>
-                <th scope="col">{{__('messages.program')}}</th>
-                <th scope="col">{{__('messages.course')}}</th>
-                <th scope="col">{{__('messages.year')}}</th>
-                <th scope="col">{{__('messages.semester')}}</th>
-                <th scope="col">{{__('messages.sessions')}}</th>
-                <th scope="col">{{__('messages.session_length')}}</th>
-                <th scope="col">{{__('messages.time')}}</th>
-                <th scope="col">{{__('messages.groups')}}</th>
-                <th scope="col">{{__('messages.total_time')}}</th>
-                <th scope="col">{{__('messages.rate')}}</th>
-                <th scope="col">{{__('messages.gain')}}</th>
-                    <span class="sr-only">Actions</span>
-                </th>
-            </tr>
-        </thead>
-        <tbody>
+<x-dashboard-table-begin/>
         @php
             $total_time = 0;   
             $total_budget = 0;
@@ -73,14 +55,7 @@ relative shadow-md sm:rounded-lg overflow-hidden">
         @endphp
 
         @endforeach
-        <tr class="footer">
-            <th scope="row">Total</th>
-            <td colspan="5"></td>
-            <td>{{$total_time}}</td>
-            <td  colspan="3"></td>
-            <td class="text-right">@money($total_budget)</td>
-            <td></td>
-        </tr>
+        <x-dashboard-table-end :total_budget=$total_budget :total_time=$total_time />
     </tbody>
 </table>
 </div>
