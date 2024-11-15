@@ -5,7 +5,7 @@
         </h2>
     </x-slot>
 
-    <section class="nice-page">
+    <section class="section-box">
         <ul class="list">
         @foreach ($groups as $group)
             <li class="card">
@@ -16,7 +16,7 @@
     </section>
 
     @if(Auth::user()->getMode() == "Edit")
-    <section class="nice-page">
+    <section class="section-box">
         <form action="{{route('group.save', 0)}}" method="post" 
         class="mx-auto px-6 py-2 bg-white shadow-md mb-6 flex flex-col gap-4">
             @csrf
@@ -41,7 +41,7 @@
     </section>
     @endif
 
-        <section  class="nice-page">
+        <section  class="section-box">
             <article  class="nice-box">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight py-4">Groupes Archivés</h2>
         <ul>

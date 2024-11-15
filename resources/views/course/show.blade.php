@@ -5,7 +5,7 @@
         </h2>
     </x-slot>
 
-    <section class="nice-page">
+    <section class="section-box">
         <div class="flex flew-row place-content-between bg-grey-200 p-2 rounded-md">
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">{{$course->name}}</h2>
             <span class="justify-end">
@@ -53,7 +53,7 @@
         </ul>       
     </section>
 
-    <section class="nice-page">
+    <section class="section-box">
         <x-nice-title color="grey-200" title="Groups">
             @if(Auth::user()->getMode() == "Edit")
                 <a
@@ -97,7 +97,7 @@
         </div>
     </section>
 
-    <section class="nice-page">
+    <section class="section-box">
         <h2 class="font-semibold text-xl mb-2">Available Groups</h2>
         <ul class="list">
             @if($available_groups == [])

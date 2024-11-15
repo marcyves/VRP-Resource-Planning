@@ -187,18 +187,6 @@ header h2{
   padding: 0 6px;
 }
 
-main{
-  background-color: var(--main-bg-color);
-  box-shadow: 8px 8px 2px 1px rgba(8, 42, 196, 0.2);
-  margin-top: 4px;
-  margin-left: auto;
-  margin-right: auto;
-  font-size: 1.25rem;
-  flex-grow: 1;
-  width: 98%;
-  min-width: 1100px;
-}
-
 footer{
   font-size: small;
   color: rgb(118, 117, 117);
@@ -266,12 +254,22 @@ a.cool-box{
   background-color: var(--box-bg-color);
 }
 
+/*main{*/
 .section-box{
-  padding: 1rem;
-  max-width: 90%;
+  background-color: var(--main-bg-color);
+  box-shadow: 8px 8px 2px 1px rgba(8, 42, 196, 0.2);
+  margin-top: 4px;
   margin-left: auto;
   margin-right: auto;
+  font-size: 1.25rem;
+  flex-grow: 1;
+  width: 98%;
+  min-width: 1100px;
+
+  padding: 1rem;
+  max-width: 90%;
 }
+
 
 .school-box{
   padding: 1rem;

@@ -5,10 +5,10 @@
         </h2>
     </x-slot>
 
-    <section  class="nice-page">
+    <section  class="section-box">
         <div id="calPeriod">
-        <x-period-selector :years=$years :months=$months current_year={{$current_year}} current_month={{$current_month}} route="billing"/>
-    </div>
+            <x-period-selector :years=$years :months=$months current_year={{$current_year}} current_month={{$current_month}} route="billing"/>
+        </div>
     @if($monthly_hours == 0)
         <div class="font-semibold text-gray-600 border border-gray-300 rounded-md mt-4 p-4 bg-red-100">
             No hours logged this month
@@ -89,7 +89,7 @@
         @endforeach
         </section>
 
-        <section  class="nice-page">
+        <section  class="section-box">
         <div class="flex flex-row justify-between font-semibold text-gray-600 border border-gray-300 rounded-md mt-4 py-4 bg-gray-200">
             <div class="mx-4">
                 Time worked = {{$monthly_hours}} hours

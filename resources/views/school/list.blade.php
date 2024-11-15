@@ -5,7 +5,7 @@
         </h2>
     </x-slot>
 
-    <section  class="nice-page">
+    <section  class="section-box">
         <ul>
             @foreach ($schools as $school)
             <li class="mx-auto max-w-screen-xl px-2 lg:px-12 bg-white shadow-md sm:rounded-lg overflow-hidden mb-2

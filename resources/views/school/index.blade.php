@@ -9,7 +9,7 @@
         @endif
     </x-slot>
 
-    <section  class="nice-page">
+    <section  class="section-box">
         <ul class="list">
             @foreach ($schools as $school)
             <li class="card">
@@ -20,7 +20,7 @@
     </section>
 
     @if(Auth::user()->getMode() == "Edit")
-    <section class="nice-page">
+    <section class="section-box">
         <form action="{{route('school.store')}}" method="post" 
         class="mx-auto px-6 py-2 bg-white shadow-md mb-6 flex items-center justify-items-start">
             @csrf

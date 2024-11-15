@@ -5,7 +5,7 @@
         </h2>
     </x-slot>
 
-    <section  class="nice-page">
+    <section  class="section-box">
 
         <!-- (A) PERIOD SELECTOR -->
         @php    

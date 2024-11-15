@@ -5,7 +5,7 @@
         </h2>
     </x-slot>
 
-    <section class="nice-page">
+    <section class="section-box">
     <form action="{{route('course.store', $school->id)}}" method="post" class="nice-form">
         @csrf
         <div class="flex-row">

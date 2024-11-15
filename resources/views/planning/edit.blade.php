@@ -20,7 +20,7 @@
         $end_minutes = explode(":", $end_time)[1];
     @endphp
 
-    <section  class="nice-page">
+    <section  class="section-box">
         <h2>{{$current_group->name}}</h2>
         <div class="grid grid-flow-row-dense grid-cols-2 grid-rows-2">
             <div>
