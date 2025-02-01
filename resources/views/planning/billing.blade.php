@@ -15,16 +15,17 @@
         </div>
     </section>
     @else
-        @foreach($schools as $school => $courses)
+    @foreach($schools as $school => $courses)
             <div class="font-bold text-gray-800 bg-green-100 p-2 mb-2 flex flex-col justify-between border border-gray-300 rounded-md ">
             <h2 class="inline ml-2 pt-2">{{$school}}</h2>
+            @isset($courses['courses'])
             @foreach($courses['courses'] as $course_name => $schedules)
                 @php
                 $current_group = "";
                 @endphp
                 <h2 class="font-bold text-gray-800 p-2 bg-blue-200 mt-4"> - {{$course_name}}</h2>
                 <ul>
-                @foreach($schedules['schedule'] as $planning_id => $schedule)
+                    @foreach($schedules['schedule'] as $planning_id => $schedule)
                     @if($current_group != $schedule['group'])
                         @php
                             $current_group = $schedule['group'];
@@ -49,7 +50,7 @@
                     @endif
                     {{$schedule['bill']}}
                     </li>
-                @endforeach
+                    @endforeach
                 </ul>
 
                 <div class="flex flex-row justify-between font-semibold text-gray-600 mt-2 py-2 bg-blue-200">
@@ -61,7 +62,15 @@
                     </div>
                 </div>
             @endforeach
-            </div>
+            @endisset
+
+            @empty($schedules['course_id'])
+                @php
+                    $schedules['course_id'] = 0;
+                @endphp
+            @endempty
+
+        </div>
             <div class="flex flex-row justify-between font-semibold text-gray-600 border border-gray-300 rounded-md mt-2 py-2 bg-green-100">
                 <div class="mx-4">
                     Total Time worked = {{$courses['hours']}} hours
@@ -87,7 +96,7 @@
                     </form>
             </div>
         @endforeach
-        </section>
+    </section>
 
         <section  class="section-box">
         <div class="flex flex-row justify-between font-semibold text-gray-600 border border-gray-300 rounded-md mt-4 py-4 bg-gray-200">
