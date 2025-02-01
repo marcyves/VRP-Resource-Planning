@@ -18,12 +18,11 @@
     @foreach($schools as $school => $courses)
             <div class="font-bold text-gray-800 bg-green-100 p-2 mb-2 flex flex-col justify-between border border-gray-300 rounded-md ">
             <h2 class="inline ml-2 pt-2">{{$school}}</h2>
-            @isset($courses['courses'])
-            @foreach($courses['courses'] as $course_name => $schedules)
+            @foreach($courses['courses'] as $course_id => $schedules)
                 @php
-                $current_group = "";
+                    $current_group = "";
                 @endphp
-                <h2 class="font-bold text-gray-800 p-2 bg-blue-200 mt-4"> - {{$course_name}}</h2>
+                <h2 class="font-bold text-gray-800 p-2 bg-blue-200 mt-4"> - {{$schedules['course_name']}}</h2>
                 <ul>
                     @foreach($schedules['schedule'] as $planning_id => $schedule)
                     @if($current_group != $schedule['group'])
@@ -62,13 +61,6 @@
                     </div>
                 </div>
             @endforeach
-            @endisset
-
-            @empty($schedules['course_id'])
-                @php
-                    $schedules['course_id'] = 0;
-                @endphp
-            @endempty
 
         </div>
             <div class="flex flex-row justify-between font-semibold text-gray-600 border border-gray-300 rounded-md mt-2 py-2 bg-green-100">
@@ -81,7 +73,7 @@
                 <form action="{{route('billing.setBill')}}" class="inline" method="post">
                     @csrf
                     <input type="hidden" name="school_id" value="{{$courses['school_id']}}">
-                    <input type="hidden" name="course_id" value="{{$schedules['course_id']}}">
+                    <input type="hidden" name="course_id" value="{{$course_id}}">
                     <input type="hidden" name="month" value="{{$current_month}}">
                     <input type="hidden" name="year" value="{{$current_year}}">
                     <label for="bill_id">Bill:</label>
