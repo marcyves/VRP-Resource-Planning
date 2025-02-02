@@ -139,7 +139,8 @@ header h2{
   align-items: center;
   padding: 6px;
   margin: 6px;
-  min-width: 30%;
+  min-width: 20%;
+  max-width: 30%;
   border-radius: 0.5rem;
   cursor: pointer;
 }
@@ -153,7 +154,8 @@ header h2{
   margin: 0 8px;
   min-width: 200px;
 }
-.card-content-text .card-title {
+
+.card-title {
   color: var(--bg-color-a);
   margin-bottom: 2px;
   font-size: 16px;
@@ -220,6 +222,18 @@ a.cool-box{
   line-height: 0.8rem;
 }
 
+form.cool-box{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  font-size:medium;
+}
+
+.cool-box label{
+  font-weight: 100;
+  margin-left: 18px;
+}
+
 .cool-box:hover{
   background-color: var(--icon-grey);
 }
@@ -270,7 +284,6 @@ a.cool-box{
   max-width: 90%;
 }
 
-
 .school-box{
   padding: 1rem;
   margin-bottom: 6px;
@@ -303,9 +316,9 @@ a.cool-box{
 .nice-form {
   display: flex;
   flex-direction: column;
-  background-color: var(--secondary-bg-color);
-  border-radius: 0.5rem;
-  width: 50rem;
+  min-width: 50rem;
+  width: 90%;
+  padding: 1rem;
 }
 
 @media (min-width: 640px) {
@@ -502,6 +515,8 @@ a.cool-box{
 
 .course-select{
   background-color: var(--secondary-bg-color);
+  display: inline;
+  color: --var(--main-text-color);
 }
 .course-booking{
   display: flex;
