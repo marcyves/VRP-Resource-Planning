@@ -6,6 +6,20 @@ use Carbon\Carbon;
 
 class Tools
 {
+    public static function getCurrentDay(Request $request)
+    {
+        if(isset($request->current_day)){
+            $current_day = $request->current_day+1;
+            session(['current_day' => $current_day]);
+        }else {
+            $current_day = session('current_day');
+            if (!isset($current_day)) {
+                $current_day = now()->format('d');
+            }
+        }
+        return $current_day;
+    }
+    
     public static function getCurrentYear(Request $request)
     {
 
@@ -35,6 +49,21 @@ class Tools
         }
         
         return $current_month;
+    }
+
+    public static function getCurrentSemester(Request $request)
+    {
+        if(isset($request->current_semester)){
+            $current_semester = $request->current_semester;
+            session(['current_semester' => $current_semester]);
+        }else{
+            $current_semester = session('current_semester');
+            if (!isset($current_semester)) {
+                 $current_semester = "all";
+            }
+        }
+        
+    return $current_semester;
     }
 
     public static function getMonthNames()

@@ -203,7 +203,6 @@ button{
 }
 
 .cool-box{
-  margin: 6px 2px;
   border: solid var(--icon-grey);
   border-width: thin;
   border-radius: 4px;
@@ -239,7 +238,7 @@ form.cool-box{
 }
 
 .icon{
-  width: 1.8em;
+  width: 1.6em;
 }
 
 .icon img{
@@ -518,13 +517,30 @@ form.cool-box{
   display: inline;
   color: --var(--main-text-color);
 }
-.course-booking{
+.planning-entry{
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
   background-color: white;
   color: --var(--main-text-color);
+  box-shadow: 3px 3px 1px 1px rgba(118, 85, 158, 0.338);
+  padding: 2pt;
+  margin: 2pt 0;
   width: 95%;
+}
+.planning-text{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding-left: 0.25rem;
+  font-size: 0.7rem;
+  line-height: 1rem;
+}
+.planning-tools{
+  display: flex;
+  flex-direction: column;
+}
+.tool{
+  margin: 2px;
 }
 /* (B) PERIOD SELECTOR */
 #calPeriod {
@@ -546,7 +562,9 @@ form.cool-box{
   line-height: 2em;
   display:inline-box;
 }
-
+.spacer{
+ flex-grow: 1;
+}
 #calPeriod input {
   font-size: 24px;
   outline: none;
@@ -569,6 +587,8 @@ form.cool-box{
 }
 
 .calDay{
+  display: flex;
+  flex-direction: column;
   background-color: #fbfbe4;
   min-height: 10rem;
 }
