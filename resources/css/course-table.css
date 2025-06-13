@@ -1,0 +1,33 @@
+/* Base styles for the course table */
+.course-table {
+    background-color: rgba(255, 255, 255, 0.3);
+    width: 100%;
+    margin-top: 1rem;
+    box-shadow: 0 4px 6px 1px rgba(0, 0, 0, 0.1),
+        0 2px 4px 1px rgba(0, 0, 0, 0.06);
+    overflow: hidden;
+
+    color: var(--main-text-color);
+    font-size: 0.9rem;
+    border-radius: 0.4rem;
+}
+
+.course-table th {
+    font-weight: bold;
+}
+.course-table tr th:first-child {
+    padding-left: 1rem;
+}
+.course-table thead {
+    background-color: rgba(255, 255, 255, 0.6);
+    border-radius: 60px;
+}
+
+.course-table tbody {
+    font-weight: normal;
+}
+
+tfoot {
+    font-weight: bold;
+    background-color: var(--secondary-bg-color);
+}

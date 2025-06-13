@@ -1,6 +1,9 @@
+@import url('course-table.css');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
 
 * {
   font-family: Arial, Helvetica, sans-serif;
@@ -60,11 +63,6 @@ body {
 
 :is(tbody, table) > tr:nth-child(odd) {
   background-color: rgba(85, 50, 192, 0.1);
-}
-
-tr.footer{
-  font-weight: bold;
-  background-color: rgba(85, 50, 192, 0.2);
 }
 
 td, th {
@@ -289,27 +287,6 @@ form.cool-box{
   border-radius: 6px;
   background-color: var(--main-box-bg-color);
   box-shadow: 8px 8px 2px 1px rgba(8, 42, 196, 0.2);
-}
-
-.school-table{
-  color: var(--main-text-color);
-  font-size: 0.9rem;
-  line-height: 1.25rem;
-  width: 100%;
-  margin-top: 0.5rem;
-}
-
-.school-table th{
-  font-weight: bold;
-}
-.school-table thead{
-  background-color: white;
-  border-radius: 60px;
-}
-
-.school-table tbody{
-  font-weight: normal;
-  border-radius: 6px;
 }
 
 .nice-form {

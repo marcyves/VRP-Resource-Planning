@@ -3,9 +3,8 @@
             <ul class="list">
                 <li class="card">
                     <a href="{{ route('bill.index') }}" class="card-content-text">
-                    <h2>Factures</h2>
+                    <h2>{{ $bills_count }} Factures</h2>
                     <ul>
-                        <li>Nombre: {{ $bills_count }}</li>
                         <li>{{ __('messages.total_gain')}}: @money($bills_amount) €</li>
                         <li>{{ __('messages.total_payed')}}: @money($bills_payed_amount) €</li>
                         <li>{{ __('messages.total_balance')}}: @money($bills_amount-$bills_payed_amount) €</li>
@@ -54,7 +53,7 @@
                     @php
                     $school_courses = $courses->where('school_name', $school_name);
                     @endphp
-                    <x-advanced-course-table :courses=$school_courses :school_name=$school_name :school_id=$school_id/>
+                    <x-course-table :courses=$school_courses :school_name=$school_name :school_id=$school_id/>
                     @php
                     $gross_total_time += $total_time;
                     $gross_total_budget += $total_budget;

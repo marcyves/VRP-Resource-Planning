@@ -26,6 +26,13 @@
     <td>{{ $course->session_length * $course->sessions }}</td>
     <td>{{ $course->groups_count }}</td>
     <td>{{ $course->groups_count * $course->session_length * $course->sessions }}</td>
+    <td>
+        @if($course->recurring)
+        {{ __('actions.yes') }}
+        @else
+        {{ __('actions.no') }}
+        @endif
+    </td>
     <td class="text-right">@money($course->rate)</td>
     <td class="text-right">@money($course->rate * $course->session_length * $course->sessions * $course->groups_count)</td>
     @if (Auth::user()->getMode() == 'Edit')
