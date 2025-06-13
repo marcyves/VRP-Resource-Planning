@@ -15,7 +15,8 @@
     line-height: 1.5;
     color: #333;
     padding: 0.5rem;
-    min-width: 200px;
+    overflow:hidden;
+    text-overflow: ellipsis;
 }
 .school-header-actions {
     display: flex;
@@ -25,3 +26,15 @@
     overflow: hidden;
     padding: 6px;
 }
+
+.school-card {
+  flex: 1 1 33%;
+  padding: 10px;
+  max-width: 33%;
+}
+.school-list{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: start;
+  width: 100%;
+  }
