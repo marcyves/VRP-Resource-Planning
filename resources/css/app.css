@@ -125,6 +125,7 @@ header h2{
 .list{
   display: flex;
   flex-wrap: wrap;
+  justify-content: space-evenly;
   width: 100%;
   margin: 12px 0;
 }
