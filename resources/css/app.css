@@ -1,4 +1,5 @@
 @import url('course-table.css');
+@import url('school-header.css');
 
 @tailwind base;
 @tailwind components;
@@ -148,10 +149,6 @@ header h2{
   justify-content: space-between;
   flex-direction: row;
 }
-.card-content-text {
-  margin: 0 8px;
-  min-width: 200px;
-}
 
 .card-title {
   color: var(--bg-color-a);
@@ -177,15 +174,6 @@ header h2{
   align-items: center;
   box-sizing: border-box;
 }
-.card-content-end .check {
-  display: flex;
-  flex-direction: row;
-  height: 100%;
-  overflow: hidden;
-  transition: width 1s;
-  border-radius: 0 1em 1em 0;
-  padding: 0 6px;
-}
 
 footer{
   font-size: small;
@@ -194,10 +182,6 @@ footer{
   height: 40px;
   padding-top: 10px;
   text-align: center;
-}
-
-button{
-  background-color: var(--main-bg-color);
 }
 
 .cool-box{

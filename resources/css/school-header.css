@@ -1,0 +1,27 @@
+.school-header {
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Light shadow */
+    transition: background-color 0.3s ease;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 0.5rem;
+}
+
+.school-header-name {
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #333;
+    padding: 0.5rem;
+    min-width: 200px;
+}
+.school-header-actions {
+    display: flex;
+    flex-direction: row;
+    gap: 0.5rem;
+    height: 100%;
+    overflow: hidden;
+    padding: 6px;
+}
