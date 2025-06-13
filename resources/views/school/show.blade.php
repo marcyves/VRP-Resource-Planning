@@ -14,7 +14,7 @@
         @endphp
         <article class="school-box">
         <x-school-header :school_name=$school_name :school_id=$school_id />
-        <x-advanced-course-table :courses=$courses :school_name=$school_name :school_id=$school_id/>
+        <x-course-table :courses=$courses :school_name=$school_name :school_id=$school_id/>
     </article>
     </section>
 

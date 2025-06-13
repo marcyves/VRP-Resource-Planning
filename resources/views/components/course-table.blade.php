@@ -1,5 +1,5 @@
 @props(['school_id','school_name', 'courses'])
-<!-- Start advanced-course-table.blade  -->
+<!-- Start course-table.blade  -->
 <table class="course-table">
 <x-course-table-begin/>
         @php
@@ -17,4 +17,4 @@
         <x-course-table-end :total_budget=$total_budget :total_time=$total_time />
     </tbody>
 </table>
-<!-- End advanced-course-table.blade  -->
+<!-- End course-table.blade  -->

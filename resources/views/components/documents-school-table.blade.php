@@ -1,5 +1,4 @@
 @props(['documents'])
-<!-- Start advanced-course-table.blade  -->
 <section class="bg-gray-50 p-3 sm:p-5">
     <div class="mx-auto max-w-screen-xl px-2 lg:px-12">
         <div class="bg-white relative shadow-md sm:rounded-lg overflow-hidden">
@@ -49,4 +48,3 @@
         </div>
     </div>
     </section>
-    <!-- End advanced-course-table.blade  -->

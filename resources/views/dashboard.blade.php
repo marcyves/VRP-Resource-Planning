@@ -78,7 +78,7 @@
                 </tr>
             </thead>
         </table>
-    @endif
+        @endif
 
     </section>
 
