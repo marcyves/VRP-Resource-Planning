@@ -5,7 +5,7 @@
         </h2>
     </x-slot>
 
-    <section class="section-box">
+    <section>
         @isset($course)
             <form action="{{route('course.update', $course->id)}}" method="post" class="nice-form">
                 @csrf
@@ -49,6 +49,10 @@
                 <div class="flex-row">
                 <x-input-label>Semester</x-input-label>
                 <x-text-input type="text" name="semester"  value="{{old('semester',$course->semester)}}"/>
+                </div>
+                <div class="flex-row">
+                <x-input-label>Recurring</x-input-label>
+                <input type="checkbox" name="recurring"  value="{{old('recurring',$course->recurring)}}" @if($course->recurring) checked @endif/>
                 </div>
                 <div class="flex-row">
                 <x-primary-button>{{ __('messages.update') }}</x-primary-button>

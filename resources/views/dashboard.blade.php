@@ -33,7 +33,7 @@
             </ul>
     </x-slot>
 
-    <section class="section-box">
+    <section>
         @php
             $gross_total_time = 0;
             $gross_total_budget = 0;

@@ -7,7 +7,7 @@
     </x-slot>
 
     @if(Auth::user()->getMode() == "Edit")
-    <section class="section-box">
+    <section>
     <form action="{{route('bill.update', $bill)}}" method="post"
         class="mx-auto px-6 py-2 bg-white shadow-md mb-6 flex flex-col justify-items-start">
             @csrf

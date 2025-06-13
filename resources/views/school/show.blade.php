@@ -7,7 +7,7 @@
         </div>
     </x-slot>
 
-    <section class="section-box">
+    <section>
         @php
             $total_time = 0;
             $total_budget = 0;
@@ -18,7 +18,7 @@
     </article>
     </section>
 
-    <section class="section-box">
+    <section>
         <x-documents-school-table :documents=$documents :school_id=$school_id/>
     <div class="mx-auto max-w-screen-xl px-2 lg:px-12">
         <div class="bg-white relative shadow-md sm:rounded-lg overflow-hidden">

@@ -5,7 +5,7 @@
         </h2>
     </x-slot>
 
-    <section class="section-box">
+    <section>
     <form action="{{route('course.store', $school->id)}}" method="post" class="nice-form">
         @csrf
         <div class="flex-row">
@@ -32,10 +32,13 @@
             <x-input-label>Rate</x-input-label><x-text-input type="text" name="rate" />
         </div>
         <div class="flex-row">
-            <x-input-label>Year</x-input-label><x-text-input type="text" name="year" value="{{now()->format('Y')}}"/>
+            <x-input-label>Année</x-input-label><x-text-input type="text" name="year" value="{{now()->format('Y')}}"/>
         </div>
         <div class="flex-row">
-            <x-input-label>Semester</x-input-label><x-text-input type="text" name="semester" />
+            <x-input-label>Semestre</x-input-label><x-text-input type="text" name="semester" />
+        </div>
+        <div class="flex-row">            
+            <x-input-label>{{ __('messages.recurring') }}</x-input-label><input type="checkbox" name="recurring" value="0" />
         </div>
         <div class="flex-row">
             <x-primary-button>Create</x-primary-button>

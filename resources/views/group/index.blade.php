@@ -5,7 +5,7 @@
         </h2>
     </x-slot>
 
-    <section class="section-box">
+    <section>
         <ul class="list">
         @foreach ($groups as $group)
             <li class="card">
@@ -16,7 +16,7 @@
     </section>
 
     @if(Auth::user()->getMode() == "Edit")
-    <section class="section-box">
+    <section>
         <form action="{{route('group.save', 0)}}" method="post" 
         class="mx-auto px-6 py-2 bg-white shadow-md mb-6 flex flex-col gap-4">
             @csrf
