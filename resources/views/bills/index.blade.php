@@ -83,7 +83,7 @@
             @endforeach
         </table>
 
-        <div class="my-box course-booking">
+        <div class="card">
             <div class="flex flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4">
             {{ __('messages.total_gain')}} : @money($total) €
             </div>
@@ -94,20 +94,20 @@
             {{ __('messages.total_balance')}} : @money($total - $total_payed) €
             </div>
         </div>  
-</section>
+    </section>
 
     @if(Auth::user()->getMode() == "Edit")
     <section>
     <form action="{{route('bill.store')}}" method="post"
-        class="mx-auto px-6 py-2 bg-white shadow-md mb-6 flex flex-col justify-items-start">
+        class="bills-form">
             @csrf
-            <x-input-label class="py-4">{{ __('messages.bill_id') }}: {{$bill_id}}</x-input-label> 
+            <x-input-label class="my-4">{{ __('messages.bill_id') }}: {{$bill_id}}</x-input-label> 
                 <input type="hidden" name="id" id="name" value="{{$bill_id}}">
-                <x-input-label >{{ __('messages.description') }}</x-input-label>
-                <x-text-input class="my-4" type="text" name="description" id="description" size="60"/>
-                <x-input-label>{{ __('messages.gain') }}</x-input-label>
-                <x-text-input class="my-4" type="text" name="amount" id="amount" size="20"/>
+                <x-text-input type="text" name="description" id="description" size="60" placeholder="{{ __('messages.description') }}"/>
+                <div>
+                <x-text-input class="my-2" type="text" name="amount" id="amount" size="20" placeholder="{{ __('messages.amount') }}"/>
                 <x-primary-button>{{ __('messages.bill_create') }}</x-primary-button>
+                </div>
         </form>
     </section>
     @endif

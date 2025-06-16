@@ -30,3 +30,19 @@
   text-align: center;
 font-weight: 600;
 }
+
+.bills-form {
+  margin-bottom: 1.5rem;     /* mb-6 */
+  display: flex;             /* flex */
+  flex-direction: column;    /* flex-col */
+
+  background-color: rgba(255, 255, 255, 0.75);
+  box-shadow: 8px 8px 2px 1px rgba(8, 42, 196, 0.2);
+  justify-content: space-between;
+  padding: 0.5rem;
+  margin: 6px;
+  min-width: 30%;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  
+}
