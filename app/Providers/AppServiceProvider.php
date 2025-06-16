@@ -28,6 +28,11 @@ class AppServiceProvider extends ServiceProvider
             return "<?php echo number_format($value, 2); ?>";
         });
 
+        Blade::directive('formatDate', function ($value) {
+            return "<?php echo ($value) ? \\Carbon\Carbon::parse($value)->format('d/m/Y') : ''; ?>";
+        });
+
+
         Blade::directive('monthName', function ($value){
             return "<?php echo  date('F', mktime(0, 0, 0, $value, 1)); ?>";
         });
