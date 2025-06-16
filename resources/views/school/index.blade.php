@@ -8,11 +8,11 @@
                 href="{{route('school.list')}}"> {{ __('messages.school_no_course') }}</a>
         @endif
     </x-slot>
-
+ 
     <section>
         <ul class="list">
             @foreach ($schools as $school)
-            <li class="list-item">
+            <li class="card">
                 <x-school-header :school_name="$school->name" :school_id="$school->id"/>
             </li>
             @endforeach

@@ -6,7 +6,7 @@
     </x-slot>
 
     <section>
-        <ul class="list">
+        <ul class="flex-list">
         @foreach ($groups as $group)
             <li class="card">
             <x-group-details :group=$group :occurences=$occurences :active=true/>
