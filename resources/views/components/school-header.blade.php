@@ -16,9 +16,7 @@
             @method('delete')
             <x-button-delete/>
         </form>
-        <a
-        class="cool-box"
-        href="{{route('course.create', $school_id)}}">{{__('messages.add_course')}}</a>
+        <a href="{{route('course.create', $school_id)}}"><x-button-add/></a>
     </div>
 @endif
 </div>

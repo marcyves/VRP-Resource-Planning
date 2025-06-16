@@ -5,7 +5,7 @@
             </h2>
     </x-slot>
 
-    <section  class="section-box">
+    <section>
         <ul class="list">
             @foreach ($programs as $program)
             <li class="card">

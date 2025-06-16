@@ -1,0 +1,25 @@
+ .bills table {
+  background-color: rgba(245, 245, 245, 0.8);
+  width: 100%;
+  margin-bottom: 2rem;
+  border-radius: 10px;
+  font-size: smaller;
+  color: var(--main-text-color);
+}
+
+
+:is(tbody, table) > tr:nth-child(odd) {
+  background-color: rgba(85, 50, 192, 0.1);
+}
+
+.bills td{
+    text-align: left;
+    padding: 0 0.5em;
+    white-space: nowrap;
+}
+
+.bills th {
+  padding: 0.5em;
+  text-align: center;
+font-weight: 600;
+}

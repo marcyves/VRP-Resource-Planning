@@ -5,43 +5,45 @@
             </h2>
     </x-slot>
 
-    <section>
-        <table class="bg-blue-100 w-full mb-8">
+    <section class="bills">
+        <table>
             @php
             $total = 0;
             $total_payed = 0;
             @endphp
-            <tr class="bg-white text-blue-600 p-8">
-                <td class="text-center px-2">
-                ID
-                </td>
-                <td class="text-center px-2">
-                    Description
-                </td>
-                <td class=" text-center px-2">
-                    Montant
-                </td>
-                <td class=" text-center px-2">
-                    Date facturation
-                </td>
-                <td class=" text-center px-2">
-                    Date Paiement
-                </td>
-                @if(Auth::user()->getMode() == "Edit")
-                <td class=" text-center px-2">
-                    Actions
-                </td>
-                @endif
-</tr>
+            <thead>
+                <tr class="text-center">
+                    <th>
+                        {{ __('messages.bill_id') }}
+                    </th>
+                    <th>
+                        {{ __('messages.description') }}
+                    </th>
+                    <th>
+                        {{ __('messages.amount') }}
+                    </th>
+                    <th>
+                        {{ __('messages.date_billing') }}
+                    </th>
+                    <th>
+                        {{ __('messages.date_payment') }}
+                    </th>
+                    @if(Auth::user()->getMode() == "Edit")
+                    <th>
+                        {{ __('messages.actions') }}
+                    </th>
+                    @endif
+                </tr>
+            </thead>
             @foreach ($bills as $bill)
             <tr>
-                <td class="basis-20  text-right text-gray-600 pr-4">
+                <td>
                     {{$bill->id}}
                 </td>
-                <td class="grow text-left  text-blue-400">
+                <td>
                     {{$bill->description}}
                 </td>
-                <td class=" text-right  text-blue-400 pr-4">
+                <td>
                     @money($bill->amount) €
                     @php
                     $total += $bill->amount;
@@ -50,14 +52,14 @@
                     }
                     @endphp
                 </td>
-                <td class=" text-left  text-gray-400">
+                <td>
                     {{$bill->created_at}}
                 </td>
-                <td class=" text-left  text-gray-400">
+                <td>
                     Paid: {{$bill->paid_at}}
                 </td>
                 @if(Auth::user()->getMode() == "Edit")
-                <td class=" text-right">
+                <td>
                     <form class="inline" action="{{route('bill.payed', $bill->id)}}" method="get">
                     <x-button-payed/>
                     </form>

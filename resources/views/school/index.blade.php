@@ -10,9 +10,9 @@
     </x-slot>
 
     <section>
-        <ul class="school-list">
+        <ul class="list">
             @foreach ($schools as $school)
-            <li class="school-card">
+            <li class="list-item">
                 <x-school-header :school_name="$school->name" :school_id="$school->id"/>
             </li>
             @endforeach
