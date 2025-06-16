@@ -61,4 +61,5 @@ return array (
   'total_balance' => 'Solde',
   'update' => 'Modifier',
   'year' => 'Année',
+  'not_payed' => 'Non payé',
 );

@@ -43,7 +43,7 @@
                 <td>
                     {{$bill->description}}
                 </td>
-                <td>
+                <td class="money">
                     @money($bill->amount) €
                     @php
                     $total += $bill->amount;
@@ -52,11 +52,17 @@
                     }
                     @endphp
                 </td>
-                <td>
-                    {{$bill->created_at}}
+                <td class="date">
+                    @if($bill->created_at)
+                    {{$bill->created_at->format('d/m/Y')}}
+                    @endif
                 </td>
-                <td>
-                    Paid: {{$bill->paid_at}}
+                <td class="date">
+                    @if($bill->paid_at)
+                     @formatDate($bill->paid_at)
+                    @else
+                    {{ __('messages.not_payed') }}
+                    @endif
                 </td>
                 @if(Auth::user()->getMode() == "Edit")
                 <td>

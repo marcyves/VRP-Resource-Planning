@@ -13,9 +13,16 @@
 }
 
 .bills td{
-    text-align: left;
     padding: 0 0.5em;
     white-space: nowrap;
+}
+
+.money{
+    text-align: right;
+}
+
+.date {
+    text-align: center;
 }
 
 .bills th {
