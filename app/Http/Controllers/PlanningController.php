@@ -135,12 +135,10 @@ class PlanningController extends Controller
     {
         $date = $request->date;
         $course = Course::find($request->course);
+        $school = $course->getSchool();
 
         session()->put('course', $course->name);
         session()->put('course_id', $course->id);
-
-        $school = $course->getSchool();
-
         session()->put('school', $school->name);
         session()->put('school_id', $school->id);
 
