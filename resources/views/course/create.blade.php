@@ -8,41 +8,22 @@
     <section>
     <form action="{{route('course.store', $school->id)}}" method="post" class="nice-form">
         @csrf
+        <x-text-input type="text" name="name" aria-placeholder="Name" placeholder="Name"/>
+        <x-text-input type="text" name="short_name" aria-placeholder="Short Name" placeholder="Short Name"/>
         <div class="flex-row">
-            <x-input-label>Name</x-input-label><x-text-input type="text" name="name" />
+            <label>Program</label>
+            <select name="program_id" class="rounded-md mt-0 py-0 pl-2 pr-8">
+                @foreach ($programs as $program)
+                <option value="{{$program->id}}">{{$program->name}}</option>                            
+                @endforeach
+            </select>
         </div>
-        <div class="flex-row">
-            <x-input-label>Short Name</x-input-label><x-text-input type="text" name="short_name" />
-        </div>
-        <div class="flex-row">
-            <x-input-label>Program</x-input-label>
-        <select name="program_id" class="rounded-md mt-0 py-0 pl-2 pr-8">
-            @foreach ($programs as $program)
-            <option value="{{$program->id}}">{{$program->name}}</option>                            
-            @endforeach
-        </select>
-        </div>
-        <div class="flex-row">
-            <x-input-label>Sessions</x-input-label><x-text-input type="text" name="sessions" />
-        </div>
-        <div class="flex-row">
-            <x-input-label>Session length</x-input-label><x-text-input type="text" name="session_length" />
-        </div>
-        <div class="flex-row">
-            <x-input-label>Rate</x-input-label><x-text-input type="text" name="rate" />
-        </div>
-        <div class="flex-row">
-            <x-input-label>Année</x-input-label><x-text-input type="text" name="year" value="{{now()->format('Y')}}"/>
-        </div>
-        <div class="flex-row">
-            <x-input-label>Semestre</x-input-label><x-text-input type="text" name="semester" />
-        </div>
-        <div class="flex-row">            
-            <x-input-label>{{ __('messages.recurring') }}</x-input-label><input type="checkbox" name="recurring" value="0" />
-        </div>
-        <div class="flex-row">
-            <x-primary-button>Create</x-primary-button>
-        </div>
+        <x-text-input type="text" name="sessions" aria-placeholder="Number of sessions" placeholder="Number of sessions"/>
+        <x-text-input type="text" name="session_length" aria-placeholder="Session length" placeholder="Session length"/>
+        <x-text-input type="text" name="rate" aria-placeholder="Rate" placeholder="Rate"/>
+        <x-text-input type="text" name="year" value="{{now()->format('Y')}}" aria-placeholder="Year" placeholder="Year"/>
+        <x-text-input type="text" name="semester" aria-placeholder="Semester" placeholder="Semester"/>
+        <x-primary-button>Create</x-primary-button>
     </form>
 </section>
 </x-app-layout>

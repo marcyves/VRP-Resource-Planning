@@ -1,0 +1,55 @@
+.text-input {
+    padding: 0.6rem;
+    min-width: 4.5rem;
+    max-width: 20rem;
+    border: 1px solid var(--border-color);
+    border-radius: 8px !important;
+    background-color: rgba(255, 255, 255, 0.7);
+    color: var(--text-color);
+    font-size: 1rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.primary-button {
+    display: inline-flex;
+    align-items: center;
+    width: fit-content;
+    padding: 0.5rem 1rem; /* py-2 px-4 */
+    background-color: #1d3352; /* bg-gray-800 */
+    border: 1px solid transparent;
+    border-radius: 0.375rem; /* rounded-md */
+    font-weight: 600; /* font-semibold */
+    font-size: 0.75rem; /* text-xs */
+    color: #ffffff;
+    text-transform: uppercase;
+    letter-spacing: 0.05em; /* tracking-widest */
+    transition: background-color 0.15s ease-in-out;
+    outline: none;
+}
+
+.primary-button:hover {
+    background-color: #374151; /* hover:bg-gray-700 */
+}
+
+.primary-button:focus,
+.primary-button:active {
+    background-color: #374151; /* focus:bg-gray-700 */
+}
+
+.primary-button:active {
+    background-color: #111827; /* active:bg-gray-900 */
+}
+
+.primary-button:focus-visible {
+    box-shadow: 0 0 0 2px #6366f1; /* focus:ring-indigo-500 */
+    outline: none;
+}
+
+.primary-button:focus-visible::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 0.375rem;
+    box-shadow: 0 0 0 4px white; /* focus:ring-offset-2 simulation */
+}

@@ -3,11 +3,14 @@
 @import url('calendar.css');
 @import url('planning.css');
 @import url('bills.css');
+@import url('text-input.css');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 
+/* Global styles */
 * {
   font-family: Arial, Helvetica, sans-serif;
 }
@@ -279,6 +282,7 @@ section{
   min-width: 50rem;
   width: 90%;
   padding: 1rem;
+  gap: 0.6rem;
 }
 
 @media (min-width: 640px) {
