@@ -25,5 +25,6 @@
             @endforeach
             @endif
         </select>
+        <input type="submit" value="Ok">
     </form>
     @endif
