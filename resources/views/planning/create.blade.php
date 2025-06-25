@@ -15,7 +15,7 @@
             <select name="group" class="rounded-md mt-4 py-0 pl-2 pr-8 overflow-clip w-40 mb-2">
                 <option value="0" selected>New group below</option>
                 @foreach ($groups as $group)
-                    @if($group->sessions > $group->plannings->count())
+                    @if($group->sessions == 0 or $group->sessions == $course->sessions)
                        <option value="{{$group->id}}">{{$group->name}}</option>
                     @endif
                 @endforeach
