@@ -15,7 +15,7 @@ class School extends Model
     use HasFactory;
 
     public $timestamps = false;
-    public $fillable = ['name', 'company_id'];
+    public $fillable = ['name', 'company_id', 'address', 'city', 'zip', 'country', 'phone', 'email', 'website', 'logo', 'description'];
 
     public function users(): BelongsToMany
     {

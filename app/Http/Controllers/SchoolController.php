@@ -90,6 +90,7 @@ class SchoolController extends Controller
      */
     public function store(Request $request)
     {
+        //dd($request->all());
         $validated = $request->validate([
             'name' => 'required|max:80',
         ]);
@@ -98,7 +99,16 @@ class SchoolController extends Controller
             $company_id = Auth::user()->company_id;
             $school = School::create([ 
                     'name' => $request->name,
-                    'company_id' => $company_id
+                    'company_id' => $company_id,
+                    'address' => $request->address,
+                    'city' => $request->city,
+                    'zip' => $request->zip,
+                    'country' => $request->country,
+                    'phone' => $request->phone,
+                    'email' => $request->email,
+                    'website' => $request->website,
+                    'logo' => $request->logo,
+                    'description' => $request->description
                 ]);
 
             session()->flash('success', 'Ecole '.$school->name.' enregistrée avec succès.');
@@ -108,7 +118,7 @@ class SchoolController extends Controller
             return redirect(route('school.list'));
         }
         catch (\Exception $e) {
-            // dd($e);
+            dd($e);
             
             session()->flash('danger', "Erreur lors de l'enregistrement de l'école ".$request->name.'.');
             
@@ -135,11 +145,11 @@ class SchoolController extends Controller
         session()->put('school', $school->name);
         session()->put('school_id', $school->id);
 
-        $school_name = $school->name;
-        $school_id = $school->id;
+        // $school_name = $school->name;
+        // $school_id = $school->id;
         $documents = $school->getDocuments();
 
-        return view('school.show', compact('school_id', 'school_name', 'courses', 'documents'));
+        return view('school.show', compact('school',  'courses', 'documents'));
     }
 
     /**
@@ -166,6 +176,16 @@ class SchoolController extends Controller
         try{
             $school = School::findOrFail($school_id);
             $school->name = $request->name;
+            $school->address = $request->address;
+            $school->city = $request->city;
+            $school->zip = $request->zip;
+            $school->country = $request->country;
+            $school->phone = $request->phone;
+            $school->email = $request->email;
+            $school->website = $request->website;
+            $school->logo = $request->logo;
+            $school->description = $request->description;
+
             session()->put('school_id', $school_id);
 
             session()->put('school', $school->name);

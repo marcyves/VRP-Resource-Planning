@@ -11,11 +11,28 @@
         @php
             $total_time = 0;
             $total_budget = 0;
+            $school_name = $school->name;
+            $school_id = $school->id;
         @endphp
         <article class="school-box">
         <x-school-header :school_name=$school_name :school_id=$school_id />
         <x-course-table :courses=$courses :school_name=$school_name :school_id=$school_id/>
     </article>
+    </section>
+
+    <section>
+        <div class="flex justify-between items-center mb-4">
+            <h3 class="text-lg font-semibold">{{ __('messages.school_address') }}</h3>
+
+            <div class="flex items-center">
+                {{  $school->address }}<br>
+                {{  $school->city }}, {{  $school->zip }}<br>
+                {{  $school->country }}<br>
+                @if($school->phone)
+                    {{ __('messages.phone') }}: {{  $school->phone }}<br>
+                @endif
+            </div>
+        </div>
     </section>
 
     <section>

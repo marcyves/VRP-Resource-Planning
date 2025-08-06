@@ -24,7 +24,11 @@
         <form action="{{route('school.store')}}" method="post" 
         class="mx-auto px-6 py-2 bg-white shadow-md mb-6 flex items-center justify-items-start">
             @csrf
-            <x-text-input class="mx-6" type="text" name="name" id="name" placeholder="{{ __('messages.name') }}"/>
+            <x-text-input class="mx-6" type="text" name="name" id="name" placeholder="{{ __('messages.name') }}" value="{{old('name')}}"/>
+            <x-text-input class="mx-6" type="text" name="address" id="address" placeholder="{{ __('messages.address') }}" value="{{old('address')}}"/>
+            <x-text-input class="mx-6" type="text" name="city" id="city" placeholder="{{ __('messages.city') }}" value="{{old('city')}}"/>  
+            <x-text-input class="mx-6" type="text" name="zip" id="zip" placeholder="{{ __('messages.zip') }}"/>
+            <x-text-input class="mx-6" type="text" name="country" id="country" placeholder="{{ __('messages.country') }}" value="{{old('country', 'France')}}"/>
             <x-primary-button>{{ __('messages.school_create') }}</x-primary-button>
         </form>
     </section>
