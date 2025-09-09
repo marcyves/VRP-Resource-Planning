@@ -26,8 +26,9 @@ class BillController extends Controller
 
 
         $bill_id = $user->getCompanyBillPrefix() . substr(Carbon::now()->year, -2) . $next_bill;
+        $company = $user->getCompany();
 
-        return view('bills.index', compact('bills', 'bill_id'));
+        return view('bills.index', compact('bills', 'bill_id', 'company'));
     }
 
     /**

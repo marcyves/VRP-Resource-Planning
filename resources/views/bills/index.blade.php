@@ -102,6 +102,40 @@
         class="bills-form">
             @csrf
             <x-input-label class="my-4">{{ __('messages.bill_id') }}: {{$bill_id}}</x-input-label> 
+
+        <ul class="list">
+            <li class="card">
+                <div class="card-content-text">
+                    <h2>{{$company->name}}</h2>
+                    <ul>
+                        <li>{{$company->address}}</li>
+                        <li>{{$company->zip }} {{$company->city}}</li>
+                        <li>{{$company->country}}</li>
+                    </ul>
+                </div>
+            </li>
+            <li class="card">
+                <div class="card-content-text">
+                    <h2>Contact</h2>
+                    <ul>
+                        <li>{{$company->phone}}</li>
+                        <li>{{$company->email}}</li>
+                        <li><a href={{$company->website}}>{{$company->website}}</a></li>
+                    </ul>
+                </div>
+            </li>
+            <li class="card">
+                <div class="card-content-text">
+                <h2>IBAN</h2>
+                <ul>
+                    <li>{{$company->iban_name}}</li>
+                    <li>{{$company->bank}} {{$company->bank}}</li>
+                </ul>
+                </div>
+            </li>
+        </ul>
+
+
                 <input type="hidden" name="id" id="name" value="{{$bill_id}}">
                 <x-text-input type="text" name="description" id="description" size="60" placeholder="{{ __('messages.description') }}"/>
                 <div>

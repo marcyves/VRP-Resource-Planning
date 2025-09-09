@@ -190,6 +190,10 @@ header h2 {
     margin-left: 12px;
     margin-bottom: 6px;
 }
+.card-content-text h2{
+    font-weight: bolder;
+    font-size: larger;
+}
 .card-content-end {
     display: flex;
     gap: 15px;

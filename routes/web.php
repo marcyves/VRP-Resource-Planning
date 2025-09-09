@@ -9,6 +9,8 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProgramController;
 use App\Http\Controllers\SchoolController;
 use App\Http\Controllers\BillController;
+use App\Http\Controllers\CalendarController;
+use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\DateSelectionController;
 
 use Illuminate\Support\Facades\Route;
@@ -38,6 +40,7 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
+    Route::get('/calendar/import/{calendar_id}', [CalendarController::class, 'readICSFile'])->name('ics.read');
     Route::post('/select', [DateSelectionController::class, 'index'])->name('date.select');
     Route::get('/school/list', [SchoolController::class, 'list'])->name('school.list');
     Route::get('/school/{school_id}/add', [SchoolController::class, 'add'])->name('school.add');
@@ -78,6 +81,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/billing', [BillingController::class, 'billing'])->name('billing.index');
     Route::get('/billing/previous', [BillingController::class, 'previous'])->name('billing.previous');
     Route::get('/billing/next', [BillingController::class, 'next'])->name('billing.next');
+    Route::get('/billing/byDate', [BillingController::class, 'byDate'])->name('billing.byDate');
     Route::post('/billing/set_bill', [BillingController::class, 'setBill'])->name('billing.setBill');
 
     Route::resource('/program', ProgramController::class);
@@ -86,6 +90,9 @@ Route::middleware('auth')->group(function () {
     Route::resource('/bill', BillController::class);
     Route::resource('/documents', DocumentController::class);
     
+    Route::get('/company/', [CompanyController::class, 'show'])->name('company.show');
+    Route::get('/company/{company_id}', [CompanyController::class, 'show'])->name('company.show_any');
+
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::get('/profile/switch', [ProfileController::class, 'switch'])->name('profile.switch');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
