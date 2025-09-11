@@ -34,7 +34,8 @@ class Bill extends Model
         'description',
         'amount',
         'paid_at',
-        'company_id'
+        'company_id',
+        'school_id'
         ];
 
     public static function getAmount($year){

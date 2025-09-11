@@ -7,6 +7,7 @@ return array (
   'billing' => 'Facturation',
   'bills' => 'Factures',
   'course' => 'Cours',
+  'code' => 'Code',
   'course_create' => 'Création d\'un cours',
   'course_list' => 'Liste des Cours',
   'course_list' => 'Liste des Cours',

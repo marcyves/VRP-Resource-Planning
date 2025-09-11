@@ -7,6 +7,7 @@ return array (
   'billing' => 'Billing',
   'bills' => 'Bills',
   'course' => 'Course',
+  'code' => 'Code',
   'course_create' => 'Course Creation',
   'course_list' => 'Course List',
   'recurring' => 'Récurring',
