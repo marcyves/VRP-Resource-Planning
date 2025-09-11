@@ -8,7 +8,7 @@ use App\Http\Controllers\BillingController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProgramController;
 use App\Http\Controllers\SchoolController;
-use App\Http\Controllers\BillController;
+use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\DateSelectionController;
@@ -86,8 +86,8 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('/program', ProgramController::class);
 
-    Route::get('/bill/payed/{bill_id}', [BillController::class, 'payed'])->name('bill.payed');
-    Route::resource('/bill', BillController::class);
+    Route::get('/invoice/payed/{bill_id}', [InvoiceController::class, 'payed'])->name('invoice.payed');
+    Route::resource('/invoice', InvoiceController::class);
     Route::resource('/documents', DocumentController::class);
     
     Route::get('/company/', [CompanyController::class, 'show'])->name('company.show');
