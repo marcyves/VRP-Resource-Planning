@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-use App\Models\Bill;
+use App\Models\Invoice;
 
 return new class extends Migration
 {
@@ -14,7 +14,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('plannings', function (Blueprint $table) {
-            $table->foreignIdFor(Bill::class)->nullable()->constrained()
+            $table->foreignIdFor(Invoice::class)->nullable()->constrained()
             ->onUpdate('cascade')   
             ->onDelete('restrict');    
         });

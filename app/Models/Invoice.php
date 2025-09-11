@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Bill extends Model
+class Invoice extends Model
 {
     use HasFactory;
 
@@ -39,16 +39,16 @@ class Bill extends Model
         ];
 
     public static function getAmount($year){
-        return Bill::where('created_at', '>', "$year-01-01")->where('created_at', '<', "$year-12-31")->sum('amount');
+        return Invoice::where('created_at', '>', "$year-01-01")->where('created_at', '<', "$year-12-31")->sum('amount');
     }
 
     public static function getPayedAmount($year){
-        return Bill::where('created_at', '>', "$year-01-01")->where('created_at', '<', "$year-12-31")
+        return Invoice::where('created_at', '>', "$year-01-01")->where('created_at', '<', "$year-12-31")
             ->where('paid_at', '>', "$year-01-01")->where('paid_at', '<', "$year-12-31")
             ->sum('amount');
     }
 
     public static function getCount($year){
-        return Bill::where('created_at', '>', "$year-01-01")->where('created_at', '<', "$year-12-31")->count();
+        return Invoice::where('created_at', '>', "$year-01-01")->where('created_at', '<', "$year-12-31")->count();
     }
 }

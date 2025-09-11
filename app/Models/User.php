@@ -116,28 +116,28 @@ class User extends Authenticatable
         return Company::findOrFail($this->company_id)->bill_prefix;
     }
 
-    public function getBills()
+    public function getInvoices()
     {
-        return Bill::where('company_id', $this->company_id)->orderBy('id')->get();
+        return Invoice::where('company_id', $this->company_id)->orderBy('id')->get();
     }
 
-    public function getBillsAmountPerYear($year)
+    public function getInvoicesAmountPerYear($year)
     {
-        return Bill::where('company_id', $this->company_id)
+        return Invoice::where('company_id', $this->company_id)
             ->where('created_at', '>', "$year-01-01")->where('created_at', '<', "$year-12-31")->sum('amount');
 
     }
 
-    public function getBillsPayedAmountPerYear($year)
+    public function getInvoicesPayedAmountPerYear($year)
     {
-        return Bill::where('company_id', $this->company_id)
+        return Invoice::where('company_id', $this->company_id)
             ->where('created_at', '>', "$year-01-01")->where('created_at', '<', "$year-12-31")
             ->where('paid_at', '>', "$year-01-01")->where('paid_at', '<', "$year-12-31")
             ->sum('amount');
     }
 
-    public function getBillsCountPerYear($year){
-        return Bill::where('company_id', $this->company_id)
+    public function getInvoicesCountPerYear($year){
+        return Invoice::where('company_id', $this->company_id)
             ->where('created_at', '>', "$year-01-01")
             ->where('created_at', '<', "$year-12-31")
             ->count();

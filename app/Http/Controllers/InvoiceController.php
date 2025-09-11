@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Classes\InvoicePdf;
-use App\Models\Bill;
+use App\Models\Invoice;
 use App\Models\School;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
@@ -17,7 +17,7 @@ class InvoiceController extends Controller
     public function index()
     {
         $user = Auth::user();
-        $bills = $user->getBills();
+        $bills = $user->getInvoices();
 
         if ($bills->isNotEmpty($bills)) {
             $last_bill = $bills->keys()->last();
@@ -31,7 +31,7 @@ class InvoiceController extends Controller
         $company = $user->getCompany();
         $schools = $user->getSchools();
 
-        return view('bills.index', compact('bills', 'bill_id', 'company', 'schools'));
+        return view('invoice.index', compact('bills', 'bill_id', 'company', 'schools'));
     }
 
     /**
@@ -39,7 +39,7 @@ class InvoiceController extends Controller
      */
     public function create()
     {
-        //
+        return view('invoice.create');        
     }
 
     /**
@@ -73,7 +73,7 @@ class InvoiceController extends Controller
         }
 
         try {
-            Bill::create([
+            Invoice::create([
                 'id' => $id_facture,
                 'description' => $request->description,
                 'company_id' => $company->id,
@@ -105,7 +105,7 @@ class InvoiceController extends Controller
      */
     public function edit(Bill $bill)
     {
-        return view('bills.edit', compact('bill'));
+        return view('invoice.edit', compact('bill'));
     }
 
     /**
@@ -141,7 +141,7 @@ class InvoiceController extends Controller
     public function payed(String $bill_id)
     {
         try {
-            $bill = Bill::findOrFail($bill_id);
+            $bill = Invoice::findOrFail($bill_id);
             $bill->paid_at = Carbon::now();
             $bill->save();
             session()->flash('success', "Facture " . $bill->id . " payée avec succès.");
@@ -154,11 +154,11 @@ class InvoiceController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Bill $bill)
+    public function destroy(Invoice $invoice)
     {
         try {
-            $bill->delete();
-            session()->flash('success', "Facture " . $bill->id . " supprimée avec succès.");
+            $invoice->delete();
+            session()->flash('success', "Facture " . $invoice->id . " supprimée avec succès.");
             return redirect()->back();
             //            return redirect(route('dashboard'));
         } catch (\Exception $e) {
