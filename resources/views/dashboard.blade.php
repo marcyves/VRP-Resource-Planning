@@ -1,36 +1,36 @@
 <x-app-layout>
     <x-slot name="header">
-            <ul class="list">
-                <li class="card">
-                    <a href="{{ route('bill.index') }}" class="card-content-text">
-                    <h2>{{ $bills_count }} Factures</h2>
-                    <ul>
-                        <li>{{ __('messages.total_gain')}}: @money($bills_amount) €</li>
-                        <li>{{ __('messages.total_payed')}}: @money($bills_payed_amount) €</li>
-                        <li>{{ __('messages.total_balance')}}: @money($bills_amount-$bills_payed_amount) €</li>
-                    </ul>
-                </a>
+        <ul class="list">
+            <li class="card">
+                <a href="{{ route('invoice.index') }}" class="card-content-text">
+                <h2>{{ $bills_count }} Factures</h2>
+                <ul>
+                    <li>{{ __('messages.total_gain')}}: @money($bills_amount) €</li>
+                    <li>{{ __('messages.total_payed')}}: @money($bills_payed_amount) €</li>
+                    <li>{{ __('messages.total_balance')}}: @money($bills_amount-$bills_payed_amount) €</li>
+                </ul>
+            </a>
+            </li>
+
+            <li class="card">
+                <div class="card-content-text">
+                <h2>Ecoles</h2>
+                <ul>
+                    <li>Nombre: WIP</li>
+                </ul>
+                </div>
+            </li>
+
+            <li class="card">
+                <div class="card-content-text">
+                <h2>Cours</h2>
+                <ul>
+                    <li>Nombre: WIP</li>
+                </ul>
                 </li>
-    
-                <li class="card">
-                    <div class="card-content-text">
-                    <h2>Ecoles</h2>
-                    <ul>
-                        <li>Nombre: WIP</li>
-                    </ul>
-                    </div>
-                </li>
-    
-                <li class="card">
-                    <div class="card-content-text">
-                    <h2>Cours</h2>
-                    <ul>
-                        <li>Nombre: WIP</li>
-                    </ul>
-                    </li>
-                    </div>
-                </li> 
-            </ul>
+                </div>
+            </li> 
+        </ul>
     </x-slot>
 
     <section>

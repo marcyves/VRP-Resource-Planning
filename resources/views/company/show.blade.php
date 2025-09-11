@@ -33,9 +33,9 @@
                 <div class="card-content-text">
                 <h2>IBAN</h2>
                 <ul>
-                    <li>{{$company->iban_name}}</li>
-                    <li>{{$company->bank}} {{$company->branch}} {{$company->account}}</li>
-                    <li>BIC {{$company->bic}}</li>
+                    <li>Titulaire du compte: {{$company->iban_name}}</li>
+                    <li>Code IBAN: {{$company->account}}</li>
+                    <li>Code BIC/SWIFT: {{$company->bic}}</li>
                 </ul>
                 </div>
             </li>

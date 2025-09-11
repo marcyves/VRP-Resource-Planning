@@ -66,13 +66,13 @@
                 </td>
                 @if(Auth::user()->getMode() == "Edit")
                 <td>
-                    <form class="inline" action="{{route('bill.payed', $bill->id)}}" method="get">
+                    <form class="inline" action="{{route('invoice.payed', $bill->id)}}" method="get">
                     <x-button-payed/>
                     </form>
-                    <form class="inline" action="{{route('bill.edit', $bill->id)}}" method="get">
+                    <form class="inline" action="{{route('invoice.edit', $bill->id)}}" method="get">
                     <x-button-edit/>
                     </form>
-                    <form class="inline" action="{{route('bill.destroy', $bill->id)}}" method="post">
+                    <form class="inline" action="{{route('invoice.destroy', $bill->id)}}" method="post">
                         @csrf
                         @method('delete')
                         <x-button-delete />    
@@ -98,7 +98,7 @@
 
     @if(Auth::user()->getMode() == "Edit")
     <section>
-        <form action="{{route('bill.store')}}" method="post" class="bills-form">
+        <form action="{{route('invoice.store')}}" method="post" class="bills-form">
             @csrf
             <x-input-label class="my-4">{{ __('messages.bill_id') }}: {{$bill_id}}</x-input-label> 
             <ul class="list">

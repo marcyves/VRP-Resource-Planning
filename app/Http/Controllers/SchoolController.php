@@ -176,6 +176,7 @@ class SchoolController extends Controller
         try{
             $school = School::findOrFail($school_id);
             $school->name = $request->name;
+            $school->code = $request->code;
             $school->address = $request->address;
             $school->city = $request->city;
             $school->zip = $request->zip;
