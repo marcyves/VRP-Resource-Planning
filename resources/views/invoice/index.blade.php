@@ -17,6 +17,9 @@
                         {{ __('messages.bill_id') }}
                     </th>
                     <th>
+                        {{ __('messages.school') }}
+                    </th>
+                    <th>
                         {{ __('messages.description') }}
                     </th>
                     <th>
@@ -38,8 +41,10 @@
             @foreach ($bills as $bill)
             <tr>
                 <td>
-                    {{$bill->id}}
+                    {{$company->bill_prefix}}{{$bill->id}}
                 </td>
+                <td>
+                    {{$bill->school}}
                 <td>
                     {{$bill->description}}
                 </td>

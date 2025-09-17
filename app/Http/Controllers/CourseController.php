@@ -36,6 +36,7 @@ class CourseController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|max:80',
+            'short_name' => 'required|min:3',
             'sessions' => 'required|min:0',
             'session_length' => 'required|min:0',
             'year' => 'required',
@@ -110,6 +111,7 @@ class CourseController extends Controller
      */
     public function update(Request $request, String $course_id)
     {
+
         $validated = $request->validate([
             'name' => 'required|max:80',
             'short_name' => 'required|min:3',
@@ -142,7 +144,7 @@ class CourseController extends Controller
         }
         catch (\Exception $e) {
             session()->flash('danger', "Erreur lors de l'enregistrement du cours.");
-            //session()->flash('danger', $e->getMessage());
+            session()->flash('danger', $e->getMessage());
             return redirect()->back();
         }               
     }

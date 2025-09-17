@@ -52,14 +52,24 @@
                         <li>{{$company->bank}} {{$company->bank}}</li>
                     </ul>
                     </div>
+                                    </li>
+                <li class="card">
+                    <div class="card-content-text">
+                    <h2>Client</h2>
+                    <ul>
+                        <li>{{$school->name}}</li>
+                        <li>{{$school->address}}</li>
+                        <li>{{$school->zip }} {{$school->city}}</li>
+                        <li>{{$school->country}}</li>
+                        <li>Contact: {{$school->contact}}</li>
+                        <li>Email: {{$school->email}}</li>
+                        <li>Téléphone: {{$school->phone}}</li>
+                    </ul>
+                    </div>
                 </li>
             </ul>
-            <input type="hidden" name="id" id="name" value="{{$bill_id}}">
-            <select name="school_id" id="school_id">
-                @foreach ($schools as $school)
-                <option value="{{$school->id}}">{{$school->name}}</option>
-                @endforeach
-            </select>
+            <input type="hidden" name="id" id="name" value="{{$bill_number}}">
+            <input type="hidden" name="school_id" id="school_id" value="{{$school->id}}">
             <x-text-input type="text" name="description" id="description" size="60" placeholder="{{ __('messages.description') }}"/>
             <div>
             <x-text-input class="my-2" type="text" name="amount" id="amount" size="20" placeholder="{{ __('messages.amount') }}"/>

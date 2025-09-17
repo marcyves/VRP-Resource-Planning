@@ -31,6 +31,13 @@
                     <x-alert type="success" class="bg-green-700 text-green-100 border border-green-400 rounded-md p-4 my-8 mx-0" />
                     <x-alert type="warning" class="bg-yellow-700 text-yellow-100 border-yellow-400 rounded-md p-4 my-8 mx-0" />
                     <x-alert type="danger" class="bg-red-700 text-red-100 border-red-400 rounded-md p-4 my-8 mx-0" />
+                    @if($errors->any())
+<ul class="alert alert-danger list-unstyled">
+@foreach($errors->all() as $error)
+<li>- {{ $error }}</li>
+@endforeach
+</ul>
+@endif
             </header>
 
         <!-- Page Content -->

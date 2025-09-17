@@ -103,17 +103,6 @@ class CourseCollection extends Collection
         ->get();
     }
 
-    public function listCourses()
-    {
-        $list = $this->map(function(School $school){
-            return [$school->id,
-                    $school->name,
-                    Course::getCoursesForSchool($school->id)];
-        });
-
-        return $list;
-    }
-
     public function getCourses(String $year = 'all', String $semester = 'all')
     {
         $list = $this->map(function(School $school){

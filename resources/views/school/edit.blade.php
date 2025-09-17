@@ -12,6 +12,7 @@
     @method('put')
     <x-input-label>Name</x-input-label>
     <x-text-input type="text" name="name" value="{{old('name',$school->name)}}"/>
+            <x-text-input type="text" name="code" placeholder="{{ __('messages.code') }}" value="{{old('code',$school->code)}}"/>
             <x-text-input class="mx-6" type="text" name="address" id="address" placeholder="{{ __('messages.address') }}" value="{{old('address',$school->address)}}"/>
             <x-text-input class="mx-6" type="text" name="city" id="city" placeholder="{{ __('messages.city') }}" value="{{old('city',$school->city)}}"/>
             <x-text-input class="mx-6" type="text" name="zip" id="zip" placeholder="{{ __('messages.zip')}}" value="{{old('zip',$school->zip)}}"/>

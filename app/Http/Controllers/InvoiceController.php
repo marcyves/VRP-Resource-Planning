@@ -6,8 +6,8 @@ use App\Classes\InvoicePdf;
 use App\Models\Invoice;
 use App\Models\School;
 use Illuminate\Http\Request;
-use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
 class InvoiceController extends Controller
 {
@@ -37,9 +37,24 @@ class InvoiceController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
-        return view('invoice.create');        
+        $school_id = $request->school_id;
+        $course_id = $request->course_id;
+        $month = $request->month;
+        $year = $request->year;
+
+        $user = Auth::user();
+        $bills = $user->getInvoices();
+        $bill_number = $bills->last()->id ?? substr(Carbon::now()->year, -2) . "000";
+        
+        $bill_number = (int) $bill_number + 1;
+        $bill_id = $user->getCompanyBillPrefix() . $bill_number;
+
+        $company = $user->getCompany();
+        $school = School::find($school_id);
+
+        return view('invoice.create', compact('bill_id', 'bill_number', 'company', 'school'));
     }
 
     /**
@@ -55,7 +70,7 @@ class InvoiceController extends Controller
         $company  =  Auth::user()->getCompany();
         $id_facture =  $request->id;
         $school = School::find($request->school_id);
-        $total_amount = $request->amount; // It's better to calculate this from items
+        $total_amount = str_replace(",", ".", $request->amount); // It's better to calculate this from items
 
         // Example items - in a real application, these would come from the request or database
         $items = [
@@ -81,7 +96,7 @@ class InvoiceController extends Controller
                 'amount' => $total_amount,
             ]);
 
-            session()->flash('success', "Facture $id_facture enregistrée avec succès.");
+            session()->flash('success', "Facture ". Auth::user()->getCompanyBillPrefix() .$id_facture ." enregistrée avec succès.");
 
             return redirect(route('invoice.index'));
         } catch (\Exception $e) {
@@ -95,7 +110,7 @@ class InvoiceController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Bill $bill)
+    public function show(Invoice $bill)
     {
         //
     }
@@ -103,7 +118,7 @@ class InvoiceController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Bill $bill)
+    public function edit(Invoice $bill)
     {
         return view('invoice.edit', compact('bill'));
     }
@@ -111,7 +126,7 @@ class InvoiceController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Bill $bill)
+    public function update(Request $request, Invoice $bill)
     {
         $validated = $request->validate([
             'id' => 'required',
@@ -175,7 +190,7 @@ class InvoiceController extends Controller
         $date_facture = '08/09/2025';
         //$date_echeance = date('d/m/Y', strtotime('+1 days'));
         $date_echeance = '09/09/2025';
-        
+       
         $pdf = new InvoicePdf($invoiceId, $date_facture, $date_echeance, $school->code); // Now with no global variables
 
         $x = 10;

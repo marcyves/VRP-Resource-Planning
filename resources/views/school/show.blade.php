@@ -22,7 +22,7 @@
 
     <section>
         <div class="flex justify-between items-center mb-4">
-            <h3 class="text-lg font-semibold">{{ __('messages.school_address') }}</h3>
+            <h3 class="text-lg font-semibold">{{ __('messages.address') }}</h3>
 
             <div class="flex items-center">
                 {{  $school->address }}<br>

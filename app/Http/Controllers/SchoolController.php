@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\School;
-use App\Models\Bill;
+use App\Models\Invoice;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -60,9 +60,9 @@ class SchoolController extends Controller
         $years = $schools->getYears();
         session()->put('years', $years);
 
-        $bills_amount = Auth::user()->getBillsAmountPerYear($current_year);
-        $bills_payed_amount = Auth::user()->getBillsPayedAmountPerYear($current_year);
-        $bills_count = Auth::user()->getBillsCountPerYear($current_year);
+        $bills_amount = Auth::user()->getInvoicesAmountPerYear($current_year);
+        $bills_payed_amount = Auth::user()->getInvoicesPayedAmountPerYear($current_year);
+        $bills_count = Auth::user()->getInvoicesCountPerYear($current_year);
 
         return view('dashboard', compact('schools', 'courses', 'current_year', 'current_semester','years', 'bills_amount', 'bills_payed_amount', 'bills_count'));
     }

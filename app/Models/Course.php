@@ -49,7 +49,6 @@ class Course extends Model
     {
         return Group::select(['groups.*', 'courses.sessions'])
         ->join('group_course', 'group_id', '=', 'groups.id')
-        ->where('group_course.course_id', '=', $this->id)
         ->join('courses', 'courses.id', '=', 'group_course.course_id')
         ->where('courses.id', '=', $this->id)
         ->orderBy('groups.name')

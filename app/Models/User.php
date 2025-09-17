@@ -118,7 +118,9 @@ class User extends Authenticatable
 
     public function getInvoices()
     {
-        return Invoice::where('company_id', $this->company_id)->orderBy('id')->get();
+        return Invoice::select(['invoices.*', 'schools.name as school'])->where('invoices.company_id', $this->company_id)
+        ->join('schools', 'schools.id', '=', 'invoices.school_id')
+        ->orderBy('invoices.id')->get();
     }
 
     public function getInvoicesAmountPerYear($year)

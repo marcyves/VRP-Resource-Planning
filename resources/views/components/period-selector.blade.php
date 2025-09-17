@@ -10,3 +10,10 @@
     </select>
     <button type="submit" formaction="{{route($route.".next")}}" class="cool-box icon">></button>
 </form>
+@if($route == "billing")
+<form class="period-form" action="{{route($route.".byDate")}}" method="get" >
+    <button type="submit" class="cool-box">
+        Date
+    </button>
+</form>
+@endif

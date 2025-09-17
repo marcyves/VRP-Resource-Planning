@@ -74,7 +74,7 @@ class BillingController extends Controller
 
         [$schools, $monthly_gain, $monthly_hours] = Tools::getBillingInformation($planning);
 
-        $bills = Auth::user()->getBills();
+        $bills = Auth::user()->getInvoices();
                 
         if($order){
             return view('planning.billing_by_date',compact('schools', 'current_year', 'current_month', 'monthly_gain', 'monthly_hours', 'bills', 'years', 'months'));    
