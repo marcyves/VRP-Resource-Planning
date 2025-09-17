@@ -54,7 +54,7 @@
                 <td class="px-2 py-3 flex items-center justify-end">
                 @if(Auth::user()->getMode() == "Edit")
                     <form action="{{route('course.edit', $course->id)}}" method="get">
- <x-button-eedit/>
+ <x-button-edit/>
                     </form>
                     <form action="{{route('course.destroy', $course->id)}}" method="post">
                         @csrf
