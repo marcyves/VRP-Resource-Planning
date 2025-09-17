@@ -47,3 +47,4 @@ plarany
 _doc/
 .env.planetscale
 .env.prod
+/public/invoices
