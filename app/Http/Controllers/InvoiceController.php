@@ -68,18 +68,21 @@ class InvoiceController extends Controller
         ]);
 
         $company  =  Auth::user()->getCompany();
-        $id_facture =  $request->id;
+        $invoice_id =  $request->id;                           // This is the numeric part only
+        $invoice_name = $company->bill_prefix . $invoice_id;     // This is the full ID with the company prefix
         $school = School::find($request->school_id);
         $total_amount = str_replace(",", ".", $request->amount); // It's better to calculate this from items
 
         // Example items - in a real application, these would come from the request or database
         $items = [
-            ["Module Méthodologie d'Audit", "", "", ""],
-            ["Cours dispensé en distanciel pour LiveCampus", "20%", "400.00", "5"],
+            ["Soutenances Mémoires", "", "", ""],
+            ["MBA 2 ALT IDRAC NICE", "", "", ""],
+            ["Lundi 15 septembre", "20%", "37.50", "6"],
+            ["Mardi 16 septembre", "20%", "37.50", "6"],
         ];
 
         try {
-            $pdfPath = $this->generateAndSaveInvoice($id_facture, $company, $school, $items);
+            $pdfPath = $this->generateAndSaveInvoice($invoice_id, $company, $school, $items);
         } catch (\Exception $e) {
             // Handle PDF generation errors
             dd($e);
@@ -89,14 +92,14 @@ class InvoiceController extends Controller
 
         try {
             Invoice::create([
-                'id' => $id_facture,
+                'id' => $invoice_id,
                 'description' => $request->description,
                 'company_id' => $company->id,
                 'school_id' => $request->school_id,
                 'amount' => $total_amount,
             ]);
 
-            session()->flash('success', "Facture ". Auth::user()->getCompanyBillPrefix() .$id_facture ." enregistrée avec succès.");
+            session()->flash('success', "Facture ". $invoice_name ." enregistrée avec succès.");
 
             return redirect(route('invoice.index'));
         } catch (\Exception $e) {
@@ -186,10 +189,10 @@ class InvoiceController extends Controller
     private function generateAndSaveInvoice($invoiceId, $company, $school, $items)
     {
         // Get the current date
-        // $date_facture = date('d/m/Y');
-        $date_facture = '08/09/2025';
-        //$date_echeance = date('d/m/Y', strtotime('+1 days'));
-        $date_echeance = '09/09/2025';
+        $date_facture = date('d/m/Y');
+        //$date_facture = '08/09/2025';
+        $date_echeance = date('d/m/Y', strtotime('+1 day'));
+        //$date_echeance = '09/09/2025';
        
         $pdf = new InvoicePdf($invoiceId, $date_facture, $date_echeance, $school->code); // Now with no global variables
 
@@ -280,7 +283,7 @@ class InvoiceController extends Controller
 
         // Output PDF
 
-        $pdfPath = __DIR__ . "/facture_$invoiceId.pdf";
+        $pdfPath = __DIR__ . "/../../../public/invoices/" . $invoiceId . ".pdf";
         $pdf->Output($pdfPath, 'F');
         return $pdfPath;
     }

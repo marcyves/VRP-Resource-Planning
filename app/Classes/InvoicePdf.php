@@ -146,7 +146,11 @@ class InvoicePdf extends TCPDF
     $this->SetFont('helvetica', '', 9);
     $addressLines = [
       $company->address,
-      $company->zip . " " . $company->country
+      $company->zip . " " . $company->city,
+      $company->country,
+      "Tél.: " . $company->phone,
+      "Email: " . $company->email,
+      "Web: " . $company->website
     ];
     $lineHeight = 4.5;
     $saveY = $currentY; // Save the current Y position
@@ -158,27 +162,21 @@ class InvoicePdf extends TCPDF
 
 
     $currentY = $saveY; // Reset Y position for client address
-
+    $currentY += $lineHeight;
+    if($client->address2 != null){
+      $currentY += $lineHeight;
+      $this->SetXY($x2 + 2, $currentY);
+      $this->Cell(0, $lineHeight, $client->address2, 0, 1, 'L', false);
+    }
     $currentY += $lineHeight;
     $this->SetXY($x2 + 2, $currentY);
     $this->Cell(0, $lineHeight, $client->address, 0, 1, 'L', false);
     $currentY += $lineHeight;
     $this->SetXY($x2 + 2, $currentY);
-    $this->Cell(0, $lineHeight, $client->zip . " " . $client->country, 0, 1, 'L', false);
-
-
-    $addressLines = [
-      "Tél.: " . $company->phone,
-      "Email: " . $company->email,
-      "Web: " . $company->website
-    ];
-    $lineHeight = 4;
-    $currentY += $lineHeight; // Move down for the next section
-    foreach ($addressLines as $line) {
-      $currentY += $lineHeight;
-      $this->SetXY($x + 2, $currentY);
-      $this->Cell(0, $lineHeight, $line, 0, 1, 'L', false);
-    }
+    $this->Cell(0, $lineHeight, $client->zip . " " . $client->city, 0, 1, 'L', false);
+    $currentY += $lineHeight;
+    $this->SetXY($x2 + 2, $currentY);
+    $this->Cell(0, $lineHeight, $client->country, 0, 1, 'L', false);
 
     $this->SetFont('helvetica', '', 8);
     $currentY = $invoiceY + $lineHeight * 2;
