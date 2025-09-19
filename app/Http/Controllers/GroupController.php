@@ -51,6 +51,7 @@ class GroupController extends Controller
         
         $company_id = Auth::user()->company_id;
         $active = false;
+        $year = $request->year ?? now()->format('Y');
 
         if($course_id ==0 && session('course_id') != null){
             $course_id = session('course_id');
@@ -65,7 +66,7 @@ class GroupController extends Controller
                     'course_id' => $course_id,
                     'company_id' => $company_id,
                     'active' => $active,
-                    'year' => $request->year,
+                    'year' => $year,
                 ]);
 
             session()->flash('success', "Groupe enregistré avec succès.");
