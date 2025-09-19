@@ -46,6 +46,7 @@ class CourseController extends Controller
         
         try{
             $user_id = Auth::user()->id;
+            $rate = str_replace(",", ".", $request->rate);
             $course = Course::create([
                 'name' => $request->name,
                 'short_name' => $request->short_name,
@@ -55,7 +56,7 @@ class CourseController extends Controller
                     'session_length' => $request->session_length,
                     'year' => $request->year,
                     'semester' => $request->semester,
-                    'rate' => $request->rate,
+                    'rate' => $rate,
                         ]);
 
             session()->flash('success', "Cours ".$request->name." enregistré avec succès.");
