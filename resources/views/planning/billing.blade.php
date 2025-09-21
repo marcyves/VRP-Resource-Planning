@@ -54,7 +54,7 @@
 
                 <div class="flex flex-row justify-between font-semibold text-gray-600 mt-2 py-2 bg-blue-200">
                     <div class="mx-4 pt-2">
-                        Time worked = {{$schedules['hours']}} hours
+                        Time worked = {{number_format($schedules['hours'],2)}} hours
                     </div>
                     <div class="mx-4 pt-2">
                         Total = {{number_format($schedules['gain'],2)}} €
@@ -65,7 +65,7 @@
         </div>
             <div class="flex flex-row justify-between font-semibold text-gray-600 border border-gray-300 rounded-md mt-2 py-2 bg-green-100">
                 <div class="mx-4">
-                    Total Time worked = {{$courses['hours']}} hours
+                    Total Time worked = {{number_format($courses['hours'],2)}} hours
                 </div>
                 <div class="mx-4">
                     School Total = {{number_format($courses['gain'],2)}} €
@@ -103,7 +103,7 @@
         <section  class="section-box">
         <div class="flex flex-row justify-between font-semibold text-gray-600 border border-gray-300 rounded-md mt-4 py-4 bg-gray-200">
             <div class="mx-4">
-                Time worked = {{$monthly_hours}} hours
+                Time worked = {{number_format($monthly_hours,2)}} hours
             </div>
             <div class="mx-4">
                 Monthly gain = {{number_format($monthly_gain,2)}} €
