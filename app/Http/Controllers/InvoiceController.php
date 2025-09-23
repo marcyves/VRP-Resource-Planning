@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Classes\InvoicePdf;
 use App\Models\Invoice;
 use App\Models\School;
+
+use App\Http\Utility\Tools;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
@@ -43,18 +46,25 @@ class InvoiceController extends Controller
         $course_id = $request->course_id;
         $month = $request->month;
         $year = $request->year;
+        $cmd = $request->cmd;
 
         $user = Auth::user();
         $bills = $user->getInvoices();
         $bill_number = $bills->last()->id ?? substr(Carbon::now()->year, -2) . "000";
-        
+
         $bill_number = (int) $bill_number + 1;
         $bill_id = $user->getCompanyBillPrefix() . $bill_number;
 
         $company = $user->getCompany();
         $school = School::find($school_id);
 
-        return view('invoice.create', compact('bill_id', 'bill_number', 'company', 'school'));
+        if ($cmd == "detailed") {
+            [$items, $total_amount ]= Tools::getInvoiceDetails($school_id, $month, $year);
+        } else {
+            $items = [];
+        }
+
+        return view('invoice.create', compact('bill_id', 'bill_number', 'company', 'school', 'items', 'month', 'year', 'total_amount'));
     }
 
     /**
@@ -67,19 +77,15 @@ class InvoiceController extends Controller
             'description' => 'required'
         ]);
 
+        $month = $request->month;
+        $year = $request->year;
+
         $company  =  Auth::user()->getCompany();
         $invoice_id =  $request->id;                           // This is the numeric part only
         $invoice_name = $company->bill_prefix . $invoice_id;     // This is the full ID with the company prefix
         $school = School::find($request->school_id);
-        $total_amount = str_replace(",", ".", $request->amount); // It's better to calculate this from items
 
-        // Example items - in a real application, these would come from the request or database
-        $items = [
-            ["Soutenances Mémoires", "", "", ""],
-            ["MBA 2 ALT IDRAC NICE", "", "", ""],
-            ["Lundi 15 septembre", "20%", "37.50", "6"],
-            ["Mardi 16 septembre", "20%", "37.50", "6"],
-        ];
+        [$items, $total_amount] = Tools::getInvoiceDetails($school->id, $month, $year);
 
         try {
             $pdfPath = $this->generateAndSaveInvoice($invoice_id, $company, $school, $items);
@@ -99,7 +105,7 @@ class InvoiceController extends Controller
                 'amount' => $total_amount,
             ]);
 
-            session()->flash('success', "Facture ". $invoice_name ." enregistrée avec succès.");
+            session()->flash('success', "Facture " . $invoice_name . " enregistrée avec succès.");
 
             return redirect(route('invoice.index'));
         } catch (\Exception $e) {
@@ -193,7 +199,7 @@ class InvoiceController extends Controller
         //$date_facture = '08/09/2025';
         $date_echeance = date('d/m/Y', strtotime('+1 day'));
         //$date_echeance = '09/09/2025';
-       
+
         $pdf = new InvoicePdf($invoiceId, $date_facture, $date_echeance, $school->code); // Now with no global variables
 
         $x = 10;
@@ -228,13 +234,31 @@ class InvoiceController extends Controller
         $invoiceY = $currentY + 1; // Move down for the first item
         $total_invoice = 0;
         foreach ($items as $item) {
+            switch($item[4])
+            {
+            case "T":
+                $lineHeight = $pdf->setTitleFont();
+            break;
+            case "S":
+                $lineHeight = $pdf->setSubTitleFont();
+            break;
+            default:
+                $lineHeight = $pdf->setNormalFont();
+            }
             $pdf->SetXY($x + 2, $invoiceY);
             $pdf->Cell(108, $lineHeight, $item[0], 0, 0, 'L', false);
+            $pdf->setNormalFont();
             $pdf->Cell(12, $lineHeight, $item[1], 0, 0, 'C', false);
-            $pdf->Cell(18, $lineHeight, $item[2], 0, 0, 'R', false);
-            $pdf->Cell(22, $lineHeight, $item[3], 0, 0, 'R', false);
             $value2 = $item[2];
+            if (is_numeric($value2))
+                $pdf->Cell(18, $lineHeight, number_format($value2, 2), 0, 0, 'R', false);
+            else
+                $pdf->Cell(18, $lineHeight, $value2, 0, 0, 'R', false);
             $value3 = $item[3];
+            if (is_numeric($value3))
+                $pdf->Cell(22, $lineHeight, number_format($value3, 1), 0, 0, 'R', false);
+            else
+                $pdf->Cell(22, $lineHeight, $value3, 0, 0, 'R', false);
 
             if (is_numeric($value2) && is_numeric($value3)) {
                 $total = number_format($value2 * $value3, 2);

@@ -32,13 +32,29 @@ class InvoicePdf extends TCPDF
     $image_file = 'logo-XDM.png';
     $this->Image($image_file, 10, 10, 20, '', 'PNG', '', 'T', false, 300, '', false, false, 0, false, false, false);
     // Set font
-    $this->setFont('helvetica', 'B', 12);
+    $this->setTitleFont();
     $this->Cell(0, 12, 'Facture ' . $id_facture, 0, true, 'R', 0, '', 0, false, 'M', 'M');
 
     $this->setFont('helvetica', 'N', 8);
     $this->Cell(0, 6, "Date facturation : $date_facture", 0, true, 'R', 0, '', 0, false, 'M', 'M');
     $this->Cell(0, 6, "Date échéance : $date_echeance", 0, true, 'R', 0, '', 0, false, 'M', 'M');
     $this->Cell(0, 6, 'Code client : ' . $client_code, 0, true, 'R', 0, '', 0, false, 'M', 'M');
+  }
+
+  public function setNormalFont()
+  {
+    $this->setFont('helvetica', 'N', 8);
+    return 4;
+  }
+  public function setSubTitleFont()
+  {
+    $this->setFont('helvetica', 'B', 9);
+    return 5;
+  }
+  public function setTitleFont()
+  {
+    $this->setFont('helvetica', 'B', 12);
+    return 7;
   }
 
   // Page footer

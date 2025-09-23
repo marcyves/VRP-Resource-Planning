@@ -23,7 +23,10 @@
                         {{ __('messages.description') }}
                     </th>
                     <th>
-                        {{ __('messages.amount') }}
+                        {{ __('messages.amount') }} HT
+                    </th>
+                    <th>
+                        {{ __('messages.amount') }} TTC
                     </th>
                     <th>
                         {{ __('messages.date_billing') }}
@@ -50,10 +53,13 @@
                 </td>
                 <td class="money">
                     @money($bill->amount) €
+                </td>
+                <td class="money">
+                    @money($bill->amount*1.2) €
                     @php
-                    $total += $bill->amount;
+                    $total += $bill->amount*1.2;
                     if($bill->paid_at != null){
-                        $total_payed += $bill->amount;
+                        $total_payed += $bill->amount*1.2;
                     }
                     @endphp
                 </td>

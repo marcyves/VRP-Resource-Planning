@@ -92,10 +92,9 @@
                     <input type="hidden" name="course_id" value="{{$course_id}}">
                     <input type="hidden" name="month" value="{{$current_month}}">
                     <input type="hidden" name="year" value="{{$current_year}}">
-                    <input type="submit" value="Create"
-                    class="border border-gray-400 bg-white rounded-md px-4 mr-4">
-                    </form>
-
+                    <input type="hidden" name="cmd" value="detailed">
+                    <input type="submit" value="Create" class="border border-gray-400 bg-white rounded-md px-4 mr-4">
+                </form>
             </div>
         @endforeach
     </section>

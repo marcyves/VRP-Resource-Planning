@@ -67,12 +67,25 @@
                     </ul>
                     </div>
                 </li>
+                <li class="card">
+                    <div class="card-content-text">
+                    <ul>
+                        @foreach($items as $item)
+                            <li>{{htmlspecialchars($item[0])}}  {{$item[1]}} {{$item[2]}} {{$item[3]}}</li>
+                        @endforeach
+                        <li>
+                            <strong>Total : @money($total_amount*1.2) €</strong>
+                        </li>
+                    </ul>
+                    </div>
+                </li>
             </ul>
             <input type="hidden" name="id" id="name" value="{{$bill_number}}">
             <input type="hidden" name="school_id" id="school_id" value="{{$school->id}}">
+            <input type="hidden" name="month" id="month" value="{{$month}}">
+            <input type="hidden" name="year" id="year" value="{{$year}}">
             <x-text-input type="text" name="description" id="description" size="60" placeholder="{{ __('messages.description') }}"/>
             <div>
-            <x-text-input class="my-2" type="text" name="amount" id="amount" size="20" placeholder="{{ __('messages.amount') }}"/>
             <x-primary-button>{{ __('messages.bill_create') }}</x-primary-button>
             </div>
         </form>

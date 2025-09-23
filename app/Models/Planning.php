@@ -69,17 +69,25 @@ class Planning extends Model
         ->where(['plannings.course_id' => $course_id])
         ->where('begin', '>', $start_date)
         ->where('end', '<', $end_date)
+        ->orderBy('begin', 'asc')
         ->get();
     }
 
     public static function getPlanningBySchoolAndDate($school_id, $start_date, $end_date)
     {
-        return Planning::select([ 'plannings.id' ])
+        return Planning::select([ 
+            'plannings.id',
+            'courses.name as course_name',
+            'groups.name as group_name',
+            'courses.rate as rate',
+            'courses.session_length as session_length'
+        ])
         ->rightJoin('groups', 'plannings.group_id', '=', 'groups.id')
         ->rightJoin('courses', 'plannings.course_id', '=', 'courses.id')
         ->where(['courses.school_id' => $school_id])
         ->where('begin', '>', $start_date)
         ->where('end', '<', $end_date)
+        ->orderBy('begin', 'asc')
         ->get();
     }
 }

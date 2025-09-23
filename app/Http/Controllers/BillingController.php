@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Classes\invoiceSchool;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
@@ -75,7 +76,7 @@ class BillingController extends Controller
         [$schools, $monthly_gain, $monthly_hours] = Tools::getBillingInformation($planning);
 
         $bills = Auth::user()->getInvoices();
-                
+
         if($order){
             return view('planning.billing_by_date',compact('schools', 'current_year', 'current_month', 'monthly_gain', 'monthly_hours', 'bills', 'years', 'months'));    
         }else{
