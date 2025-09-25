@@ -1,0 +1,653 @@
+BEGIN:VCALENDAR
+PRODID:https://openclassrooms.com/fr/
+VERSION:2.0
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:3101763
+DTSTAMP:20250626T055852Z
+SUMMARY:Ilyes Boutajar
+DESCRIPTION:Tableau de bord de l'étudiant : \nhttps://openclassrooms.com/
+ fr/spaces/admin/students/14652196\n\nRejoindre la visio : \nhttps://ope
+ nclassrooms.com/fr/video-conferences/5c8ng2z8wxq3/meet
+DTSTART:20250707T090000Z
+DTEND:20250707T094500Z
+CATEGORIES:Session de mentorat
+STATUS:TENTATIVE
+END:VEVENT
+BEGIN:VEVENT
+UID:3101647
+DTSTAMP:20250626T055852Z
+SUMMARY:Soirhan Andhum
+DESCRIPTION:Tableau de bord de l'étudiant : \nhttps://openclassrooms.com/
+ fr/spaces/admin/students/12737354\n\nRejoindre la visio : \nhttps://ope
+ nclassrooms.com/fr/video-conferences/jg3tr193x648/meet
+DTSTART:20250701T080000Z
+DTEND:20250701T082000Z
+CATEGORIES:Session de mentorat
+STATUS:TENTATIVE
+END:VEVENT
+BEGIN:VEVENT
+UID:3099494
+DTSTAMP:20250626T055852Z
+SUMMARY:Alice Lendormi
+DESCRIPTION:Tableau de bord de l'étudiant : \nhttps://openclassrooms.com/
+ fr/spaces/admin/students/14717478\n\nRejoindre la visio : \nhttps://ope
+ nclassrooms.com/fr/video-conferences/6cvcl0pzvkq2/meet
+DTSTART:20250627T090000Z
+DTEND:20250627T094500Z
+CATEGORIES:Session de mentorat
+STATUS:TENTATIVE
+END:VEVENT
+BEGIN:VEVENT
+UID:3091362
+DTSTAMP:20250626T055852Z
+SUMMARY:Ilyes Boutajar
+DESCRIPTION:Tableau de bord de l'étudiant : \nhttps://openclassrooms.com/
+ fr/spaces/admin/students/14652196\n\nRejoindre la visio : \nhttps://ope
+ nclassrooms.com/fr/video-conferences/9745zkwllx45/meet
+DTSTART:20250624T090000Z
+DTEND:20250624T094500Z
+CATEGORIES:Session de mentorat
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:3091258
+DTSTAMP:20250626T055852Z
+SUMMARY:Soirhan Andhum
+DESCRIPTION:Tableau de bord de l'étudiant : \nhttps://openclassrooms.com/
+ fr/spaces/admin/students/12737354\n\nRejoindre la visio : \nhttps://ope
+ nclassrooms.com/fr/video-conferences/lw6lcd2bz684/meet
+DTSTART:20250624T080000Z
+DTEND:20250624T082000Z
+CATEGORIES:Session de mentorat
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:3092801
+DTSTAMP:20250626T055852Z
+SUMMARY:Alice Lendormi
+DESCRIPTION:Tableau de bord de l'étudiant : \nhttps://openclassrooms.com/
+ fr/spaces/admin/students/14717478\n\nRejoindre la visio : \nhttps://ope
+ nclassrooms.com/fr/video-conferences/2lk8jvbm2976/meet
+DTSTART:20250620T120000Z
+DTEND:20250620T124500Z
+CATEGORIES:Session de mentorat
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:3089729
+DTSTAMP:20250626T055852Z
+SUMMARY:Alice Lendormi
+DESCRIPTION:Tableau de bord de l'étudiant : \nhttps://openclassrooms.com/
+ fr/spaces/admin/students/14717478\n\nRejoindre la visio : \nhttps://ope
+ nclassrooms.com/fr/video-conferences/w982w6zc9448/meet
+DTSTART:20250611T120000Z
+DTEND:20250611T124500Z
+CATEGORIES:Session de mentorat
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:3086054
+DTSTAMP:20250626T055852Z
+SUMMARY:Ilyes Boutajar
+DESCRIPTION:Tableau de bord de l'étudiant : \nhttps://openclassrooms.com/
+ fr/spaces/admin/students/14652196\n\nRejoindre la visio : \nhttps://ope
+ nclassrooms.com/fr/video-conferences/l56qfkpzkbc3/meet
+DTSTART:20250610T090000Z
+DTEND:20250610T094500Z
+CATEGORIES:Session de mentorat
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:3085983
+DTSTAMP:20250626T055852Z
+SUMMARY:Soirhan Andhum
+DESCRIPTION:Tableau de bord de l'étudiant : \nhttps://openclassrooms.com/
+ fr/spaces/admin/students/12737354\n\nRejoindre la visio : \nhttps://ope
+ nclassrooms.com/fr/video-conferences/gbd3plknfv87/meet
+DTSTART:20250610T080000Z
+DTEND:20250610T082000Z
+CATEGORIES:Session de mentorat
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:3086763
+DTSTAMP:20250626T055852Z
+SUMMARY:Patrick Abadie
+DESCRIPTION:Tableau de bord de l'étudiant : \nhttps://openclassrooms.com/
+ fr/spaces/admin/students/15065820\n\nRejoindre la visio : \nhttps://ope
+ nclassrooms.com/fr/video-conferences/g210r28gvbm9/meet
+DTSTART:20250606T130000Z
+DTEND:20250606T134500Z
+CATEGORIES:Session de mentorat
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:3084615
+DTSTAMP:20250626T055852Z
+SUMMARY:Alice Lendormi
+DESCRIPTION:Tableau de bord de l'étudiant : \nhttps://openclassrooms.com/
+ fr/spaces/admin/students/14717478\n\nRejoindre la visio : \nhttps://ope
+ nclassrooms.com/fr/video-conferences/4c1xt4h4c3s1/meet
+DTSTART:20250606T120000Z
+DTEND:20250606T124500Z
+CATEGORIES:Session de mentorat
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:3084465
+DTSTAMP:20250626T055852Z
+SUMMARY:Anselme Douglas Ntoutoume
+DESCRIPTION:Tableau de bord de l'étudiant : \nhttps://openclassrooms.com/
+ fr/spaces/admin/students/15084195\n\nRejoindre la visio : \nhttps://ope
+ nclassrooms.com/fr/video-conferences/12b291mtbng7/meet
+DTSTART:20250606T090000Z
+DTEND:20250606T094500Z
+CATEGORIES:Session de mentorat
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:3083809
+DTSTAMP:20250626T055852Z
+SUMMARY:William Mauroux
+DESCRIPTION:Tableau de bord de l'étudiant : \nhttps://openclassrooms.com/
+ fr/spaces/admin/students/14890437\n\nRejoindre la visio : \nhttps://ope
+ nclassrooms.com/fr/video-conferences/3r86znvh7x34/meet
+DTSTART:20250606T080000Z
+DTEND:20250606T084500Z
+CATEGORIES:Session de mentorat
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:3082977
+DTSTAMP:20250626T055852Z
+SUMMARY:Sulayman Canteau
+DESCRIPTION:Tableau de bord de l'étudiant : \nhttps://openclassrooms.com/
+ fr/spaces/admin/students/11675598\n\nRejoindre la visio : \nhttps://ope
+ nclassrooms.com/fr/video-conferences/hl9x89frz8g6/meet
+DTSTART:20250604T090000Z
+DTEND:20250604T094500Z
+CATEGORIES:Session de mentorat
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:3085297
+DTSTAMP:20250626T055852Z
+SUMMARY:Johan Radegonde
+DESCRIPTION:Tableau de bord de l'étudiant : \nhttps://openclassrooms.com/
+ fr/spaces/admin/students/11799045\n\nRejoindre la visio : \nhttps://ope
+ nclassrooms.com/fr/video-conferences/ngxx6595b6m8/meet
+DTSTART:20250604T080000Z
+DTEND:20250604T084500Z
+CATEGORIES:Session de mentorat
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:3084817
+DTSTAMP:20250626T055852Z
+SUMMARY:Patrick Abadie
+DESCRIPTION:Tableau de bord de l'étudiant : \nhttps://openclassrooms.com/
+ fr/spaces/admin/students/15065820\n\nRejoindre la visio : \nhttps://ope
+ nclassrooms.com/fr/video-conferences/nc7tm9tf9v57/meet
+DTSTART:20250603T090000Z
+DTEND:20250603T094500Z
+CATEGORIES:Session de mentorat
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:3081092
+DTSTAMP:20250626T055852Z
+SUMMARY:Ilyes Boutajar
+DESCRIPTION:Tableau de bord de l'étudiant : \nhttps://openclassrooms.com/
+ fr/spaces/admin/students/14652196\n\nRejoindre la visio : \nhttps://ope
+ nclassrooms.com/fr/video-conferences/68lt4cn172s2/meet
+DTSTART:20250602T090000Z
+DTEND:20250602T094500Z
+CATEGORIES:Session de mentorat
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:3080991
+DTSTAMP:20250626T055852Z
+SUMMARY:Soirhan Andhum
+DESCRIPTION:Tableau de bord de l'étudiant : \nhttps://openclassrooms.com/
+ fr/spaces/admin/students/12737354\n\nRejoindre la visio : \nhttps://ope
+ nclassrooms.com/fr/video-conferences/2dd5h2dzq1s4/meet
+DTSTART:20250602T080000Z
+DTEND:20250602T082000Z
+CATEGORIES:Session de mentorat
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:3078468
+DTSTAMP:20250626T055852Z
+SUMMARY:Alice Lendormi
+DESCRIPTION:Tableau de bord de l'étudiant : \nhttps://openclassrooms.com/
+ fr/spaces/admin/students/14717478\n\nRejoindre la visio : \nhttps://ope
+ nclassrooms.com/fr/video-conferences/wf7t333gxf14/meet
+DTSTART:20250530T120000Z
+DTEND:20250530T124500Z
+CATEGORIES:Session de mentorat
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:3075950
+DTSTAMP:20250626T055852Z
+SUMMARY:Ilyes Boutajar
+DESCRIPTION:Tableau de bord de l'étudiant : \nhttps://openclassrooms.com/
+ fr/spaces/admin/students/14652196\n\nRejoindre la visio : \nhttps://ope
+ nclassrooms.com/fr/video-conferences/tsjx9zj7wm07/meet
+DTSTART:20250526T090000Z
+DTEND:20250526T094500Z
+CATEGORIES:Session de mentorat
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:3075820
+DTSTAMP:20250626T055852Z
+SUMMARY:Soirhan Andhum
+DESCRIPTION:Tableau de bord de l'étudiant : \nhttps://openclassrooms.com/
+ fr/spaces/admin/students/12737354\n\nRejoindre la visio : \nhttps://ope
+ nclassrooms.com/fr/video-conferences/vnfc1w6h8qg6/meet
+DTSTART:20250526T080000Z
+DTEND:20250526T082000Z
+CATEGORIES:Session de mentorat
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:3077283
+DTSTAMP:20250626T055852Z
+SUMMARY:Claude Erick Rakotoarisoa
+DESCRIPTION:Tableau de bord de l'étudiant : \nhttps://openclassrooms.com/
+ fr/spaces/admin/students/7451168\n\nRejoindre la visio : \nhttps://open
+ classrooms.com/fr/video-conferences/0dqg6hlq05s2/meet
+DTSTART:20250523T090000Z
+DTEND:20250523T094500Z
+CATEGORIES:Session de mentorat
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:3074620
+DTSTAMP:20250626T055852Z
+SUMMARY:Alice Lendormi
+DESCRIPTION:Tableau de bord de l'étudiant : \nhttps://openclassrooms.com/
+ fr/spaces/admin/students/14717478\n\nRejoindre la visio : \nhttps://ope
+ nclassrooms.com/fr/video-conferences/qqvgbn2hlgk6/meet
+DTSTART:20250522T120000Z
+DTEND:20250522T124500Z
+CATEGORIES:Session de mentorat
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:3070793
+DTSTAMP:20250626T055852Z
+SUMMARY:Ilyes Boutajar
+DESCRIPTION:Tableau de bord de l'étudiant : \nhttps://openclassrooms.com/
+ fr/spaces/admin/students/14652196\n\nRejoindre la visio : \nhttps://ope
+ nclassrooms.com/fr/video-conferences/r61h5r4tgp66/meet
+DTSTART:20250519T090000Z
+DTEND:20250519T094500Z
+CATEGORIES:Session de mentorat
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:3070610
+DTSTAMP:20250626T055852Z
+SUMMARY:Soirhan Andhum
+DESCRIPTION:Tableau de bord de l'étudiant : \nhttps://openclassrooms.com/
+ fr/spaces/admin/students/12737354\n\nRejoindre la visio : \nhttps://ope
+ nclassrooms.com/fr/video-conferences/cps345bk7cs4/meet
+DTSTART:20250519T080000Z
+DTEND:20250519T082000Z
+CATEGORIES:Session de mentorat
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:3069404
+DTSTAMP:20250626T055852Z
+SUMMARY:Alice Lendormi
+DESCRIPTION:Tableau de bord de l'étudiant : \nhttps://openclassrooms.com/
+ fr/spaces/admin/students/14717478\n\nRejoindre la visio : \nhttps://ope
+ nclassrooms.com/fr/video-conferences/czncm8b0gvs7/meet
+DTSTART:20250516T120000Z
+DTEND:20250516T124500Z
+CATEGORIES:Session de mentorat
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:3065732
+DTSTAMP:20250626T055852Z
+SUMMARY:Ilyes Boutajar
+DESCRIPTION:Tableau de bord de l'étudiant : \nhttps://openclassrooms.com/
+ fr/spaces/admin/students/14652196\n\nRejoindre la visio : \nhttps://ope
+ nclassrooms.com/fr/video-conferences/jmjmkqr91x09/meet
+DTSTART:20250512T080000Z
+DTEND:20250512T084500Z
+CATEGORIES:Session de mentorat
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:3065615
+DTSTAMP:20250626T055852Z
+SUMMARY:Soirhan Andhum
+DESCRIPTION:Tableau de bord de l'étudiant : \nhttps://openclassrooms.com/
+ fr/spaces/admin/students/12737354\n\nRejoindre la visio : \nhttps://ope
+ nclassrooms.com/fr/video-conferences/2nf67pz315k1/meet
+DTSTART:20250512T070000Z
+DTEND:20250512T072000Z
+CATEGORIES:Session de mentorat
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:3064343
+DTSTAMP:20250626T055852Z
+SUMMARY:Alice Lendormi
+DESCRIPTION:Tableau de bord de l'étudiant : \nhttps://openclassrooms.com/
+ fr/spaces/admin/students/14717478\n\nRejoindre la visio : \nhttps://ope
+ nclassrooms.com/fr/video-conferences/l2sw3wt61l63/meet
+DTSTART:20250509T120000Z
+DTEND:20250509T124500Z
+CATEGORIES:Session de mentorat
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:3063373
+DTSTAMP:20250626T055852Z
+SUMMARY:Gentil Matteo
+DESCRIPTION:Tableau de bord de l'étudiant : \nhttps://openclassrooms.com/
+ fr/spaces/admin/students/13857859\n\nRejoindre la visio : \nhttps://ope
+ nclassrooms.com/fr/video-conferences/p58nprv4tt42/meet
+DTSTART:20250505T120000Z
+DTEND:20250505T124500Z
+CATEGORIES:Session de mentorat
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:3056766
+DTSTAMP:20250626T055852Z
+SUMMARY:Ilyes Boutajar
+DESCRIPTION:Tableau de bord de l'étudiant : \nhttps://openclassrooms.com/
+ fr/spaces/admin/students/14652196\n\nRejoindre la visio : \nhttps://ope
+ nclassrooms.com/fr/video-conferences/x41v48zvl453/meet
+DTSTART:20250505T080000Z
+DTEND:20250505T084500Z
+CATEGORIES:Session de mentorat
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:3056532
+DTSTAMP:20250626T055852Z
+SUMMARY:Soirhan Andhum
+DESCRIPTION:Tableau de bord de l'étudiant : \nhttps://openclassrooms.com/
+ fr/spaces/admin/students/12737354\n\nRejoindre la visio : \nhttps://ope
+ nclassrooms.com/fr/video-conferences/494z67lw7fm1/meet
+DTSTART:20250505T070000Z
+DTEND:20250505T072000Z
+CATEGORIES:Session de mentorat
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:3056828
+DTSTAMP:20250626T055852Z
+SUMMARY:Alice Lendormi
+DESCRIPTION:Tableau de bord de l'étudiant : \nhttps://openclassrooms.com/
+ fr/spaces/admin/students/14717478\n\nRejoindre la visio : \nhttps://ope
+ nclassrooms.com/fr/video-conferences/223qjbp32dg7/meet
+DTSTART:20250502T112000Z
+DTEND:20250502T120500Z
+CATEGORIES:Session de mentorat
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:3058526
+DTSTAMP:20250626T055852Z
+SUMMARY:Gentil Matteo
+DESCRIPTION:Tableau de bord de l'étudiant : \nhttps://openclassrooms.com/
+ fr/spaces/admin/students/13857859\n\nRejoindre la visio : \nhttps://ope
+ nclassrooms.com/fr/video-conferences/8vjg4189q588/meet
+DTSTART:20250502T090000Z
+DTEND:20250502T094500Z
+CATEGORIES:Session de mentorat
+STATUS:CANCELLED
+END:VEVENT
+BEGIN:VEVENT
+UID:3053216
+DTSTAMP:20250626T055852Z
+SUMMARY:Kenza Rabin
+DESCRIPTION:Tableau de bord de l'étudiant : \nhttps://openclassrooms.com/
+ fr/spaces/admin/students/14824723\n\nRejoindre la visio : \nhttps://ope
+ nclassrooms.com/fr/video-conferences/dhnlw02s81g6/meet
+DTSTART:20250502T073000Z
+DTEND:20250502T081500Z
+CATEGORIES:Session de mentorat
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:3058389
+DTSTAMP:20250626T055852Z
+SUMMARY:Valerie Bonnamour
+DESCRIPTION:Tableau de bord de l'étudiant : \nhttps://openclassrooms.com/
+ fr/spaces/admin/students/14304679\n\nRejoindre la visio : \nhttps://ope
+ nclassrooms.com/fr/video-conferences/n4hbs9mn9408/meet
+DTSTART:20250429T080000Z
+DTEND:20250429T084500Z
+CATEGORIES:Session de mentorat
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:3056677
+DTSTAMP:20250626T055852Z
+SUMMARY:Chafaa Mouhoubi
+DESCRIPTION:Tableau de bord de l'étudiant : \nhttps://openclassrooms.com/
+ fr/spaces/admin/students/14725753\n\nRejoindre la visio : \nhttps://ope
+ nclassrooms.com/fr/video-conferences/fb4tw8q3stq3/meet
+DTSTART:20250428T090000Z
+DTEND:20250428T094500Z
+CATEGORIES:Session de mentorat
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:3053138
+DTSTAMP:20250626T055852Z
+SUMMARY:Gentil Matteo
+DESCRIPTION:Tableau de bord de l'étudiant : \nhttps://openclassrooms.com/
+ fr/spaces/admin/students/13857859\n\nRejoindre la visio : \nhttps://ope
+ nclassrooms.com/fr/video-conferences/bvtwbc9tgvc6/meet
+DTSTART:20250425T080000Z
+DTEND:20250425T084500Z
+CATEGORIES:Session de mentorat
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:3046168
+DTSTAMP:20250626T055852Z
+SUMMARY:Alice Lendormi
+DESCRIPTION:Tableau de bord de l'étudiant : \nhttps://openclassrooms.com/
+ fr/spaces/admin/students/14717478\n\nRejoindre la visio : \nhttps://ope
+ nclassrooms.com/fr/video-conferences/q67dfvd4p6s5/meet
+DTSTART:20250423T120000Z
+DTEND:20250423T124500Z
+CATEGORIES:Session de mentorat
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:3054809
+DTSTAMP:20250626T055852Z
+SUMMARY:Janek Majchrzak
+DESCRIPTION:Tableau de bord de l'étudiant : \nhttps://openclassrooms.com/
+ fr/spaces/admin/students/10236520\n\nRejoindre la visio : \nhttps://ope
+ nclassrooms.com/fr/video-conferences/c5k8161q2lm2/meet
+DTSTART:20250423T090000Z
+DTEND:20250423T094500Z
+CATEGORIES:Session de mentorat
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:3050868
+DTSTAMP:20250626T055852Z
+SUMMARY:Ilyes Boutajar
+DESCRIPTION:Tableau de bord de l'étudiant : \nhttps://openclassrooms.com/
+ fr/spaces/admin/students/14652196\n\nRejoindre la visio : \nhttps://ope
+ nclassrooms.com/fr/video-conferences/z33ffksl7pk8/meet
+DTSTART:20250423T080000Z
+DTEND:20250423T084500Z
+CATEGORIES:Session de mentorat
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:3050390
+DTSTAMP:20250626T055852Z
+SUMMARY:Soirhan Andhum
+DESCRIPTION:Tableau de bord de l'étudiant : \nhttps://openclassrooms.com/
+ fr/spaces/admin/students/12737354\n\nRejoindre la visio : \nhttps://ope
+ nclassrooms.com/fr/video-conferences/ghv0rdzc8kc4/meet
+DTSTART:20250423T070000Z
+DTEND:20250423T073000Z
+CATEGORIES:Session de mentorat
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:3039205
+DTSTAMP:20250626T055852Z
+SUMMARY:Alice Lendormi
+DESCRIPTION:Tableau de bord de l'étudiant : \nhttps://openclassrooms.com/
+ fr/spaces/admin/students/14717478\n\nRejoindre la visio : \nhttps://ope
+ nclassrooms.com/fr/video-conferences/39p228wx7c61/meet
+DTSTART:20250417T120000Z
+DTEND:20250417T124500Z
+CATEGORIES:Session de mentorat
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:3044434
+DTSTAMP:20250626T055852Z
+SUMMARY:Ilyes Boutajar
+DESCRIPTION:Tableau de bord de l'étudiant : \nhttps://openclassrooms.com/
+ fr/spaces/admin/students/14652196\n\nRejoindre la visio : \nhttps://ope
+ nclassrooms.com/fr/video-conferences/5tq0fg9t13k4/meet
+DTSTART:20250415T104500Z
+DTEND:20250415T113000Z
+CATEGORIES:Session de mentorat
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:3044441
+DTSTAMP:20250626T055852Z
+SUMMARY:Soirhan Andhum
+DESCRIPTION:Tableau de bord de l'étudiant : \nhttps://openclassrooms.com/
+ fr/spaces/admin/students/12737354\n\nRejoindre la visio : \nhttps://ope
+ nclassrooms.com/fr/video-conferences/2s3clzhkgx87/meet
+DTSTART:20250414T150000Z
+DTEND:20250414T153000Z
+CATEGORIES:Session de mentorat
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:3034018
+DTSTAMP:20250626T055852Z
+SUMMARY:Alice Lendormi
+DESCRIPTION:Tableau de bord de l'étudiant : \nhttps://openclassrooms.com/
+ fr/spaces/admin/students/14717478\n\nRejoindre la visio : \nhttps://ope
+ nclassrooms.com/fr/video-conferences/pvxpcprth187/meet
+DTSTART:20250409T120000Z
+DTEND:20250409T124500Z
+CATEGORIES:Session de mentorat
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:3042422
+DTSTAMP:20250626T055852Z
+SUMMARY:Soirhan Andhum
+DESCRIPTION:Tableau de bord de l'étudiant : \nhttps://openclassrooms.com/
+ fr/spaces/admin/students/12737354\n\nRejoindre la visio : \nhttps://ope
+ nclassrooms.com/fr/video-conferences/smrlwgv1qn59/meet
+DTSTART:20250407T090000Z
+DTEND:20250407T093000Z
+CATEGORIES:Session de mentorat
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:3033641
+DTSTAMP:20250626T055852Z
+SUMMARY:Ilyes Boutajar
+DESCRIPTION:Tableau de bord de l'étudiant : \nhttps://openclassrooms.com/
+ fr/spaces/admin/students/14652196\n\nRejoindre la visio : \nhttps://ope
+ nclassrooms.com/fr/video-conferences/tk8fbqr21qs2/meet
+DTSTART:20250407T080000Z
+DTEND:20250407T084500Z
+CATEGORIES:Session de mentorat
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:3042250
+DTSTAMP:20250626T055852Z
+SUMMARY:Soirhan Andhum
+DESCRIPTION:Tableau de bord de l'étudiant : \nhttps://openclassrooms.com/
+ fr/spaces/admin/students/12737354\n\nRejoindre la visio : \nhttps://ope
+ nclassrooms.com/fr/video-conferences/p8x358vbtkq5/meet
+DTSTART:20250404T090000Z
+DTEND:20250404T093000Z
+CATEGORIES:Session de mentorat
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:3037375
+DTSTAMP:20250626T055852Z
+SUMMARY:Léo Troup
+DESCRIPTION:Tableau de bord de l'étudiant : \nhttps://openclassrooms.com/
+ fr/spaces/admin/students/15129025\n\nRejoindre la visio : \nhttps://ope
+ nclassrooms.com/fr/video-conferences/5rw7p7jh5km3/meet
+DTSTART:20250404T080000Z
+DTEND:20250404T084500Z
+CATEGORIES:Session de mentorat
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:3032816
+DTSTAMP:20250626T055852Z
+SUMMARY:Alice Lendormi
+DESCRIPTION:Tableau de bord de l'étudiant : \nhttps://openclassrooms.com/
+ fr/spaces/admin/students/14717478\n\nRejoindre la visio : \nhttps://ope
+ nclassrooms.com/fr/video-conferences/gtbwfn3dhts7/meet
+DTSTART:20250331T140000Z
+DTEND:20250331T144500Z
+CATEGORIES:Session de mentorat
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:3033001
+DTSTAMP:20250626T055852Z
+SUMMARY:Mansor Samb
+DESCRIPTION:Tableau de bord de l'étudiant : \nhttps://openclassrooms.com/
+ fr/spaces/admin/students/13993227\n\nRejoindre la visio : \nhttps://ope
+ nclassrooms.com/fr/video-conferences/5kgw7kszbrs8/meet
+DTSTART:20250331T070000Z
+DTEND:20250331T074500Z
+CATEGORIES:Session de mentorat
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:3032815
+DTSTAMP:20250626T055852Z
+SUMMARY:Alice Lendormi
+DESCRIPTION:Tableau de bord de l'étudiant : \nhttps://openclassrooms.com/
+ fr/spaces/admin/students/14717478\n\nRejoindre la visio : \nhttps://ope
+ nclassrooms.com/fr/video-conferences/ntn2wzlt9x94/meet
+DTSTART:20250328T130000Z
+DTEND:20250328T134500Z
+CATEGORIES:Session de mentorat
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:3027923
+DTSTAMP:20250626T055852Z
+SUMMARY:Elisabeth De Cambourg
+DESCRIPTION:Tableau de bord de l'étudiant : \nhttps://openclassrooms.com/
+ fr/spaces/admin/students/14474040\n\nRejoindre la visio : \nhttps://ope
+ nclassrooms.com/fr/video-conferences/t4rwtb7j33m9/meet
+DTSTART:20250328T090000Z
+DTEND:20250328T094500Z
+CATEGORIES:Session de mentorat
+STATUS:CONFIRMED
+END:VEVENT
+END:VCALENDAR

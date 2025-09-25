@@ -71,7 +71,13 @@
                     <div class="card-content-text">
                     <ul>
                         @foreach($items as $item)
-                            <li>{{htmlspecialchars($item[0])}}  {{$item[1]}} {{$item[2]}} {{$item[3]}}</li>
+                            <li>
+                                @if($item[4] == "T")
+                                    <strong>{{htmlspecialchars($item[0])}}</strong>
+                                @else   
+                                    {{htmlspecialchars($item[0])}}
+                                @endif
+                                {{$item[1]}} {{$item[2]}} {{$item[3]}}</li>
                         @endforeach
                         <li>
                             <strong>Total : @money($total_amount*1.2) €</strong>
