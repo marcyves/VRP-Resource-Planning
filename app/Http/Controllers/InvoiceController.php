@@ -59,7 +59,7 @@ class InvoiceController extends Controller
         $school = School::find($school_id);
 
         if ($cmd == "detailed") {
-            [$items, $total_amount ]= Tools::getInvoiceDetails($school_id, $month, $year);
+            [$items, $total_amount] = Tools::getInvoiceDetails($school_id, $month, $year);
         } else {
             $items = [];
         }
@@ -125,9 +125,10 @@ class InvoiceController extends Controller
         $company = $user->getCompany();
 
         $file_path = public_path('invoices/' . $company->bill_prefix . $bill . ".pdf");
-        
+
         if (!file_exists($file_path)) {
-            return abort(404);
+            session()->flash('danger', "File not found");
+            return redirect()->back();
         }
         return response()->download($file_path);
     }
@@ -242,16 +243,15 @@ class InvoiceController extends Controller
         $invoiceY = $currentY + 1; // Move down for the first item
         $total_invoice = 0;
         foreach ($items as $item) {
-            switch($item[4])
-            {
-            case "T":
-                $lineHeight = $pdf->setTitleFont();
-            break;
-            case "S":
-                $lineHeight = $pdf->setSubTitleFont();
-            break;
-            default:
-                $lineHeight = $pdf->setNormalFont();
+            switch ($item[4]) {
+                case "T":
+                    $lineHeight = $pdf->setTitleFont();
+                    break;
+                case "S":
+                    $lineHeight = $pdf->setSubTitleFont();
+                    break;
+                default:
+                    $lineHeight = $pdf->setNormalFont();
             }
             $pdf->SetXY($x + 2, $invoiceY);
             $pdf->Cell(108, $lineHeight, $item[0], 0, 0, 'L', false);
