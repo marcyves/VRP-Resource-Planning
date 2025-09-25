@@ -230,6 +230,8 @@ class Tools
         $items_total = array_merge($items_total, $items);
         $total_amount += $course_gain;
 
+        $total_amount = round($total_amount, 2);
+
         return [$items_total, $total_amount];
     }
 }
