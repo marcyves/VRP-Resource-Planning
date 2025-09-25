@@ -119,9 +119,17 @@ class InvoiceController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Invoice $bill)
+    public function show(String $bill)
     {
-        //
+        $user = Auth::user();
+        $company = $user->getCompany();
+
+        $file_path = public_path('invoices/' . $company->bill_prefix . $bill . ".pdf");
+        
+        if (!file_exists($file_path)) {
+            return abort(404);
+        }
+        return response()->download($file_path);
     }
 
     /**
@@ -200,7 +208,7 @@ class InvoiceController extends Controller
         $date_echeance = date('d/m/Y', strtotime('+1 day'));
         //$date_echeance = '09/09/2025';
 
-        $pdf = new InvoicePdf($invoiceId, $date_facture, $date_echeance, $school->code); // Now with no global variables
+        $pdf = new InvoicePdf($invoiceId, $date_facture, $date_echeance, $school->code, $company->bill_prefix); // Now with no global variables
 
         $x = 10;
         $wpage = 185;
@@ -307,7 +315,8 @@ class InvoiceController extends Controller
 
         // Output PDF
 
-        $pdfPath = __DIR__ . "/../../../public/invoices/" . $invoiceId . ".pdf";
+        $pdfPath = __DIR__ . "/../../../public/invoices/" . $company->bill_prefix . $invoiceId . ".pdf";
+
         $pdf->Output($pdfPath, 'F');
         return $pdfPath;
     }

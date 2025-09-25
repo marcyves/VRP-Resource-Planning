@@ -7,12 +7,13 @@ use TCPDF;
 // Extend the TCPDF class to create custom Header and Footer
 class InvoicePdf extends TCPDF
 {
-  protected $id_facture, $date_facture , $date_echeance, $client_code;
+  protected $id_facture, $date_facture , $date_echeance, $client_code, $prefix;
 
   // Pass data through the constructor or a method
-  public function __construct($id, $date, $echeance, $code)
+  public function __construct($id, $date, $echeance, $code, $prefix)
   {
     $this->id_facture = $id;
+    $this->prefix = $prefix;
     $this->date_facture = $date;
     $this->date_echeance = $echeance;
     $this->client_code = $code;
@@ -22,23 +23,17 @@ class InvoicePdf extends TCPDF
   //Page header
   public function Header()
   {
-    // Access data from the protected property
-    $id_facture = $this->id_facture;
-    $date_facture = $this->date_facture;
-    $date_echeance = $this->date_echeance;
-    $client_code = $this->client_code;
-
     // Logo
     $image_file = 'logo-XDM.png';
     $this->Image($image_file, 10, 10, 20, '', 'PNG', '', 'T', false, 300, '', false, false, 0, false, false, false);
     // Set font
     $this->setTitleFont();
-    $this->Cell(0, 12, 'Facture ' . $id_facture, 0, true, 'R', 0, '', 0, false, 'M', 'M');
+    $this->Cell(0, 12, 'Facture ' . $this->prefix . $this->id_facture, 0, true, 'R', 0, '', 0, false, 'M', 'M');
 
     $this->setFont('helvetica', 'N', 8);
-    $this->Cell(0, 6, "Date facturation : $date_facture", 0, true, 'R', 0, '', 0, false, 'M', 'M');
-    $this->Cell(0, 6, "Date échéance : $date_echeance", 0, true, 'R', 0, '', 0, false, 'M', 'M');
-    $this->Cell(0, 6, 'Code client : ' . $client_code, 0, true, 'R', 0, '', 0, false, 'M', 'M');
+    $this->Cell(0, 6, "Date facturation : ". $this->date_facture, 0, true, 'R', 0, '', 0, false, 'M', 'M');
+    $this->Cell(0, 6, "Date échéance : " . $this->date_echeance, 0, true, 'R', 0, '', 0, false, 'M', 'M');
+    $this->Cell(0, 6, 'Code client : ' . $this->client_code, 0, true, 'R', 0, '', 0, false, 'M', 'M');
   }
 
   public function setNormalFont()
