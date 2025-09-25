@@ -21,24 +21,14 @@
                 @endforeach
             </select>
             <select name="hour" class="rounded-md py-0 pl-2 pr-8 w-14">
-                @php
-                    for($h=8;$h<20;$h++)
-                    {
-                @endphp
+                @for ($h=8;$h<20;$h++)
                         <option value="{{$h}}">{{$h}}</option>
-                @php
-                    }
-                @endphp
+                @endfor
             </select>
             <select name="minutes" class="rounded-md py-0 pl-2 pr-8 w-14">
-                @php
-                    for($m=0;$m<60;$m+=5)
-                    {
-                @endphp
+                @for($m=0;$m<60;$m+=5)
                         <option value="{{$m}}">{{$m}}</option>
-                @php
-                    }
-                @endphp
+                @endfor
             </select>
             <br class="my-4">
             <x-form-group-create course_id=$course_id />
