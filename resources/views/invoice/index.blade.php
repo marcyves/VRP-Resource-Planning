@@ -77,6 +77,9 @@
                 </td>
                 @if(Auth::user()->getMode() == "Edit")
                 <td>
+                    <a href="{{route('invoice.show', $bill->id)}}">
+                        <x-button-view/>
+                    </a>
                     <form class="inline" action="{{route('invoice.payed', $bill->id)}}" method="get">
                     <x-button-payed/>
                     </form>
