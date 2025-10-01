@@ -87,6 +87,7 @@ class Planning extends Model
         ->where(['courses.school_id' => $school_id])
         ->where('begin', '>', $start_date)
         ->where('end', '<', $end_date)
+        ->orderBy('courses.name', 'asc')
         ->orderBy('begin', 'asc')
         ->get();
     }
