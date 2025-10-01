@@ -7,7 +7,7 @@ use App\Models\Invoice;
 use App\Models\School;
 
 use App\Http\Utility\Tools;
-
+use App\Models\Planning;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
@@ -59,7 +59,7 @@ class InvoiceController extends Controller
         $school = School::find($school_id);
 
         if ($cmd == "detailed") {
-            [$items, $total_amount] = Tools::getInvoiceDetails($school_id, $month, $year);
+            [$items, $total_amount] = Tools::getInvoiceDetails($school_id, $month, $year, $bill_id);
         } else {
             $items = [];
         }
@@ -85,7 +85,7 @@ class InvoiceController extends Controller
         $invoice_name = $company->bill_prefix . $invoice_id;     // This is the full ID with the company prefix
         $school = School::find($request->school_id);
 
-        [$items, $total_amount] = Tools::getInvoiceDetails($school->id, $month, $year);
+        [$items, $total_amount] = Tools::getInvoiceDetails($school->id, $month, $year, $invoice_name);
 
         try {
             $pdfPath = $this->generateAndSaveInvoice($invoice_id, $company, $school, $items);
@@ -110,7 +110,7 @@ class InvoiceController extends Controller
             return redirect(route('invoice.index'));
         } catch (\Exception $e) {
             dd($e);
-            session()->flash('danger', "Erreur lors de l'enregitrement de la facture.");
+            session()->flash('danger', "Erreur lors de l'enregistrement de la facture.");
 
             return redirect()->back();
         }
@@ -191,9 +191,16 @@ class InvoiceController extends Controller
     {
         try {
             $invoice->delete();
-            session()->flash('success', "Facture " . $invoice->id . " supprimée avec succès.");
+            $planning_list = Planning::where('bill_id', Auth::user()->getCompanyBillPrefix() . $invoice->id)->get();
+
+            foreach ($planning_list as $id) {
+                $planning = Planning::find($id['id']);
+                $planning->bill_id = "";
+                $planning->update();
+            }
+
+            session()->flash('success', "Facture " . Auth::user()->getCompanyBillPrefix() .$invoice->id . " supprimée avec succès.");
             return redirect()->back();
-            //            return redirect(route('dashboard'));
         } catch (\Exception $e) {
             session()->flash('danger', "Erreur lors de la suppression de la facture.");
             //session()->flash('danger', $e->getMessage());

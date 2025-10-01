@@ -169,7 +169,7 @@ class Tools
         return [$schools, $monthly_gain, $monthly_hours];
     }
 
-    public static function getInvoiceDetails($school_id, $month, $year)
+    public static function getInvoiceDetails($school_id, $month, $year, $invoice_id)
     {
         $start_date =  trim($year) . "-" . substr("0" . trim($month), -2) . "-0 00:00:00";
         $month++;
@@ -223,6 +223,9 @@ class Tools
             $course_hours  += $duration;
             $course_gain   += $gain;
             array_push($items, [" - " . date('d/m/Y H:i', strtotime($planning->begin)) . " - " . date('H:i', strtotime($planning->end)), "", "", $duration, "N"]);
+            $planning->bill_id = $invoice_id;
+            $planning->update();
+
         }
         //        dd($items);
         // Loop ended, we write current course details at top of current items list

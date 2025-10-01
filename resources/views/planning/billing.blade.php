@@ -62,40 +62,48 @@
                 </div>
             @endforeach
 
-        </div>
-            <div class="flex flex-row justify-between font-semibold text-gray-600 border border-gray-300 rounded-md mt-2 py-2 bg-green-100">
+            <div class="flex flex-row justify-between font-semibold text-gray-600 mt-2 py-2 bg-blue-300">
                 <div class="mx-4">
                     Total Time worked = {{number_format($courses['hours'],2)}} hours
                 </div>
                 <div class="mx-4">
                     School Total = {{number_format($courses['gain'],2)}} €
                 </div>
-                <form action="{{route('billing.setBill')}}" class="inline" method="post">
-                    @csrf
-                    <input type="hidden" name="school_id" value="{{$courses['school_id']}}">
-                    <input type="hidden" name="course_id" value="{{$course_id}}">
-                    <input type="hidden" name="month" value="{{$current_month}}">
-                    <input type="hidden" name="year" value="{{$current_year}}">
-                    <label for="bill_id">Assign:</label>
-                    <select name="bill_id" id="bill_id"
-                    class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
-                    @foreach ($bills as $bill)
-                        <option value="{{$bill->id}}">{{$bill->id}}</option>
-                    @endforeach
-                    </select>
-                    <input type="submit" value="Save"
-                    class="border border-gray-400 bg-white rounded-md px-4 mr-4">
-                </form>
-                <form action="{{route('invoice.create')}}" class="inline" method="get">
-                    @csrf
-                    <input type="hidden" name="school_id" value="{{$courses['school_id']}}">
-                    <input type="hidden" name="course_id" value="{{$course_id}}">
-                    <input type="hidden" name="month" value="{{$current_month}}">
-                    <input type="hidden" name="year" value="{{$current_year}}">
-                    <input type="hidden" name="cmd" value="detailed">
-                    <input type="submit" value="Create" class="border border-gray-400 bg-white rounded-md px-4 mr-4">
-                </form>
+
+                @if($schedule['bill'] != "")
+                    <div class="mx-4 text-green-600">
+                        Invoice already assigned
+                    </div>
+                @else
+                    <form action="{{route('billing.setBill')}}" class="inline" method="post">
+                        @csrf
+                        <input type="hidden" name="school_id" value="{{$courses['school_id']}}">
+                        <input type="hidden" name="course_id" value="{{$course_id}}">
+                        <input type="hidden" name="month" value="{{$current_month}}">
+                        <input type="hidden" name="year" value="{{$current_year}}">
+                        <label for="bill_id">Assign:</label>
+                        <select name="bill_id" id="bill_id"
+                        class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
+                        @foreach ($bills as $bill)
+                            <option value="{{$bill->id}}">{{$bill->id}}</option>
+                        @endforeach
+                        </select>
+                        <input type="submit" value="Save"
+                        class="border border-gray-400 bg-white rounded-md px-4 mr-4">
+                    </form>
+                    <form action="{{route('invoice.create')}}" class="inline" method="get">
+                        @csrf
+                        <input type="hidden" name="school_id" value="{{$courses['school_id']}}">
+                        <input type="hidden" name="course_id" value="{{$course_id}}">
+                        <input type="hidden" name="month" value="{{$current_month}}">
+                        <input type="hidden" name="year" value="{{$current_year}}">
+                        <input type="hidden" name="cmd" value="detailed">
+                        <input type="submit" value="Create" class="border border-gray-400 bg-white rounded-md px-4 mr-4">
+                    </form>
+                @endif
             </div>
+        </div>
+
         @endforeach
     </section>
 

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Classes\invoiceSchool;
+use App\Models\Planning;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
@@ -84,4 +84,36 @@ class BillingController extends Controller
         }
     }
 
+        /**
+     * Display the specified resource.
+     */
+    public function setBill(Request $request)
+    {
+        $school_id = $request->school_id;
+        $month = $request->month;
+        $year  = $request->year;
+
+        $start_date =  trim($year) . "-" . substr("0" . trim($month), -2) . "-0 00:00:00";
+        $month++;
+        $end_year = $year;
+
+        if ($month == "13") {
+            $month = "01";
+            $end_year++;
+        }
+
+        $end_date   =  trim($end_year) . "-" . substr("0" . trim($month), -2) . "-0 00:00:00";
+
+        $planning_list = Planning::getPlanningBySchoolAndDate($school_id, $start_date, $end_date);
+
+        foreach ($planning_list as $id) {
+            $planning = Planning::find($id['id']);
+            $planning->bill_id = Auth()->user()->getCompanyBillPrefix() . $request->bill_id;
+            $planning->update();
+        }
+
+        session()->flash('success', "Facture enregistrée avec succès.");
+
+        return redirect(route('billing.index'));
+    }
 }
