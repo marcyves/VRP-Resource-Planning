@@ -101,7 +101,7 @@ class InvoiceController extends Controller
             Invoice::create([
                 'id' => $invoice_id,
                 'description' => $request->description,
-                'compasny_id' => $company->id,
+                'company_id' => $company->id,
                 'school_id' => $request->school_id,
                 'amount' => $total_amount,
             ]);
