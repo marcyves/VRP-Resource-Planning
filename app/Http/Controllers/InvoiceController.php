@@ -11,6 +11,7 @@ use App\Models\Planning;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class InvoiceController extends Controller
 {
@@ -47,7 +48,7 @@ class InvoiceController extends Controller
         $month = $request->month;
         $year = $request->year;
         $cmd = $request->cmd;
-
+        
         $user = Auth::user();
         $bills = $user->getInvoices();
         $bill_number = $bills->last()->id ?? substr(Carbon::now()->year, -2) . "000";
@@ -59,7 +60,7 @@ class InvoiceController extends Controller
         $school = School::find($school_id);
 
         if ($cmd == "detailed") {
-            [$items, $total_amount] = Tools::getInvoiceDetails($school_id, $month, $year, $bill_id);
+            [$items, $total_amount] = Tools::getInvoiceDetails($school_id, $month, $year, $bill_id, false);
         } else {
             $items = [];
         }
@@ -88,7 +89,7 @@ class InvoiceController extends Controller
         [$items, $total_amount] = Tools::getInvoiceDetails($school->id, $month, $year, $invoice_name);
 
         try {
-            $pdfPath = $this->generateAndSaveInvoice($invoice_id, $company, $school, $items);
+            $pdfPath = $this->generateAndSaveInvoice($invoice_id, $company, $school, $items,true);
         } catch (\Exception $e) {
             // Handle PDF generation errors
             dd($e);
@@ -100,7 +101,7 @@ class InvoiceController extends Controller
             Invoice::create([
                 'id' => $invoice_id,
                 'description' => $request->description,
-                'company_id' => $company->id,
+                'compasny_id' => $company->id,
                 'school_id' => $request->school_id,
                 'amount' => $total_amount,
             ]);
