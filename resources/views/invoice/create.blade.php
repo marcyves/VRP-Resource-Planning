@@ -74,10 +74,13 @@
                             <li>
                                 @if($item[4] == "T")
                                     <strong>{{htmlspecialchars($item[0])}}</strong>
+                                    <br>
+                                    Rate:  @money($item[2])€ Hours : @money($item[3])
                                 @else   
                                     {{htmlspecialchars($item[0])}}
+                                    {{$item[1]}} {{$item[2]}} {{$item[3]}}
                                 @endif
-                                {{$item[1]}} {{$item[2]}} {{$item[3]}}</li>
+                            </li>
                         @endforeach
                         <li>
                             <strong>Total : @money($total_amount*1.2) €</strong>
