@@ -1,5 +1,5 @@
 
-        <section  class="section-box">
+        <section >
             <article  class="nice-box">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight py-4">Groupes Archivés</h2>
         <ul>

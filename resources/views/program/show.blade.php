@@ -26,7 +26,7 @@
 </div>
     </x-slot>
 
-    <section  class="section-box">
+    <section >
         <h2 class="font-semibold text-xl text-gray-800 leading-tight mb-2">
             {{__('messages.course_list')}}
         </h2>

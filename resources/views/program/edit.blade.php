@@ -5,7 +5,7 @@
         </h2>
     </x-slot>
 
-    <section  class="section-box">
+    <section >
 
 <form action="{{route('program.update', $program->id)}}" method="post">
     @csrf

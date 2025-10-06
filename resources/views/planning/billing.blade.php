@@ -5,7 +5,7 @@
         </h2>
     </x-slot>
 
-    <section  class="section-box">
+    <section >
         <div id="calPeriod">
             <x-period-selector :years=$years :months=$months current_year={{$current_year}} current_month={{$current_month}} route="billing"/>
         </div>
@@ -43,6 +43,9 @@
                         text-green-400
                     @endif
                     ">
+                    @if($schedule['billable_rate'] != 1)
+                        {{@number_format($schedule['billable_rate'],2)}}
+                    @endif
                     ({{number_format($schedule['duration'],1)}} h)</span>
                     @if(Auth::user()->getMode() == "Edit")
                         </a>
@@ -107,7 +110,7 @@
         @endforeach
     </section>
 
-        <section  class="section-box">
+        <section >
         <div class="flex flex-row justify-between font-semibold text-gray-600 border border-gray-300 rounded-md mt-4 py-4 bg-gray-200">
             <div class="mx-4">
                 Time worked = {{number_format($monthly_hours,2)}} hours

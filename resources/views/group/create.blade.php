@@ -5,7 +5,7 @@
         </h2>
     </x-slot>
 
-    <section  class="section-box">
+    <section >
         <form action="{{route('group.save', $course_id)}}" method="post">
             @csrf
             <x-form-group-create/>

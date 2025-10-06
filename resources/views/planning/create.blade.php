@@ -5,7 +5,7 @@
         </h2>
     </x-slot>
 
-    <section  class="section-box">
+    <section >
 
         <form action="{{route('planning.store')}}" method="post">
             @csrf

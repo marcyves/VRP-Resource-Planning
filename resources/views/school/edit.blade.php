@@ -5,7 +5,7 @@
         </h2>
     </x-slot>
 
-    <section  class="section-box">
+    <section >
 
 <form action="{{route('school.update', $school->id)}}" method="post" class="nice-form">
     @csrf

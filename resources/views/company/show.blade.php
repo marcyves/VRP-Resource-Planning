@@ -7,7 +7,7 @@
         </div>
     </x-slot>
 
-    <section class="section-box">
+    <section>
         <ul class="list">
             <li class="card">
                 <div class="card-content-text">

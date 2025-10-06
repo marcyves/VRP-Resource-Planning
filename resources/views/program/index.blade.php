@@ -37,7 +37,7 @@
     </section>
 
     @if(Auth::user()->getMode() == "Edit")
-        <section  class="section-box">
+        <section >
             <form action="{{route('program.store')}}" method="post"
             class="mx-auto px-6 py-2 bg-white shadow-md mb-6 flex items-center justify-items-start">
                 @csrf
