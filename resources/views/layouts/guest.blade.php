@@ -18,7 +18,7 @@
         <h1 class="maintenance-title">VRP Resource Planning</h1>
         <img  class="maintenance-logo" src="/images/VRP.jpeg" alt="VRP" width="200">
             {{ $slot }}
-        <footer class="text-gray-600 p-6">
+        <footer class="glass-background">
         &copy; 2024 XDM Consulting - Marc Augier
         </footer>
     </body>
