@@ -89,7 +89,7 @@ class InvoiceController extends Controller
         [$items, $total_amount] = Tools::getInvoiceDetails($school->id, $month, $year, $invoice_name);
 
         try {
-            $pdfPath = $this->generateAndSaveInvoice($invoice_id, $company, $school, $items,true);
+            $pdfPath = $this->generateAndSaveInvoice($invoice_id, $company, $school, $items, true);
         } catch (\Exception $e) {
             // Handle PDF generation errors
             dd($e);
@@ -251,7 +251,7 @@ class InvoiceController extends Controller
         $invoiceY = $currentY + 1; // Move down for the first item
         $total_invoice = 0;
         foreach ($items as $item) {
-            switch ($item[4]) {
+            switch ($item[5]) {
                 case "T":
                     $lineHeight = $pdf->setTitleFont();
                     break;
@@ -263,22 +263,28 @@ class InvoiceController extends Controller
             }
             $pdf->SetXY($x + 2, $invoiceY);
             $pdf->Cell(108, $lineHeight, $item[0], 0, 0, 'L', false);
+
             $pdf->setNormalFont();
             $pdf->Cell(12, $lineHeight, $item[1], 0, 0, 'C', false);
-            $value2 = $item[2];
-            if (is_numeric($value2))
-                $pdf->Cell(18, $lineHeight, number_format($value2, 2), 0, 0, 'R', false);
-            else
-                $pdf->Cell(18, $lineHeight, $value2, 0, 0, 'R', false);
-            $value3 = $item[3];
-            if (is_numeric($value3))
-                $pdf->Cell(22, $lineHeight, number_format($value3, 1), 0, 0, 'R', false);
-            else
-                $pdf->Cell(22, $lineHeight, $value3, 0, 0, 'R', false);
 
-            if (is_numeric($value2) && is_numeric($value3)) {
-                $total = number_format($value2 * $value3, 2);
-                $total_invoice += $item[2] * $item[3];
+            $rate = $item[2];
+            if (is_numeric($rate))
+                $pdf->Cell(18, $lineHeight, number_format($rate, 2), 0, 0, 'R', false);
+            else
+                $pdf->Cell(18, $lineHeight, $rate, 0, 0, 'R', false);
+
+            $duration = $item[3];
+            if (is_numeric($duration))
+            {
+                $pdf->Cell(22, $lineHeight, number_format($duration, 2), 0, 0, 'R', false);
+            }
+            else
+                $pdf->Cell(22, $lineHeight, $duration, 0, 0, 'R', false);
+
+
+            if (is_numeric($rate) && is_numeric($duration)) {
+                $total = number_format($rate * $duration, 2);
+                $total_invoice += $total;
             } else {
                 $total = "";
             }

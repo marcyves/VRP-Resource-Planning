@@ -65,7 +65,6 @@ class BillingController extends Controller
 
         $schools = Auth::user()->getSchools();
         $planning = $schools->getBillingPlanning($current_year, $current_month);
-
         if(!$planning)
         {
             $monthly_hours = 0;

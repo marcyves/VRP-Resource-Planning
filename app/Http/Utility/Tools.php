@@ -83,6 +83,9 @@ class Tools
         $current_school = "";
         $course_name = "";
         $course_id = 0;
+        $course_hours  = 0;
+        $course_gain   = 0;
+
         $monthly_hours = 0;
         $monthly_gain  = 0;
         $schools = array();
@@ -98,6 +101,7 @@ class Tools
                         "course_name" => $course_name,
                         "hours"     => $course_hours,
                         "gain"      => $course_gain,
+                        "billable_rate" => $event->billable_rate,
                         "duration"  => $event->session_length
                     );
                 }
@@ -130,7 +134,7 @@ class Tools
             $end      = strtotime($event->end);
             $begin    = strtotime($event->begin);
             $duration = intval(($end - $begin) / 60) / 60;
-            $gain     = $duration * $event->rate;
+            $gain     = $duration * $event->rate * $event->billable_rate;
 
             $course_hours  += $duration;
             $course_gain   += $gain;
@@ -147,6 +151,7 @@ class Tools
                 "begin"    => $event->begin,
                 "end"      => $event->end,
                 "duration" => $duration,
+                "billable_rate" => $event->billable_rate,
                 "bill"     => $event->bill_id
             );
         }
@@ -198,7 +203,7 @@ class Tools
                 // When a new course is detected we write previous course details and initialise counters
                 if (!$first_course) {
                     // Skip first course to wait for planning data collection
-                    array_unshift($items, [$course_name, "20%", $rate, $course_hours, "T"]);
+                    array_unshift($items, [$course_name, "20%", $rate, $course_hours, "", "T"]);
                     $items_total = array_merge($items_total, $items);
                     $items = [];
                     $total_amount += $course_gain;
@@ -212,24 +217,26 @@ class Tools
             }
             if ($group_name != $planning_detail['group_name']) {
                 $group_name = $planning_detail['group_name'];
-                array_push($items, ["Groupe : " . $group_name, "", "", "", "S"]);
+                array_push($items, ["Groupe : " . $group_name, "", "", "", "", "S"]);
             }
             // Get planning details
             $planning = Planning::find($planning_detail['id']);
             $end      = strtotime($planning->end);
             $begin    = strtotime($planning->begin);
             $duration = intval(($end - $begin) / 60) / 60;
+            $billable_rate = $planning->billable_rate;
+            $duration = $duration * $billable_rate;
             $gain     = $duration * $rate;
             $course_hours  += $duration;
             $course_gain   += $gain;
-            array_push($items, [" - " . date('d/m/Y H:i', strtotime($planning->begin)) . " - " . date('H:i', strtotime($planning->end)), "", "", $duration, "N"]);
+            array_push($items, [" - " . date('d/m/Y H:i', strtotime($planning->begin)) . " - " . date('H:i', strtotime($planning->end)), "", "", $duration, $billable_rate, "N"]);
             if($store){
                 $planning->bill_id = $invoice_id;
                 $planning->update();
             }
         }
         // Loop ended, we write current course details at top of current items list
-        array_unshift($items, [$course_name, "20%", $rate, $course_hours, "T"]);
+        array_unshift($items, [$course_name, "20%", $rate, $course_hours * $billable_rate, "", "T"]);
         $items_total = array_merge($items_total, $items);
         $total_amount += $course_gain;
 

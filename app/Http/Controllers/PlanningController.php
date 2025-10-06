@@ -302,6 +302,7 @@ class PlanningController extends Controller
             $planning->end = $end;
             $planning->group_id = $request->group_id;
             $planning->course_id = $request->course_id;
+            $planning->billable_rate = $request->billable_rate;
 
             $planning->save();
 
