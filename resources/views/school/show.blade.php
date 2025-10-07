@@ -7,7 +7,7 @@
         </div>
     </x-slot>
 
-    <section>
+    <section class="glass-background">
         @php
             $total_time = 0;
             $total_budget = 0;
@@ -20,7 +20,7 @@
     </article>
     </section>
 
-    <section>
+    <section class="glass-background">
         <div class="flex justify-between items-center mb-4">
             <h3 class="text-lg font-semibold">{{ __('messages.address') }}</h3>
 
@@ -35,10 +35,10 @@
         </div>
     </section>
 
-    <section>
+    <section class="glass-background">
         <x-documents-school-table :documents=$documents :school_id=$school_id/>
     <div class="mx-auto max-w-screen-xl px-2 lg:px-12">
-        <div class="bg-white relative shadow-md sm:rounded-lg overflow-hidden">
+        <div class="relative shadow-md sm:rounded-lg overflow-hidden">
             <div class="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4">
                 <div class="w-full text-center text-gray-600">
                     <form action="{{route('document.store', $school_id)}}" 

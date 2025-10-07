@@ -236,7 +236,7 @@ class Tools
             }
         }
         // Loop ended, we write current course details at top of current items list
-        array_unshift($items, [$course_name, "20%", $rate, $course_hours * $billable_rate, "", "T"]);
+        array_unshift($items, [$course_name, "20%", $rate, $course_hours, "", "T"]);
         $items_total = array_merge($items_total, $items);
         $total_amount += $course_gain;
 

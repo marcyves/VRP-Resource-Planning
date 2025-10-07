@@ -158,7 +158,7 @@ header h2 {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    align-items: center;
+    align-items: top;
     padding: 6px;
     margin: 6px;
     min-width: 30%;
@@ -181,7 +181,8 @@ header h2 {
     overflow: hidden;
     text-overflow: ellipsis;
 }
-.card-content-text .card-subtitle {
+.card-content-text, .card-subtitle {
+    color: var(--bg-color-a);
     font-size: 14px;
     font-weight: 300;
     white-space: nowrap;
@@ -220,8 +221,21 @@ footer {
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
 }
 
-.glass-background select, input {
+.glass-background select,
+.glass-background input{
     color: var(--main-text-color);
+    height: fit-content;
+    border-radius: 6px;
+    margin: 3px;
+    padding: 0 6px;
+    background-color: rgba(255, 255, 255, 0.4);
+    min-width: 3.5em;
+    max-width: 16em;
+    overflow: hidden;
+}
+.glass-background input{
+    max-width: 4em;
+    text-align: end;
 }
 
 .cool-box {

@@ -1,13 +1,12 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Dashboard') }}
+            {{ __('Détails du cours : ') }}{{$course->name}}
         </h2>
     </x-slot>
 
-    <section>
+    <section class="glass-background">
         <div class="flex flew-row place-content-between bg-grey-200 p-2 rounded-md">
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">{{$course->name}}</h2>
             <span class="justify-end">
                 <form action="{{route('course.edit', $course->id)}}" method="get">
                     <x-button-edit/>
@@ -30,36 +29,23 @@
             </li>
             <li class="card">
                 <div class="card-content-text">
-                    <label class="card-title">
-            Year: 
-            </label>
-            {{$course->year}}
-            <br>
-            <label class="card-title">
-            Semester: 
-            </label>
-            {{$course->semester}}
-        </div>            </li>
-            <li class="card">
-                <label class="card-title">
-                Rate: 
-                </label>
-                {{$course->rate}}
+                    <label class="card-title">Year:</label>
+                    {{$course->year}}
+                    <br>
+                    <label class="card-title">Semester: </label>
+                    {{$course->semester}}
+                </div>
             </li>
-            <li>
-                <label for="recurring">
-                    {{ __('messages.recurring') }} 
-                </label>
-                @if($course->recurring)
-                {{ __('actions.yes') }}
-                @else
-                {{ __('actions.no') }}
-                @endif        
+            <li class="card">
+                <div class="card-content-text">
+                <label class="card-title">Rate: </label>
+                @money($course->rate) € HT / @money($course->rate * 1.2) € TTC
+                </div>
             </li>
         </ul>       
     </section>
 
-    <section>
+    <section class="glass-background">
         <x-nice-title color="grey-200" title="Groups">
             @if(Auth::user()->getMode() == "Edit")
                 <a
@@ -103,7 +89,7 @@
         </ul>
     </section>
 
-    <section>
+    <section class="glass-background">
         <h2 class="font-semibold text-xl mb-2">{{ __('messages.groups_available')}}</h2>
         <ul class="list">
             @if($available_groups == [])

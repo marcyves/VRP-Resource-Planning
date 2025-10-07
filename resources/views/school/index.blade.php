@@ -9,7 +9,7 @@
         @endif
     </x-slot>
  
-    <section>
+    <section class="glass-background">
         <ul class="list">
             @foreach ($schools as $school)
             <li class="card">
@@ -20,9 +20,9 @@
     </section>
 
     @if(Auth::user()->getMode() == "Edit")
-    <section>
+    <section class="glass-background">
         <form action="{{route('school.store')}}" method="post" 
-        class="mx-auto px-6 py-2 bg-white shadow-md mb-6 flex items-center justify-items-start">
+        class="mx-auto px-6 py-2 shadow-md mb-6 flex items-center justify-items-start">
             @csrf
             <x-text-input class="mx-6" type="text" name="name" id="name" placeholder="{{ __('messages.name') }}" value="{{old('name')}}"/>
             <x-text-input class="mx-6" type="text" name="code" id="code" placeholder="{{ __('messages.code') }}" value="{{old('code')}}"/>
