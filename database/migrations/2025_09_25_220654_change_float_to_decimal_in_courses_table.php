@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('courses', function (Blueprint $table) {
-            $table->decimal('rate', 6, 4)->change();
+            $table->decimal('rate', 8, 4)->change();
         });
     }
 
