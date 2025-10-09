@@ -68,7 +68,7 @@
             {{ __('messages.time_worked') }} = {{$monthly_hours}} {{ __('messages.hours') }}
             </div>
             <div class="mx-4">
-            {{ __('messages.monthly_gain') }} = {{number_format($monthly_gain,2)}} €
+            {{ __('messages.monthly_gain') }} = {{number_format($monthly_gain,2)}} € HT / {{number_format($monthly_gain*1.2,2)}} € TTC
             </div>
             <div class="mx-4">
             {{ __('messages.hour_rate') }} = @if ($monthly_hours == 0) 0 @else {{number_format($monthly_gain/$monthly_hours,2)}} @endif€

@@ -60,7 +60,7 @@
                         Time worked = {{number_format($schedules['hours'],2)}} hours
                     </div>
                     <div class="mx-4 pt-2">
-                        Total = {{number_format($schedules['gain'],2)}} €
+                        Total = {{number_format($schedules['gain'],2)}} € HT / {{number_format($schedules['gain']*1.2,2)}} € TTC
                     </div>
                 </div>
             @endforeach
@@ -70,7 +70,7 @@
                     Total Time worked = {{number_format($courses['hours'],2)}} hours
                 </div>
                 <div class="mx-4">
-                    School Total = {{number_format($courses['gain'],2)}} €
+                    School Total = {{number_format($courses['gain'],2)}} € HT / {{number_format($courses['gain']*1.2,2)}} € TTC
                 </div>
 
                 @if($schedule['bill'] != "")
