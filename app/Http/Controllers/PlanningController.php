@@ -178,6 +178,7 @@ class PlanningController extends Controller
                     'size' => $request->size,
                     'course_id' => $course_id,
                     'company_id' => $company_id,
+                    'year' => $request->year,
                     'active' => $active,
                 ]);
 
@@ -195,10 +196,11 @@ class PlanningController extends Controller
                     ]);
                 }
             } catch (\Exception $e) {
-                // dd($e);
+                dd($e);
                 session()->flash('danger', "Erreur lors de l'enregistrement du groupe.");
 
-                return redirect()->back();
+                return redirect(route('planning.index'));
+//                return redirect()->back();
             }
         }
 
@@ -236,8 +238,8 @@ class PlanningController extends Controller
         } catch (\Exception $e) {
             // dd($e);
             session()->flash('danger', "Erreur lors de l'enregitrement d'une session de cours.");
-
-            return redirect()->back();
+            return redirect(route('planning.index'));
+//            return redirect()->back();
         }
     }
 
