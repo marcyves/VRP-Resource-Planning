@@ -283,8 +283,9 @@ class InvoiceController extends Controller
 
 
             if (is_numeric($rate) && is_numeric($duration)) {
-                $total = number_format($rate * $duration, 2);
+                $total = $rate * $duration;
                 $total_invoice += $total;
+                $total = number_format($total, 2);
             } else {
                 $total = "";
             }
