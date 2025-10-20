@@ -313,12 +313,12 @@ class InvoiceController extends Controller
         $RIB = [
             "Règlement par virement sur le compte bancaire suivant:",
             "",
-            "Banque: Crédit Agricole",
+            "Banque: ".$company->bank_name,
             "    Code banque      Code guichet       Numéro de compte     Clé",
-            "            19106                  00605                  43657887472           74",
-            "Titulaire du compte: SAS XDM Consulting",
-            "Code IBAN: FR76 1910 6006 0543 6578 8747 274",
-            "Code BIC/SWIFT: AGRIFRPP891"
+            "            ".$company->bank."                  ".$company->branch."                  ".$company->account."           ".$company->key,
+            "Titulaire du compte: ".$company->iban_name,
+            "Code IBAN: ".$company->iban,
+            "Code BIC/SWIFT: ".$company->bic
         ];
         $currentY = $saveY; // Reset Y position for client address
 
