@@ -65,7 +65,7 @@
                 </td>
                 <td class="date">
                     @if($bill->created_at)
-                    {{$bill->created_at->format('d/m/Y')}}
+                    {{$bill->bill_date}}
                     @endif
                 </td>
                 <td class="date">

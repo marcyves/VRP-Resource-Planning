@@ -45,6 +45,7 @@ class InvoiceController extends Controller
     {
         $school_id = $request->school_id;
         $course_id = $request->course_id;
+        $bill_date = date('d/m/Y', strtotime($request->bill_date));
         $month = $request->month;
         $year = $request->year;
         $cmd = $request->cmd;
@@ -65,7 +66,7 @@ class InvoiceController extends Controller
             $items = [];
         }
 
-        return view('invoice.create', compact('bill_id', 'bill_number', 'company', 'school', 'items', 'month', 'year', 'total_amount'));
+        return view('invoice.create', compact('bill_id', 'bill_number', 'company', 'school', 'items', 'month', 'year', 'bill_date', 'total_amount'));
     }
 
     /**
@@ -80,7 +81,8 @@ class InvoiceController extends Controller
 
         $month = $request->month;
         $year = $request->year;
-
+        $bill_date = $request->bill_date;
+        
         $company  =  Auth::user()->getCompany();
         $invoice_id =  $request->id;                           // This is the numeric part only
         $invoice_name = $company->bill_prefix . $invoice_id;     // This is the full ID with the company prefix
@@ -89,7 +91,7 @@ class InvoiceController extends Controller
         [$items, $total_amount] = Tools::getInvoiceDetails($school->id, $month, $year, $invoice_name);
 
         try {
-            $pdfPath = $this->generateAndSaveInvoice($invoice_id, $company, $school, $items, true);
+            $pdfPath = $this->generateAndSaveInvoice($invoice_id, $bill_date, $company, $school, $items, true);
         } catch (\Exception $e) {
             // Handle PDF generation errors
             dd($e);
@@ -101,6 +103,7 @@ class InvoiceController extends Controller
             Invoice::create([
                 'id' => $invoice_id,
                 'description' => $request->description,
+                'bill_date' => Carbon::createFromFormat('d/m/Y', $bill_date)->format('Y-m-d'),  
                 'company_id' => $company->id,
                 'school_id' => $request->school_id,
                 'amount' => $total_amount,
@@ -209,10 +212,10 @@ class InvoiceController extends Controller
         }
     }
 
-    private function generateAndSaveInvoice($invoiceId, $company, $school, $items)
+    private function generateAndSaveInvoice($invoiceId, $bill_date,$company, $school, $items)
     {
         // Get the current date
-        $date_facture = date('d/m/Y');
+        $date_facture = $bill_date;
         //$date_facture = '08/09/2025';
         $date_echeance = date('d/m/Y', strtotime('+1 day'));
         //$date_echeance = '09/09/2025';

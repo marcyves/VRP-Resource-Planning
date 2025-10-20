@@ -15,7 +15,7 @@
         </div>
     </section>
     @else
-    @foreach($schools as $school => $courses)
+        @foreach($schools as $school => $courses)
             <div class="font-bold text-gray-800 bg-green-100 p-2 mb-2 flex flex-col justify-between border border-gray-300 rounded-md ">
             <h2 class="inline ml-2 pt-2">{{$school}}</h2>
             @foreach($courses['courses'] as $course_id => $schedules)
@@ -54,7 +54,6 @@
                     </li>
                     @endforeach
                 </ul>
-
                 <div class="flex flex-row justify-between font-semibold text-gray-600 mt-2 py-2 bg-blue-200">
                     <div class="mx-4 pt-2">
                         Time worked = {{number_format($schedules['hours'],2)}} hours
@@ -100,6 +99,7 @@
                         <input type="hidden" name="course_id" value="{{$course_id}}">
                         <input type="hidden" name="month" value="{{$current_month}}">
                         <input type="hidden" name="year" value="{{$current_year}}">
+                        <input type="date" name="bill_date" id="bill_date" value="{{date('Y-m-d')}}">
                         <input type="hidden" name="cmd" value="detailed">
                         <input type="submit" value="Create" class="border border-gray-400 bg-white rounded-md px-4 mr-4">
                     </form>
@@ -110,7 +110,7 @@
         @endforeach
     </section>
 
-        <section >
+    <section >
         <div class="flex flex-row justify-between font-semibold text-gray-600 border border-gray-300 rounded-md mt-4 py-4 bg-gray-200">
             <div class="mx-4">
                 Time worked = {{number_format($monthly_hours,2)}} hours
@@ -122,7 +122,7 @@
                 Average Rate = {{number_format($monthly_gain/$monthly_hours,2)}} €
             </div>
         </div>
-        </section>
+    </section>
 
     @endif
 </x-app-layout>

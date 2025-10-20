@@ -9,7 +9,7 @@
     <section>
         <form action="{{route('invoice.store')}}" method="post" class="bills-form">
             @csrf
-            <x-input-label class="my-4">{{ __('messages.bill_id') }}: {{$bill_id}}</x-input-label> 
+            <x-input-label class="my-4">{{ __('messages.bill_id') }}: {{$bill_id}} Date: {{$bill_date}}</x-input-label> 
             <ul class="list">
                 <li class="card">
                     <div class="card-content-text">
@@ -48,11 +48,9 @@
                         <li>Titulaire du compte: {{$company->iban_name}}</li>
                         <li>Code IBAN: {{$company->iban}}</li>
                         <li>Code BIC/SWIFT: {{$company->bic}}</li>
-                        <li>{{$company->iban}}</li>
-                        <li>{{$company->bank}} {{$company->bank}}</li>
                     </ul>
                     </div>
-                                    </li>
+                </li>
                 <li class="card">
                     <div class="card-content-text">
                     <h2>Client</h2>
@@ -78,7 +76,11 @@
                                     Rate:  @money($item[2])€ Hours : @money($item[3])
                                 @else   
                                     {{htmlspecialchars($item[0])}}
-                                    {{$item[1]}} {{$item[2]}} {{$item[3]}}
+                                    @if(is_numeric($item[2]))
+                                        {{$item[1]}} @money($item[2])€ {{$item[3]}}h
+                                    @else
+                                        {{$item[1]}} {{$item[2]}} {{$item[3]}}
+                                    @endif
                                 @endif
                             </li>
                         @endforeach
@@ -93,6 +95,7 @@
             <input type="hidden" name="school_id" id="school_id" value="{{$school->id}}">
             <input type="hidden" name="month" id="month" value="{{$month}}">
             <input type="hidden" name="year" id="year" value="{{$year}}">
+            <input type="hidden" name="bill_date" id="bill_date" value="{{$bill_date}}">
             <x-text-input type="text" name="description" id="description" size="60" placeholder="{{ __('messages.description') }}"/>
             <div>
             <x-primary-button>{{ __('messages.bill_create') }}</x-primary-button>
