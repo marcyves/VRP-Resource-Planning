@@ -11,14 +11,28 @@
  
     <section class="glass-background">
         <ul class="list">
+            @php
+                $total_amount = 0;   
+            @endphp
             @foreach ($schools as $school)
             <li class="card">
+                <div class="card-content">
                 <x-school-header :school_name="$school->name" :school_id="$school->id"/>
+                </div>
+                <div class="card-line-two">
+                    @money($school->amount) €
+                    @php
+                    $total_amount += $school->amount;
+                    @endphp
+                </div>
             </li>
             @endforeach
         </ul>  
     </section>
 
+        <section class="glass-background">
+            Total invoices: @money($total_amount)€
+        </section>
     @if(Auth::user()->getMode() == "Edit")
     <section class="glass-background">
         <form action="{{route('school.store')}}" method="post" 

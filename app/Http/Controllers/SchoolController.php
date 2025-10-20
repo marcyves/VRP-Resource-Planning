@@ -19,8 +19,8 @@ class SchoolController extends Controller
         session()->forget('school');
         session()->forget('school_id');
 
-        $schools = Auth::user()->getSchools();
-
+        $schools = Auth::user()->getSchoolsAndBudget('2025');
+        
         return view('school.index', compact('schools'));
 
     }

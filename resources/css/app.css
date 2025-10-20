@@ -156,12 +156,12 @@ header h2 {
     background-color: rgba(255, 255, 255, 0.75);
     box-shadow: 8px 8px 2px 1px rgba(8, 42, 196, 0.2);
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: space-between;
     align-items: top;
     padding: 6px;
     margin: 6px;
-    min-width: 30%;
+    min-width: 32%;
     border-radius: 0.5rem;
     cursor: pointer;
 }
@@ -180,6 +180,7 @@ header h2 {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    min-width: 80%;
 }
 .card-content-text, .card-subtitle {
     color: var(--bg-color-a);
@@ -188,8 +189,13 @@ header h2 {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    margin-left: 12px;
-    margin-bottom: 6px;
+}
+
+.card-line-two{
+    color: var(--bg-color-a);
+    font-size: smaller;
+    text-align: end;
+    padding-right: 12px;
 }
 .card-content-text h2{
     font-weight: bolder;

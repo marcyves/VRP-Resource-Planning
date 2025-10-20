@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
@@ -86,6 +87,31 @@ class User extends Authenticatable
 
 
     }
+
+        public function getSchoolsAndBudget($year = 'all')
+    {
+        $company_id = $this->company_id;
+
+        if($year == 'all')
+        {
+            return School::select(['schools.*'])
+                ->where('schools.company_id', '=', $company_id)
+                ->orderBy('schools.name')
+                ->get();
+        } else {
+            return School::select(['schools.*', 
+             DB::raw('SUM(amount) as amount')])
+            ->where('schools.company_id', '=', $company_id) 
+            ->join('invoices', 'invoices.school_id', '=', 'schools.id')
+            ->where('bill_date', '>', $year.'-01-01')
+            ->groupBy('schools.id')
+            ->orderBy('schools.name')
+            ->get();
+        }
+
+
+    }
+
 
     public function getCourses($current_year = "all", $current_semester = "all")
     {
