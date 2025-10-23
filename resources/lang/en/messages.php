@@ -29,6 +29,7 @@ return array (
   'school' => 'School',
   'school_create' => 'Create School',
   'school_no_course' => 'School without course',
+  'school_details' => 'School Details',
   'schools' => 'Schools',
   'schools_empty_list' => 'List Schools without course',
   'schools_list' => 'List Schools',
