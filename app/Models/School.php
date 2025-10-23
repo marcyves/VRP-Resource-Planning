@@ -90,6 +90,12 @@ class School extends Model
 
     public function getInvoices(String $year = 'all')
     {
-        return Invoice::select()->where('school_id', '=', $this->id)->get();
+        return Invoice::select(['invoices.*', 'schools.name as school'])
+        ->join('schools', 'schools.id', '=', 'invoices.school_id')
+        ->where([
+            [   'school_id', '=', $this->id],
+            [   'bill_date', '>=', $year."-01-01"],
+            [   'bill_date', '<=', $year."-12-31"]
+        ])->get();
     }
 }
