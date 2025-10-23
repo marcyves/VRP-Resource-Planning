@@ -4,6 +4,7 @@
 @import url("planning.css");
 @import url("bills.css");
 @import url("text-input.css");
+@import url("pie.css");
 
 @tailwind base;
 @tailwind components;

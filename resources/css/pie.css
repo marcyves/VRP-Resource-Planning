@@ -1,0 +1,27 @@
+:root {
+    --c0: #ddff00;
+    --c1: #bc2b2b;
+    --c2: #13bc13;
+    --c3: #0000aa;
+    --c4: #aa00aa;
+    --c5: #4228ab;
+    --c6: #2e9ce0;
+    --c7: #ff5500;
+    --c8: #aa55aa;
+}
+
+.charts {
+    display: flex;
+    place-content: center;
+    flex-flow: wrap;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.pie {
+    flex: 1 0 500px;
+    max-width: 80%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    box-shadow: 8px 8px 6px 4px rgba(8, 42, 196, 0.2);
+}
