@@ -87,4 +87,9 @@ class School extends Model
         return Document::select()->where('school_id', '=', $this->id)->get();
 
     }
+
+    public function getInvoices(String $year = 'all')
+    {
+        return Invoice::select()->where('school_id', '=', $this->id)->get();
+    }
 }

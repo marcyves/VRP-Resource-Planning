@@ -147,9 +147,10 @@ class SchoolController extends Controller
 
         // $school_name = $school->name;
         // $school_id = $school->id;
+        $invoices = $school->getInvoices($year);
         $documents = $school->getDocuments();
 
-        return view('school.show', compact('school',  'courses', 'documents'));
+        return view('school.show', compact('school',  'courses', 'documents', 'invoices'));
     }
 
     /**

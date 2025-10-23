@@ -12,7 +12,9 @@
     <section class="glass-background">
         <ul class="list">
             @php
-                $total_amount = 0;   
+                $total_amount = 0;
+                $amounts = [];
+                $amounts[] = 0;
             @endphp
             @foreach ($schools as $school)
             <li class="card">
@@ -23,6 +25,7 @@
                     @money($school->amount) €
                     @php
                     $total_amount += $school->amount;
+                    $amounts[] = $school->amount;
                     @endphp
                 </div>
             </li>
@@ -30,9 +33,36 @@
         </ul>  
     </section>
 
-        <section class="glass-background">
-            Total invoices: @money($total_amount)€
-        </section>
+    <section class="glass-background">
+        Total invoices: @money($total_amount)€
+    </section>
+
+    <style>
+        .pie {
+            background-image: 
+        conic-gradient(from 30deg
+        @php
+            $amount1 = $amounts[0];
+            array_shift($amounts);
+        @endphp
+        @foreach($amounts as $amount2)
+            ,var(--c{{$loop->index}}) {{number_format(($amount1/$total_amount)*100,0)}}% {{number_format(($amount2/$total_amount)*100,0)}}%
+            @php
+                $amount1 = $amount2;
+            @endphp
+        @endforeach
+            );
+        }
+    </style>
+
+    <section class="glass-background">
+        <figure class="charts">
+            <div class="pie">
+            </div>
+            <figcaption>{{ __('messages.invoices_by_school') }}</figcaption>
+        </figure>
+    </section>
+
     @if(Auth::user()->getMode() == "Edit")
     <section class="glass-background">
         <form action="{{route('school.store')}}" method="post" 
