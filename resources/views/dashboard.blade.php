@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
-        <ul class="list">
-            <li class="card">
+        <ul class="metrics-row">
+            <li class="card glass-background">
                 <a href="{{ route('invoice.index') }}" class="card-content-text">
                 <h2>{{ $bills_count }} Factures</h2>
                 <ul>
@@ -12,7 +12,7 @@
             </a>
             </li>
 
-            <li class="card">
+            <li class="card glass-background">
                 <div class="card-content-text">
                 <h2>Ecoles</h2>
                 <ul>
@@ -21,7 +21,7 @@
                 </div>
             </li>
 
-            <li class="card">
+            <li class="card glass-background">
                 <div class="card-content-text">
                 <h2>Cours</h2>
                 <ul>

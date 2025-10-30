@@ -163,7 +163,8 @@ header h2 {
     align-items: top;
     padding: 6px;
     margin: 6px;
-    min-width: 32%;
+    min-width: 29%;
+    max-width: 20em;
     border-radius: 0.5rem;
     cursor: pointer;
 }
