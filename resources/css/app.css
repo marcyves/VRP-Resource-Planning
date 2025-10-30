@@ -5,6 +5,7 @@
 @import url("bills.css");
 @import url("text-input.css");
 @import url("pie.css");
+@import url("histogram.css");
 
 @tailwind base;
 @tailwind components;
@@ -126,7 +127,7 @@ nav {
 header {
     background-color: var(--secondary-bg-color);
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: space-between;
     width: 100%;
     padding: 8px;

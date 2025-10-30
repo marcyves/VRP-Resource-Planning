@@ -149,6 +149,16 @@ class User extends Authenticatable
         ->orderBy('invoices.id')->get();
     }
 
+    public function getInvoicesAmountPerMonth($year)
+    {
+        $amount = [];
+        for ($i = 1; $i <= 12; $i++) {
+            $amount[] = Invoice::where('company_id', $this->company_id)
+                ->where('created_at', '>', "$year-$i-01")->where('created_at', '<', "$year-$i-31")->sum('amount');
+        }
+        return $amount;
+    }
+
     public function getInvoicesAmountPerYear($year)
     {
         return Invoice::where('company_id', $this->company_id)

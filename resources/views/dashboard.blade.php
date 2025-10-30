@@ -31,7 +31,21 @@
                 </div>
             </li> 
         </ul>
-    </x-slot>
+
+        <div class="metrics-row">
+        <div class="histogram glass-background">
+            @foreach ($amounts as $amount)
+            <div class="histogram-bar" style="height: {{($amount*200)/$bills_amount}}%;">
+                <span class="histogram-label">
+             @money($amount,0) €
+                </span>
+             </div>
+           
+            @endforeach
+        </div>
+    </div>                  
+
+</x-slot>
 
     <section>
         @php
