@@ -11,7 +11,6 @@ use App\Models\Planning;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\DB;
 
 class InvoiceController extends Controller
 {
@@ -75,7 +74,7 @@ class InvoiceController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'id' => 'required',
+            'bill_id' => 'required',
             'description' => 'required'
         ]);
 
@@ -84,7 +83,7 @@ class InvoiceController extends Controller
         $bill_date = $request->bill_date;
         
         $company  =  Auth::user()->getCompany();
-        $invoice_id =  $request->id;                           // This is the numeric part only
+        $invoice_id =  $request->bill_id;                           // This is the numeric part only
         $invoice_name = $company->bill_prefix . $invoice_id;     // This is the full ID with the company prefix
         $school = School::find($request->school_id);
 
@@ -108,6 +107,8 @@ class InvoiceController extends Controller
                 'school_id' => $request->school_id,
                 'amount' => $total_amount,
             ]);
+
+            app('App\Http\Controllers\BillingController')->setBill($request);
 
             session()->flash('success', "Facture " . $invoice_name . " enregistrée avec succès.");
 
@@ -169,7 +170,7 @@ class InvoiceController extends Controller
         } catch (\Exception $e) {
             // dd($e);
 
-            session()->flash('danger', "Erreur lors de la modification de l'école " . $request->name . '.');
+            session()->flash('danger', "Erreur lors de la modification de la facture " . $request->name . '.');
 
             return redirect()->back();
         }

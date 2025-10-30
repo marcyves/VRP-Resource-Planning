@@ -91,7 +91,7 @@
                     </div>
                 </li>
             </ul>
-            <input type="hidden" name="id" id="name" value="{{$bill_number}}">
+            <input type="hidden" name="bill_id" id="name" value="{{$bill_number}}">
             <input type="hidden" name="school_id" id="school_id" value="{{$school->id}}">
             <input type="hidden" name="month" id="month" value="{{$month}}">
             <input type="hidden" name="year" id="year" value="{{$year}}">

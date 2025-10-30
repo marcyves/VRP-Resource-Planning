@@ -20,7 +20,7 @@
         <form action="{{route('group.save', 0)}}" method="post" 
         class="mx-auto px-6 py-2 bg-white shadow-md mb-6 flex flex-col gap-4">
             @csrf
-            <x-text-input type="text" name="name" id="name" placeholder="{{ __('messages.name') }}"/>
+            <x-text-input type="text" name="name" id="name" placeholder="{{ __('messages.name') }}" size="200"/>
             @error('name')
             <div class="bg-red-700 text-red-100 border-red-400 rounded-md px-4 py-2">{{ $message }}</div>
             @enderror
