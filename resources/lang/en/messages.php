@@ -51,6 +51,7 @@ return array (
   'time_worked' => 'Time Worked',
   'total_gain' => 'Total Gain',
   'total_time' => 'Total time',
+  'not_planned' => 'Not planned',
   'update' => 'Update',
   'year' => 'Year',
 );

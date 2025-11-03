@@ -35,7 +35,7 @@
         </tr>
     </thead>
 
-                @foreach ($invoices as $bill)
+    @foreach ($invoices as $bill)
     <tr>
         <td>
             {{Auth::user()->company->bill_prefix}}{{$bill->id}}
@@ -92,14 +92,14 @@
 
 </table>
 
-        <div class="card">
+        <div class="card glass-background">
             <div class="flex flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4">
-            {{ __('messages.total_gain')}} : @money($total) €
+            {{ __('messages.total_gain')}} : @money($total)
             </div>
             <div class="flex flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4">
-            {{ __('messages.total_payed')}} : @money($total_payed) €
+            {{ __('messages.total_payed')}} : @money($total_payed)
             </div>
             <div class="flex flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4">
-            {{ __('messages.total_balance')}} : @money($total - $total_payed) €
+            {{ __('messages.total_balance')}} : @money($total - $total_payed)
             </div>
         </div>

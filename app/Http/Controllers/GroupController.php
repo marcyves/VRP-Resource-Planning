@@ -44,7 +44,7 @@ class GroupController extends Controller
     public function store(Request $request, String $course_id)
     {
         $validated = $request->validate([
-            'name' => 'required|max:80',
+            'name' => 'required|max:255',
             'short_name' => 'required|min:3',
             'size' => 'required|min:0',
         ]);

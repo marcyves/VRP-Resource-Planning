@@ -66,7 +66,12 @@ class SchoolController extends Controller
 
         $amounts = Auth::user()->getInvoicesAmountPerMonth($current_year);
 
-        return view('dashboard', compact('schools', 'courses', 'current_year', 'current_semester','years', 'bills_amount', 'bills_payed_amount', 'bills_count', 'amounts'));
+        $amounts_planned = Auth::user()->getPlannedAmountPerMonth($current_year);
+        $total_planned = 0;
+        foreach($amounts_planned as $amount){
+            $total_planned += $amount;
+        }
+        return view('dashboard', compact('schools', 'courses', 'current_year', 'current_semester','years', 'bills_amount', 'bills_payed_amount', 'bills_count', 'amounts', 'amounts_planned', 'total_planned'));
     }
 
     public function list()

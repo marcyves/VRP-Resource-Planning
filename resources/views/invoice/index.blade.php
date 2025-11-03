@@ -5,7 +5,7 @@
             </h2>
     </x-slot>
 
-    <section class="bills">
+    <section class="bills glass-background">
         <x-table-invoices :invoices=$bills/>
     </section>
 </x-app-layout>

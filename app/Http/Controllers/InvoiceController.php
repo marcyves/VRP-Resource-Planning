@@ -228,7 +228,7 @@ class InvoiceController extends Controller
         $currentY = $pdf->prepare($invoiceId, $x, $company, $school);
 
         $lineHeight = 4;
-        $invoice_lines = 28;
+        $invoice_lines = 34;
 
         // Draw the invoice details box
         $boxHeight = $lineHeight * 1.5;
@@ -254,7 +254,9 @@ class InvoiceController extends Controller
 
         $invoiceY = $currentY + 1; // Move down for the first item
         $total_invoice = 0;
+        $invoice_line = 0;
         foreach ($items as $item) {
+            $invoice_line++;
             switch ($item[5]) {
                 case "T":
                     $lineHeight = $pdf->setTitleFont();

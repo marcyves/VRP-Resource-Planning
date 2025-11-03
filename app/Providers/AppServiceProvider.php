@@ -25,8 +25,17 @@ class AppServiceProvider extends ServiceProvider
         Carbon::setLocale(app()->getLocale());
 
         Blade::directive('money', function ($value) {
-            return "<?php echo number_format($value, 2); ?>";
+            return "<?php echo number_format($value, 2); ?>€";
         });
+
+        Blade::directive('moneyBoth', function ($value) {
+            return "<?php echo number_format($value, 2); ?>€ / <?php echo number_format($value*1.2, 2); ?>€";
+        });
+
+        Blade::directive('moneyVAT', function ($value) {
+            return "<?php echo number_format($value*1.2, 2); ?>€";
+        });
+
 
         Blade::directive('formatDate', function ($value) {
             return "<?php echo ($value) ? \\Carbon\Carbon::parse($value)->format('d/m/Y') : ''; ?>";

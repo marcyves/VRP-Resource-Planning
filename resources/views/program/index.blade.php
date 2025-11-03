@@ -5,10 +5,10 @@
             </h2>
     </x-slot>
 
-    <section>
+    <section class="glass-background">
         <ul class="list">
             @foreach ($programs as $program)
-            <li class="card">
+            <li class="card glass-background">
             <div class="card-content-text">
                 <form action="{{route('program.show', $program->id)}}" method="get">
                     @csrf
@@ -37,7 +37,7 @@
     </section>
 
     @if(Auth::user()->getMode() == "Edit")
-        <section >
+    <section class="glass-background">
             <form action="{{route('program.store')}}" method="post"
             class="mx-auto px-6 py-2 bg-white shadow-md mb-6 flex items-center justify-items-start">
                 @csrf

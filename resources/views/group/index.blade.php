@@ -5,10 +5,10 @@
         </h2>
     </x-slot>
 
-    <section>
+    <section class="glass-background">
         <ul class="flex-list">
         @foreach ($groups as $group)
-            <li class="card">
+            <li class="card glass-background">
             <x-group-details :group=$group :occurences=$occurences :active=true/>
             </li>
         @endforeach
@@ -16,7 +16,7 @@
     </section>
 
     @if(Auth::user()->getMode() == "Edit")
-    <section>
+    <section class="glass-background">
         <form action="{{route('group.save', 0)}}" method="post" 
         class="mx-auto px-6 py-2 bg-white shadow-md mb-6 flex flex-col gap-4">
             @csrf

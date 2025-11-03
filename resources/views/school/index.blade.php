@@ -17,7 +17,7 @@
                 $amounts[] = 0;
             @endphp
             @foreach ($schools as $school)
-            <li class="card">
+            <li class="card glass-background">
                 <div class="card-content">
                 <x-school-header :school_name="$school->name" :school_id="$school->id"/>
                 </div>

@@ -10,6 +10,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use App\Http\Utility\Tools;
 
 class User extends Authenticatable
 {
@@ -71,63 +72,59 @@ class User extends Authenticatable
     {
         $company_id = $this->company_id;
 
-        if($year == 'all')
-        {
+        if ($year == 'all') {
             return School::select(['schools.*'])->where('schools.company_id', '=', $company_id)
                 ->orderBy('schools.name')
                 ->get();
         } else {
             return School::select(['schools.*'])->where('schools.company_id', '=', $company_id)
-            ->join('courses', 'courses.school_id', '=', 'schools.id')
-            ->where('courses.year', '=', $year)
-            ->distinct()
-            ->orderBy('schools.name')
-            ->get();
+                ->join('courses', 'courses.school_id', '=', 'schools.id')
+                ->where('courses.year', '=', $year)
+                ->distinct()
+                ->orderBy('schools.name')
+                ->get();
         }
-
-
     }
 
-        public function getSchoolsAndBudget($year = 'all')
+    public function getSchoolsAndBudget($year = 'all')
     {
         $company_id = $this->company_id;
 
-        if($year == 'all')
-        {
+        if ($year == 'all') {
             return School::select(['schools.*'])
                 ->where('schools.company_id', '=', $company_id)
                 ->orderBy('schools.name')
                 ->get();
         } else {
-            return School::select(['schools.*', 
-             DB::raw('SUM(amount) as amount')])
-            ->where('schools.company_id', '=', $company_id) 
-            ->join('invoices', 'invoices.school_id', '=', 'schools.id')
-            ->where('bill_date', '>', $year.'-01-01')
-            ->groupBy('schools.id')
-            ->orderBy('schools.name')
-            ->get();
+            return School::select([
+                'schools.*',
+                DB::raw('SUM(amount) as amount')
+            ])
+                ->where('schools.company_id', '=', $company_id)
+                ->join('invoices', 'invoices.school_id', '=', 'schools.id')
+                ->where('bill_date', '>', $year . '-01-01')
+                ->groupBy('schools.id')
+                ->orderBy('schools.name')
+                ->get();
         }
-
-
     }
 
 
     public function getCourses($current_year = "all", $current_semester = "all")
     {
-        if(!isset($current_year)){
+        if (!isset($current_year)) {
             $current_year = now()->format('Y');
         }
 
         if (!isset($current_semester)) {
-                $current_semester = "all";
+            $current_semester = "all";
         }
 
         $company_id = $this->company_id;
 
         $schools = School::select(['schools.*'])
-                        ->where('schools.company_id', '=', $company_id)
-                        ->get();
+            ->where('schools.company_id', '=', $company_id)
+            ->get();
 
         return $schools->getCourses($current_year, $current_semester);;
     }
@@ -145,8 +142,26 @@ class User extends Authenticatable
     public function getInvoices()
     {
         return Invoice::select(['invoices.*', 'schools.name as school'])->where('invoices.company_id', $this->company_id)
-        ->join('schools', 'schools.id', '=', 'invoices.school_id')
-        ->orderBy('invoices.id')->get();
+            ->join('schools', 'schools.id', '=', 'invoices.school_id')
+            ->orderBy('invoices.id')->get();
+    }
+
+    public function getPlannedAmountPerMonth($year)
+    {
+        $amount = [];
+        $schools = $this->getSchools();
+
+        for ($i = 1; $i <= 12; $i++) {
+            $planning = $schools->getBillingPlanning($year, $i);
+            if (!$planning) {
+                $monthly_gain = 0;
+            }else{
+                [$tmp_schools, $monthly_gain, $tmp_monthly_hours] = Tools::getBillingInformation($planning);
+            }
+
+            $amount[] = $monthly_gain;
+        }
+        return $amount;
     }
 
     public function getInvoicesAmountPerMonth($year)
@@ -163,7 +178,6 @@ class User extends Authenticatable
     {
         return Invoice::where('company_id', $this->company_id)
             ->where('created_at', '>', "$year-01-01")->where('created_at', '<', "$year-12-31")->sum('amount');
-
     }
 
     public function getInvoicesPayedAmountPerYear($year)
@@ -174,13 +188,14 @@ class User extends Authenticatable
             ->sum('amount');
     }
 
-    public function getInvoicesCountPerYear($year){
+    public function getInvoicesCountPerYear($year)
+    {
         return Invoice::where('company_id', $this->company_id)
             ->where('created_at', '>', "$year-01-01")
             ->where('created_at', '<', "$year-12-31")
             ->count();
     }
-    public function getGroups(Bool $active = true )
+    public function getGroups(Bool $active = true)
     {
         return Group::where('company_id', $this->company_id)
             ->where('active', $active)
@@ -194,11 +209,11 @@ class User extends Authenticatable
 
     public function getMode()
     {
-        if($this->isAdmin() or $this->isEditor()){
-            if($this->mode == ""){
+        if ($this->isAdmin() or $this->isEditor()) {
+            if ($this->mode == "") {
                 $this->mode = "Edit";
             }
-        }else{
+        } else {
             $this->mode = "Browse";
         }
         return $this->mode;

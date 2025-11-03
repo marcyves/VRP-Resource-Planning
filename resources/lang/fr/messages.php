@@ -74,6 +74,7 @@ return array (
   'total_time' => 'Durée totale',
   'total_payed' => 'Payé',
   'total_balance' => 'Solde',
+  'not_planned' => 'Hors planning',
   'update' => 'Modifier',
   'year' => 'Année',
   'not_payed' => 'Non payé',

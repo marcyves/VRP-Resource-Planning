@@ -39,6 +39,7 @@ return array (
   'time_worked' => 'Ore lavorate',
   'total_gain' => 'Profito totale',
   'total_time' => 'Durata totale',
+  'not_planned' => 'Non previste',
   'update' => 'Modificare',
   'year' => 'Anno',
 );
