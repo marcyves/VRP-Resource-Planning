@@ -86,6 +86,7 @@ header h2 {
     margin-left: 1rem;
     font-weight: bolder;
     font-size: larger;
+    color: #fff;
 }
 
 section {
@@ -110,6 +111,7 @@ footer {
     height: 40px;
     padding-top: 10px;
     text-align: center;
+    margin-bottom: 120px;
   max-width: 80vw;
   margin: 1rem auto;
 }

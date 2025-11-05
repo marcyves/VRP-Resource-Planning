@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header" class="print:hidden">
-        <h2 class="print:hidden font-semibold text-xl text-gray-800 leading-tight">
+        <h2 class="print:hidden header-title">
             {{ __('Billing Preparation') }} @monthName($current_month) {{$current_year}}
         </h2>
     </x-slot>

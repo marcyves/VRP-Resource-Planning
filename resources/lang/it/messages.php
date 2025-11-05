@@ -1,6 +1,7 @@
 <?php
 
 return array (
+  'dashboard' => "Dashboard",
   'add_course' => 'Creare un corso',
   'bill_create' => 'Creare una fattura',
   'bill_id' => 'Numero di fattura',

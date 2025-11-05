@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
     <div class="flex">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight grow py-2">
+        <h2 class="header-title grow py-2">
             {{ __('Program Details')}} : {{$program->name}}
         </h2>
         @if(Auth::user()->getMode() == "Edit")
@@ -27,7 +27,7 @@
     </x-slot>
 
     <section >
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight mb-2">
+        <h2 class="header-title mb-2">
             {{__('messages.course_list')}}
         </h2>
         <ul>

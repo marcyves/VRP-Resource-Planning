@@ -1,6 +1,7 @@
 <?php
 
 return array (
+  'dashboard' => "Tableau de bord",
   'add_course' => 'Ajouter un Cours',
   'bill_create' => 'Nouvelle facture',
   'bill_id' => 'Numéro  de facture',

@@ -1,6 +1,7 @@
 <?php
 
 return array (
+  'dashboard' => "Dashboard",
   'add_course' => 'Add Course',
   'bill_create' => 'New Bill',
   'bill_id' => 'Bill #',
