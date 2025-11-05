@@ -20,11 +20,10 @@ class SchoolController extends Controller
         session()->forget('school_id');
 
         $schools = Auth::user()->getSchoolsAndBudget('2025');
-        
-        return view('school.index', compact('schools'));
 
+        return view('school.index', compact('schools'));
     }
-    
+
     /**
      * Display a listing of the resource.
      */
@@ -34,10 +33,10 @@ class SchoolController extends Controller
         session()->forget('course_id');
         session()->forget('school');
         session()->forget('school_id');
-        
-        if(isset($request->current_year)){
+
+        if (isset($request->current_year)) {
             $current_year = $request->current_year;
-        }else {
+        } else {
             $current_year = session('current_year');
             if (!isset($current_year)) {
                 $current_year = now()->format('Y');
@@ -45,12 +44,12 @@ class SchoolController extends Controller
         }
         session()->put('current_year', $current_year);
 
-        if(isset($request->current_semester)){
+        if (isset($request->current_semester)) {
             $current_semester = $request->current_semester;
-        }else{
+        } else {
             $current_semester = session('current_semester');
             if (!isset($current_semester)) {
-                 $current_semester = "all";
+                $current_semester = "all";
             }
         }
         session()->put('current_semester', $current_semester);
@@ -68,10 +67,29 @@ class SchoolController extends Controller
 
         $amounts_planned = Auth::user()->getPlannedAmountPerMonth($current_year);
         $total_planned = 0;
-        foreach($amounts_planned as $amount){
+        foreach ($amounts_planned as $amount) {
             $total_planned += $amount;
         }
-        return view('dashboard', compact('schools', 'courses', 'current_year', 'current_semester','years', 'bills_amount', 'bills_payed_amount', 'bills_count', 'amounts', 'amounts_planned', 'total_planned'));
+
+        $solde = $bills_amount-$bills_payed_amount;
+        $not_planned = $bills_amount-$total_planned;
+
+        $histograms[] = [
+            'title' => "Factures : $bills_count Montant : " . number_format($bills_amount * 1.2, 2) .
+                       " € | Payé : ".number_format($bills_payed_amount * 1.2, 2).
+                       " € | Solde : ".number_format($solde* 1.2, 2).
+                       " € | Hors Planning : ".number_format($not_planned* 1.2, 2)." €",
+            'amounts' => $amounts,
+            'total' => $bills_amount
+        ];
+
+                $histograms[] = [
+            'title' => "Planning " . number_format($total_planned * 1.2, 2) . " €",
+            'amounts' => $amounts_planned,
+            'total' => $total_planned
+        ];
+
+        return view('dashboard', compact('schools', 'courses', 'current_year', 'current_semester', 'years', 'histograms'));
     }
 
     public function list()
@@ -101,36 +119,35 @@ class SchoolController extends Controller
         $validated = $request->validate([
             'name' => 'required|max:80',
         ]);
-        
-        try{
-            $company_id = Auth::user()->company_id;
-            $school = School::create([ 
-                    'name' => $request->name,
-                    'company_id' => $company_id,
-                    'address' => $request->address,
-                    'city' => $request->city,
-                    'zip' => $request->zip,
-                    'country' => $request->country,
-                    'phone' => $request->phone,
-                    'email' => $request->email,
-                    'website' => $request->website,
-                    'logo' => $request->logo,
-                    'description' => $request->description
-                ]);
 
-            session()->flash('success', 'Ecole '.$school->name.' enregistrée avec succès.');
+        try {
+            $company_id = Auth::user()->company_id;
+            $school = School::create([
+                'name' => $request->name,
+                'company_id' => $company_id,
+                'address' => $request->address,
+                'city' => $request->city,
+                'zip' => $request->zip,
+                'country' => $request->country,
+                'phone' => $request->phone,
+                'email' => $request->email,
+                'website' => $request->website,
+                'logo' => $request->logo,
+                'description' => $request->description
+            ]);
+
+            session()->flash('success', 'Ecole ' . $school->name . ' enregistrée avec succès.');
             session()->put('school', $school->name);
             session()->put('school_id', $school->id);
 
             return redirect(route('school.list'));
-        }
-        catch (\Exception $e) {
+        } catch (\Exception $e) {
             dd($e);
-            
-            session()->flash('danger', "Erreur lors de l'enregistrement de l'école ".$request->name.'.');
-            
+
+            session()->flash('danger', "Erreur lors de l'enregistrement de l'école " . $request->name . '.');
+
             return redirect()->back();
-        }               
+        }
     }
 
     /**
@@ -180,8 +197,8 @@ class SchoolController extends Controller
         $validated = $request->validate([
             'name' => 'required|max:80',
         ]);
-        
-        try{
+
+        try {
             $school = School::findOrFail($school_id);
             $school->name = $request->name;
             $school->code = $request->code;
@@ -201,18 +218,16 @@ class SchoolController extends Controller
 
             $school->save();
 
-            session()->flash('success', 'Ecole '.$request->name.' modifiée avec succès.');
+            session()->flash('success', 'Ecole ' . $request->name . ' modifiée avec succès.');
 
             return redirect(route('dashboard'));
-        }
-        catch (\Exception $e) {
+        } catch (\Exception $e) {
             // dd($e);
 
-            session()->flash('danger', "Erreur lors de la modification de l'école ".$request->name.'.');
+            session()->flash('danger', "Erreur lors de la modification de l'école " . $request->name . '.');
 
             return redirect()->back();
-        }               
-
+        }
     }
 
     /**
@@ -220,7 +235,7 @@ class SchoolController extends Controller
      */
     public function destroy(School $school)
     {
-        if ($school->countCourses() > 0){
+        if ($school->countCourses() > 0) {
 
             session()->flash('danger', "On ne peut pas effacer une école qui a des cours enregistrés.");
             return redirect()->back();
@@ -229,10 +244,9 @@ class SchoolController extends Controller
         session()->forget('school_id');
 
         $school->delete();
-        
+
         session()->flash('warning', "Ecole supprimée avec succès.");
-        
+
         return redirect()->back();
     }
-
 }
