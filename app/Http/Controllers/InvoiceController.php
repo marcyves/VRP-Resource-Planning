@@ -141,15 +141,15 @@ class InvoiceController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Invoice $bill)
+    public function edit(Invoice $invoice)
     {
-        return view('invoice.edit', compact('bill'));
+        return view('invoice.edit', compact('invoice'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Invoice $bill)
+    public function update(Request $request, Invoice $invoice)
     {
         $validated = $request->validate([
             'id' => 'required',
@@ -157,18 +157,18 @@ class InvoiceController extends Controller
         ]);
 
         try {
-            $bill->description = $request->description;
-            $bill->amount = $request->amount;
-            $bill->created_at = $request->created_at;
-            $bill->paid_at = $request->paid_at;
+            $invoice->description = $request->description;
+            $invoice->amount = $request->amount;
+            $invoice->created_at = $request->created_at;
+            $invoice->paid_at = $request->paid_at;
 
-            $bill->save();
+            $invoice->save();
 
             session()->flash('success', 'Facture ' . $request->id . ' modifiée avec succès.');
 
             return redirect(route('invoice.index'));
         } catch (\Exception $e) {
-            // dd($e);
+            dd($e);
 
             session()->flash('danger', "Erreur lors de la modification de la facture " . $request->name . '.');
 
