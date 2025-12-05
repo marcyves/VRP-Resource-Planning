@@ -1,0 +1,38 @@
+nav.main{
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    height: 2rem;
+}
+
+.logo{
+    padding: 1rem;
+}
+
+.links-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    gap: 1rem;
+}
+
+.link-item{
+    transition-timing-function: cubic-bezier(0.4, 0.8, 0.2, 1);
+    transition-duration: 0.2s;
+    transition-property: all;
+    color: rgb(243 244 246);
+    line-height: 1.25rem;
+    font-weight: 500;
+    font-size: 0.8rem;
+    padding: 0.3rem;
+    align-items: center;
+    display: inline-flex;
+}
+
+.link-active{
+    border-bottom-width: 2px;
+}
