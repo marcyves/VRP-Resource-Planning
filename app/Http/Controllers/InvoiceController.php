@@ -63,6 +63,7 @@ class InvoiceController extends Controller
             [$items, $total_amount] = Tools::getInvoiceDetails($school_id, $month, $year, $bill_id, false);
         } else {
             $items = [];
+            $total_amount = 0;
         }
 
         return view('invoice.create', compact('bill_id', 'bill_number', 'company', 'school', 'items', 'month', 'year', 'bill_date', 'total_amount'));
