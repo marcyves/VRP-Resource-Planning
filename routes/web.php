@@ -86,7 +86,7 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('/program', ProgramController::class);
 
-    Route::get('/invoice/payed/{bill_id}', [InvoiceController::class, 'payed'])->name('invoice.payed');
+    Route::get('/invoice/payed/{invoice_id}', [InvoiceController::class, 'payed'])->name('invoice.payed');
     Route::resource('/invoice', InvoiceController::class);
     Route::resource('/documents', DocumentController::class);
     

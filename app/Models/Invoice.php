@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+
 
 class Invoice extends Model
 {
@@ -38,6 +40,22 @@ class Invoice extends Model
         'company_id',
         'school_id'
         ];
+
+    public function school(): BelongsTo
+    {
+        return $this->belongsTo(School::class);
+    }
+
+    public function company(): BelongsTo
+    {
+        return $this->belongsTo(Company::class);
+    }
+
+    // accéder aux sessions de cours liées
+    public function plannings()
+    {
+       return $this->hasMany(Planning::class);
+    }
 
     public static function getAmount($year){
         return Invoice::where('created_at', '>', "$year-01-01")->where('created_at', '<', "$year-12-31")->sum('amount');

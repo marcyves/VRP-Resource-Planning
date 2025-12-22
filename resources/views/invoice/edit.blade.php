@@ -12,7 +12,7 @@
         class="mx-auto px-6 py-2 bg-white shadow-md mb-6 flex flex-col justify-items-start">
             @csrf
             @method('patch')
-            <x-input-label class="py-4">{{ __('messages.bill_id') }}: {{$invoice->id}}</x-input-label> 
+            <x-input-label class="py-4">{{ __('messages.invoice_id') }}: {{$invoice->id}}</x-input-label> 
                 <input type="hidden" name="id" id="name" value="{{$invoice->id}}">
                 <x-input-label >{{ __('messages.description') }}</x-input-label>
                 <x-text-input class="my-4" type="text" name="description" id="description" size="60" value="{{ $invoice->description }}"/>

@@ -33,7 +33,7 @@ class PlanningResource extends Resource
                 Forms\Components\TextInput::make('group_id')
                     ->required()
                     ->numeric(),
-                Forms\Components\TextInput::make('bill_id')
+                Forms\Components\TextInput::make('invoice_id')
                     ->maxLength(36),
             ]);
     }
@@ -53,7 +53,7 @@ class PlanningResource extends Resource
                 Tables\Columns\TextColumn::make('group_id')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('bill_id')
+                Tables\Columns\TextColumn::make('invoice_id')
                     ->searchable(),
             ])
             ->filters([

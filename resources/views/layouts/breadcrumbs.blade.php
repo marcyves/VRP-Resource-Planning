@@ -2,7 +2,7 @@
     <ul>
         <li class="inline p-2">
         <a href="{{route('company.show')}}" class="inline-flex items-center p-0.5 text-sm font-medium hover:text-gray-400 focus:outline-none">
-        {{ Auth::user()->getCompany()->name }}
+        {{ Auth::user()->company->name }}
         </a>
         </li>
         @if (session('school') !== null)

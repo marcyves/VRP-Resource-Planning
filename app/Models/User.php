@@ -129,16 +129,6 @@ class User extends Authenticatable
         return $schools->getCourses($current_year, $current_semester);;
     }
 
-    public function getCompany()
-    {
-        return Company::findOrFail($this->company_id);
-    }
-
-    public function getCompanyBillPrefix()
-    {
-        return Company::findOrFail($this->company_id)->bill_prefix;
-    }
-
     public function getInvoices()
     {
         return Invoice::select(['invoices.*', 'schools.name as school'])->where('invoices.company_id', $this->company_id)

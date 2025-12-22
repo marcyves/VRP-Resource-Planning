@@ -152,7 +152,7 @@ class Tools
                 "end"      => $event->end,
                 "duration" => $duration,
                 "billable_rate" => $event->billable_rate,
-                "bill"     => $event->bill_id
+                "bill"     => $event->invoice_id
             );
         }
 
@@ -231,7 +231,7 @@ class Tools
             $course_gain   += $gain;
             array_push($items, [" - " . date('d/m/Y H:i', strtotime($planning->begin)) . " - " . date('H:i', strtotime($planning->end)), "", "", $duration, $billable_rate, "N"]);
             if($store){
-                $planning->bill_id = $invoice_id;
+                $planning->invoice_id = $invoice_id;
                 $planning->update();
             }
         }

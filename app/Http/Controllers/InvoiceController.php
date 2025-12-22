@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Classes\InvoicePdf;
+use App\Services\InvoiceService;
+
 use App\Models\Invoice;
 use App\Models\School;
 
@@ -10,10 +11,18 @@ use App\Http\Utility\Tools;
 use App\Models\Planning;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Carbon\Carbon;
 
 class InvoiceController extends Controller
 {
+    private $billingService;
+    private $invoiceService;
+
+    public function __construct(InvoiceService $invoiceService)
+    {
+        $this->invoiceService = $invoiceService;
+    }
     /**
      * Display a listing of the resource.
      */
@@ -30,11 +39,11 @@ class InvoiceController extends Controller
         }
 
 
-        $bill_id = $user->getCompanyBillPrefix() . substr(Carbon::now()->year, -2) . $next_bill;
-        $company = $user->getCompany();
+        $invoice_id = $user->company->bill_prefix . substr(Carbon::now()->year, -2) . $next_bill;
+        $company = $user->company;
         $schools = $user->getSchools();
 
-        return view('invoice.index', compact('bills', 'bill_id', 'company', 'schools'));
+        return view('invoice.index', compact('bills', 'invoice_id', 'company', 'schools'));
     }
 
     /**
@@ -48,25 +57,25 @@ class InvoiceController extends Controller
         $month = $request->month;
         $year = $request->year;
         $cmd = $request->cmd;
-        
+
         $user = Auth::user();
         $bills = $user->getInvoices();
         $bill_number = $bills->last()->id ?? substr(Carbon::now()->year, -2) . "000";
 
         $bill_number = (int) $bill_number + 1;
-        $bill_id = $user->getCompanyBillPrefix() . $bill_number;
+        $invoice_id = $user->company->bill_prefix . $bill_number;
 
-        $company = $user->getCompany();
+        $company = $user->company;
         $school = School::find($school_id);
 
         if ($cmd == "detailed") {
-            [$items, $total_amount] = Tools::getInvoiceDetails($school_id, $month, $year, $bill_id, false);
+            [$items, $total_amount] = Tools::getInvoiceDetails($school_id, $month, $year, $invoice_id, false);
         } else {
             $items = [];
             $total_amount = 0;
         }
 
-        return view('invoice.create', compact('bill_id', 'bill_number', 'company', 'school', 'items', 'month', 'year', 'bill_date', 'total_amount'));
+        return view('invoice.create', compact('invoice_id', 'bill_number', 'company', 'school', 'items', 'month', 'year', 'bill_date', 'total_amount'));
     }
 
     /**
@@ -75,41 +84,43 @@ class InvoiceController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'bill_id' => 'required',
+            'invoice_id' => 'required',
             'description' => 'required'
         ]);
 
         $month = $request->month;
         $year = $request->year;
         $bill_date = $request->bill_date;
-        
-        $company  =  Auth::user()->getCompany();
-        $invoice_id =  $request->bill_id;                           // This is the numeric part only
+
+        $company  =  Auth::user()->company;
+        $invoice_id =  $request->invoice_id;                           // This is the numeric part only
         $invoice_name = $company->bill_prefix . $invoice_id;     // This is the full ID with the company prefix
         $school = School::find($request->school_id);
 
         [$items, $total_amount] = Tools::getInvoiceDetails($school->id, $month, $year, $invoice_name);
 
         try {
-            $pdfPath = $this->generateAndSaveInvoice($invoice_id, $bill_date, $company, $school, $items, true);
-        } catch (\Exception $e) {
-            // Handle PDF generation errors
-            dd($e);
-            session()->flash('danger', "Erreur lors de la génération de la facture.");
-            return redirect()->back();
-        }
-
-        try {
-            Invoice::create([
+            // 1. Logique de création de l'enregistrement en base de données
+            $invoice = Invoice::create([
                 'id' => $invoice_id,
                 'description' => $request->description,
-                'bill_date' => Carbon::createFromFormat('d/m/Y', $bill_date)->format('Y-m-d'),  
+                'bill_date' => Carbon::createFromFormat('d/m/Y', $bill_date)->format('Y-m-d'),
                 'company_id' => $company->id,
                 'school_id' => $request->school_id,
                 'amount' => $total_amount,
             ]);
 
-            app('App\Http\Controllers\BillingController')->setBill($request);
+            // 2. Génération et enregistrement physique du fichier via le Service
+            // Le service retourne le chemin (ex: "invoices/2024/facture_001.pdf")
+            $this->invoiceService->saveToDisk($invoice, $items);
+
+            // 4. Lier les sessions de planning à cette facture
+            $this->invoiceService->linkPlanningToInvoice(
+                $request->school_id,
+                $request->month,
+                $request->year,
+                $invoice->id
+            );
 
             session()->flash('success', "Facture " . $invoice_name . " enregistrée avec succès.");
 
@@ -128,15 +139,15 @@ class InvoiceController extends Controller
     public function show(String $bill)
     {
         $user = Auth::user();
-        $company = $user->getCompany();
+        $company = $user->company;
 
-        $file_path = public_path('invoices/' . $company->bill_prefix . $bill . ".pdf");
-
-        if (!file_exists($file_path)) {
+        $file_path = "invoices/{$company->bill_prefix}{$bill}.pdf";
+        if (Storage::exists($file_path)) {
+            return Storage::download($file_path);
+        } else {
             session()->flash('danger', "File not found");
             return redirect()->back();
         }
-        return response()->download($file_path);
     }
 
     /**
@@ -177,10 +188,10 @@ class InvoiceController extends Controller
         }
     }
 
-    public function payed(String $bill_id)
+    public function payed(String $invoice_id)
     {
         try {
-            $bill = Invoice::findOrFail($bill_id);
+            $bill = Invoice::findOrFail($invoice_id);
             $bill->paid_at = Carbon::now();
             $bill->save();
             session()->flash('success', "Facture " . $bill->id . " payée avec succès.");
@@ -197,149 +208,20 @@ class InvoiceController extends Controller
     {
         try {
             $invoice->delete();
-            $planning_list = Planning::where('bill_id', Auth::user()->getCompanyBillPrefix() . $invoice->id)->get();
+            $planning_list = Planning::where('invoice_id', Auth::user()->company->bill_prefix . $invoice->id)->get();
 
             foreach ($planning_list as $id) {
                 $planning = Planning::find($id['id']);
-                $planning->bill_id = "";
+                $planning->invoice_id = "";
                 $planning->update();
             }
 
-            session()->flash('success', "Facture " . Auth::user()->getCompanyBillPrefix() .$invoice->id . " supprimée avec succès.");
+            session()->flash('success', "Facture " . Auth::user()->company->bill_prefix . $invoice->id . " supprimée avec succès.");
             return redirect()->back();
         } catch (\Exception $e) {
             session()->flash('danger', "Erreur lors de la suppression de la facture.");
             //session()->flash('danger', $e->getMessage());
             return redirect()->back();
         }
-    }
-
-    private function generateAndSaveInvoice($invoiceId, $bill_date,$company, $school, $items)
-    {
-        // Get the current date
-        $date_facture = $bill_date;
-        //$date_facture = '08/09/2025';
-        $date_echeance = date('d/m/Y', strtotime('+1 day'));
-        //$date_echeance = '09/09/2025';
-
-        $pdf = new InvoicePdf($invoiceId, $date_facture, $date_echeance, $school->code, $company->bill_prefix); // Now with no global variables
-
-        $x = 10;
-        $wpage = 185;
-        $currentY = $pdf->prepare($invoiceId, $x, $company, $school);
-
-        $lineHeight = 4;
-        $invoice_lines = 34;
-
-        // Draw the invoice details box
-        $boxHeight = $lineHeight * 1.5;
-        $pdf->Rect($x, $currentY, $wpage, $boxHeight, 'D'); // 'D' = draw only (border)
-
-        $pdf->SetFont('helvetica', '', 9);
-        $line = "Désignation";
-        $pdf->writeLine($x, $currentY,  $boxHeight, $line, 'L');
-
-        $x_col = $x + 107;
-        $pdf->writeLine($x_col / 2 - 4, $currentY,  $boxHeight, "TVA", 'C');
-        $pdf->Rect($x_col, $currentY, 16, $lineHeight * $invoice_lines + $boxHeight, 'D'); // 'D' = draw only (border)
-        $pdf->writeLine($x_col / 2 + 34, $currentY,  $boxHeight, "P.U. HT", 'C');
-        $pdf->writeLine($x_col / 2 + 74, $currentY,  $boxHeight, "Qté", 'C');
-        $pdf->Rect($x_col + 40, $currentY, 16, $lineHeight * $invoice_lines + $boxHeight, 'D'); // 'D' = draw only (border)
-        $currentY = $pdf->writeLine($x_col / 2 + 114, $currentY,  $boxHeight, "Total HT", 'C');
-
-        // Draw the border for the invoice details box
-        $pdf->Rect($x, $currentY, $wpage, $lineHeight * $invoice_lines, 'D'); // 'D' = draw only (border)
-
-        // Add invoice items
-        $pdf->SetFont('helvetica', '', 9);
-
-        $invoiceY = $currentY + 1; // Move down for the first item
-        $total_invoice = 0;
-        $invoice_line = 0;
-        foreach ($items as $item) {
-            $invoice_line++;
-            switch ($item[5]) {
-                case "T":
-                    $lineHeight = $pdf->setTitleFont();
-                    break;
-                case "S":
-                    $lineHeight = $pdf->setSubTitleFont();
-                    break;
-                default:
-                    $lineHeight = $pdf->setNormalFont();
-            }
-            $pdf->SetXY($x + 2, $invoiceY);
-            $pdf->Cell(108, $lineHeight, $item[0], 0, 0, 'L', false);
-
-            $pdf->setNormalFont();
-            $pdf->Cell(12, $lineHeight, $item[1], 0, 0, 'C', false);
-
-            $rate = $item[2];
-            if (is_numeric($rate))
-                $pdf->Cell(18, $lineHeight, number_format($rate, 2), 0, 0, 'R', false);
-            else
-                $pdf->Cell(18, $lineHeight, $rate, 0, 0, 'R', false);
-
-            $duration = $item[3];
-            if (is_numeric($duration))
-            {
-                $pdf->Cell(22, $lineHeight, number_format($duration, 2), 0, 0, 'R', false);
-            }
-            else
-                $pdf->Cell(22, $lineHeight, $duration, 0, 0, 'R', false);
-
-
-            if (is_numeric($rate) && is_numeric($duration)) {
-                $total = $rate * $duration;
-                $total_invoice += $total;
-                $total = number_format($total, 2);
-            } else {
-                $total = "";
-            }
-
-            $pdf->Cell(20, $lineHeight, $total, 0, 1, 'R', false);
-            $invoiceY += $lineHeight;
-        }
-
-        $currentY += $invoice_lines * $lineHeight + 2;
-        // Add total line
-        $pdf->SetFont('helvetica', 'B', 9);
-        $pdf->writeLine($x, $currentY,  $lineHeight,  "Conditions de règlement:", 'L');
-        $pdf->SetFont('helvetica', '', 9);
-        $pdf->writeLine($x + 40, $currentY,  $lineHeight, "À réception", 'L');
-        $pdf->writeLine($x + 125, $currentY, $lineHeight, "Total HT", 'L');
-        $currentY = $pdf->writeLine($x + 150, $currentY, $lineHeight, number_format($total_invoice, 2),  'R');
-        $saveY = $currentY; // Save Y position for RIB
-        $pdf->writeLine($x + 125, $currentY, $lineHeight, "Total TVA 20%",  'L');
-        $currentY = $pdf->writeLine($x + 150, $currentY, $lineHeight, number_format($total_invoice * 0.2, 2),  'R');
-        $pdf->Rect($x + 125, $currentY, 60, $lineHeight, 'F'); // 'F' = fill
-        $pdf->writeLine($x + 125, $currentY, $lineHeight, "Total TTC",  'L');
-        $currentY = $pdf->writeLine($x + 150, $currentY, $lineHeight, number_format($total_invoice * 1.2, 2),  'R');
-
-
-        $RIB = [
-            "Règlement par virement sur le compte bancaire suivant:",
-            "",
-            "Banque: ".$company->bank_name,
-            "    Code banque      Code guichet       Numéro de compte     Clé",
-            "            ".$company->bank."                  ".$company->branch."                  ".$company->account."           ".$company->key,
-            "Titulaire du compte: ".$company->iban_name,
-            "Code IBAN: ".$company->iban,
-            "Code BIC/SWIFT: ".$company->bic
-        ];
-        $currentY = $saveY; // Reset Y position for client address
-
-        $pdf->SetFont('helvetica', 'B', 8);
-
-        foreach ($RIB as $line) {
-            $currentY = $pdf->writeLine($x, $currentY, $lineHeight, $line, 'L');
-        }
-
-        // Output PDF
-
-        $pdfPath = __DIR__ . "/../../../public/invoices/" . $company->bill_prefix . $invoiceId . ".pdf";
-
-        $pdf->Output($pdfPath, 'F');
-        return $pdfPath;
     }
 }

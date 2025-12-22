@@ -107,7 +107,7 @@ class BillingController extends Controller
 
         foreach ($planning_list as $id) {
             $planning = Planning::find($id['id']);
-            $planning->bill_id = Auth()->user()->getCompanyBillPrefix() . $request->bill_id;
+            $planning->invoice_id = Auth()->user()->company->bill_prefix . $request->invoice_id;
             $planning->update();
         }
 

@@ -23,7 +23,7 @@
                     {{date_format(date_create($event->end),'H:i')}}: {{number_format($event->session_length * $event->rate,2)}} €
                 </div>
                 <div class="text-green-400">
-                  {{$event->bill_id}}
+                  {{$event->invoice_id}}
                 </div>
             </div>
             @if(Auth::user()->getMode() == "Edit")

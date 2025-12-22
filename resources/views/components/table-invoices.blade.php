@@ -7,7 +7,7 @@
     <thead>
         <tr class="text-center">
             <th>
-                {{ __('messages.bill_id') }}
+                {{ __('messages.invoice_id') }}
             </th>
             <th>
                 {{ __('messages.school') }}

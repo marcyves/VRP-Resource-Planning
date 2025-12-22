@@ -9,7 +9,7 @@
     <section>
         <form action="{{route('invoice.store')}}" method="post" class="bills-form">
             @csrf
-            <x-input-label class="my-4">{{ __('messages.bill_id') }}: {{$bill_id}} Date: {{$bill_date}}</x-input-label> 
+            <x-input-label class="my-4">{{ __('messages.invoice_id') }}: {{$invoice_id}} Date: {{$bill_date}}</x-input-label> 
             <ul class="list">
                 <li class="card">
                     <div class="card-content-text">
@@ -91,7 +91,7 @@
                     </div>
                 </li>
             </ul>
-            <input type="hidden" name="bill_id" id="name" value="{{$bill_number}}">
+            <input type="hidden" name="invoice_id" id="name" value="{{$bill_number}}">
             <input type="hidden" name="school_id" id="school_id" value="{{$school->id}}">
             <input type="hidden" name="month" id="month" value="{{$month}}">
             <input type="hidden" name="year" id="year" value="{{$year}}">

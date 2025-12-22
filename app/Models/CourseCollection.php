@@ -35,7 +35,7 @@ class CourseCollection extends Collection
             'begin',
             'end',
             'billable_rate',
-            'bill_id',
+            'invoice_id',
             'location',
             'session_length',
             'groups.name as group_name',
@@ -89,7 +89,7 @@ class CourseCollection extends Collection
             'courses.short_name as short_name',
             'rate',
             'session_length',
-            'bill_id',
+            'invoice_id',
             'groups.name as group_name',
             'groups.short_name as group_short_name'
             ])

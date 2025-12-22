@@ -83,8 +83,8 @@
                         <input type="hidden" name="course_id" value="{{$course_id}}">
                         <input type="hidden" name="month" value="{{$current_month}}">
                         <input type="hidden" name="year" value="{{$current_year}}">
-                        <label for="bill_id">Assign:</label>
-                        <select name="bill_id" id="bill_id"
+                        <label for="invoice_id">Assign:</label>
+                        <select name="invoice_id" id="invoice_id"
                         class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
                         @foreach ($bills as $bill)
                             <option value="{{$bill->id}}">{{$bill->id}}</option>
