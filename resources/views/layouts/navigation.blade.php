@@ -9,6 +9,10 @@
         <x-nav-link :href="route('planning.index')" :active="request()->routeIs('planning.index')">
             {{ __('messages.planning') }}
         </x-nav-link>
+        <x-nav-link :href="route('calendar.index')" :active="request()->routeIs('calendar.index')">
+            {{ __('messages.calendar') }}
+        </x-nav-link>
+
         <x-nav-link :href="route('billing.index')" :active="request()->routeIs('billing.index')">
             {{ __('messages.billing') }}
         </x-nav-link>
@@ -67,12 +71,6 @@
                     @endisset
                 </select>
             </form>
-                    <!-- Link to admin (Filament) -->
-                    @if(Auth::user()->getStatusName() == 'admin')
-                    <x-nav-link :href="route('filament.admin.pages.dashboard')" :active="request()->routeIs('filament.admin.pages.dashboard')">
-                    {{ __('Admin') }}
-                    </x-nav-link>
-                    @endif
             <!-- Settings Dropdown -->
             <div class="sm:flex sm:items-center sm:ml-6">
                 <x-dropdown align="right" width="48">

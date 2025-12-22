@@ -2,12 +2,32 @@
 
 namespace App\Http\Controllers;
 
-use ICal\ICal;
+use App\Services\CalendarService;
 
 class CalendarController extends Controller
 {
+    protected $calendarService;
+
+    public function __construct(CalendarService $calendarService)
+    {
+        $this->calendarService = $calendarService;
+    }
+
     public function readICSFile(String $file)
     {
+
+        try {
+            // On ajoute l'extension si elle manque
+            $fileName = str_ends_with($file, '.ics') ? $file : $file . ".ics";
+            
+            $events = $this->calendarService->parseIcsFile($fileName);
+
+            return response()->json($events);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 404);
+        }
+
+        /*
         $file = $file.".ics";
 
         $filePath = $filePath ?? storage_path('/calendar/' . $file);
@@ -48,5 +68,6 @@ class CalendarController extends Controller
 
         // Return the parsed events as JSON
         return response()->json($events);
+        */
     }
 }

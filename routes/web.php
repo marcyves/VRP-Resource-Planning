@@ -12,6 +12,7 @@ use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\DateSelectionController;
+use App\Http\Controllers\CalendarFileController;
 
 use Illuminate\Support\Facades\Route;
 
@@ -40,7 +41,13 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
-    Route::get('/calendar/import/{calendar_id}', [CalendarController::class, 'readICSFile'])->name('ics.read');
+//    Route::get('/calendar/import/{calendar_id}', [CalendarController::class, 'readICSFile'])->name('ics.read');
+    Route::prefix('admin/calendars')->middleware(['auth'])->group(function () {
+    Route::get('/', [CalendarFileController::class, 'index'])->name('calendar.index');
+    Route::post('/upload', [CalendarFileController::class, 'upload'])->name('calendar.upload');
+    Route::post('/import', [CalendarFileController::class, 'import'])->name('calendar.import');
+    Route::delete('/delete/{source}', [CalendarFileController::class, 'destroy'])->name('calendar.destroy');
+});
     Route::post('/select', [DateSelectionController::class, 'index'])->name('date.select');
     Route::get('/school/list', [SchoolController::class, 'list'])->name('school.list');
     Route::get('/school/{school_id}/add', [SchoolController::class, 'add'])->name('school.add');
