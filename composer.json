@@ -7,13 +7,13 @@
     "require": {
         "php": "^8.2",
         "blade-ui-kit/blade-ui-kit": "^0.6.2",
-        "filament/filament": "^3.2",
         "guzzlehttp/guzzle": "^7.2",
         "joedixon/laravel-translation": "^1.1",
         "laravel/framework": "^11.0",
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.8",
-        "tecnickcom/tcpdf": "^6.10"
+        "tecnickcom/tcpdf": "^6.10",
+        "u01jmg3/ics-parser": "*"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",
@@ -42,8 +42,7 @@
     "scripts": {
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
-            "@php artisan package:discover --ansi",
-            "@php artisan filament:upgrade"
+            "@php artisan package:discover --ansi"
         ],
         "post-update-cmd": [
             "@php artisan vendor:publish --tag=laravel-assets --ansi --force",
@@ -70,6 +69,11 @@
             "php-http/discovery": true
         }
     },
+    "allow-plugins": {
+    "pestphp/pest-plugin": true,
+    "php-http/discovery": true,
+    "laravel/pint": true
+},
     "minimum-stability": "stable",
     "prefer-stable": true
 }
