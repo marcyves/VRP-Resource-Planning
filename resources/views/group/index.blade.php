@@ -15,6 +15,19 @@
         </ul>
     </section>
 
+    @if($inactive->count() > 0)
+    <h3 class="mt-6 mb-2 text-lg font-bold mx-6">{{ __('messages.inactive_groups') }}</h3>
+    <section class="glass-background opacity-75">
+        <ul class="flex-list">
+        @foreach ($inactive as $group)
+            <li class="card glass-background">
+            <x-group-details :group=$group :occurences=$occurences :active=false/>
+            </li>
+        @endforeach
+        </ul>
+    </section>
+    @endif
+
     @if(Auth::user()->getMode() == "Edit")
     <section class="glass-background">
         <form action="{{route('group.save', 0)}}" method="post" 
