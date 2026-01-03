@@ -21,6 +21,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        \Illuminate\Support\Facades\View::composer(
+            'layouts.navigation',
+            \App\Http\View\Composers\NavigationComposer::class
+        );
 
         Carbon::setLocale(app()->getLocale());
 

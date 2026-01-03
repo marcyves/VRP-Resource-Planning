@@ -57,7 +57,6 @@
         @php
             $current_year = session('current_year');
             $current_semester = session('current_semester');
-            $years = session('years');
         @endphp
         <!-- Period selector -->
             <form class="nav-form" action="{{route('date.select')}}" method="post">

@@ -180,10 +180,23 @@ class CourseCollection extends Collection
             return $school->id;
         });
 
-        return Course::whereIn('school_id', $list)
+        $years = Course::whereIn('school_id', $list)
             ->select(['year'])
             ->distinct()
             ->orderBy('year', 'asc')
             ->get();
+
+        $currentYear = date('Y');
+        $nextYear = $currentYear + 1;
+
+        if (!$years->contains('year', $currentYear)) {
+            $years->push((object)['year' => $currentYear]);
+        }
+
+        if (!$years->contains('year', $nextYear)) {
+            $years->push((object)['year' => $nextYear]);
+        }
+
+        return $years->sortBy('year')->unique('year');
     }
 }
