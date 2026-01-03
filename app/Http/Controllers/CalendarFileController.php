@@ -24,7 +24,9 @@ class CalendarFileController extends Controller
     {
         // On récupère tous les fichiers .ics du dossier
         $files = Storage::files('calendars');
-        $schools = Auth::user()->getSchools();
+        /** @var \App\Models\User $user */
+        $user = Auth::user();
+        $schools = $user->getSchools();
         $sources = CalendarSource::with('school')->latest()->get();
 
         return view('calendar.manage', compact('files', 'schools', 'sources'));
@@ -70,15 +72,17 @@ class CalendarFileController extends Controller
         $exampleEvent = $this->calendarService->getFirstEventDetails($source);
 
         $icsFields = [
-        'summary' => 'Titre (Summary)',
-        'description' => 'Description',
-        'location' => 'Lieu (Location)'
-    ];    
-    // Par défaut, on extrait les labels depuis le 'summary'
-    // Mais l'utilisateur pourra changer ce choix sur l'écran suivant
-    $labels = $this->calendarService->getUniqueLabelsFromIcs($source, 'summary');
+            'summary' => 'Titre (Summary)',
+            'description' => 'Description',
+            'location' => 'Lieu (Location)'
+        ];
+        // Par défaut, on extrait les labels depuis le 'summary'
+        // Mais l'utilisateur pourra changer ce choix sur l'écran suivant
+        $labels = $this->calendarService->getUniqueLabelsFromIcs($source, 'summary');
 
         // 4. Redirection vers la vue de mapping en passant l'ID de la source
+        /** @var \App\Models\User $user */
+        $user = Auth::user();
         return view('calendar.mapping', [
             'source'   => $source,
             'labels'   => $labels,
@@ -86,37 +90,37 @@ class CalendarFileController extends Controller
             'icsFields' => $icsFields,
             'existingMappings' => $existingMappings,
             'courses'  => Course::where('school_id', $source->school_id)->get(),
-            'groups'   => Auth::user()->getGroups(),
+            'groups'   => $user->getGroups(),
         ]);
     }
 
     public function import(Request $request)
-{
-    $source = CalendarSource::findOrFail($request->source_id);
-    $sourceField = $request->ics_source_field; // 'summary' ou 'description'
+    {
+        $source = CalendarSource::findOrFail($request->source_id);
+        $sourceField = $request->ics_source_field; // 'summary' ou 'description'
 
-    foreach ($request->mappings as $label => $ids) {
-        if (empty($ids['course_id']) && empty($ids['group_id'])) continue;
+        foreach ($request->mappings as $label => $ids) {
+            if (empty($ids['course_id']) && empty($ids['group_id'])) continue;
 
-        // On enregistre le mapping (on peut adapter pour stocker les deux IDs)
-        CalendarMapping::updateOrCreate(
-            ['school_id' => $source->school_id, 'ics_label' => $label],
-            [
-                'course_id' => $ids['course_id'] ?: null,
-                'group_id'  => $ids['group_id'] ?: null,
-                'source_field' => $sourceField
-            ]
+            // On enregistre le mapping (on peut adapter pour stocker les deux IDs)
+            CalendarMapping::updateOrCreate(
+                ['school_id' => $source->school_id, 'ics_label' => $label],
+                [
+                    'course_id' => $ids['course_id'] ?: null,
+                    'group_id'  => $ids['group_id'] ?: null,
+                    'source_field' => $sourceField
+                ]
+            );
+        }
+
+        // Lancer le service avec les nouvelles règles
+        $stats = $this->calendarService->executeFinalImport($source, $request->mappings, $sourceField);
+
+        return redirect()->route('calendar.index')->with(
+            'success',
+            "Importation réussie : {$stats['created']} sessions créées, {$stats['skipped']} ignorées (déjà existantes)."
         );
     }
-
-    // Lancer le service avec les nouvelles règles
-    $stats = $this->calendarService->executeFinalImport($source, $request->mappings, $sourceField);
-
-    return redirect()->route('calendar.index')->with(
-        'success', 
-        "Importation réussie : {$stats['created']} sessions créées, {$stats['skipped']} ignorées (déjà existantes)."
-    );
-}
 
     public function import0(Request $request)
     {

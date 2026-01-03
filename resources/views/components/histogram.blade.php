@@ -5,9 +5,12 @@
         <div class="histogram">
             @foreach ($values['amounts'] as $amount)
             @if ($amount > 0)
-                <div class="histogram-bar" style="height: {{($amount*200)/$values['total']}}%;">
-                    <span class="histogram-label">@moneyVAT($amount,0)</span>
-                </div>
+            @php
+            $height = ($amount * 200) / $values['total'];
+            @endphp
+            <div class="histogram-bar" style="height: {{ $height }}%;">
+                <span class="histogram-label">@moneyVAT($amount,0)</span>
+            </div>
             @endif
             @endforeach
         </div>
