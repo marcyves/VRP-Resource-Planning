@@ -192,6 +192,17 @@ class User extends Authenticatable
             ->orderBy('name')->get();
     }
 
+    public function getGroupsQuery(?bool $active = true)
+    {
+        $query = Group::where('company_id', $this->company_id)
+            ->orderBy('name');
+
+        if (!is_null($active)) {
+             $query->where('active', $active);
+        }
+        return $query;
+    }
+
     public function getStatusName()
     {
         return Status::findOrFail($this->status_id)->name;

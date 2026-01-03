@@ -11,7 +11,9 @@ class CalendarSource extends Model
 
     protected $fillable = [
         'school_id',
-        'filename'
+        'filename',
+        'storage_path',
+        'url'
     ];
 
     /**

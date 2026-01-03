@@ -13,27 +13,47 @@ use Illuminate\Support\Facades\DB;
 
 class CalendarService
 {
+    public function getFirstEventDetails(CalendarSource $source): array
+    {
+        $target = $source->url ?: storage_path('app/' . $source->storage_path);
+        $ical = new \ICal\ICal($target);
+        $event = $ical->events()[0] ?? null;
+
+        if (!$event) return [];
+
+        return [
+            'summary'     => $event->summary,
+            'description' => $event->description,
+            'location'    => $event->location,
+            'start'       => date('d/m/Y H:i', strtotime($event->dtstart)),
+            'end'         => date('d/m/Y H:i', strtotime($event->dtend)),
+        ];
+    }
     /**
      * Extrait les titres uniques (SUMMARY) d'un fichier ICS pour le mapping.
      */
-    public function getUniqueLabelsFromIcs(string $storagePath): array
+    public function getUniqueLabelsFromIcs(CalendarSource $source): array
     {
-        $filePath = storage_path('app/' . $storagePath);
+        if ($source->url) {
+            $target = $source->url;
+        } else {
+            // On construit le chemin absolu vers le dossier storage
+            $target = storage_path('app/' . $source->storage_path);
 
-        if (!file_exists($filePath)) {
-            throw new Exception("Le fichier est introuvable sur le serveur.");
+            if (!file_exists($target)) {
+                throw new \Exception("Le fichier physique est introuvable à l'adresse : " . $target);
+            }
         }
 
-        $ical = new ICal($filePath, [
+        $ical = new ICal($target, [
             'defaultSpan'     => 2,
             'defaultTimeZone' => 'UTC',
         ]);
 
-        // On récupère uniquement les titres (summary) uniques
         return collect($ical->events())
             ->pluck('summary')
-            ->filter()
             ->unique()
+            ->filter()
             ->values()
             ->toArray();
     }
@@ -62,51 +82,74 @@ class CalendarService
     /**
      * Exécute l'importation finale dans la table 'plannings'.
      */
-    public function executeFinalImport(CalendarSource $source, array $mappings)
+    public function executeFinalImport(CalendarSource $source, array $mappings, string $sourceField = 'summary')
     {
         $events = $this->parseIcsFile($source->filename);
 
-        return DB::transaction(function () use ($events, $source, $mappings) {
+        return DB::transaction(function () use ($events, $source, $mappings, $sourceField) {
+            $stats = ['created' => 0, 'skipped' => 0];
+
             foreach ($events as $event) {
-                $label = $event['summary'];
-                $target = $mappings[$label] ?? null;
+                // Determine the label used for mapping based on user choice
+                $label = $event[$sourceField] ?? $event['summary']; 
+                $mapping = $mappings[$label] ?? null;
 
-                if (!$target) continue;
+                if (!$mapping) continue;
 
-                // On sépare "Course:5" en ["Course", "5"]
-                [$type, $id] = explode(':', $target);
+                // Mapping is now an array: ['course_id' => X, 'group_id' => Y]
+                $courseId = $mapping['course_id'] ?? null;
+                $groupId  = $mapping['group_id'] ?? null;
                 
-                $courseId = null;
-                $groupId = null;
-                $rate = 0;
+                if (!$courseId && !$groupId) continue;
 
-                if ($type === 'Course') {
-                    $course = Course::find($id);
+                $rate = 0;
+                if ($courseId) {
+                    $course = Course::find($courseId);
                     if ($course) {
-                        $courseId = $course->id;
                         $rate = $course->billable_rate;
                     }
-                } elseif ($type === 'Group') {
-                    $group = Group::with('course')->find($id);
+                }
+                // Determine rate from group if course not explicitly set but group is? 
+                // Usually group implies course.
+                if ($groupId && !$courseId) {
+                    $group = Group::with('course')->find($groupId);
                     if ($group) {
-                        $groupId = $group->id;
                         $courseId = $group->course_id;
                         $rate = $group->course->billable_rate ?? 0;
                     }
                 }
 
                 if ($courseId) {
-                    Planning::create([
-                        'school_id'          => $source->school_id,
-                        'calendar_source_id' => $source->id,
-                        'course_id'          => $courseId,
-                        'group_id'           => $groupId,
-                        'begin'              => $event['start'],
-                        'end'                => $event['end'],
-                        'billable_rate'      => $rate,
-                    ]);
+                    // Collision Detection
+                    $exists = Planning::where('school_id', $source->school_id)
+                        ->where(function ($query) use ($courseId, $groupId) {
+                             if ($groupId) {
+                                 $query->where('group_id', $groupId);
+                             } else {
+                                 $query->where('course_id', $courseId);
+                             }
+                        })
+                        ->where('begin', '<', $event['end'])
+                        ->where('end', '>', $event['start'])
+                        ->exists();
+
+                    if (!$exists) {
+                        Planning::create([
+                            'school_id'          => $source->school_id,
+                            'calendar_source_id' => $source->id,
+                            'course_id'          => $courseId,
+                            'group_id'           => $groupId,
+                            'begin'              => $event['start'],
+                            'end'                => $event['end'],
+                            'billable_rate'      => $rate,
+                        ]);
+                        $stats['created']++;
+                    } else {
+                        $stats['skipped']++;
+                    }
                 }
             }
+            return $stats;
         });
     }
 }

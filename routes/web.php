@@ -13,6 +13,7 @@ use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\DateSelectionController;
 use App\Http\Controllers\CalendarFileController;
+use Illuminate\Support\Facades\DB;
 
 use Illuminate\Support\Facades\Route;
 
@@ -29,7 +30,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     try {
-        \DB::connection()->getPDO();
+        DB::connection()->getPDO();
         return redirect(route('login'));
     } catch (\Exception $e) {
         return view('maintenance');
@@ -45,6 +46,8 @@ Route::middleware('auth')->group(function () {
     Route::prefix('admin/calendars')->middleware(['auth'])->group(function () {
     Route::get('/', [CalendarFileController::class, 'index'])->name('calendar.index');
     Route::post('/upload', [CalendarFileController::class, 'upload'])->name('calendar.upload');
+    Route::get('/upload', function () {
+    return redirect()->route('calendar.index');});
     Route::post('/import', [CalendarFileController::class, 'import'])->name('calendar.import');
     Route::delete('/delete/{source}', [CalendarFileController::class, 'destroy'])->name('calendar.destroy');
 });

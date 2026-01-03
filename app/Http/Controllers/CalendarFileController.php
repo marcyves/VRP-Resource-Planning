@@ -34,20 +34,32 @@ class CalendarFileController extends Controller
     {
         $request->validate([
             'school_id' => 'required|exists:schools,id',
-            'ics_file'  => 'required|file|mimes:ics,txt'
+            'ics_file'  => 'nullable|file',
+            'ics_url'   => 'nullable|url',
         ]);
 
-        // 1. Stockage physique dans storage/app/calendars
-        $path = $request->file('ics_file')->store('calendars');
+        $path = null;
+        $url = $request->ics_url;
 
-        // 2. Enregistrement dans la table calendar_sources
+        if ($request->hasFile('ics_file')) {
+            $storagePath = $request->file('ics_file')->store('calendars');
+            $originalName = $request->file('ics_file')->getClientOriginalName();
+            $url = null;
+        } elseif ($request->ics_url) {
+            $storagePath = null;
+            $url = $request->ics_url;
+            $originalName = 'Flux distant: ' . parse_url($url, PHP_URL_HOST);
+        }
+
         $source = CalendarSource::create([
-            'school_id'         => $request->school_id,
-            'filename' => $request->file('ics_file')->getClientOriginalName()
+            'school_id' => $request->school_id,
+            'filename'  => $originalName, // Nom lisible
+            'storage_path' => $storagePath, // Chemin réel pour Storage::get()
+            'url'       => $url
         ]);
 
-        // 3. Analyse du contenu pour le mapping
-        $labels = $this->calendarService->getUniqueLabelsFromIcs($path);
+        // On passe l'objet complet au service
+        $labels = $this->calendarService->getUniqueLabelsFromIcs($source);
 
         // Récupérer les mappings existants pour cette école
         $existingMappings = CalendarMapping::where('school_id', $request->school_id)
@@ -55,38 +67,58 @@ class CalendarFileController extends Controller
             ->get()
             ->keyBy('ics_label');
 
+        $exampleEvent = $this->calendarService->getFirstEventDetails($source);
+
+        $icsFields = [
+        'summary' => 'Titre (Summary)',
+        'description' => 'Description',
+        'location' => 'Lieu (Location)'
+    ];    
+    // Par défaut, on extrait les labels depuis le 'summary'
+    // Mais l'utilisateur pourra changer ce choix sur l'écran suivant
+    $labels = $this->calendarService->getUniqueLabelsFromIcs($source, 'summary');
+
         // 4. Redirection vers la vue de mapping en passant l'ID de la source
         return view('calendar.mapping', [
             'source'   => $source,
             'labels'   => $labels,
+            'exampleEvent' => $exampleEvent,
+            'icsFields' => $icsFields,
             'existingMappings' => $existingMappings,
             'courses'  => Course::where('school_id', $source->school_id)->get(),
             'groups'   => Auth::user()->getGroups(),
         ]);
-
-        /*
-        $request->validate(['ics_file' => 'required|file']);
-        $path = $request->file('ics_file')->storeAs('calendars', $request->file('ics_file')->getClientOriginalName());
-        return back()->with('success', 'Fichier transféré avec succès.');
-        */
     }
 
-    /*     public function import($filename)
-    {
-        try {
-            // On délègue au service l'importation avec matching automatique
-            $events = $this->calendarService->parseIcsFile($filename);
-            $results = $this->calendarService->importWithAutoMatching($events);
-
-            return back()->with('success', "Importation réussie : {$results['imported']} sessions ajoutées.");
-        } catch (\Exception $e) {
-            session()->flash('danger', "Erreur lors de l'importation du fichier ICS : ".$e->getMessage());
-
-            return back()->with('error', $e->getMessage());
-        }
-    } */
-
     public function import(Request $request)
+{
+    $source = CalendarSource::findOrFail($request->source_id);
+    $sourceField = $request->ics_source_field; // 'summary' ou 'description'
+
+    foreach ($request->mappings as $label => $ids) {
+        if (empty($ids['course_id']) && empty($ids['group_id'])) continue;
+
+        // On enregistre le mapping (on peut adapter pour stocker les deux IDs)
+        CalendarMapping::updateOrCreate(
+            ['school_id' => $source->school_id, 'ics_label' => $label],
+            [
+                'course_id' => $ids['course_id'] ?: null,
+                'group_id'  => $ids['group_id'] ?: null,
+                'source_field' => $sourceField
+            ]
+        );
+    }
+
+    // Lancer le service avec les nouvelles règles
+    $stats = $this->calendarService->executeFinalImport($source, $request->mappings, $sourceField);
+
+    return redirect()->route('calendar.index')->with(
+        'success', 
+        "Importation réussie : {$stats['created']} sessions créées, {$stats['skipped']} ignorées (déjà existantes)."
+    );
+}
+
+    public function import0(Request $request)
     {
         // 1. Validation de base
         $request->validate([
