@@ -16,7 +16,16 @@ class GroupController extends Controller
     {
         $user = Auth::user();
         $groups = $user->getGroups();
-        $inactive = $user->getGroups(false);
+        
+        $search = request('search');
+        $inactiveQuery = $user->getGroupsQuery(false);
+        if ($search) {
+            $inactiveQuery->where(function($q) use ($search) {
+                $q->where('name', 'like', "%$search%")
+                  ->orWhere('short_name', 'like', "%$search%");
+            });
+        }
+        $inactive = $inactiveQuery->paginate(15)->withQueryString();
 
         $list = $groups->map(function(Group $group){
             return $group->id;

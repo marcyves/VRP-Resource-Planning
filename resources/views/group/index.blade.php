@@ -15,8 +15,18 @@
         </ul>
     </section>
 
-    @if($inactive->count() > 0)
-    <h3 class="mt-6 mb-2 text-lg font-bold mx-6">{{ __('messages.inactive_groups') }}</h3>
+    @if($inactive->count() > 0 || request('search'))
+    <div class="mx-6 mt-6 mb-2 flex items-center justify-between">
+        <h3 class="text-lg font-bold">{{ __('messages.inactive_groups') }}</h3>
+        <form action="{{ route('group.index') }}" method="GET" class="flex gap-2">
+            <x-text-input type="text" name="search" placeholder="Search..." value="{{ request('search') }}" />
+             <x-primary-button type="submit">Search</x-primary-button>
+             @if(request('search'))
+                <a href="{{ route('group.index') }}" class="px-4 py-2 bg-gray-200 rounded-md text-gray-700 hover:bg-gray-300 transition">Clear</a>
+             @endif
+        </form>
+    </div>
+    
     <section class="glass-background opacity-75">
         <ul class="flex-list">
         @foreach ($inactive as $group)
@@ -25,6 +35,9 @@
             </li>
         @endforeach
         </ul>
+        <div class="mt-4">
+            {{ $inactive->links() }}
+        </div>
     </section>
     @endif
 
