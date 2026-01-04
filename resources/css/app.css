@@ -1,5 +1,6 @@
 @import url("global.css");
 @import url('navigation.css');
+@import url("breadcrumb.css");
 @import url("course-table.css");
 @import url("maintenance.css");
 @import url("calendar.css");
@@ -8,18 +9,20 @@
 @import url("text-input.css");
 @import url("pie.css");
 @import url("histogram.css");
+@import url("tw-compat.css");
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+
+
 
 @-webkit-keyframes AnimateBG {
     0% {
         background-position: 0% 50%;
     }
+
     50% {
         background-position: 100% 50%;
     }
+
     100% {
         background-position: 0% 50%;
     }
@@ -29,9 +32,11 @@
     0% {
         background-position: 0% 50%;
     }
+
     50% {
         background-position: 100% 50%;
     }
+
     100% {
         background-position: 0% 50%;
     }
@@ -48,14 +53,6 @@
     flex: 1 1 33%;
     padding: 10px;
     max-width: 33%;
-}
-
-.breadcrumb {
-    font-weight: bolder;
-    font-size: larger;
-    width: 100%;
-    background-color: var(--nav-bg-color);
-    color: white;
 }
 
 .flex-list {
@@ -95,7 +92,9 @@
     text-overflow: ellipsis;
     min-width: 80%;
 }
-.card-content-text, .card-subtitle {
+
+.card-content-text,
+.card-subtitle {
     font-size: 14px;
     font-weight: 300;
     white-space: nowrap;
@@ -103,16 +102,18 @@
     text-overflow: ellipsis;
 }
 
-.card-line-two{
+.card-line-two {
     color: var(--bg-color-a);
     font-size: smaller;
     text-align: end;
     padding-right: 12px;
 }
-.card-content-text h2{
+
+.card-content-text h2 {
     font-weight: bolder;
     font-size: larger;
 }
+
 .card-content-end {
     display: flex;
     gap: 15px;
@@ -120,17 +121,17 @@
     box-sizing: border-box;
 }
 
-.glass-background{
-  background: rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(10px);
-  border-radius: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  color: white;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+.glass-background {
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
 }
 
 .glass-background select,
-.glass-background input{
+.glass-background input {
     color: var(--main-text-color);
     height: fit-content;
     border-radius: 6px;
@@ -141,7 +142,8 @@
     max-width: 16em;
     overflow: hidden;
 }
-.glass-background input{
+
+.glass-background input {
     max-width: 4em;
     text-align: end;
 }
@@ -181,19 +183,7 @@ form.cool-box {
     background-color: var(--icon-grey);
 }
 
-.icon {
-    width: 1.2em;
-}
 
-.green {
-    filter: invert(21%) sepia(99%) saturate(3880%) hue-rotate(98deg)
-        brightness(96%) contrast(89%);
-}
-
-.red {
-    filter: invert(12%) sepia(72%) saturate(5368%) hue-rotate(356deg)
-        brightness(121%) contrast(120%);
-}
 
 .grid-container {
     display: grid;
@@ -381,11 +371,11 @@ form.cool-box {
     border-top: 1px solid #e9ecef;
 }
 
-.modal-footer > :not(:first-child) {
+.modal-footer> :not(:first-child) {
     margin-left: 0.25rem;
 }
 
-.modal-footer > :not(:last-child) {
+.modal-footer> :not(:last-child) {
     margin-right: 0.25rem;
 }
 
@@ -402,9 +392,11 @@ form.cool-box {
         max-width: 500px;
         margin: 1.75rem auto;
     }
+
     .modal-dialog-centered {
         min-height: calc(100% - (1.75rem * 2));
     }
+
     .modal-sm {
         max-width: 300px;
     }
@@ -451,7 +443,8 @@ form.cool-box {
     box-shadow: inset 0 0.0625em 0.125em rgba(0, 0, 0, 0.2);
     transition: background-color 0.4s linear;
 }
-.toggle-container.edit > .toggle-checkbox:checked + .toggle-track {
+
+.toggle-container.edit>.toggle-checkbox:checked+.toggle-track {
     background-color: #4ccf59;
 }
 
@@ -465,7 +458,8 @@ form.cool-box {
     box-shadow: 0 0.25em 0.25em rgba(0, 0, 0, 0.2),
         inset 0 -0.125em 0.25em rgba(0, 0, 0, 0.2);
 }
-.toggle-checkbox.toggled-once + .toggle-track > .toggle-thumb {
+
+.toggle-checkbox.toggled-once+.toggle-track>.toggle-thumb {
     animation-name: grow-out, bounce-out;
     animation-duration: 0.2s;
     animation-timing-function: cubic-bezier(0.75, 0, 1, 1),
@@ -473,7 +467,8 @@ form.cool-box {
     animation-delay: 0s, 0.2s;
     animation-fill-mode: forwards;
 }
-.toggle-checkbox.toggled-once:checked + .toggle-track > .toggle-thumb {
+
+.toggle-checkbox.toggled-once:checked+.toggle-track>.toggle-thumb {
     animation-name: grow-in, bounce-in;
 }
 
@@ -482,36 +477,43 @@ form.cool-box {
         border-radius: 0.6875em;
         transform: translateX(0) scale(1);
     }
+
     100% {
         border-radius: 0.4448529412em / 0.9453125em;
         transform: translateX(0.5em) scale(1.5454545455, 0.7272727273);
     }
 }
+
 @keyframes bounce-in {
     0% {
         border-radius: 0.4448529412em / 0.9453125em;
         transform: translateX(0.5em) scale(1.5454545455, 0.7272727273);
     }
+
     100% {
         border-radius: 0.6875em;
         transform: translateX(100%) scale(1);
     }
 }
+
 @keyframes grow-out {
     0% {
         border-radius: 0.6875em;
         transform: translateX(100%) scale(1);
     }
+
     100% {
         border-radius: 0.4448529412em / 0.9453125em;
         transform: translateX(0.125em) scale(1.5454545455, 0.7272727273);
     }
 }
+
 @keyframes bounce-out {
     0% {
         border-radius: 0.4448529412em / 0.9453125em;
         transform: translateX(0.125em) scale(1.5454545455, 0.7272727273);
     }
+
     100% {
         border-radius: 0.6875em;
         transform: translateX(0) scale(1);

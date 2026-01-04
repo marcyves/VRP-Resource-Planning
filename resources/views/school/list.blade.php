@@ -5,15 +5,14 @@
         </h2>
     </x-slot>
 
-    <section >
+    <section>
         <ul>
             @foreach ($schools as $school)
-            <li class="mx-auto max-w-screen-xl px-2 lg:px-12 bg-white shadow-md sm:rounded-lg overflow-hidden mb-2
-            flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-2">
-                <x-school-header :school_name="$school->name" :school_id="$school->id"/>
+            <li class="resource-list-item">
+                <x-school-header :school_name="$school->name" :school_id="$school->id" />
             </li>
             @endforeach
-        </ul>  
+        </ul>
     </section>
 
 </x-app-layout>
