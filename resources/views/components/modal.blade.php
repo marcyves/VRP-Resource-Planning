@@ -46,7 +46,7 @@ $maxWidth = [
     x-on:keydown.shift.tab.prevent="prevFocusable().focus()"
     x-show="show"
     class="modal-overlay"
-    style="display: {{ $show ? 'flex' : 'none' }};">
+    x-bind:style="show ? 'display: flex' : 'display: none'">
     <div
         x-show="show"
         class="fixed inset-0 transform transition-all"

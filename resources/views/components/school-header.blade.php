@@ -1,26 +1,27 @@
 @props(['school_id','school_name'])
-<form action="{{route('school.show', $school_id)}}" method="get" class="card-content-text">
-    @csrf
-    <button class="card-title btn-text-link focus:outline-none" type="submit">
-        {{html_entity_decode($school_name)}}
-    </button>
-</form>
-@if(Auth::user()->getMode() == "Edit")
-<div class="card-content-end">
-    <form action="{{route('school.edit', $school_id)}}" method="get" class="action">
-        <x-button-edit />
-    </form>
-    <form action="{{route('school.destroy', $school_id)}}" method="post">
-        @csrf
-        @method('delete')
-        <x-button-delete />
-    </form>
-    <a href="{{route('course.create', $school_id)}}"><x-button-add /></a>
-    <form action="{{route('invoice.create')}}" class="inline" method="get">
-        @csrf
-        <input type="hidden" name="school_id" value="{{$school_id}}">
-        <input type="submit" value="$"
-            class="btn-input">
-    </form>
+<div class="card-content">
+    <a href="{{route('school.show', $school_id)}}" class="card-content-text">
+        <button class="card-title btn-text-link" type="submit">
+            {{html_entity_decode($school_name)}}
+        </button>
+    </a>
+    @if(Auth::user()->getMode() == "Edit")
+    <div class="card-content-end">
+        <form action="{{route('school.edit', $school_id)}}" method="get">
+            <x-button-edit />
+        </form>
+        <form action="{{route('school.destroy', $school_id)}}" method="post">
+            @csrf
+            @method('delete')
+            <x-button-delete />
+        </form>
+        <a href="{{route('course.create', $school_id)}}"><x-button-add /></a>
+        <form action="{{route('invoice.create')}}" method="get">
+            @csrf
+            <input type="hidden" name="school_id" value="{{$school_id}}">
+            <input type="submit" value="$"
+                class="btn-input">
+        </form>
+    </div>
+    @endif
 </div>
-@endif

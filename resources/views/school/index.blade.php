@@ -4,23 +4,21 @@
             {{ __('messages.schools_list') }}
         </h2>
         @if(Auth::user()->getMode() == "Edit")
-            <a class="p-2 text-sm border border-gray-300 rounded-md font-semibold font-medium text-center text-gray-500 hover:text-gray-800 rounded-lg focus:outline-none" 
-                href="{{route('school.list')}}"> {{ __('messages.school_no_course') }}</a>
+        <a class="p-2 text-sm border border-gray-300 rounded-md font-semibold font-medium text-center text-gray-500 hover:text-gray-800 rounded-lg focus:outline-none"
+            href="{{route('school.list')}}"> {{ __('messages.school_no_course') }}</a>
         @endif
     </x-slot>
- 
+
     <section class="glass-background">
         <ul class="list">
             @php
-                $total_amount = 0;
-                $amounts = [];
-                $amounts[] = 0;
+            $total_amount = 0;
+            $amounts = [];
+            $amounts[] = 0;
             @endphp
             @foreach ($schools as $school)
             <li class="card glass-background">
-                <div class="card-content">
-                <x-school-header :school_name="$school->name" :school_id="$school->id"/>
-                </div>
+                <x-school-header :school_name="$school->name" :school_id="$school->id" />
                 <div class="card-line-two">
                     @money($school->amount) €
                     @php
@@ -30,7 +28,7 @@
                 </div>
             </li>
             @endforeach
-        </ul>  
+        </ul>
     </section>
 
     <section class="glass-background">
@@ -39,19 +37,29 @@
 
     <style>
         .pie {
-            background-image: 
-        conic-gradient(from 30deg
-        @php
-            $amount1 = $amounts[0];
-            array_shift($amounts);
-        @endphp
-        @foreach($amounts as $amount2)
-            ,var(--c{{$loop->index}}) {{number_format(($amount1/$total_amount)*100,0)}}% {{number_format(($amount2/$total_amount)*100,0)}}%
-            @php
-                $amount1 = $amount2;
-            @endphp
-        @endforeach
-            );
+            background-image:
+                conic-gradient(from 30deg @php $amount1 =$amounts[0];
+                    array_shift($amounts);
+
+                    @endphp @foreach($amounts as $amount2), var(--c {
+                            {
+                            $loop->index
+                        }
+
+                    }) {
+                        {
+                        number_format(($amount1/$total_amount)*100, 0)
+                    }
+                }
+
+                % {
+                        {
+                        number_format(($amount2/$total_amount)*100, 0)
+                    }
+                }
+
+                % @php $amount1 =$amount2;
+                @endphp @endforeach );
         }
     </style>
 
@@ -65,15 +73,15 @@
 
     @if(Auth::user()->getMode() == "Edit")
     <section class="glass-background">
-        <form action="{{route('school.store')}}" method="post" 
-        class="mx-auto px-6 py-2 shadow-md mb-6 flex items-center justify-items-start">
+        <form action="{{route('school.store')}}" method="post"
+            class="mx-auto px-6 py-2 shadow-md mb-6 flex items-center justify-items-start">
             @csrf
-            <x-text-input class="mx-6" type="text" name="name" id="name" placeholder="{{ __('messages.name') }}" value="{{old('name')}}"/>
-            <x-text-input class="mx-6" type="text" name="code" id="code" placeholder="{{ __('messages.code') }}" value="{{old('code')}}"/>
-            <x-text-input class="mx-6" type="text" name="address" id="address" placeholder="{{ __('messages.address') }}" value="{{old('address')}}"/>
-            <x-text-input class="mx-6" type="text" name="city" id="city" placeholder="{{ __('messages.city') }}" value="{{old('city')}}"/>  
-            <x-text-input class="mx-6" type="text" name="zip" id="zip" placeholder="{{ __('messages.zip') }}"/>
-            <x-text-input class="mx-6" type="text" name="country" id="country" placeholder="{{ __('messages.country') }}" value="{{old('country', 'France')}}"/>
+            <x-text-input class="mx-6" type="text" name="name" id="name" placeholder="{{ __('messages.name') }}" value="{{old('name')}}" />
+            <x-text-input class="mx-6" type="text" name="code" id="code" placeholder="{{ __('messages.code') }}" value="{{old('code')}}" />
+            <x-text-input class="mx-6" type="text" name="address" id="address" placeholder="{{ __('messages.address') }}" value="{{old('address')}}" />
+            <x-text-input class="mx-6" type="text" name="city" id="city" placeholder="{{ __('messages.city') }}" value="{{old('city')}}" />
+            <x-text-input class="mx-6" type="text" name="zip" id="zip" placeholder="{{ __('messages.zip') }}" />
+            <x-text-input class="mx-6" type="text" name="country" id="country" placeholder="{{ __('messages.country') }}" value="{{old('country', 'France')}}" />
             <x-primary-button>{{ __('messages.school_create') }}</x-primary-button>
         </form>
     </section>

@@ -1,6 +1,4 @@
 @import url("global.css");
-@import url('navigation.css');
-@import url("breadcrumb.css");
 @import url("course-table.css");
 @import url("maintenance.css");
 @import url("calendar.css");
@@ -10,8 +8,6 @@
 @import url("pie.css");
 @import url("histogram.css");
 @import url("tw-compat.css");
-
-
 
 
 @-webkit-keyframes AnimateBG {
@@ -51,36 +47,21 @@
 
 .list-item {
     flex: 1 1 33%;
-    padding: 10px;
     max-width: 33%;
 }
 
-.flex-list {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-evenly;
-    width: 100%;
-    margin: 12px 0;
-}
+/* Moved flex-list and card to global.css */
 
-.card {
-    box-shadow: 8px 8px 2px 1px rgba(8, 42, 196, 0.2);
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: top;
-    padding: 6px;
-    margin: 6px;
-    min-width: 29%;
-    max-width: 20em;
-    border-radius: 0.5rem;
-    cursor: pointer;
+.btn-text-link {
+    background-color: transparent;
+    border: none;
 }
 
 .card-content {
     display: flex;
     justify-content: space-between;
     flex-direction: row;
+    padding: 4px;
 }
 
 .card-title {
@@ -90,11 +71,17 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    min-width: 80%;
+    min-width: 20%;
+    text-align: left;
+    margin: 2px;
 }
 
 .card-content-text,
 .card-subtitle {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    flex-direction: row;
     font-size: 14px;
     font-weight: 300;
     white-space: nowrap;
@@ -103,10 +90,9 @@
 }
 
 .card-line-two {
-    color: var(--bg-color-a);
     font-size: smaller;
-    text-align: end;
-    padding-right: 12px;
+    margin: 0;
+    padding: 0;
 }
 
 .card-content-text h2 {
@@ -119,71 +105,19 @@
     gap: 15px;
     align-items: center;
     box-sizing: border-box;
-}
-
-.glass-background {
-    background: rgba(255, 255, 255, 0.2);
-    backdrop-filter: blur(10px);
-    border-radius: 10px;
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    color: white;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-}
-
-.glass-background select,
-.glass-background input {
-    color: var(--main-text-color);
-    height: fit-content;
-    border-radius: 6px;
-    margin: 3px;
-    padding: 0 6px;
-    background-color: rgba(255, 255, 255, 0.4);
-    min-width: 3.5em;
-    max-width: 16em;
-    overflow: hidden;
-}
-
-.glass-background input {
-    max-width: 4em;
-    text-align: end;
+    border-radius: 4px;
+    padding: 4px;
+    box-shadow: 0 0 0 1px var(--icon-grey);
 }
 
 .cool-box {
     border: solid var(--icon-grey);
+    box-shadow: 0 0 0 1px var(--icon-grey);
     border-width: thin;
-    border-radius: 4px;
-    color: white;
+    border-radius: 8px;
+    margin: 1rem;
+    background-color: var(--main-bg-color);
 }
-
-a.cool-box {
-    display: inline-flex;
-    font-size: 0.875rem;
-    font-weight: 600;
-    color: var(--main-text-color);
-    padding: 2px 4px;
-    text-align: center;
-    align-items: center;
-
-    line-height: 0.8rem;
-}
-
-form.cool-box {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    font-size: medium;
-}
-
-.cool-box label {
-    font-weight: 100;
-    margin-left: 18px;
-}
-
-.cool-box:hover {
-    background-color: var(--icon-grey);
-}
-
-
 
 .grid-container {
     display: grid;
@@ -191,21 +125,7 @@ form.cool-box {
     grid-template-columns: auto auto auto auto auto;
 }
 
-.nice-box {
-    margin: 6px 12px;
-    border-radius: 6px;
-    box-shadow: 8px 8px 2px 1px rgba(8, 42, 196, 0.2);
-    padding: 0.5rem 1rem 0.5rem 1rem;
-    background-color: var(--box-bg-color);
-}
-
-.school-box {
-    padding: 1rem;
-    margin-bottom: 6px;
-    border-radius: 6px;
-    background-color: var(--main-box-bg-color);
-    box-shadow: 8px 8px 2px 1px rgba(8, 42, 196, 0.2);
-}
+/* Use .glass-background-solid or .card instead of .nice-box / .school-box */
 
 .nice-form {
     display: flex;
@@ -531,4 +451,13 @@ form.cool-box {
     padding: 0 8px;
     margin: 1rem;
     min-width: 4.5rem;
+}
+
+.total-line {
+    display: flex;
+    justify-content: space-between;
+    font-weight: bold;
+    background-color: var(--surface-glass);
+    padding: 0.5rem;
+    border-radius: 8px;
 }

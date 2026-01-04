@@ -4,39 +4,39 @@
             {{ __('messages.dashboard') }}
         </h2>
 
-    @foreach ($histograms as $histogram)
-        <x-histogram :values=$histogram/>        
-    @endforeach
+        @foreach ($histograms as $histogram)
+        <x-histogram :values=$histogram />
+        @endforeach
 
-</x-slot>
+    </x-slot>
 
     <section>
         @php
-            $gross_total_time = 0;
-            $gross_total_budget = 0;
-            $total_time = 0;
-            $total_budget = 0;
+        $gross_total_time = 0;
+        $gross_total_budget = 0;
+        $total_time = 0;
+        $total_budget = 0;
         @endphp
         @foreach ($schools as $school)
-            @if($school->courses->count() > 0)
-                @php
-                $total_time = 0;
-                $total_budget = 0;
-                $school_id = $school->id;
-                $school_name = $school->name;
-                @endphp
-                <article class="school-box">
-                    <x-school-header :school_name=$school_name :school_id=$school_id />
-                    @php
-                    $school_courses = $courses->where('school_name', $school_name);
-                    @endphp
-                    <x-course-table :courses=$school_courses :school_name=$school_name :school_id=$school_id/>
-                    @php
-                    $gross_total_time += $total_time;
-                    $gross_total_budget += $total_budget;
-                    @endphp
-                </article>
-            @endif
+        @if($school->courses->count() > 0)
+        @php
+        $total_time = 0;
+        $total_budget = 0;
+        $school_id = $school->id;
+        $school_name = $school->name;
+        @endphp
+        <article class="school-box glass-background">
+            <x-school-header :school_name=$school_name :school_id=$school_id />
+            @php
+            $school_courses = $courses->where('school_name', $school_name);
+            @endphp
+            <x-course-table :courses=$school_courses :school_name=$school_name :school_id=$school_id />
+            @php
+            $gross_total_time += $total_time;
+            $gross_total_budget += $total_budget;
+            @endphp
+        </article>
+        @endif
         @endforeach
 
         @if ($gross_total_time > 0)

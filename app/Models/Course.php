@@ -15,12 +15,12 @@ class Course extends Model
     use HasFactory;
 
     public $timestamps = false;
-    public $fillable = ['name', 'short_name','sessions', 'session_length', 'school_id', 'program_id', 'year', 'semester', 'rate'];
+    public $fillable = ['name', 'short_name', 'sessions', 'session_length', 'school_id', 'program_id', 'year', 'semester', 'rate'];
 
     protected $withCount = [
         'groups',
     ];
-    
+
     public function groups(): HasMany
     {
         return $this->HasMany(GroupCourse::class);
@@ -36,7 +36,8 @@ class Course extends Model
         return $this->BelongsTo(School::class);
     }
 
-    public function getSchool(){
+    public function getSchool()
+    {
 
         return School::find($this->school_id);
     }
@@ -48,11 +49,11 @@ class Course extends Model
     public function getGroups()
     {
         return Group::select(['groups.*', 'courses.sessions'])
-        ->join('group_course', 'group_id', '=', 'groups.id')
-        ->join('courses', 'courses.id', '=', 'group_course.course_id')
-        ->where('courses.id', '=', $this->id)
-        ->orderBy('groups.name')
-        ->get();
+            ->join('group_course', 'group_id', '=', 'groups.id')
+            ->join('courses', 'courses.id', '=', 'group_course.course_id')
+            ->where('courses.id', '=', $this->id)
+            ->orderBy('groups.name')
+            ->get();
     }
 
     /*
@@ -62,7 +63,7 @@ class Course extends Model
     */
     public function getAvailableGroups()
     {
-        $company = Auth::user()->getCompany();
+        $company = Auth::user()->company;
 
         return Group::where('company_id', $company->id)
             ->whereNotIn('groups.id', Group::select(['groups.id'])
@@ -78,35 +79,30 @@ class Course extends Model
     public static function getCourseDetails(String $course_id)
     {
         return Course::select('courses.*', 'programs.id as program_id', 'programs.name as program_name')
-        ->join('programs', 'courses.program_id', '=', 'programs.id')
-        ->where('courses.id', '=', $course_id)
-        ->get()[0]
+            ->join('programs', 'courses.program_id', '=', 'programs.id')
+            ->where('courses.id', '=', $course_id)
+            ->get()[0]
         ;
-
     }
 
     public static function getCoursesForSchool(String $school_id)
     {
         return Course::select('courses.*')
-        ->join('schools', 'courses.school_id', '=', 'schools.id')
-        ->where('schools.id', '=', $school_id)
-        ->get()[0]
+            ->join('schools', 'courses.school_id', '=', 'schools.id')
+            ->where('schools.id', '=', $school_id)
+            ->get()[0]
         ;
-
     }
 
     public static function getProgramCoursesForCompany(String $program_id)
     {
-        $company = Auth::user()->getCompany();
+        $company = Auth::user()->company;
 
         return Course::select('courses.*')
-        ->join('schools', 'courses.school_id', '=', 'schools.id')
-        ->where('schools.company_id', '=', $company->id)
-        ->where('program_id', '=', $program_id)
-        ->get()
+            ->join('schools', 'courses.school_id', '=', 'schools.id')
+            ->where('schools.company_id', '=', $company->id)
+            ->where('program_id', '=', $program_id)
+            ->get()
         ;
-
     }
-
-
 }

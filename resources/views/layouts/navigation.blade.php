@@ -1,11 +1,11 @@
-<nav class="main">
+<nav class="nav-main">
     <!-- Primary Navigation Menu -->
     <!-- Logo -->
     <a href="{{ route('dashboard') }}" class="logo nav-logo">
         <x-application-logo />
     </a>
     <!-- Navigation Links -->
-    <div class="links-container">
+    <div class="nav-links">
         <x-nav-link :href="route('planning.index')" :active="request()->routeIs('planning.index')">
             {{ __('messages.planning') }}
         </x-nav-link>
@@ -26,10 +26,10 @@
             {{ __('messages.groups') }}
         </x-nav-link>
         <x-nav-link :href="route('invoice.index')" :active="request()->routeIs('invoice.index')">
-            {{ __('messages.bills') }}
+            {{ __('messages.invoices') }}
         </x-nav-link>
         <!-- Edit switch -->
-        <div class='inline-flex items-center px-1 pt-1'>
+        <div class="toggle-system">
             <div class="toggle-container edit toggled-once">
                 @if(Auth::user()->getMode() == "Edit")
                 <input class="toggle-checkbox toggled-once" type="checkbox" id="edit-toggle" checked>
@@ -72,7 +72,7 @@
             </select>
         </form>
         <!-- Settings Dropdown -->
-        <div class="inline-flex items-center ml-6">
+        <div class="nav-user">
             <x-dropdown align="right" width="48">
                 <x-slot name="trigger">
                     <button class="nav-user-btn">
