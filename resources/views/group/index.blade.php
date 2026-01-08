@@ -20,7 +20,7 @@
         <h3 class="text-lg font-bold">{{ __('messages.inactive_groups') }}</h3>
         <form action="{{ route('group.index') }}" method="GET" class="flex gap-2">
             <x-text-input type="text" name="search" placeholder="Search..." value="{{ request('search') }}" />
-            <x-primary-button type="submit">Search</x-primary-button>
+            <x-button-primary type="submit">Search</x-button-primary>
             @if(request('search'))
             <a href="{{ route('group.index') }}" class="px-4 py-2 bg-gray-200 rounded-md text-gray-700 hover:bg-gray-300 transition">Clear</a>
             @endif
@@ -62,7 +62,7 @@
             @error('year')
             <div class="bg-red-700 text-red-100 border-red-400 rounded-md px-4 py-2">{{ $message }}</div>
             @enderror
-            <x-primary-button>{{ __('messages.group_create') }}</x-primary-button>
+            <x-button-primary>{{ __('messages.group_create') }}</x-button-primary>
         </form>
     </section>
     @endif

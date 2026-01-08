@@ -3,21 +3,19 @@
     <td>
         <form action="{{ route('program.show', $course->program_id) }}" method="get">
             @csrf
-            <button
-                class="btn-text-link"
-                type="submit">
+            <x-button-primary
+                class="btn-text-link">
                 {{ $course->program_name }}
-            </button>
+            </x-button-primary>
         </form>
     </td>
     <th scope="row" class="font-medium text-gray-900 whitespace-nowrap text-left">
         <form action="{{ route('course.show', $course->id) }}" method="get">
             @csrf
-            <button
-                class="btn-text-link"
-                type="submit">
+            <x-button-primary
+                class="btn-text-link">
                 {{ $course->name }}
-            </button>
+            </x-button-primary>
         </form>
     </th>
     <td>{{ $course->semester }}</td>

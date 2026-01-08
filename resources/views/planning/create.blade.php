@@ -5,7 +5,7 @@
         </h2>
     </x-slot>
 
-    <section >
+    <section>
 
         <form action="{{route('planning.store')}}" method="post">
             @csrf
@@ -15,27 +15,27 @@
             <select name="group" class="rounded-md mt-4 py-0 pl-2 pr-8 overflow-clip w-40 mb-2">
                 <option value="0" selected>New group below</option>
                 @foreach ($groups as $group)
-                    @if($group->sessions == 0 or $group->sessions == $course->sessions)
-                       <option value="{{$group->id}}">{{$group->name}}</option>
-                    @endif
+                @if($group->sessions == 0 or $group->sessions == $course->sessions)
+                <option value="{{$group->id}}">{{$group->name}}</option>
+                @endif
                 @endforeach
             </select>
             <select name="hour" class="rounded-md py-0 pl-2 pr-8 w-14">
                 @for ($h=8;$h<20;$h++)
-                        <option value="{{$h}}">{{$h}}</option>
-                @endfor
+                    <option value="{{$h}}">{{$h}}</option>
+                    @endfor
             </select>
             <select name="minutes" class="rounded-md py-0 pl-2 pr-8 w-14">
                 @for($m=0;$m<60;$m+=5)
-                        <option value="{{$m}}">{{$m}}</option>
-                @endfor
+                    <option value="{{$m}}">{{$m}}</option>
+                    @endfor
             </select>
             <br class="my-4">
             <x-form-group-create course_id=$course_id />
             <br class="my-4">
-            <x-primary-button>Plan</x-primary-button>
+            <x-button-primary>Plan</x-button-primary>
         </form>
 
-        
+
     </section>
 </x-app-layout>

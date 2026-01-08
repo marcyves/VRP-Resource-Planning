@@ -39,7 +39,7 @@
             class="mx-auto px-6 py-2 bg-white shadow-md mb-6 flex items-center justify-items-start">
             @csrf
             <x-text-input class="mx-6" type="text" name="name" placeholder="{{ __('messages.name') }}" />
-            <x-primary-button>{{ __('messages.program_create') }}</x-primary-button>
+            <x-button-primary>{{ __('messages.program_create') }}</x-button-primary>
         </form>
     </section>
     @endif

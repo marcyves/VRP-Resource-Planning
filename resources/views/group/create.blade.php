@@ -5,12 +5,12 @@
         </h2>
     </x-slot>
 
-    <section >
+    <section>
         <form action="{{route('group.save', $course_id)}}" method="post">
             @csrf
-            <x-form-group-create/>
+            <x-form-group-create />
             <br class="my-4">
-            <x-primary-button>Create</x-primary-button>
+            <x-button-primary>Create</x-button-primary>
         </form>
     </section>
 </x-app-layout>

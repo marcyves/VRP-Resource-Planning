@@ -1,9 +1,10 @@
 @props(['school_id','school_name'])
 <div class="card-content">
     <a href="{{route('school.show', $school_id)}}" class="card-content-text">
-        <button class="card-title btn-text-link" type="submit">
+        <x-button-primary
+            class="card-title btn-text-link">
             {{html_entity_decode($school_name)}}
-        </button>
+        </x-button-primary>
     </a>
     @if(Auth::user()->getMode() == "Edit")
     <div class="card-content-end">

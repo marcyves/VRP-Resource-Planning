@@ -5,14 +5,14 @@
         </h2>
     </x-slot>
 
-    <section >
+    <section>
 
-<form action="{{route('program.store')}}" method="post">
-    @csrf
-    <x-input-label>Name</x-input-label>
-    <x-text-input type="text" name="name" />
-    <br class="my-4">
-    <x-primary-button>Create</x-primary-button>
-</form>
+        <form action="{{route('program.store')}}" method="post">
+            @csrf
+            <x-input-label>Name</x-input-label>
+            <x-text-input type="text" name="name" />
+            <br class="my-4">
+            <x-button-primary>Create</x-button-primary>
+        </form>
     </section>
 </x-app-layout>

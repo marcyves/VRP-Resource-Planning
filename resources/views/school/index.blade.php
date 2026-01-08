@@ -82,7 +82,7 @@
             <x-text-input class="mx-6" type="text" name="city" id="city" placeholder="{{ __('messages.city') }}" value="{{old('city')}}" />
             <x-text-input class="mx-6" type="text" name="zip" id="zip" placeholder="{{ __('messages.zip') }}" />
             <x-text-input class="mx-6" type="text" name="country" id="country" placeholder="{{ __('messages.country') }}" value="{{old('country', 'France')}}" />
-            <x-primary-button>{{ __('messages.school_create') }}</x-primary-button>
+            <x-button-primary>{{ __('messages.school_create') }}</x-button-primary>
         </form>
     </section>
     @endif

@@ -5,15 +5,15 @@
         </h2>
     </x-slot>
 
-    <section >
+    <section>
 
-<form action="{{route('program.update', $program->id)}}" method="post">
-    @csrf
-    @method('put')
-    <x-input-label>Name</x-input-label>
-    <x-text-input type="text" name="name" value="{{old('name',$program->name)}}"/>
-    <br class="my-4">
-    <x-primary-button>{{ __('messages.update') }}</x-primary-button>
-</form>
+        <form action="{{route('program.update', $program->id)}}" method="post">
+            @csrf
+            @method('put')
+            <x-input-label>Name</x-input-label>
+            <x-text-input type="text" name="name" value="{{old('name',$program->name)}}" />
+            <br class="my-4">
+            <x-button-primary>{{ __('messages.update') }}</x-button-primary>
+        </form>
     </section>
 </x-app-layout>

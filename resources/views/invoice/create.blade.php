@@ -98,7 +98,7 @@
             <input type="hidden" name="bill_date" id="bill_date" value="{{$bill_date}}">
             <x-text-input type="text" name="description" id="description" size="60" placeholder="{{ __('messages.description') }}" />
             <div>
-                <x-primary-button>{{ __('messages.bill_create') }}</x-primary-button>
+                <x-button-primary>{{ __('messages.bill_create') }}</x-button-primary>
             </div>
         </form>
     </section>

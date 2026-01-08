@@ -8,21 +8,21 @@
 
     @if(Auth::user()->getMode() == "Edit")
     <section>
-    <form action="{{route('invoice.update', $invoice)}}" method="post"
-        class="mx-auto px-6 py-2 bg-white shadow-md mb-6 flex flex-col justify-items-start">
+        <form action="{{route('invoice.update', $invoice)}}" method="post"
+            class="mx-auto px-6 py-2 bg-white shadow-md mb-6 flex flex-col justify-items-start">
             @csrf
             @method('patch')
-            <x-input-label class="py-4">{{ __('messages.invoice_id') }}: {{$invoice->id}}</x-input-label> 
-                <input type="hidden" name="id" id="name" value="{{$invoice->id}}">
-                <x-input-label >{{ __('messages.description') }}</x-input-label>
-                <x-text-input class="my-4" type="text" name="description" id="description" size="60" value="{{ $invoice->description }}"/>
-                <x-input-label>{{ __('messages.gain') }}</x-input-label>
-                <x-text-input class="my-4" type="text" name="amount" id="amount" size="20" value="{{ $invoice->amount }}"/>
-                <x-input-label>{{ __('messages.created_at') }}</x-input-label>
-                <x-text-input class="my-4" type="datetime-local" name="created_at" id="created_at" size="20" value="{{ $invoice->created_at }}"/>
-                <x-input-label>{{ __('messages.paid_at') }}</x-input-label>
-                <x-text-input class="my-4" type="datetime-local" name="paid_at" id="paid_at" size="20" value="{{ $invoice->paid_at }}"/>
-                <x-primary-button>{{ __('messages.update') }}</x-primary-button>
+            <x-input-label class="py-4">{{ __('messages.invoice_id') }}: {{$invoice->id}}</x-input-label>
+            <input type="hidden" name="id" id="name" value="{{$invoice->id}}">
+            <x-input-label>{{ __('messages.description') }}</x-input-label>
+            <x-text-input class="my-4" type="text" name="description" id="description" size="60" value="{{ $invoice->description }}" />
+            <x-input-label>{{ __('messages.gain') }}</x-input-label>
+            <x-text-input class="my-4" type="text" name="amount" id="amount" size="20" value="{{ $invoice->amount }}" />
+            <x-input-label>{{ __('messages.created_at') }}</x-input-label>
+            <x-text-input class="my-4" type="datetime-local" name="created_at" id="created_at" size="20" value="{{ $invoice->created_at }}" />
+            <x-input-label>{{ __('messages.paid_at') }}</x-input-label>
+            <x-text-input class="my-4" type="datetime-local" name="paid_at" id="paid_at" size="20" value="{{ $invoice->paid_at }}" />
+            <x-button-primary>{{ __('messages.update') }}</x-button-primary>
         </form>
     </section>
     @endif

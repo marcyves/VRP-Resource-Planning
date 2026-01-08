@@ -11,15 +11,15 @@
 
     @if(session()->has('success'))
     <div class="pb-6 text-green-600">
-         {{ session()->get('success') }}
+        {{ session()->get('success') }}
     </div>
     @endif
     @if(session()->has('error'))
-        <div class="pb-6 text-red-600">
-            {{ session()->get('error')}}
-        </div>
+    <div class="pb-6 text-red-600">
+        {{ session()->get('error')}}
+    </div>
     @endif
-    
+
     <form id="send-verification" method="post" action="{{ route('verification.send') }}">
         @csrf
     </form>
@@ -40,21 +40,21 @@
             <x-input-error class="mt-2" :messages="$errors->get('email')" />
 
             @if ($user instanceof \Illuminate\Contracts\Auth\MustVerifyEmail && ! $user->hasVerifiedEmail())
-                <div>
-                    <p class="text-sm mt-2 text-gray-800">
-                        {{ __('Your email address is unverified.') }}
+            <div>
+                <p class="text-sm mt-2 text-gray-800">
+                    {{ __('Your email address is unverified.') }}
 
-                        <button form="send-verification" class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                            {{ __('Click here to re-send the verification email.') }}
-                        </button>
-                    </p>
+                    <button form="send-verification" class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                        {{ __('Click here to re-send the verification email.') }}
+                    </button>
+                </p>
 
-                    @if (session('status') === 'verification-link-sent')
-                        <p class="mt-2 font-medium text-sm text-green-600">
-                            {{ __('A new verification link has been sent to your email address.') }}
-                        </p>
-                    @endif
-                </div>
+                @if (session('status') === 'verification-link-sent')
+                <p class="mt-2 font-medium text-sm text-green-600">
+                    {{ __('A new verification link has been sent to your email address.') }}
+                </p>
+                @endif
+            </div>
             @endif
         </div>
 
@@ -62,30 +62,29 @@
             <x-input-label for="status_id" :value="__('Status')" />
             <select class="mt-1 block w-full rounded-md" name="status_id">
                 @foreach ($statuses as $status)
-                    <option 
-                        value="{{$status->id}}"
-                        @if ($status->id == old('status_id', $user->status_id))
-                            selected="selected"
-                        @endif
-                        >
-                        {{$status->name}}
-                    </option>                    
+                <option
+                    value="{{$status->id}}"
+                    @if ($status->id == old('status_id', $user->status_id))
+                    selected="selected"
+                    @endif
+                    >
+                    {{$status->name}}
+                </option>
                 @endforeach
             </select>
             <x-input-error class="mt-2" :messages="$errors->get('name')" />
         </div>
 
         <div class="flex items-center gap-4">
-            <x-primary-button>{{ __('Save') }}</x-primary-button>
+            <x-button-primary>{{ __('Save') }}</x-button-primary>
 
             @if (session('status') === 'profile-updated')
-                <p
-                    x-data="{ show: true }"
-                    x-show="show"
-                    x-transition
-                    x-init="setTimeout(() => show = false, 2000)"
-                    class="text-sm text-gray-600"
-                >{{ __('Saved.') }}</p>
+            <p
+                x-data="{ show: true }"
+                x-show="show"
+                x-transition
+                x-init="setTimeout(() => show = false, 2000)"
+                class="text-sm text-gray-600">{{ __('Saved.') }}</p>
             @endif
         </div>
     </form>
