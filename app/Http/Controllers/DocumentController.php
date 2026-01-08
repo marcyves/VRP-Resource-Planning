@@ -9,11 +9,14 @@ use App\Models\Document;
 class DocumentController extends Controller
 {
     protected $directory = "data_store/";
-    
+
     public function show(Document $document)
     {
-        $pathToFile = "storage/".$this->directory.$document->file_name;
-
+        $pathToFile = "storage/" . $this->directory . $document->file_name;
+        if (!Storage::exists($pathToFile)) {
+            session()->flash('danger', "Document not found.");
+            return redirect()->back();
+        }
         return response()->file($pathToFile);
         //return response()->download($pathToFile, 'test.pdf', $headers);
     }
@@ -31,7 +34,7 @@ class DocumentController extends Controller
         ]);
 
         $fileName = time() . '_' . $request->document->getClientOriginalName();
-        $request->document->storeAs("public/".$this->directory, $fileName);
+        $request->document->storeAs("public/" . $this->directory, $fileName);
 
         Document::create([
             'description' => $request->description,
@@ -47,7 +50,7 @@ class DocumentController extends Controller
 
     public function destroy(Document $document)
     {
-        Storage::delete("public/".$this->directory.$document->file_name);
+        Storage::delete("public/" . $this->directory . $document->file_name);
         $document->delete();
 
         session()->flash('success', "Document deleted successfully.");
