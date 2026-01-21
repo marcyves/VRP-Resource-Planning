@@ -1,6 +1,23 @@
-.planning-row{
+.planning-row {
     display: flex;
     flex-direction: row;
     align-items: baseline;
     margin: 12px auto;
+}
+
+.planning-date {
+    text-align: center;
+    padding: .25rem;
+    background-color: rgb(191, 219, 254);
+    width: 10%;
+}
+
+.planning-total {
+    text-align: center;
+    padding: .25rem;
+    background-color: rgba(191, 219, 254, .6);
+    color: var(--main-text-color);
+    font-size: smaller;
+    white-space: nowrap;
+    border-radius: 0 0 6px 6px;
 }

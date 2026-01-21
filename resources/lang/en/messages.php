@@ -1,6 +1,6 @@
 <?php
 
-return array (
+return array(
   'dashboard' => "Dashboard",
   'add_course' => 'Add Course',
   'bill_create' => 'New Bill',
@@ -20,6 +20,8 @@ return array (
   'groups_list' => 'Groups List',
   'hour_rate' => 'Average Rate',
   'hours' => 'Hours',
+  'hours_worked' => 'Hours Worked',
+  'hours_initial' => 'h',
   'monthly_gain' => 'Monthly Gain',
   'name' => 'Name',
   'planning' => 'Planning',

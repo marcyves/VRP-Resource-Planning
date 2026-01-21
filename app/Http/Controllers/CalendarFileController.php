@@ -106,9 +106,8 @@ class CalendarFileController extends Controller
             CalendarMapping::updateOrCreate(
                 ['school_id' => $source->school_id, 'ics_label' => $label],
                 [
-                    'course_id' => $ids['course_id'] ?: null,
-                    'group_id'  => $ids['group_id'] ?: null,
-                    'source_field' => $sourceField
+                    'mappable_type' => !empty($ids['course_id']) ? Course::class : (!empty($ids['group_id']) ? Group::class : null),
+                    'mappable_id' => $ids['course_id'] ?: ($ids['group_id'] ?: null),
                 ]
             );
         }
@@ -119,6 +118,29 @@ class CalendarFileController extends Controller
         return redirect()->route('calendar.index')->with(
             'success',
             "Importation réussie : {$stats['created']} sessions créées, {$stats['skipped']} ignorées (déjà existantes)."
+        );
+    }
+
+    public function reimport(CalendarSource $source)
+    {
+        // On récupère les mappings existants pour cette école
+        $mappingsRecords = CalendarMapping::where('school_id', $source->school_id)->get();
+
+        $mappings = [];
+        foreach ($mappingsRecords as $record) {
+            $mappings[$record->ics_label] = [
+                'course_id' => $record->mappable_type === Course::class ? $record->mappable_id : null,
+                'group_id'  => $record->mappable_type === Group::class ? $record->mappable_id : null,
+            ];
+        }
+
+        // On lance l'import avec le champ par défaut 'summary'
+        // (on pourrait stocker le dernier champ utilisé dans CalendarSource si besoin)
+        $stats = $this->calendarService->executeFinalImport($source, $mappings, 'summary');
+
+        return redirect()->route('calendar.index')->with(
+            'success',
+            "Mise à jour réussie : {$stats['created']} nouvelles sessions créées, {$stats['skipped']} ignorées (déjà existantes)."
         );
     }
 

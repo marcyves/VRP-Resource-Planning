@@ -42,15 +42,17 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
-//    Route::get('/calendar/import/{calendar_id}', [CalendarController::class, 'readICSFile'])->name('ics.read');
+    //    Route::get('/calendar/import/{calendar_id}', [CalendarController::class, 'readICSFile'])->name('ics.read');
     Route::prefix('admin/calendars')->middleware(['auth'])->group(function () {
-    Route::get('/', [CalendarFileController::class, 'index'])->name('calendar.index');
-    Route::post('/upload', [CalendarFileController::class, 'upload'])->name('calendar.upload');
-    Route::get('/upload', function () {
-    return redirect()->route('calendar.index');});
-    Route::post('/import', [CalendarFileController::class, 'import'])->name('calendar.import');
-    Route::delete('/delete/{source}', [CalendarFileController::class, 'destroy'])->name('calendar.destroy');
-});
+        Route::get('/', [CalendarFileController::class, 'index'])->name('calendar.index');
+        Route::post('/upload', [CalendarFileController::class, 'upload'])->name('calendar.upload');
+        Route::get('/upload', function () {
+            return redirect()->route('calendar.index');
+        });
+        Route::post('/import', [CalendarFileController::class, 'import'])->name('calendar.import');
+        Route::post('/reimport/{source}', [CalendarFileController::class, 'reimport'])->name('calendar.reimport');
+        Route::delete('/delete/{source}', [CalendarFileController::class, 'destroy'])->name('calendar.destroy');
+    });
     Route::post('/select', [DateSelectionController::class, 'index'])->name('date.select');
     Route::get('/school/list', [SchoolController::class, 'list'])->name('school.list');
     Route::get('/school/{school_id}/add', [SchoolController::class, 'add'])->name('school.add');
@@ -99,7 +101,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/invoice/payed/{invoice_id}', [InvoiceController::class, 'payed'])->name('invoice.payed');
     Route::resource('/invoice', InvoiceController::class);
     Route::resource('/documents', DocumentController::class);
-    
+
     Route::get('/company/', [CompanyController::class, 'show'])->name('company.show');
     Route::get('/company/{company_id}', [CompanyController::class, 'show'])->name('company.show_any');
 
@@ -109,4 +111,4 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

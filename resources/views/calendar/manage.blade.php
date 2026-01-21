@@ -44,7 +44,7 @@
     <section class="glass-background">
         <h3>Historique des fichiers importés</h3>
         <div class="overflow-hidden border border-gray-200 rounded-lg">
-            <table class="min-w-full divide-y divide-gray-200">
+            <table class="mapping-table">
                 <thead class="bg-gray-50">
                     <tr>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Date</th>
@@ -60,13 +60,25 @@
                     <tr>
                         <td class="px-6 py-4 text-sm">{{ $source->created_at->format('d/m/Y H:i') }}</td>
                         <td class="px-6 py-4 text-sm font-medium">{{ $source->school->name }}</td>
-                        <td class="px-6 py-4 text-sm text-gray-600 italic">{{ $source->original_filename }}
+                        <td class="px-6 py-4 text-sm text-gray-600 italic">
+                            @if($source->url)
+                            <a href="{{ $source->url }}" target="_blank" class="text-blue-600 hover:underline">Flux distant</a>
+                            @else
+                            {{ $source->filename }}
+                            @endif
                         </td>
                         <td class="px-6 py-4 text-right text-sm font-medium">
-                            <form action="{{ route('calendar.destroy', $source->id) }}" method="POST">
-                                @csrf @method('DELETE')
-                                <x-button-danger>Supprimer l'import</x-button-danger>
-                            </form>
+                            <div class="flex justify-end gap-2">
+                                <form action="{{ route('calendar.reimport', $source) }}" method="POST" onsubmit="return confirm('Relancer l\'importation mettra à jour le planning avec les mappings existants. Continuer ?')">
+                                    @csrf
+                                    <x-button-secondary type="submit">Relancer l'import</x-button-secondary>
+                                </form>
+
+                                <form action="{{ route('calendar.destroy', $source) }}" method="POST" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet historique ?')">
+                                    @csrf @method('DELETE')
+                                    <x-button-danger type="submit">Supprimer l'import</x-button-danger>
+                                </form>
+                            </div>
                         </td>
                     </tr>
                     @empty

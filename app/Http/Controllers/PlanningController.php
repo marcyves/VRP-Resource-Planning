@@ -200,7 +200,7 @@ class PlanningController extends Controller
                 session()->flash('danger', "Erreur lors de l'enregistrement du groupe.");
 
                 return redirect(route('planning.index'));
-//                return redirect()->back();
+                //                return redirect()->back();
             }
         }
 
@@ -239,7 +239,7 @@ class PlanningController extends Controller
             // dd($e);
             session()->flash('danger', "Erreur lors de l'enregitrement d'une session de cours.");
             return redirect(route('planning.index'));
-//            return redirect()->back();
+            //            return redirect()->back();
         }
     }
 

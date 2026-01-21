@@ -37,7 +37,7 @@ class CompanyController extends Controller
      */
     public function show()
     {
-        $company = Auth::user()->getCompany();
+        $company = Auth::user()->company;
         return view('company.show', compact('company'));
     }
 
