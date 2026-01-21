@@ -67,7 +67,7 @@
                 </select>
             </div>
 
-            <table class="w-full border-collapse bg-white shadow-sm rounded-lg overflow-hidden">
+            <table class="mapping-table">
                 <thead class="bg-gray-100">
                     <tr>
                         <th class="p-3 border text-left">Texte détecté</th>
