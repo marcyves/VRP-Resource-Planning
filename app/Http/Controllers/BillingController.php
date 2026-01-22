@@ -19,7 +19,7 @@ class BillingController extends Controller
         $current_year = Tools::getCurrentYear($request);
         $current_month = Tools::getCurrentMonth($request);
 
-        return $this->buildBilling($current_month, $current_year, false);    
+        return $this->buildBilling($current_month, $current_year, false);
     }
 
     public function byDate(Request $request)
@@ -27,48 +27,51 @@ class BillingController extends Controller
         $current_year = Tools::getCurrentYear($request);
         $current_month = Tools::getCurrentMonth($request);
 
-        return $this->buildBilling($current_month, $current_year, true);    
+        return $this->buildBilling($current_month, $current_year, true);
     }
 
-    public function previous(Request $request){
+    public function previous(Request $request)
+    {
         $current_year = Tools::getCurrentYear($request);
         $current_month = Tools::getCurrentMonth($request) - 1;
 
-        if($current_month < 1){
+        if ($current_month < 1) {
             $current_month = 12;
             $current_year -= 1;
             session(['current_year' => $current_year]);
         }
         session(['current_month' => $current_month]);
 
-        return $this->buildBilling($current_month, $current_year, false);    
+        return $this->buildBilling($current_month, $current_year, false);
     }
 
-    public function next(Request $request){
+    public function next(Request $request)
+    {
         $current_year = Tools::getCurrentYear($request);
         $current_month = Tools::getCurrentMonth($request) + 1;
 
-        if($current_month > 12){
+        if ($current_month > 12) {
             $current_month = 1;
             $current_year += 1;
             session(['current_year' => $current_year]);
         }
         session(['current_month' => $current_month]);
 
-        return $this->buildBilling($current_month, $current_year, false); 
+        return $this->buildBilling($current_month, $current_year, false);
     }
 
-    private function buildBilling($current_month, $current_year, $order){
+    private function buildBilling($current_month, $current_year, $order)
+    {
         $current_semester = "all";
         $years = Auth::user()->getSchools()->getYears();
         $months = Tools::getMonthNames();
 
         $schools = Auth::user()->getSchools();
         $planning = $schools->getBillingPlanning($current_year, $current_month);
-        if(!$planning)
-        {
+        if (!$planning) {
             $monthly_hours = 0;
-            return view('planning.billing',compact('schools', 'current_year', 'current_month', 'monthly_hours','years', 'months'));
+            $monthly_gain = 0;
+            return view('planning.billing', compact('schools', 'current_year', 'current_month', 'monthly_hours', 'monthly_gain', 'years', 'months'));
             //            return redirect()->back()
         }
 
@@ -76,14 +79,14 @@ class BillingController extends Controller
 
         $bills = Auth::user()->getInvoices();
 
-        if($order){
-            return view('planning.billing_by_date',compact('schools', 'current_year', 'current_month', 'monthly_gain', 'monthly_hours', 'bills', 'years', 'months'));    
-        }else{
-            return view('planning.billing',compact('schools', 'current_year', 'current_month', 'monthly_gain', 'monthly_hours', 'bills', 'years', 'months'));    
+        if ($order) {
+            return view('planning.billing_by_date', compact('schools', 'current_year', 'current_month', 'monthly_gain', 'monthly_hours', 'bills', 'years', 'months'));
+        } else {
+            return view('planning.billing', compact('schools', 'current_year', 'current_month', 'monthly_gain', 'monthly_hours', 'bills', 'years', 'months'));
         }
     }
 
-        /**
+    /**
      * Display the specified resource.
      */
     public function setBill(Request $request)

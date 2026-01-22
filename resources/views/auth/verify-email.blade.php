@@ -23,7 +23,9 @@
         <form method="POST" action="{{ route('logout') }}">
             @csrf
 
-            <x-button-submit label="{{ __('Log Out') }}" />
+            <x-button-secondary type="submit">
+                {{ __('Log Out') }}
+            </x-button-secondary>
         </form>
     </div>
 </x-guest-layout>

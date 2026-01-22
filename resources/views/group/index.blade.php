@@ -8,7 +8,7 @@
     </x-slot>
 
     <section class="glass-background">
-        <ul class="group-grid">
+        <ul class="group-list">
             @foreach ($groups as $group)
             <li class="group-card glass-background">
                 <x-group-details :group="$group" :occurences="$occurences" :active="true" />
