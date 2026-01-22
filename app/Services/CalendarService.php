@@ -8,6 +8,7 @@ use App\Models\Planning;
 use App\Models\Course;
 use App\Models\Group;
 use App\Models\CalendarSource;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 
@@ -16,7 +17,9 @@ class CalendarService
     public function getFirstEventDetails(CalendarSource $source): array
     {
         $target = $source->url ?: storage_path('app/' . $source->storage_path);
-        $ical = new \ICal\ICal($target);
+        $ical = new \ICal\ICal($target, [
+            'defaultTimeZone' => 'Europe/Paris',
+        ]);
         $event = $ical->events()[0] ?? null;
 
         if (!$event) return [];
@@ -25,8 +28,8 @@ class CalendarService
             'summary'     => $event->summary,
             'description' => $event->description,
             'location'    => $event->location,
-            'start'       => date('d/m/Y H:i', strtotime($event->dtstart)),
-            'end'         => date('d/m/Y H:i', strtotime($event->dtend)),
+            'start'       => Carbon::parse($event->dtstart)->setTimezone('Europe/Paris')->format('d/m/Y H:i'),
+            'end'         => Carbon::parse($event->dtend)->setTimezone('Europe/Paris')->format('d/m/Y H:i'),
         ];
     }
     /**
@@ -47,7 +50,7 @@ class CalendarService
 
         $ical = new ICal($target, [
             'defaultSpan'     => 2,
-            'defaultTimeZone' => 'UTC',
+            'defaultTimeZone' => 'Europe/Paris',
         ]);
 
         return collect($ical->events())
@@ -84,7 +87,7 @@ class CalendarService
 
         $ical = new ICal($target, [
             'defaultSpan'     => 2,
-            'defaultTimeZone' => 'UTC',
+            'defaultTimeZone' => 'Europe/Paris',
         ]);
 
         return array_map(function ($event) {
@@ -92,8 +95,8 @@ class CalendarService
                 'summary'     => $event->summary ?? 'Sans titre',
                 'description' => $event->description ?? '',
                 'location'    => $event->location ?? '',
-                'start'       => date('Y-m-d H:i:s', strtotime($event->dtstart)),
-                'end'         => date('Y-m-d H:i:s', strtotime($event->dtend)),
+                'start'       => Carbon::parse($event->dtstart)->setTimezone('Europe/Paris')->format('Y-m-d H:i:s'),
+                'end'         => Carbon::parse($event->dtend)->setTimezone('Europe/Paris')->format('Y-m-d H:i:s'),
             ];
         }, $ical->events());
     }
@@ -149,7 +152,27 @@ class CalendarService
                     }
                 }
 
-                if ($courseId) {
+                if ($courseId || $groupId) {
+                    // Si on a le groupe mais pas le cours, on cherche le premier cours associé au groupe
+                    if ($groupId && !$courseId) {
+                        $group = Group::find($groupId);
+                        if ($group) {
+                            $firstCourse = $group->getCourses()->first();
+                            if ($firstCourse) {
+                                $courseId = $firstCourse->id;
+                                $rate = $firstCourse->rate ?? 0;
+                                $sessionLength = $firstCourse->session_length ?? 0;
+                            }
+                        }
+                    }
+
+                    // Si on a le cours mais pas le groupe, on essaie de trouver un groupe valide ou on skip
+                    // (La table demandant les deux, on ne peut pas insérer sans group_id)
+                    if (!$courseId || !$groupId) {
+                        $stats['skipped']++;
+                        continue;
+                    }
+
                     // Collision Detection
                     $exists = Planning::where(function ($query) use ($courseId, $groupId) {
                         if ($groupId) {
