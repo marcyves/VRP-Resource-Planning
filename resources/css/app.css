@@ -1,7 +1,16 @@
 @import url("global.css");
+@import url("layout.css");
+@import url("buttons.css");
+@import url("forms.css");
+@import url("navigation.css");
+@import url("modals.css");
+@import url("cards.css");
+@import url("alerts.css");
 @import url("course-table.css");
 @import url("maintenance.css");
 @import url("calendar.css");
+@import url("calendar-manage.css");
+@import url("calendar-mapping.css");
 @import url("planning.css");
 @import url("bills.css");
 @import url("text-input.css");

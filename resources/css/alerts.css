@@ -1,0 +1,35 @@
+/* Alert and Feedback System */
+.alert {
+    padding: 1rem;
+    margin: 2rem 0;
+    border-width: 1px;
+    border-style: solid;
+    border-radius: var(--rounded-md);
+}
+
+.alert-success {
+    background-color: var(--feedback-success);
+    color: var(--feedback-success-text);
+    border-color: #4ade80;
+}
+
+.alert-warning {
+    background-color: var(--feedback-warning);
+    color: var(--feedback-warning-text);
+    border-color: #facc15;
+}
+
+.alert-danger {
+    background-color: var(--feedback-danger);
+    color: var(--feedback-danger-text);
+    border-color: #f87171;
+}
+
+.total-line {
+    display: flex;
+    justify-content: space-between;
+    font-weight: bold;
+    background-color: var(--surface-glass);
+    padding: 0.5rem;
+    border-radius: 8px;
+}

@@ -1,4 +1,8 @@
 <x-app-layout>
+    @push('styles')
+    @vite(['resources/css/calendar-manage.css'])
+    @endpush
+
     <x-slot name="header">
         <h2>
             {{ __('Gestion des Calendriers ICS') }}
@@ -11,11 +15,10 @@
         <div class="card glass-background">
             <form action="{{ route('calendar.upload') }}" method="POST" enctype="multipart/form-data">
                 @csrf
-                <div class="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
-                    <div>
+                <div class="calendar-upload-grid">
+                    <div class="calendar-upload-field">
                         <label>École de destination</label>
-                        <select name="school_id" required
-                            class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                        <select name="school_id" required class="calendar-select-field">
                             <option value="">-- Sélectionner l'école --</option>
                             @foreach ($schools as $school)
                             <option value="{{ $school->id }}">{{ $school->name }}</option>
@@ -23,16 +26,16 @@
                         </select>
                     </div>
 
-                    <div>
+                    <div class="calendar-upload-field">
                         <label>Fichier .ics</label>
                         <input type="file" name="ics_file">
                     </div>
 
-                    <div class="text-center font-bold text-gray-400">OU</div>
+                    <div class="calendar-input-divider">OU</div>
 
-                    <div>
+                    <div class="calendar-upload-field">
                         <label>Lien direct vers le fichier .ics</label>
-                        <input type="url" name="ics_url" placeholder="https://..." class="...">
+                        <input type="url" name="ics_url" placeholder="https://..." class="calendar-url-field">
                     </div>
 
                     <x-button-primary>Analyser</x-button-primary>
@@ -43,32 +46,30 @@
 
     <section class="glass-background">
         <h3>Historique des fichiers importés</h3>
-        <div class="overflow-hidden border border-gray-200 rounded-lg">
-            <table class="mapping-table">
-                <thead class="bg-gray-50">
+        <div class="history-container">
+            <table class="history-table">
+                <thead class="history-header">
                     <tr>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Date</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">École</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Fichier
-                            d'origine</th>
-                        <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">Actions
-                        </th>
+                        <th>Date</th>
+                        <th>École</th>
+                        <th>Fichier d'origine</th>
+                        <th class="text-right">Actions</th>
                     </tr>
                 </thead>
-                <tbody class="bg-white divide-y divide-gray-200">
+                <tbody class="history-body">
                     @forelse($sources as $source)
                     <tr>
-                        <td class="px-6 py-4 text-sm">{{ $source->created_at->format('d/m/Y H:i') }}</td>
-                        <td class="px-6 py-4 text-sm font-medium">{{ $source->school->name }}</td>
-                        <td class="px-6 py-4 text-sm text-gray-600 italic">
+                        <td class="history-td-date">{{ $source->created_at->format('d/m/Y H:i') }}</td>
+                        <td class="history-td-school">{{ $source->school->name }}</td>
+                        <td class="history-td-file">
                             @if($source->url)
                             <a href="{{ $source->url }}" target="_blank" class="text-blue-600 hover:underline">Flux distant</a>
                             @else
                             {{ $source->filename }}
                             @endif
                         </td>
-                        <td class="px-6 py-4 text-right text-sm font-medium">
-                            <div class="flex justify-end gap-2">
+                        <td class="history-td-actions">
+                            <div class="action-buttons-group">
                                 <form action="{{ route('calendar.reimport', $source) }}" method="POST" onsubmit="return confirm('Relancer l\'importation mettra à jour le planning avec les mappings existants. Continuer ?')">
                                     @csrf
                                     <x-button-secondary type="submit">Relancer l'import</x-button-secondary>
@@ -83,8 +84,7 @@
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="4" class="px-6 py-10 text-center text-gray-500">Aucun fichier
-                            importé pour le moment.</td>
+                        <td colspan="4" class="history-empty-state">Aucun fichier importé pour le moment.</td>
                     </tr>
                     @endforelse
                 </tbody>

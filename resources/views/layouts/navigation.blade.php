@@ -1,7 +1,10 @@
 <nav class="nav-main">
+    @push('styles')
+    @vite(['resources/css/navigation.css'])
+    @endpush
     <!-- Primary Navigation Menu -->
     <!-- Logo -->
-    <a href="{{ route('dashboard') }}" class="logo nav-logo">
+    <a href="{{ route('dashboard') }}" class="nav-logo">
         <x-application-logo />
     </a>
     <!-- Navigation Links -->
@@ -28,58 +31,49 @@
         <x-nav-link :href="route('invoice.index')" :active="request()->routeIs('invoice.index')">
             {{ __('messages.invoices') }}
         </x-nav-link>
-        <!-- Edit switch -->
+
         <div class="toggle-system">
-            <div class="toggle-container edit toggled-once">
-                @if(Auth::user()->getMode() == "Edit")
-                <input class="toggle-checkbox toggled-once" type="checkbox" id="edit-toggle" checked>
-                @else
-                <input class="toggle-checkbox" type="checkbox" id="edit-toggle">
-                @endif
-                {{Auth::user()->getMode() }}
+            <div class="toggle-container edit">
+                <input class="toggle-checkbox" type="checkbox" id="edit-toggle" {{ Auth::user()->getMode() == "Edit" ? 'checked' : '' }}>
+                <span class="toggle-label">{{ Auth::user()->getMode() }}</span>
                 <div class="toggle-track">
                     <div class="toggle-thumb"></div>
                 </div>
             </div>
         </div>
+
         <script>
-            const checkbox = document.getElementById('edit-toggle');
-
-            const detectToggleOnce = (e) => {
+            document.getElementById('edit-toggle').addEventListener('click', (e) => {
                 e.target.classList.add('toggled-once');
-                let url = "{{ route('profile.switch') }}";
-                document.location.href = url;
-            };
-
-            checkbox.addEventListener('click', detectToggleOnce, {
+                window.location.href = "{{ route('profile.switch') }}";
+            }, {
                 once: true
             });
         </script>
+
         @php
         $current_year = session('current_year');
-        $current_semester = session('current_semester');
         @endphp
-        <!-- Period selector -->
+
         <form class="nav-form" action="{{route('date.select')}}" method="post">
             @csrf
             <select id="current_year" name="current_year" onchange="this.form.submit()">
-                <option value="all" @if($current_year=="all" )selected @endif>{{ __('actions.select_all')}}</option>
+                <option value="all" {{ $current_year == "all" ? 'selected' : '' }}>{{ __('actions.select_all')}}</option>
                 @isset($years)
                 @foreach ($years as $year)
-                <option value="{{$year->year}}" @if($current_year==$year->year)selected @endif>{{$year->year}}</option>
+                <option value="{{$year->year}}" {{ $current_year == $year->year ? 'selected' : '' }}>{{$year->year}}</option>
                 @endforeach
                 @endisset
             </select>
         </form>
-        <!-- Settings Dropdown -->
+
         <div class="nav-user">
             <x-dropdown align="right" width="48">
                 <x-slot name="trigger">
                     <button class="nav-user-btn">
-                        <div>{{ Auth::user()->name }} ({{Auth::user()->getStatusName()}})</div>
-
-                        <div class="ml-1">
-                            <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                        <span>{{ Auth::user()->name }} ({{Auth::user()->getStatusName()}})</span>
+                        <div class="nav-user-icon">
+                            <svg class="icon-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                                 <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
                             </svg>
                         </div>
@@ -91,19 +85,14 @@
                         {{ __('Profile') }}
                     </x-dropdown-link>
 
-                    <!-- Authentication -->
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
-
-                        <x-dropdown-link :href="route('logout')"
-                            onclick="event.preventDefault();
-                                                this.closest('form').submit();">
+                        <x-dropdown-link :href="route('logout')" onclick="event.preventDefault(); this.closest('form').submit();">
                             {{ __('Log Out') }}
                         </x-dropdown-link>
                     </form>
                 </x-slot>
             </x-dropdown>
         </div>
-    </div>
     </div>
 </nav>

@@ -1,0 +1,86 @@
+/* Card and Surface System */
+.glass-background {
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    border-radius: var(--rounded-lg);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    box-shadow: var(--shadow-lg);
+}
+
+.glass-background-solid {
+    background: var(--surface-card);
+    border-radius: var(--rounded-lg);
+    border: var(--border-standard);
+    box-shadow: var(--shadow-md);
+}
+
+.card {
+    border-radius: var(--rounded-lg);
+    padding: var(--spacing-4);
+    box-shadow: var(--shadow-md);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border: var(--border-standard);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    min-width: 29%;
+    margin: 6px;
+}
+
+.card-wide {
+    padding: 6px 12px;
+    margin: 6px;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+}
+
+.card-title {
+    font-size: 1.125rem;
+    font-weight: 700;
+    margin-bottom: var(--spacing-2);
+    color: var(--brand-primary);
+}
+
+.card-subtitle {
+    font-size: 0.875rem;
+    color: #6b7280;
+    margin-bottom: var(--spacing-2);
+}
+
+.card-content {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    padding: 4px;
+}
+
+.card-content-text {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    flex-direction: row;
+    font-size: 14px;
+    font-weight: 300;
+}
+
+.card-line-two {
+    font-size: smaller;
+    margin: 0;
+    padding: 0;
+}
+
+.cool-box {
+    border: solid var(--icon-grey);
+    box-shadow: 0 0 0 1px var(--icon-grey);
+    border-width: thin;
+    border-radius: 8px;
+    margin: 1rem;
+}
+
+.cool-box:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}

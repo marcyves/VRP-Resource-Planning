@@ -1,0 +1,123 @@
+/* Calendar Mapping View Styles */
+
+.mapping-example-section {
+    margin-bottom: 2rem;
+}
+
+.mapping-example-table {
+    width: 100%;
+    margin-bottom: 1.5rem;
+    border-collapse: collapse;
+}
+
+.mapping-example-table td {
+    padding: 0.5rem 1rem;
+    border: 1px solid #E5E7EB;
+}
+
+.mapping-example-table td:first-child {
+    font-weight: 500;
+    width: 200px;
+    background-color: #F9FAFB;
+}
+
+/* Source Field Selector */
+.mapping-source-container {
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+    background-color: #EFF6FF;
+    border: 1px solid #BFDBFE;
+    border-radius: 0.5rem;
+}
+
+.mapping-source-label {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: #1E40AF;
+    margin-bottom: 0.5rem;
+}
+
+.mapping-source-select {
+    border-radius: 0.25rem;
+    border: 1px solid #93C5FD;
+    padding: 0.5rem;
+    font-size: 0.875rem;
+}
+
+/* Mapping Table Styles */
+.mapping-config-header {
+    background-color: #F3F4F6;
+}
+
+.mapping-config-header th {
+    padding: 0.75rem;
+    border: 1px solid #E5E7EB;
+    text-align: left;
+}
+
+.text-course {
+    color: #1D4ED8;
+}
+
+.text-group {
+    color: #047857;
+}
+
+.mapping-body td {
+    padding: 0.75rem;
+    border: 1px solid #E5E7EB;
+}
+
+.label-cell {
+    font-family: monospace;
+    font-size: 0.75rem;
+    background-color: #F9FAFB;
+}
+
+.mapping-select {
+    width: 100%;
+    font-size: 0.875rem;
+    border: 1px solid #D1D5DB;
+    border-radius: 0.25rem;
+    padding: 0.4rem;
+}
+
+/* Footer Section */
+.mapping-footer {
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #E5E7EB;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.footer-info {
+    font-size: 0.875rem;
+    color: #6B7280;
+}
+
+.footer-actions {
+    display: flex;
+    gap: 1rem;
+}
+
+.btn-cancel {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #374151;
+    background-color: white;
+    border: 1px solid #D1D5DB;
+    border-radius: 0.375rem;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    text-decoration: none;
+    transition: background-color 0.2s;
+}
+
+.btn-cancel:hover {
+    background-color: #F9FAFB;
+}

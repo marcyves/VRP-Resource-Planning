@@ -1,0 +1,67 @@
+/* Button System */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    padding: var(--spacing-2) var(--spacing-4);
+    border-radius: var(--rounded-md);
+    font-weight: 600;
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    transition: all 150ms ease-in-out;
+    border: 1px solid transparent;
+    text-decoration: none;
+    line-height: 1.25rem;
+}
+
+.btn:disabled {
+    opacity: 0.25;
+    cursor: not-allowed;
+}
+
+.btn-primary {
+    background-color: var(--brand-primary);
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: var(--brand-accent);
+}
+
+.btn-secondary {
+    background-color: white;
+    color: var(--brand-primary);
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    box-shadow: var(--shadow-sm);
+}
+
+.btn-secondary:hover {
+    background-color: #f9fafb;
+}
+
+.btn-danger {
+    background-color: var(--feedback-danger);
+    color: white;
+}
+
+.btn-danger:hover {
+    background-color: #991b1b;
+}
+
+.btn-text {
+    background: transparent;
+    color: var(--brand-primary);
+    padding: var(--spacing-1) var(--spacing-2);
+    text-transform: none;
+    font-weight: 500;
+}
+
+.btn-text:hover {
+    text-decoration: underline;
+}
+
+.btn-text-link {
+    background-color: transparent;
+    border: none;
+}

@@ -1,0 +1,129 @@
+/* School Views Styles */
+
+.school-grid {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 1.5rem;
+    padding: 0;
+    list-style: none;
+}
+
+@media (min-width: 640px) {
+    .school-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (min-width: 1024px) {
+    .school-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+.school-card {
+    padding: 1.5rem;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.school-card:hover {
+    transform: translateY(-4px);
+}
+
+.school-stats {
+    margin-top: 1rem;
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+/* School Management Form */
+.school-create-form {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 2rem;
+    padding: 1.5rem;
+    border-radius: var(--rounded-lg);
+}
+
+.school-form-input {
+    flex: 1;
+    min-width: 150px;
+}
+
+/* Header actions */
+.header-actions {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.btn-school-list {
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+    border: 1px solid #D1D5DB;
+    border-radius: 0.375rem;
+    font-weight: 600;
+    color: #6B7280;
+    text-decoration: none;
+    transition: color 0.2s, border-color 0.2s;
+}
+
+.btn-school-list:hover {
+    color: #111827;
+    border-color: #9CA3AF;
+}
+
+/* Detail View Styles */
+.school-details-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.school-section-header {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 0.5rem;
+}
+
+.school-address-box {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.address-content {
+    line-height: 1.6;
+}
+
+.school-upload-container {
+    padding: 1.5rem;
+}
+
+.school-upload-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+@media (min-width: 768px) {
+    .school-upload-form {
+        flex-direction: row;
+        align-items: flex-end;
+    }
+}
+
+.upload-inputs {
+    display: flex;
+    gap: 1rem;
+    flex: 1;
+}
+
+.upload-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
