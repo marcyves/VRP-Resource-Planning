@@ -16,19 +16,21 @@
     @endphp
     <div class="planning-entry">
         <div class="planning-text">
-            <div class="justify-start">
-                {{date_format(date_create($event->begin),'H:i')}}: {{$event->short_name}} ({{$event->group_short_name}})
+            <div class="planning-event-info">
+                {{ \Carbon\Carbon::parse($event->begin)->format('H:i') }}: {{ $event->short_name }} ({{ $event->group_short_name }})
             </div>
-            <div class="justify-start">
-                {{date_format(date_create($event->end),'H:i')}}: {{number_format($event->session_length * $event->rate,2)}} €
+            <div class="planning-event-gain">
+                {{ \Carbon\Carbon::parse($event->end)->format('H:i') }}: {{ number_format($event->session_length * $event->rate, 2) }} €
             </div>
-            <div class="text-green-400">
-                {{$event->invoice_id}}
+            @if($event->invoice_id)
+            <div class="planning-event-invoice">
+                {{ $event->invoice_id }}
             </div>
+            @endif
         </div>
         @if(Auth::user()->getMode() == "Edit")
         <div class="planning-tools">
-            <a href="{{route('planning.edit',$event->id)}}">
+            <a href="{{route('planning.edit',$event->id)}}" title="{{ __('messages.edit') }}">
                 <x-button-edit />
             </a>
             <form action="{{route('planning.delete',$event->id)}}" method="post">

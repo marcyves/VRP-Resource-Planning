@@ -44,42 +44,19 @@
 
     @if($total_amount > 0)
     <section class="glass-background">
-        <style>
-            .pie {
-                background-image: conic-gradient(from 30deg,
-                        @php $current_percent =0;
-                        @endphp @foreach($amounts as $amount) @php $percent =($amount / $total_amount) * 100;
-                        $next_percent =$current_percent + $percent;
-
-                        @endphp var(--c {
-                                {
-                                $loop->index
-                            }
-
-                        }) {
-                            {
-                            $current_percent
-                        }
-                    }
-
-                    % {
-                            {
-                            $next_percent
-                        }
-                    }
-
-                    % {
-                            {
-                            !$loop->last ? ',' : ''
-                        }
-                    }
-
-                    @php $current_percent =$next_percent;
-                    @endphp @endforeach );
-            }
-        </style>
+        @php
+        $current_percent = 0;
+        $gradient_parts = [];
+        foreach($amounts as $index => $amount) {
+        $percent = ($amount / $total_amount) * 100;
+        $next_percent = $current_percent + $percent;
+        $gradient_parts[] = "var(--c{$index}) {$current_percent}% {$next_percent}%";
+        $current_percent = $next_percent;
+        }
+        $gradient_str = implode(',', $gradient_parts);
+        @endphp
         <figure class="charts">
-            <div class="pie"></div>
+            <div class="pie" style="background-image: conic-gradient(from 30deg, {!! $gradient_str !!});"></div>
             <figcaption>{{ __('messages.invoices_by_school') }}</figcaption>
         </figure>
     </section>

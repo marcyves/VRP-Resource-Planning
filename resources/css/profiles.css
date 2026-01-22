@@ -1,0 +1,21 @@
+.profile-container {
+    padding: 2rem 0;
+}
+
+.profile-section-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    max-width: 64rem;
+    margin: 0 auto;
+}
+
+.profile-section-card {
+    padding: 1.5rem;
+    border-radius: 0.75rem;
+    border: 1px solid var(--border-color);
+}
+
+.profile-form-container {
+    max-width: 36rem;
+}

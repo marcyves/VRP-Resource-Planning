@@ -1,0 +1,28 @@
+.program-details-container {
+    margin-bottom: 2rem;
+}
+
+.program-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.program-list-section {
+    margin-top: 1.5rem;
+}
+
+.program-course-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.program-course-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    border: 1px solid var(--border-color);
+}

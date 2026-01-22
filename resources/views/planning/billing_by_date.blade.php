@@ -1,107 +1,94 @@
 <x-app-layout>
-    <x-slot name="header" class="print:hidden">
-        <h2 class="print:hidden header-title">
-            {{ __('Billing Preparation') }} @monthName($current_month) {{$current_year}}
-        </h2>
+    @push('styles')
+    @vite(['resources/css/plannings.css', 'resources/css/bills.css'])
+    @endpush
+
+    <x-slot name="header">
+        <h2 class="print:hidden">{{ __('Billing Preparation') }} @monthName($current_month) {{$current_year}}</h2>
     </x-slot>
 
-    <section >
-        <div id="calPeriod">
-            <x-period-selector :years=$years :months=$months current_year={{$current_year}} current_month={{$current_month}} route="billing"/>
+    <section class="planning-calendar-container">
+        <div class="planning-controls glass-background">
+            <x-period-selector :years="$years" :months="$months" :current_year="$current_year" :current_month="$current_month" route="billing" />
         </div>
-    @if($monthly_hours == 0)
-        <div class="font-semibold text-gray-600 border border-gray-300 rounded-md mt-4 p-4 bg-red-100">
+
+        @if($monthly_hours == 0)
+        <div class="alert alert-warning glass-background">
             No hours logged this month
         </div>
-    </section>
-    @else
+        @else
         @foreach($schools as $school => $courses)
-            <div class="font-bold text-gray-800 bg-green-100 p-2 mb-2 flex flex-col justify-between border border-gray-300 rounded-md ">
-            <h2 class="inline ml-2 pt-2">{{$school}}</h2>
+        <div class="card-wide glass-background">
+            <h2 class="school-section-header">{{ $school }}</h2>
             @foreach($courses['courses'] as $course_name => $schedules)
-                @php
-                $current_group = "";
-                @endphp
-                <h2 class="font-bold text-gray-800 p-2 bg-blue-200 mt-4"> - {{$course_name}}</h2>
-                <ul>
-                @foreach($schedules['schedule'] as $planning_id => $schedule)
+            @php
+            $current_group = "";
+            @endphp
+            <div class="cool-box">
+                <h3 class="card-subtitle"> - {{ $course_name }}</h3>
+                <ul class="flex-list">
+                    @foreach($schedules['schedule'] as $planning_id => $schedule)
                     @if($current_group != $schedule['group'])
-                        @php
-                            $current_group = $schedule['group'];
-                        @endphp
-                        <h3 class="font-semibold text-gray-800 ml-4">{{$current_group}}</h3>
+                    @php $current_group = $schedule['group']; @endphp
+                    <li class="group-title">{{ $current_group }}</li>
                     @endif
-                    <li class="ml-8">
-                    @if(Auth::user()->getMode() == "Edit")
-                        <a class="text-blue-600" href="{{route('planning.edit',$planning_id, 'billing')}}">
-                    @endif    
-                    {{date_format(date_create($schedule['begin']),'d/m/Y H:i')}}-{{date_format(date_create($schedule['end']),'H:i')}} 
-                    <span class="  
-                    @if ($schedule['duration']!=$schedules['duration'])
-                        text-red-400
-                    @else
-                        text-green-400
-                    @endif
-                    ">
-                    ({{number_format($schedule['duration'],1)}} h)</span>
-                    @if(Auth::user()->getMode() == "Edit")
+                    <li class="ml-4">
+                        @if(Auth::user()->getMode() == "Edit")
+                        <a class="nav-link" href="{{route('planning.edit',$planning_id, 'billing')}}">
+                            @endif
+                            {{ \Carbon\Carbon::parse($schedule['begin'])->format('d/m/Y H:i') }} - {{ \Carbon\Carbon::parse($schedule['end'])->format('H:i') }}
+                            <span class="status-indicator {{ $schedule['duration'] != $schedules['duration'] ? 'text-danger' : 'text-success' }}">
+                                ({{ number_format($schedule['duration'], 1) }} h)
+                            </span>
+                            @if(Auth::user()->getMode() == "Edit")
                         </a>
-                    @endif
-                    {{$schedule['bill']}}
+                        @endif
+                        {{ $schedule['bill'] }}
                     </li>
-                @endforeach
-                </ul>
-
-                <div class="flex flex-row justify-between font-semibold text-gray-600 mt-2 py-2 bg-blue-200">
-                    <div class="mx-4 pt-2">
-                        Time worked = {{number_format($schedules['hours'],2)}} hours
-                    </div>
-                    <div class="mx-4 pt-2">
-                        Total = {{number_format($schedules['gain'],2)}} €
-                    </div>
-                </div>
-            @endforeach
-            </div>
-            <div class="flex flex-row justify-between font-semibold text-gray-600 border border-gray-300 rounded-md mt-2 py-2 bg-green-100">
-                <div class="mx-4">
-                    Total Time worked = {{number_format($courses['hours'],2)}} hours
-                </div>
-                <div class="mx-4">
-                    School Total = {{number_format($courses['gain'],2)}} €
-                </div>
-                <form action="{{route('billing.setBill')}}" class="inline" method="post">
-                    @csrf
-                    <input type="hidden" name="school_id" value="{{$courses['school_id']}}">
-                    <input type="hidden" name="course_id" value="{{$schedules['course_id']}}">
-                    <input type="hidden" name="month" value="{{$current_month}}">
-                    <input type="hidden" name="year" value="{{$current_year}}">
-                    <label for="invoice_id">Bill:</label>
-                    <select name="invoice_id" id="invoice_id"
-                    class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
-                    @foreach ($bills as $bill)
-                        <option value="{{$bill->id}}">{{$bill->id}}</option>
                     @endforeach
-                    </select>
-                    <input type="submit" value="Save"
-                    class="border border-gray-400 bg-white rounded-md px-4 mr-4">
-                    </form>
+                </ul>
+                <div class="total-line">
+                    <span>Time worked: {{ number_format($schedules['hours'], 2) }} hours</span>
+                    <span>Total: {{ number_format($schedules['gain'], 2) }} €</span>
+                </div>
             </div>
-        @endforeach
-        </section>
+            @endforeach
 
-        <section >
-        <div class="flex flex-row justify-between font-semibold text-gray-600 border border-gray-300 rounded-md mt-4 py-4 bg-gray-200">
-            <div class="mx-4">
-                Time worked = {{number_format($monthly_hours,2)}} hours
-            </div>
-            <div class="mx-4">
-                Monthly gain = {{number_format($monthly_gain,2)}} €
-            </div>
-            <div class="mx-4">
-                Average Rate = {{number_format($monthly_gain/$monthly_hours,2)}} €
+            <div class="total-line border-t pt-4 mt-4">
+                <span>Total Time worked: {{ number_format($courses['hours'], 2) }} hours</span>
+                <span>School Total: {{ number_format($courses['gain'], 2) }} €</span>
+
+                <div class="header-actions">
+                    <form action="{{route('billing.setBill')}}" class="nav-form" method="post">
+                        @csrf
+                        <input type="hidden" name="school_id" value="{{$courses['school_id']}}">
+                        <input type="hidden" name="course_id" value="{{$schedules['course_id']}}">
+                        <input type="hidden" name="month" value="{{$current_month}}">
+                        <input type="hidden" name="year" value="{{$current_year}}">
+                        <label for="invoice_id">Bill:</label>
+                        <select name="invoice_id" id="invoice_id" class="form-input">
+                            @foreach ($bills as $bill)
+                            <option value="{{$bill->id}}">{{$bill->id}}</option>
+                            @endforeach
+                        </select>
+                        <x-button-secondary type="submit">Save</x-button-secondary>
+                    </form>
+                </div>
             </div>
         </div>
-        </section>
+        @endforeach
 
-    @endif
+        <div class="planning-summary">
+            <div class="planning-summary-item">
+                Time worked = {{ number_format($monthly_hours, 2) }} hours
+            </div>
+            <div class="planning-summary-item">
+                Monthly gain = {{ number_format($monthly_gain, 2) }} €
+            </div>
+            <div class="planning-summary-item">
+                Average Rate = @if ($monthly_hours > 0) {{ number_format($monthly_gain/$monthly_hours, 2) }} @else 0 @endif €
+            </div>
+        </div>
+        @endif
+    </section>
 </x-app-layout>

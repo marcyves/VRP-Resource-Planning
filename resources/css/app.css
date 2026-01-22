@@ -6,6 +6,9 @@
 @import url("modals.css");
 @import url("cards.css");
 @import url("alerts.css");
+@import url("schools.css");
+@import url("groups.css");
+@import url("plannings.css");
 @import url("course-table.css");
 @import url("maintenance.css");
 @import url("calendar.css");
@@ -13,6 +16,9 @@
 @import url("calendar-mapping.css");
 @import url("planning.css");
 @import url("bills.css");
+@import url("courses.css");
+@import url("programs.css");
+@import url("profiles.css");
 @import url("text-input.css");
 @import url("pie.css");
 @import url("histogram.css");

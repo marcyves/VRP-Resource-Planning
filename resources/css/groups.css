@@ -1,0 +1,79 @@
+/* Group Views Styles */
+
+.group-grid {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 1.5rem;
+    padding: 0;
+    list-style: none;
+}
+
+@media (min-width: 640px) {
+    .group-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (min-width: 1024px) {
+    .group-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+.group-card {
+    padding: 1.5rem;
+    transition: transform 0.2s, box-shadow 0.2s;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.group-card:hover {
+    transform: translateY(-4px);
+}
+
+.group-card-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.group-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: var(--brand-primary);
+}
+
+.group-info {
+    font-size: 0.875rem;
+    color: #4B5563;
+    margin-bottom: 1rem;
+}
+
+.group-actions {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: flex-end;
+    margin-top: auto;
+}
+
+/* Detail View */
+.group-section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 2rem;
+    margin-bottom: 1.5rem;
+    padding: 0 1.5rem;
+}
+
+.group-section {
+    margin-bottom: 2rem;
+}
+
+/* Create/Edit Form */
+.group-form {
+    max-width: 40rem;
+    margin: 0 auto;
+    padding: 2rem;
+}

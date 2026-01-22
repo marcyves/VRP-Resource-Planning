@@ -1,41 +1,50 @@
 <x-app-layout>
+    @push('styles')
+    @vite(['resources/css/plannings.css'])
+    @endpush
+
     <x-slot name="header">
-        <h2>
-            {{ __('Group Planification: ') . $date }}
-        </h2>
+        <h2>{{ __('Group Planification: ') . $date }}</h2>
     </x-slot>
 
-    <section>
-
-        <form action="{{route('planning.store')}}" method="post">
+    <section class="glass-background">
+        <form action="{{route('planning.store')}}" method="post" class="group-form glass-background-solid">
             @csrf
             <input type="hidden" name="date" value="{{$date}}">
             <input type="hidden" name="course" value="{{$course->id}}">
             <input type="hidden" name="session_length" value="{{$session_length}}">
-            <select name="group" class="rounded-md mt-4 py-0 pl-2 pr-8 overflow-clip w-40 mb-2">
-                <option value="0" selected>New group below</option>
-                @foreach ($groups as $group)
-                @if($group->sessions == 0 or $group->sessions == $course->sessions)
-                <option value="{{$group->id}}">{{$group->name}}</option>
-                @endif
-                @endforeach
-            </select>
-            <select name="hour" class="rounded-md py-0 pl-2 pr-8 w-14">
-                @for ($h=8;$h<20;$h++)
-                    <option value="{{$h}}">{{$h}}</option>
-                    @endfor
-            </select>
-            <select name="minutes" class="rounded-md py-0 pl-2 pr-8 w-14">
-                @for($m=0;$m<60;$m+=5)
-                    <option value="{{$m}}">{{$m}}</option>
-                    @endfor
-            </select>
-            <br class="my-4">
-            <x-form-group-create course_id=$course_id />
-            <br class="my-4">
+
+            <div class="form-group">
+                <label class="form-label">Group</label>
+                <select name="group" class="form-input">
+                    <option value="0" selected>New group below</option>
+                    @foreach ($groups as $group)
+                    @if($group->sessions == 0 or $group->sessions == $course->sessions)
+                    <option value="{{$group->id}}">{{$group->name}}</option>
+                    @endif
+                    @endforeach
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Time</label>
+                <div class="nav-form">
+                    <select name="hour" class="form-input">
+                        @for ($h=8;$h<20;$h++)
+                            <option value="{{$h}}">{{$h}}</option>
+                            @endfor
+                    </select>
+                    <select name="minutes" class="form-input">
+                        @for($m=0;$m<60;$m+=5)
+                            <option value="{{$m}}">{{$m}}</option>
+                            @endfor
+                    </select>
+                </div>
+            </div>
+
+            <x-form-group-create :course_id="$course->id" />
+
             <x-button-primary>Plan</x-button-primary>
         </form>
-
-
     </section>
 </x-app-layout>
