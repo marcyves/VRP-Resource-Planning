@@ -31,15 +31,8 @@ class InvoiceController extends Controller
         $user = Auth::user();
         $bills = $user->getInvoices();
 
-        if ($bills->isNotEmpty($bills)) {
-            $last_bill = $bills->keys()->last();
-            $next_bill = substr($bills[$last_bill]->id, -3) + 1;
-        } else {
-            $next_bill = "001";
-        }
-
-
-        $invoice_id = $user->company->bill_prefix . substr(Carbon::now()->year, -2) . $next_bill;
+        $invoice_id_number = $this->invoiceService->calculateNextInvoiceId($user);
+        $invoice_id = $user->company->bill_prefix . $invoice_id_number;
         $company = $user->company;
         $schools = $user->getSchools();
 
@@ -59,10 +52,7 @@ class InvoiceController extends Controller
         $cmd = $request->cmd;
 
         $user = Auth::user();
-        $bills = $user->getInvoices();
-        $bill_number = $bills->last()->id ?? substr(Carbon::now()->year, -2) . "000";
-
-        $bill_number = (int) $bill_number + 1;
+        $bill_number = $this->invoiceService->calculateNextInvoiceId($user);
         $invoice_id = $user->company->bill_prefix . $bill_number;
 
         $company = $user->company;
