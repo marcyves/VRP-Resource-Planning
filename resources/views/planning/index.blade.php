@@ -8,6 +8,9 @@
     </x-slot>
 
     <section class="planning-calendar-container">
+        <x-nav-link :href="route('calendar.index')" :active="request()->routeIs('calendar.index')">
+            {{ __('messages.calendar') }}
+        </x-nav-link>
         <!-- (A) PERIOD SELECTOR & CONTROLS -->
         @php
         $firstDay = mktime(0, 0, 0, $current_month, 1, $current_year);
