@@ -23,6 +23,8 @@ export default defineConfig({
                 'resources/css/profiles.css',
                 'resources/css/calendar-manage.css',
                 'resources/css/calendar-mapping.css',
+                'resources/css/calendar.css',
+                'resources/css/pie.css',
             ],
             refresh: true,
         }),
