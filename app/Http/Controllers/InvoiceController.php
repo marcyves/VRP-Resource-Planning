@@ -46,9 +46,9 @@ class InvoiceController extends Controller
     {
         $school_id = $request->school_id;
         $course_id = $request->course_id;
-        $bill_date = date('d/m/Y', strtotime($request->bill_date));
-        $month = $request->month;
-        $year = $request->year;
+        $bill_date = date('d/m/Y', strtotime($request->bill_date ?? 'now'));
+        $month = $request->month ?? date('m');
+        $year = $request->year ?? date('Y');
         $cmd = $request->cmd;
 
         $user = Auth::user();
@@ -75,7 +75,11 @@ class InvoiceController extends Controller
     {
         $validated = $request->validate([
             'invoice_id' => 'required',
-            'description' => 'required'
+            'description' => 'required',
+            'amount' => 'nullable|numeric',
+            'month' => 'required|numeric',
+            'year' => 'required|numeric',
+            'bill_date' => 'required|date_format:d/m/Y',
         ]);
 
         $month = $request->month;
@@ -87,7 +91,22 @@ class InvoiceController extends Controller
         $invoice_name = $company->bill_prefix . $invoice_id;     // This is the full ID with the company prefix
         $school = School::find($request->school_id);
 
-        [$items, $total_amount] = Tools::getInvoiceDetails($school->id, $month, $year, $invoice_name);
+        // 1. Always fetch planning details first to see if this constitutes a valid agenda invoice
+        [$items, $calculated_amount] = Tools::getInvoiceDetails($school->id, $month, $year, $invoice_name);
+
+        // 2. If planning items exist, we prefer them (Agenda Invoice)
+        // If NO planning items exist, but we have a manual amount, we use that (Manual Invoice)
+        if (empty($items) && $request->filled('amount')) {
+            $total_amount = $request->amount;
+
+            $items = [
+                [$request->description, "", "", "", "", "T"],
+                ["Montant forfaitaire", "20%", $total_amount, 1, 1, "N"]
+            ];
+        } else {
+            // Use the calculated total from planning
+            $total_amount = $calculated_amount;
+        }
 
         try {
             // 1. Logique de création de l'enregistrement en base de données
@@ -97,7 +116,7 @@ class InvoiceController extends Controller
                 'bill_date' => Carbon::createFromFormat('d/m/Y', $bill_date)->format('Y-m-d'),
                 'company_id' => $company->id,
                 'school_id' => $request->school_id,
-                'amount' => $total_amount,
+                'amount' => $request->amount ?? $total_amount,
             ]);
 
             // 2. Génération et enregistrement physique du fichier via le Service

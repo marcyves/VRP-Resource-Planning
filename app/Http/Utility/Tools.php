@@ -230,15 +230,17 @@ class Tools
             $course_hours  += $duration;
             $course_gain   += $gain;
             array_push($items, [" - " . date('d/m/Y H:i', strtotime($planning->begin)) . " - " . date('H:i', strtotime($planning->end)), "", "", $duration, $billable_rate, "N"]);
-            if($store){
+            if ($store) {
                 $planning->invoice_id = $invoice_id;
                 $planning->update();
             }
         }
         // Loop ended, we write current course details at top of current items list
-        array_unshift($items, [$course_name, "20%", $rate, $course_hours, "", "T"]);
-        $items_total = array_merge($items_total, $items);
-        $total_amount += $course_gain;
+        if (count($planning_list) > 0) {
+            array_unshift($items, [$course_name, "20%", $rate, $course_hours, "", "T"]);
+            $items_total = array_merge($items_total, $items);
+            $total_amount += $course_gain;
+        }
 
         $total_amount = round($total_amount, 2);
 

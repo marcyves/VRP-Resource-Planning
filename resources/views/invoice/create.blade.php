@@ -114,9 +114,25 @@
             <div class="form-group mt-6">
                 <input type="hidden" name="invoice_id" id="name" value="{{$bill_number}}">
                 <input type="hidden" name="school_id" id="school_id" value="{{$school->id}}">
-                <input type="hidden" name="month" id="month" value="{{$month}}">
-                <input type="hidden" name="year" id="year" value="{{$year}}">
                 <input type="hidden" name="bill_date" id="bill_date" value="{{$bill_date}}">
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <x-input-label for="amount">Montant (laisser vide pour calcul auto)</x-input-label>
+                        <x-text-input type="number" step="0.01" name="amount" id="amount" value="{{$total_amount > 0 ? $total_amount * 1.2 : ''}}" placeholder="Ex: 500.00" />
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4 mt-4">
+                    <div>
+                        <x-input-label for="month">Mois</x-input-label>
+                        <x-text-input type="number" name="month" id="month" value="{{$month}}" min="1" max="12" />
+                    </div>
+                    <div>
+                        <x-input-label for="year">Année</x-input-label>
+                        <x-text-input type="number" name="year" id="year" value="{{$year}}" />
+                    </div>
+                </div>
                 <x-input-label for="description">{{ __('messages.description') }}</x-input-label>
                 <x-text-input type="text" name="description" id="description" placeholder="{{ __('messages.description') }}" />
             </div>

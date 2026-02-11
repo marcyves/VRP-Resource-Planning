@@ -192,6 +192,7 @@ class InvoiceGenerator extends TCPDF
     // Draw the border for the invoice details box
     $this->Rect($x, $currentY, $wpage, $lineHeight * $invoice_lines, 'D'); // 'D' = draw only (border)
 
+
     $this->SetFont('helvetica', '', 9);
 
     $invoiceY = $currentY + 1; // Move down for the first item
@@ -340,11 +341,19 @@ class InvoiceGenerator extends TCPDF
    */
   function writeLine($x, $y, $h, $line, $justify)
   {
-
     if ($justify != 'R') {
       $this->SetXY($x, $y);
     }
+
     $this->Cell(0, $h, $line, 0, false, $justify, false);
+
+    // If a page break occurred, GetY() will be reset to the top margin.
+    // In that case, we should return the new Y + height.
+    $new_y = $this->GetY();
+
+    if ($new_y < $y) {
+      return $new_y + $h;
+    }
 
     return $y + $h;
   }
