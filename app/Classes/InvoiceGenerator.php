@@ -192,7 +192,6 @@ class InvoiceGenerator extends TCPDF
     // Draw the border for the invoice details box
     $this->Rect($x, $currentY, $wpage, $lineHeight * $invoice_lines, 'D'); // 'D' = draw only (border)
 
-
     $this->SetFont('helvetica', '', 9);
 
     $invoiceY = $currentY + 1; // Move down for the first item
@@ -241,22 +240,22 @@ class InvoiceGenerator extends TCPDF
       $invoiceY += $lineHeight;
     }
 
-
     $currentY += $invoice_lines * $lineHeight + 2;
     // Add total line
     $this->SetFont('helvetica', 'B', 9);
     $this->writeLine($x, $currentY,  $lineHeight,  "Conditions de règlement:", 'L');
     $this->SetFont('helvetica', '', 9);
-    $this->writeLine($x + 40, $currentY,  $lineHeight, "À réception", 'L');
+    $this->writeLine($x + 40, $currentY,  $lineHeight, "paiement comptant", 'L');
 
     $this->writeLine($x + 120, $currentY, $lineHeight, "Total HT", 'L');
-    $currentY = $this->writeLine($x + 140, $currentY, $lineHeight, number_format($this->invoice->amount, 2),  'R');
+    $total_ht = $this->invoice->amount / 1.2;
+    $currentY = $this->writeLine($x + 140, $currentY, $lineHeight, number_format($total_ht, 2),  'R');
     $saveY = $currentY; // Save Y position for RIB
     $this->writeLine($x + 120, $currentY, $lineHeight, "Total TVA 20%",  'L');
-    $currentY = $this->writeLine($x + 140, $currentY, $lineHeight, number_format($this->invoice->amount * 0.2, 2),  'R');
+    $currentY = $this->writeLine($x + 140, $currentY, $lineHeight, number_format($total_ht * 0.2, 2),  'R');
     $this->Rect($x + 120, $currentY, 60, $lineHeight, 'F'); // 'F' = fill
     $this->writeLine($x + 120, $currentY, $lineHeight, "Total TTC",  'L');
-    $currentY = $this->writeLine($x + 140, $currentY, $lineHeight, number_format($this->invoice->amount * 1.2, 2),  'R');
+    $currentY = $this->writeLine($x + 140, $currentY, $lineHeight, number_format($this->invoice->amount, 2),  'R');
 
     return $currentY;
   }
@@ -283,10 +282,6 @@ class InvoiceGenerator extends TCPDF
     }
   }
 
-  /**
-   * 
-   */
-
   //Page header
   public function Header()
   {
@@ -299,7 +294,7 @@ class InvoiceGenerator extends TCPDF
 
     $this->setFont('helvetica', 'N', 8);
     $this->Cell(0, 6, "Date facturation : " . date('d/m/Y', strtotime($this->invoice->bill_date)), 0, true, 'R', 0, '', 0, false, 'M', 'M');
-    $this->Cell(0, 6, "Date échéance : " . $this->invoice->created_at->addDays(30)->format('d/m/Y'), 0, true, 'R', 0, '', 0, false, 'M', 'M');
+    $this->Cell(0, 6, "Date échéance : " . $this->invoice->created_at->addDays(1)->format('d/m/Y'), 0, true, 'R', 0, '', 0, false, 'M', 'M');
     $this->Cell(0, 6, 'Code client : ' . $this->invoice->school->code, 0, true, 'R', 0, '', 0, false, 'M', 'M');
   }
 
@@ -308,11 +303,13 @@ class InvoiceGenerator extends TCPDF
     $this->setFont('helvetica', 'N', 8);
     return 4;
   }
+
   public function setSubTitleFont()
   {
     $this->setFont('helvetica', 'B', 9);
     return 5;
   }
+
   public function setTitleFont()
   {
     $this->setFont('helvetica', 'B', 12);
