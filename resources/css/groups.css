@@ -81,7 +81,6 @@
 
 /* Create/Edit Form */
 .group-form {
-    max-width: 40rem;
     margin: 0 auto;
     padding: 2rem;
     color: var(--main-text-color);

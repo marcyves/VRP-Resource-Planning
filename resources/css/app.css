@@ -61,7 +61,7 @@
 }
 
 .list-item {
-    flex: 1 1 33%;
+    flex: oklch(0.204 0.138 264.83);
     max-width: 33%;
 }
 
@@ -96,12 +96,10 @@
     display: flex;
     justify-content: space-between;
     align-items: start;
-    flex-direction: row;
+    flex-direction: column;
     font-size: 14px;
     font-weight: 300;
     white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
 }
 
 .card-line-two {
@@ -135,7 +133,7 @@
 }
 
 .cool-box:hover {
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: oklch(1 0 0 / 0.1);
 }
 
 form.cool-box {
@@ -246,9 +244,9 @@ form.cool-box {
     flex-direction: column;
     width: 100%;
     pointer-events: auto;
-    background-color: #fff;
+    background-color: oklch(1 0 0);
     background-clip: padding-box;
-    border: 1px solid rgba(0, 0, 0, 0.2);
+    border: 1px solid oklch(0 0 0 / 0.2);
     border-radius: 0.3rem;
     outline: 0;
 }
@@ -260,7 +258,7 @@ form.cool-box {
     bottom: 0;
     left: 0;
     z-index: 1040;
-    background-color: #000;
+    background-color: oklch(0 0 0);
 }
 
 .modal-backdrop.fade {
@@ -282,7 +280,7 @@ form.cool-box {
     -ms-flex-pack: justify;
     justify-content: space-between;
     padding: 1rem;
-    border-bottom: 1px solid #e9ecef;
+    border-bottom: 1px solid oklch(0.942 0.005 247.879);
     border-top-left-radius: 0.3rem;
     border-top-right-radius: 0.3rem;
 }
@@ -316,7 +314,7 @@ form.cool-box {
     -ms-flex-pack: end;
     justify-content: flex-end;
     padding: 1rem;
-    border-top: 1px solid #e9ecef;
+    border-top: 1px solid oklch(0.942 0.005 247.879);
 }
 
 .modal-footer> :not(:first-child) {
@@ -387,13 +385,13 @@ form.cool-box {
     padding: 0.25em;
     width: 100%;
     height: 1.6em;
-    background-color: #aeaeae;
-    box-shadow: inset 0 0.0625em 0.125em rgba(0, 0, 0, 0.2);
+    background-color: oklch(0.751 0 0);
+    box-shadow: inset 0 0.0625em 0.125em oklch(0 0 0 / 0.2);
     transition: background-color 0.4s linear;
 }
 
 .toggle-container.edit>.toggle-checkbox:checked+.toggle-track {
-    background-color: #4ccf59;
+    background-color: oklch(0.757 0.196 144.95);
 }
 
 .toggle-thumb {
@@ -402,9 +400,9 @@ form.cool-box {
     transform-origin: left;
     width: 1.2em;
     height: 1.2em;
-    background-color: #fff;
-    box-shadow: 0 0.25em 0.25em rgba(0, 0, 0, 0.2),
-        inset 0 -0.125em 0.25em rgba(0, 0, 0, 0.2);
+    background-color: oklch(1 0 0);
+    box-shadow: 0 0.25em 0.25em oklch(0 0 0 / 0.2),
+        inset 0 -0.125em 0.25em oklch(0 0 0 / 0.2);
 }
 
 .toggle-checkbox.toggled-once+.toggle-track>.toggle-thumb {

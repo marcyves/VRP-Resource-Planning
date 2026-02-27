@@ -26,13 +26,13 @@
                     <td>{{Auth::user()->company->bill_prefix}}{{$bill->id}}</td>
                     <td>{{$bill->school}}</td>
                     <td>{{$bill->description}}</td>
-                    <td class="money">@money($bill->amount) €</td>
+                    <td class="money">@money($bill->amount/1.2) €</td>
                     <td class="money">
-                        @money($bill->amount*1.2) €
+                        @money($bill->amount) €
                         @php
-                        $total += $bill->amount*1.2;
+                        $total += $bill->amount;
                         if($bill->paid_at != null){
-                        $total_payed += $bill->amount*1.2;
+                        $total_payed += $bill->amount;
                         }
                         @endphp
                     </td>

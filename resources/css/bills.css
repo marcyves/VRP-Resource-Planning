@@ -1,48 +1,60 @@
  .bills table {
-  background-color: rgba(245, 245, 245, 0.8);
-  width: 100%;
-  margin-bottom: 2rem;
-  border-radius: 10px;
-  font-size: smaller;
-  color: var(--main-text-color);
-}
+   background-color: rgba(245, 245, 245, 0.8);
+   width: 100%;
+   margin-bottom: 2rem;
+   border-radius: 10px;
+   font-size: smaller;
+   color: var(--main-text-color);
+ }
 
 
-:is(tbody, table) > tr:nth-child(odd) {
-  background-color: rgba(85, 50, 192, 0.1);
-}
+ :is(tbody, table)>tr:nth-child(odd) {
+   background-color: rgba(85, 50, 192, 0.1);
+ }
 
-.bills td{
-    padding: 0 0.5em;
-    white-space: nowrap;
-}
+ .bills td {
+   padding: 0 0.5em;
+   white-space: nowrap;
+ }
 
-.money{
-    text-align: right;
-}
+ .money {
+   text-align: right;
+ }
 
-.date {
-    text-align: center;
-}
+ .date {
+   text-align: center;
+ }
 
-.bills th {
-  padding: 0.5em;
-  text-align: center;
-font-weight: 600;
-}
+ .bills th {
+   padding: 0.5em;
+   text-align: center;
+   font-weight: 600;
+ }
 
-.bills-form {
-  margin-bottom: 1.5rem;     /* mb-6 */
-  display: flex;             /* flex */
-  flex-direction: column;    /* flex-col */
+ .bills-form {
+   margin-bottom: 1.5rem;
+   /* mb-6 */
+   display: flex;
+   /* flex */
+   flex-direction: column;
+   /* flex-col */
 
-  background-color: rgba(255, 255, 255, 0.75);
-  box-shadow: 8px 8px 2px 1px rgba(8, 42, 196, 0.2);
-  justify-content: space-between;
-  padding: 0.5rem;
-  margin: 6px;
-  min-width: 30%;
-  border-radius: 0.5rem;
-  cursor: pointer;
-  
-}
+   background-color: rgba(255, 255, 255, 0.75);
+   box-shadow: 8px 8px 2px 1px rgba(8, 42, 196, 0.2);
+   justify-content: space-between;
+   padding: 0.5rem;
+   margin: 6px;
+   min-width: 30%;
+   border-radius: 0.5rem;
+   cursor: pointer;
+ }
+
+ .bill-tag {
+   color: white;
+   padding: 0.25rem 0.5rem;
+ }
+
+ .bill-list {
+   font-size: 0.8rem;
+
+ }

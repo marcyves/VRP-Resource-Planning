@@ -1,8 +1,4 @@
 <x-app-layout>
-    @push('styles')
-    @vite(['resources/css/plannings.css', 'resources/css/bills.css'])
-    @endpush
-
     <x-slot name="header">
         <h2 class="print:hidden">{{ __('Billing Preparation') }} @monthName($current_month) {{$current_year}}</h2>
     </x-slot>

@@ -81,7 +81,7 @@
                 <div class="card glass-background">
                     <div class="card-content-text">
                         <h2 class="card-subtitle">Items</h2>
-                        <ul class="flex-list item-list">
+                        <ul class="bill-list">
                             @foreach($items as $item)
                             <li class="item-row">
                                 @if($item[4] == "T")

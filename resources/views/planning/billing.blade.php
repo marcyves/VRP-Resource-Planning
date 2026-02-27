@@ -26,7 +26,7 @@
             @endphp
             <div class="cool-box">
                 <h3 class="card-subtitle"> - {{ $schedules['course_name'] }}</h3>
-                <ul class="flex-list">
+                <ul class="bill-list">
                     @foreach($schedules['schedule'] as $planning_id => $schedule)
                     @if($current_group != $schedule['group'])
                     @php $current_group = $schedule['group']; @endphp
@@ -46,11 +46,13 @@
                             @if(Auth::user()->getMode() == "Edit")
                         </a>
                         @endif
-                        {{ $schedule['bill'] }}
+                        <span class="bill-tag">
+                            {{ $schedule['bill'] }}
+                        </span>
                     </li>
                     @endforeach
                 </ul>
-                <div class="total-line">
+                <div class=" total-line">
                     <span>Time worked: {{ number_format($schedules['hours'], 2) }} hours</span>
                     <span>Total: {{ number_format($schedules['gain'], 2) }} € HT / {{ number_format($schedules['gain']*1.2, 2) }} € TTC</span>
                 </div>
