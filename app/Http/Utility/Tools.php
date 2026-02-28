@@ -235,6 +235,7 @@ class Tools
                 $planning->update();
             }
         }
+
         // Loop ended, we write current course details at top of current items list
         if (count($planning_list) > 0) {
             array_unshift($items, [$course_name, "20%", $rate, $course_hours, "", "T"]);

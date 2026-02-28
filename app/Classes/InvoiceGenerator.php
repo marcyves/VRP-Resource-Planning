@@ -7,6 +7,7 @@ use App\Models\Company;
 use App\Models\School;
 use App\Models\Invoice;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
 class InvoiceGenerator extends TCPDF
 {
@@ -294,7 +295,8 @@ class InvoiceGenerator extends TCPDF
 
     $this->setFont('helvetica', 'N', 8);
     $this->Cell(0, 6, "Date facturation : " . date('d/m/Y', strtotime($this->invoice->bill_date)), 0, true, 'R', 0, '', 0, false, 'M', 'M');
-    $this->Cell(0, 6, "Date échéance : " . $this->invoice->created_at->addDays(1)->format('d/m/Y'), 0, true, 'R', 0, '', 0, false, 'M', 'M');
+    $date = trim($this->invoice->bill_date);
+    $this->Cell(0, 6, "Date échéance : " . Carbon::createFromFormat('Y-m-d', $date)->addDays(1)->format('d/m/Y'), 0, true, 'R', 0, '', 0, false, 'M', 'M');
     $this->Cell(0, 6, 'Code client : ' . $this->invoice->school->code, 0, true, 'R', 0, '', 0, false, 'M', 'M');
   }
 

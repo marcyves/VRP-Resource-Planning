@@ -83,6 +83,7 @@ class InvoiceController extends Controller
         ]);
 
         $month = $request->month;
+        $day = $request->day;
         $year = $request->year;
         $bill_date = $request->bill_date;
 

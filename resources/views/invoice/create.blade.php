@@ -118,12 +118,16 @@
 
                 <div class="grid grid-cols-2 gap-4">
                     <div>
-                        <x-input-label for="amount">Montant (laisser vide pour calcul auto)</x-input-label>
+                        <x-input-label for="amount">Montant TTC (laisser vide pour calcul auto)</x-input-label>
                         <x-text-input type="number" step="0.01" name="amount" id="amount" value="{{$total_amount > 0 ? $total_amount * 1.2 : ''}}" placeholder="Ex: 500.00" />
                     </div>
                 </div>
 
                 <div class="grid grid-cols-2 gap-4 mt-4">
+                    <div>
+                        <x-input-label for="month">Jour de facturation</x-input-label>
+                        <x-text-input type="text" name="bill_date" id="bill_date" value="{{$bill_date}}" min="1" max="12" />
+                    </div>
                     <div>
                         <x-input-label for="month">Mois</x-input-label>
                         <x-text-input type="number" name="month" id="month" value="{{$month}}" min="1" max="12" />
