@@ -14,6 +14,7 @@ return array(
   'date_billing' => 'Date de facturation',
   'date_payment' => 'Date de paiement',
   'description' => 'Description',
+  'documents_empty' => 'Aucun document pour cette école.',
   'edit' => 'Modifier',
   'edit_course' => 'Modifier le cours',
   'edit_group' => 'Modifier le groupe',

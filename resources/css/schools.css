@@ -204,12 +204,125 @@ main form.school-create-form .school-form-input .form-input {
     gap: 1.5rem;
 }
 
+/*
+ * Sections are nested inside .school-details-grid, so they are not matched by
+ * global/semantic rules for `main > section` (glass card, width, padding).
+ * Reapply the same surface so school header + courses, address, invoices, etc.
+ * render as distinct panels again.
+ */
+main .school-details-grid {
+    margin-top: var(--spacing-1);
+    margin-left: auto;
+    margin-right: auto;
+    width: 98%;
+    min-width: min(1100px, 100%);
+    max-width: 90%;
+}
+
+main .school-details-grid > section {
+    background: var(--surface-glass);
+    backdrop-filter: blur(10px);
+    border-radius: var(--rounded-lg);
+    border: 1px solid oklch(1 0 0 / 0.3);
+    box-shadow: var(--shadow-lg);
+    padding: var(--spacing-4);
+}
+
 .school-section-header {
     font-size: 1.25rem;
     font-weight: 600;
     margin-bottom: 1rem;
     border-bottom: 1px solid var(--border-color);
     padding-bottom: 0.5rem;
+}
+
+.documents-school-empty {
+    margin: 0;
+    padding: var(--spacing-4);
+    font-size: 0.9375rem;
+    font-style: italic;
+    color: oklch(0.45 0.02 264);
+    text-align: center;
+}
+
+/* Liste documents (remplace le tableau : plus de ligne d’en-tête Type / Description / Year) */
+.documents-school-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-2);
+    width: 100%;
+    min-width: 0;
+}
+
+.documents-school-list__row {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) minmax(3.5rem, auto) auto;
+    gap: var(--spacing-3);
+    align-items: center;
+    padding: var(--spacing-3);
+    border-radius: var(--rounded-md);
+    background: oklch(1 0 0 / 0.85);
+    border: var(--border-standard);
+    font-size: 0.875rem;
+    color: var(--brand-accent);
+    box-shadow: var(--shadow-sm);
+}
+
+.documents-school-list__row:nth-child(odd) {
+    background: oklch(0.55 0.12 283 / 0.08);
+}
+
+.documents-school-list__icon img {
+    display: block;
+    max-height: 1.5rem;
+    width: auto;
+}
+
+.documents-school-list__link {
+    color: inherit;
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+
+.documents-school-list__year {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+}
+
+.documents-school-list__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-2);
+    justify-content: flex-end;
+    align-items: center;
+}
+
+@media (max-width: 520px) {
+    .documents-school-list__row {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        column-gap: var(--spacing-3);
+        row-gap: var(--spacing-2);
+    }
+
+    .documents-school-list__link {
+        flex: 1 1 10rem;
+        min-width: 0;
+    }
+
+    .documents-school-list__year {
+        margin-left: auto;
+    }
+
+    .documents-school-list__actions {
+        width: 100%;
+        justify-content: flex-end;
+    }
 }
 
 .school-address-box {
@@ -223,32 +336,91 @@ main form.school-create-form .school-form-input .form-input {
 }
 
 .school-upload-container {
-    padding: 1.5rem;
+    margin-top: var(--spacing-4);
+    padding: 0;
+    border-top: var(--border-standard);
+    padding-top: var(--spacing-4);
 }
 
-.school-upload-form {
+/*
+ * Upload form: flat direct children so we can override semantic.css
+ * `main form > div:last-child` (flex-end row) which caused overlaps with the file input.
+ */
+main form.school-upload-form {
+    display: grid;
+    gap: var(--spacing-4);
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+main form.school-upload-form > div {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: var(--spacing-2);
+    min-width: 0;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
 }
 
-@media (min-width: 768px) {
-    .school-upload-form {
-        flex-direction: row;
-        align-items: flex-end;
-    }
-}
-
-.upload-inputs {
-    display: flex;
-    gap: 1rem;
-    flex: 1;
-}
-
-.upload-actions {
-    display: flex;
+main form.school-upload-form > .upload-actions {
+    flex-direction: row;
+    flex-wrap: wrap;
     align-items: center;
-    gap: 1rem;
+    justify-content: flex-start;
+    gap: var(--spacing-4);
+}
+
+main form.school-upload-form > .school-form-input--description {
+    width: 90%;
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+}
+
+main form.school-upload-form > .school-form-input--year {
+    width: fit-content;
+    max-width: 100%;
+}
+
+main form.school-upload-form > .school-form-input--year .form-input {
+    width: 4ch;
+    min-width: 0;
+    max-width: 100%;
+    padding-left: 0.4rem;
+    padding-right: 0.4rem;
+    box-sizing: border-box;
+    font-size: 0.875rem;
+    align-self: flex-start;
+}
+
+main form.school-upload-form > .upload-actions input[type="file"].form-input.school-upload-file {
+    width: auto;
+    min-width: 0;
+    max-width: min(100%, 22rem);
+    flex: 1 1 12rem;
+}
+
+@media (min-width: 640px) {
+    main form.school-upload-form {
+        grid-template-columns: minmax(0, 1fr) max-content;
+        column-gap: var(--spacing-4);
+        align-items: end;
+    }
+
+    main form.school-upload-form > .school-form-input--description {
+        grid-column: 1;
+        justify-self: start;
+    }
+
+    main form.school-upload-form > .school-form-input--year {
+        grid-column: 2;
+    }
+
+    main form.school-upload-form > .upload-actions {
+        grid-column: 1 / -1;
+    }
 }
 
 /* Schools without courses — inactive block at page bottom */

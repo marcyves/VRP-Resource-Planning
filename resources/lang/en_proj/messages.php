@@ -10,6 +10,7 @@ return array (
   'course_create' => 'Phase Creation',
   'course_list' => 'Phase List',
   'description' => 'Description',
+  'documents_empty' => 'No documents for this client yet.',
   'gain' => 'Gain',
   'group_create' => 'Create Group',
   'groups' => 'Groups',

@@ -12,6 +12,7 @@ return array (
   'course_create' => 'Creazione di un nuovo corso',
   'course_list' => 'Lista dei Corsi',
   'description' => 'Descrizione',
+  'documents_empty' => 'Nessun documento per questa scuola.',
   'gain' => 'Profito',
   'groups' => 'Groupi',
   'hour_rate' => 'Tasso medio',

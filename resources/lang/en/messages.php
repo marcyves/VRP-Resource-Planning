@@ -13,6 +13,7 @@ return array(
   'course_list' => 'Course List',
   'recurring' => 'Récurring',
   'description' => 'Description',
+  'documents_empty' => 'No documents for this school yet.',
   'gain' => 'Gain',
   'group_create' => 'Create Group',
   'groups' => 'Groups',

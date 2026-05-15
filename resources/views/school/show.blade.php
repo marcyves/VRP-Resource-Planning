@@ -43,19 +43,16 @@
             <div class="school-upload-container">
                 <form action="{{route('document.store', $school_id)}}" class="school-upload-form" method="post" enctype="multipart/form-data">
                     @csrf
-                    <div class="upload-inputs">
-                        <div class="school-form-input">
-                            <x-text-input type="text" name="description" id="desc" placeholder="Document Description" />
-                            <x-input-error :messages="$errors->get('description')" />
-                        </div>
-                        <div class="school-form-input">
-                            <x-text-input type="text" name="year" id="year" value="{{date('Y')}}" />
-                            <x-input-error :messages="$errors->get('year')" />
-                        </div>
+                    <div class="school-form-input school-form-input--description">
+                        <x-text-input type="text" name="description" id="desc" placeholder="Document Description" />
+                        <x-input-error :messages="$errors->get('description')" />
                     </div>
-
+                    <div class="school-form-input school-form-input--year">
+                        <x-text-input type="text" name="year" id="year" value="{{ date('Y') }}" size="4" maxlength="4" inputmode="numeric" autocomplete="off" />
+                        <x-input-error :messages="$errors->get('year')" />
+                    </div>
                     <div class="upload-actions">
-                        <input type="file" class="form-input" name="document">
+                        <input type="file" class="form-input school-upload-file" name="document">
                         <x-input-error :messages="$errors->get('document')" />
                         <x-button-primary type="submit">Upload</x-button-primary>
                     </div>
