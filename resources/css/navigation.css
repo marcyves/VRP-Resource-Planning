@@ -92,7 +92,7 @@
 
 .nav-form select {
     font-size: smaller;
-    border-radius: 8px;
+    border-radius: var(--rounded-md);
     padding: 0 8px;
     margin: 1rem;
     min-width: 4.5rem;

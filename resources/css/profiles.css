@@ -12,7 +12,7 @@
 
 .profile-section-card {
     padding: 1.5rem;
-    border-radius: 0.75rem;
+    border-radius: var(--rounded-lg);
     border: 1px solid var(--border-color);
 }
 

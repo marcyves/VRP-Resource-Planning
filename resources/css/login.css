@@ -1,0 +1,45 @@
+/* Login page — loaded last to override generic form rules */
+
+body:has(> .maintenance-title) form.login-form {
+    align-items: center;
+    text-align: center;
+}
+
+body:has(> .maintenance-title) form.login-form .login-field {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    gap: var(--spacing-1);
+    margin: 0;
+}
+
+body:has(> .maintenance-title) form.login-form .login-field .form-input {
+    display: block;
+    width: 20rem;
+    max-width: 100%;
+    margin-inline: auto;
+    text-align: center;
+}
+
+body:has(> .maintenance-title) form.login-form .login-remember {
+    justify-content: center;
+}
+
+body:has(> .maintenance-title) form.login-form .login-forgot {
+    display: block;
+    width: 100%;
+    margin: 0;
+    text-align: center;
+}
+
+body:has(> .maintenance-title) form.login-form .login-actions {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    background: none;
+    border: none;
+    box-shadow: none;
+    padding: 0;
+    margin: 0;
+}

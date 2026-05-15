@@ -34,20 +34,144 @@ main section > ul.school-grid > li:hover {
     font-weight: 700;
 }
 
-/* School Management Form */
-.school-create-form {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 1rem;
-    margin-top: 2rem;
-    padding: 1.5rem;
-    border-radius: var(--rounded-lg);
+/* Collapsible panels (create form, inactive schools) */
+.school-panel {
+    margin-top: var(--spacing-6);
 }
 
-.school-form-input {
-    flex: 1;
-    min-width: 150px;
+main section.school-panel .school-panel__box {
+    background: var(--surface-card);
+    border-radius: var(--rounded-lg);
+    border: var(--border-standard);
+    box-shadow: var(--shadow-md);
+    padding: var(--spacing-4);
+}
+
+main section.school-panel .school-panel__header {
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--spacing-3);
+    width: 100%;
+    padding: 0;
+    margin: 0 0 var(--spacing-4);
+    background: none;
+    border: none;
+    box-shadow: none;
+}
+
+.school-panel__title {
+    margin: 0;
+    flex: 1 1 auto;
+    min-width: 0;
+    text-align: left;
+    font-size: 1.25rem;
+    font-weight: 600;
+    line-height: 1.25;
+    color: var(--brand-primary);
+}
+
+.school-panel__toggle {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    padding: 0;
+    border: none;
+    border-radius: var(--rounded-md);
+    background: transparent;
+    color: var(--brand-primary);
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.school-panel__toggle svg {
+    display: block;
+    flex-shrink: 0;
+}
+
+.school-panel__toggle:hover {
+    background: oklch(1 0 0 / 0.25);
+    color: var(--brand-accent);
+}
+
+.school-panel__toggle:focus-visible {
+    outline: 2px solid var(--brand-secondary);
+    outline-offset: 2px;
+}
+
+/* School Management Form */
+.school-create-form {
+    --school-field-gap: 1rem;
+    --school-field-narrow: 10rem;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-4);
+}
+
+main section.school-panel form.school-create-form {
+    margin-top: 0;
+    padding: 0;
+    background: none;
+    border: none;
+    box-shadow: none;
+}
+
+main form.school-create-form > .school-create-form__row {
+    display: grid;
+    width: 100%;
+    gap: var(--school-field-gap);
+    column-gap: var(--school-field-gap);
+    margin: 0;
+}
+
+main form.school-create-form > .school-create-form__row--name-code {
+    grid-template-columns: minmax(0, 1fr) var(--school-field-narrow);
+}
+
+main form.school-create-form > .school-create-form__row--zip-city,
+main form.school-create-form > .school-create-form__row--country {
+    grid-template-columns: var(--school-field-narrow) minmax(0, 1fr);
+}
+
+main form.school-create-form > .school-create-form__row--country {
+    grid-template-columns: var(--school-field-narrow);
+}
+
+main form.school-create-form > .school-create-form__row:not(.school-create-form__row--name-code):not(.school-create-form__row--zip-city):not(.school-create-form__row--country) {
+    grid-template-columns: 1fr;
+}
+
+main form.school-create-form > .school-create-form__row--submit {
+    display: flex;
+    justify-content: center;
+    margin-top: var(--spacing-2);
+}
+
+main form.school-create-form .school-form-input {
+    display: block;
+    min-width: 0;
+    width: 100%;
+    margin: 0;
+}
+
+main form.school-create-form .school-form-input .form-input {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+@media (max-width: 640px) {
+    .school-create-form {
+        --school-field-narrow: 100%;
+    }
+
+    main form.school-create-form > .school-create-form__row--name-code,
+    main form.school-create-form > .school-create-form__row--zip-city {
+        grid-template-columns: 1fr;
+    }
 }
 
 /* Header actions */
@@ -125,4 +249,39 @@ main section > ul.school-grid > li:hover {
     display: flex;
     align-items: center;
     gap: 1rem;
+}
+
+/* Schools without courses — inactive block at page bottom */
+.schools-inactive-section {
+    padding-top: var(--spacing-6);
+    border-top: 1px dashed oklch(0 0 0 / 0.2);
+}
+
+.schools-inactive-section .school-panel__title,
+.schools-inactive-header {
+    font-size: 0.875rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: oklch(0.45 0.02 264);
+}
+
+.school-grid--inactive > li {
+    opacity: 0.7;
+    background: oklch(0.96 0.01 264 / 0.55);
+    border-style: dashed;
+    filter: grayscale(0.35);
+}
+
+.school-grid--inactive > li:hover {
+    transform: none;
+    box-shadow: var(--shadow-sm);
+}
+
+.school-inactive-label {
+    margin: var(--spacing-2) 0 0;
+    font-size: 0.8125rem;
+    font-style: italic;
+    color: oklch(0.5 0.02 264);
+    text-align: center;
 }

@@ -36,8 +36,8 @@
     --spacing-4: 1rem;
     --spacing-6: 1.5rem;
     --spacing-8: 2rem;
-    --rounded-md: 0.5rem;
-    --rounded-lg: 0.75rem;
+    --rounded-md: 0.25rem;
+    --rounded-lg: 0.375rem;
 
     /* Legacy compatibility (to be phased out) */
     --main-bg-color: oklch(0.834 0.061 210.586 / 0.6);

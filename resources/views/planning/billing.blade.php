@@ -34,7 +34,8 @@
                             @endif
                             {{ \Carbon\Carbon::parse($schedule['begin'])->format('d/m/Y H:i') }} - {{ \Carbon\Carbon::parse($schedule['end'])->format('H:i') }}
                             <span class="status-indicator {{ $schedule['duration'] != $schedules['duration'] ? 'text-danger' : 'text-success' }}">
-                                @if}})
+                                @if($schedule['billable_rate'] != 1)
+                                ({{ number_format($schedule['billable_rate'], 2) }})
                                 @endif
                                 ({{ number_format($schedule['duration'], 1) }} h)
                             </span>

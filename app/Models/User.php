@@ -90,23 +90,27 @@ class User extends Authenticatable
     {
         $company_id = $this->company_id;
 
-        if ($year == 'all') {
-            return School::select(['schools.*'])
-                ->where('schools.company_id', '=', $company_id)
-                ->orderBy('schools.name')
-                ->get();
-        } else {
-            return School::select([
-                'schools.*',
-                DB::raw('SUM(amount) as amount')
-            ])
-                ->where('schools.company_id', '=', $company_id)
-                ->join('invoices', 'invoices.school_id', '=', 'schools.id')
-                ->where('bill_date', '>', $year . '-01-01')
-                ->groupBy('schools.id')
-                ->orderBy('schools.name')
-                ->get();
+        $query = School::query()
+            ->select(['schools.*'])
+            ->where('schools.company_id', '=', $company_id)
+            ->whereHas('courses', function ($courseQuery) use ($year) {
+                if ($year != 'all') {
+                    $courseQuery->where('year', $year);
+                }
+            })
+            ->orderBy('schools.name');
+
+        if ($year != 'all') {
+            $query
+                ->addSelect(DB::raw('COALESCE(SUM(invoices.amount), 0) as amount'))
+                ->leftJoin('invoices', function ($join) use ($year) {
+                    $join->on('invoices.school_id', '=', 'schools.id')
+                        ->whereYear('invoices.bill_date', $year);
+                })
+                ->groupBy('schools.id');
         }
+
+        return $query->get();
     }
 
 

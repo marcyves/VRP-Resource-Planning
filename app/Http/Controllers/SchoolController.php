@@ -19,9 +19,16 @@ class SchoolController extends Controller
         session()->forget('school');
         session()->forget('school_id');
 
-        $schools = Auth::user()->getSchoolsAndBudget('2025');
+        $current_year = session('current_year');
+        if (!isset($current_year)) {
+            $current_year = now()->format('Y');
+            session()->put('current_year', $current_year);
+        }
 
-        return view('school.index', compact('schools'));
+        $schools = Auth::user()->getSchoolsAndBudget($current_year);
+        $inactiveSchools = Auth::user()->getSchools()->getNoCourse();
+
+        return view('school.index', compact('schools', 'inactiveSchools', 'current_year'));
     }
 
     /**
@@ -94,10 +101,7 @@ class SchoolController extends Controller
 
     public function list()
     {
-        $schools = Auth::user()->getSchools();
-        $schools = $schools->getNoCourse();
-
-        return view('school.list', compact('schools'));
+        return redirect()->route('school.index', [], 301);
     }
 
     public function add(String $school_id)
@@ -140,7 +144,7 @@ class SchoolController extends Controller
             session()->put('school', $school->name);
             session()->put('school_id', $school->id);
 
-            return redirect(route('school.list'));
+            return redirect(route('school.index'));
         } catch (\Exception $e) {
             dd($e);
 
