@@ -2,6 +2,15 @@
 
 use Illuminate\Support\Str;
 
+// PHP 8.5+: PDO::MYSQL_ATTR_* constants are deprecated in favor of Pdo\Mysql::ATTR_*.
+$mysqlAttrSslCa = defined('Pdo\Mysql::ATTR_SSL_CA')
+    ? Pdo\Mysql::ATTR_SSL_CA
+    : PDO::MYSQL_ATTR_SSL_CA;
+
+$mysqlAttrSslVerifyServerCert = defined('Pdo\Mysql::ATTR_SSL_VERIFY_SERVER_CERT')
+    ? Pdo\Mysql::ATTR_SSL_VERIFY_SERVER_CERT
+    : PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT;
+
 return [
 
     /*
@@ -59,8 +68,8 @@ return [
             'strict' => true,
             'engine' => null,
             'options' => extension_loaded('pdo_mysql') ? array_filter([
-                PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
-                PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT => false,
+                $mysqlAttrSslCa => env('MYSQL_ATTR_SSL_CA'),
+                $mysqlAttrSslVerifyServerCert => env('MYSQL_ATTR_SSL_VERIFY_SERVER_CERT', false),
             ]) : [],
         ],
 
