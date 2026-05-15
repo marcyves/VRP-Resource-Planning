@@ -2,6 +2,7 @@
 
 return array (
   'add_course' => 'Add Phase',
+  'add' => 'Add',
   'bill_create' => 'New Bill',
   'bill_id' => 'Bill #',
   'billing' => 'Billing',
@@ -11,6 +12,9 @@ return array (
   'course_list' => 'Phase List',
   'description' => 'Description',
   'documents_empty' => 'No documents for this client yet.',
+  'delete' => 'Delete',
+  'view' => 'View',
+  'edit' => 'Edit',
   'gain' => 'Gain',
   'group_create' => 'Create Group',
   'groups' => 'Groups',
@@ -31,6 +35,8 @@ return array (
   'schools_details' => 'Details',
   'schools_list' => 'List Clients',
   'invoices_by_school' => 'Bills by Client',
+  'invoice_create' => 'Create bill',
+  'mark_as_paid' => 'Mark as paid',
   'semester' => 'Semester',
   'session_length' => 'Duration',
   'sessions' => 'Sessions',

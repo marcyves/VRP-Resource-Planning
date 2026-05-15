@@ -183,7 +183,7 @@ main table th:last-child {
 
 main table td:last-child:has(form) {
     display: flex;
-    gap: var(--spacing-2);
+    gap: var(--spacing-1);
     justify-content: flex-end;
     align-items: center;
     white-space: nowrap;

@@ -89,4 +89,5 @@
     justify-content: flex-end;
     align-items: center;
     flex-direction: row;
+    gap: var(--spacing-1);
 }

@@ -119,13 +119,102 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    margin: 4px;
+    margin: 2px;
 }
 
 .icon img,
 .icon svg {
     width: 100%;
     height: 100%;
+}
+
+/* Icon action buttons (edit / delete / add / payed / invoice-manual): neutral frame, no legacy color filters */
+.icon.icon--edit,
+.icon.icon--delete,
+.icon.icon--add,
+.icon.icon--payed,
+.icon.icon--invoice-manual {
+    box-sizing: border-box;
+    width: 2rem;
+    height: 2rem;
+    margin: 2px;
+    padding: 0;
+    border: 1px solid oklch(0 0 0 / 0.14);
+    border-radius: var(--rounded-md);
+    background: transparent;
+    cursor: pointer;
+    transition: background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.icon.icon--edit:hover,
+.icon.icon--add:hover,
+.icon.icon--payed:hover,
+.icon.icon--invoice-manual:hover {
+    background: oklch(1 0 0 / 0.75);
+    border-color: oklch(0 0 0 / 0.22);
+    box-shadow: var(--shadow-sm);
+}
+
+.icon.icon--delete:hover {
+    background: oklch(0.97 0.02 20 / 0.85);
+    border-color: oklch(0.55 0.14 25 / 0.28);
+    box-shadow: var(--shadow-sm);
+}
+
+.icon.icon--edit:focus-visible,
+.icon.icon--delete:focus-visible,
+.icon.icon--add:focus-visible,
+.icon.icon--payed:focus-visible,
+.icon.icon--invoice-manual:focus-visible {
+    outline: 2px solid var(--brand-secondary);
+    outline-offset: 2px;
+}
+
+.icon.icon--edit img,
+.icon.icon--delete img,
+.icon.icon--add img,
+.icon.icon--payed img,
+.icon.icon--invoice-manual img {
+    width: 1.125rem;
+    height: 1.125rem;
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    display: block;
+    filter: none;
+}
+
+/* Bouton « voir » PDF : proportions proches du logo, sans étirement en carré */
+.icon.icon--pdf-view {
+    box-sizing: border-box;
+    width: 2.25rem;
+    height: 1.75rem;
+    margin: 2px;
+    padding: 0.1rem 0.2rem;
+    border: 1px solid oklch(0 0 0 / 0.12);
+    border-radius: var(--rounded-md);
+    background: transparent;
+    cursor: pointer;
+    transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.icon.icon--pdf-view:hover {
+    background: oklch(1 0 0 / 0.7);
+    border-color: oklch(0 0 0 / 0.2);
+}
+
+.icon.icon--pdf-view:focus-visible {
+    outline: 2px solid var(--brand-secondary);
+    outline-offset: 2px;
+}
+
+.icon.icon--pdf-view img {
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    display: block;
 }
 
 /* Animations / Transitions Utilities */

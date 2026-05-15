@@ -17,12 +17,7 @@
             <x-button-delete />
         </form>
         <a href="{{route('course.create', $school_id)}}"><x-button-add /></a>
-        <form action="{{route('invoice.create')}}" method="get">
-            @csrf
-            <input type="hidden" name="school_id" value="{{$school_id}}">
-            <input type="submit" value="$"
-                class="btn-input">
-        </form>
+        <x-button-invoice-manual :school_id="$school_id" />
     </div>
     @endif
 </div>
