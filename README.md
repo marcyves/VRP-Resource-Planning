@@ -1,275 +1,159 @@
-# VRP
-## VRP Resource Planning
-Project planification and budgeting
-<a name="readme-top"></a>
+# VRP Resource Planning
 
-<!-- PROJECT SHIELDS -->
-<!--
-*** I'm using markdown "reference style" links for readability.
-*** Reference links are enclosed in brackets [ ] instead of parentheses ( ).
-*** See the bottom of this document for the declaration of the reference variables
-*** for contributors-url, forks-url, etc. This is an optional, concise syntax you may use.
-*** https://www.markdownguide.org/basic-syntax/#reference-style-links
--->
-[![Issues][issues-shield]][issues-url]
-[![GPL 3][license-shield]][license-url]
-[![LinkedIn][linkedin-shield]][linkedin-url]
+Application web de **planification**, **budgétisation** et **suivi facturation** pour formateurs, vacataires et petites structures : écoles, cours, groupes, agenda, factures PDF, documents par établissement, import calendrier.
 
+**Dépôt :** [github.com/marcyves/VRP-Resource-Planning](https://github.com/marcyves/VRP-Resource-Planning)
 
+[![Issues](https://img.shields.io/github/issues/marcyves/VRP-Resource-Planning?style=flat-square)](https://github.com/marcyves/VRP-Resource-Planning/issues)
+[![License: GPL-3.0](https://img.shields.io/badge/License-GPL%20v3-blue.svg?style=flat-square)](./LICENSE)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Marc%20Augier-0A66C2?style=flat-square&logo=linkedin)](https://linkedin.com/in/marcaugier)
 
-<!-- PROJECT LOGO -->
-<br />
-<div align="center">
-  <a href="https://github.com/marcyves/VRP">
-    <img src="public/logo-XDM.png" alt="Logo" width="80" height="80">
-  </a>
+---
 
-  <h3 align="center">VRP</h3>
+## Sommaire
 
-  <p align="center">
-  VRP started as a personal side projet in order to help me plan and budget my different projects. Gradually, this is evolving into an ERP System for freelancers and vacataires.
-    <br />
-    <a href="https://github.com/marcyves/VRP"><strong>Explore the docs »</strong></a>
-    <br />
-    <br />
-    <a href="https://github.com/marcyves/VRP">View Demo</a>
-    ·
-    <a href="https://github.com/marcyves/VRP/issues">Report Bug</a>
-    ·
-    <a href="https://github.com/marcyves/VRP/issues">Request Feature</a>
-  </p>
-</div>
+- [Fonctionnalités](#fonctionnalités)
+- [Stack technique](#stack-technique)
+- [Prérequis](#prérequis)
+- [Installation](#installation)
+- [Développement](#développement)
+- [Internationalisation](#internationalisation)
+- [Qualité & tests](#qualité--tests)
+- [Démo](#démo)
+- [Contribution](#contribution)
+- [Licence](#licence)
+- [Contact](#contact)
 
+---
 
+## Fonctionnalités
 
-<!-- TABLE OF CONTENTS -->
-<details>
-  <summary>Table of Contents</summary>
-  <ol>
-    <li>
-      <a href="#about-the-project">About The Project</a>
-      <ul>
-        <li><a href="#built-with">Built With</a></li>
-      </ul>
-    </li>
-    <li>
-      <a href="#getting-started">Getting Started</a>
-      <ul>
-        <li><a href="#prerequisites">Prerequisites</a></li>
-        <li><a href="#installation">Installation</a></li>
-      </ul>
-    </li>
-    <li><a href="#usage">Usage</a></li>
-    <li><a href="#roadmap">Roadmap</a></li>
-    <li><a href="#contributing">Contributing</a></li>
-    <li><a href="#license">License</a></li>
-    <li><a href="#contact">Contact</a></li>
-    <li><a href="#acknowledgments">Acknowledgments</a></li>
-  </ol>
-</details>
+- Gestion des **écoles** et des **cours** (programmes, volumes, tarifs)
+- **Groupes** et vue **planning** / facturation
+- **Factures** (PDF, suivi paiement)
+- **Documents** rattachés à une école
+- **Import calendrier** (mapping, gestion des évènements)
+- Authentification, rôles utilisateur liés à l’entreprise (mode lecture / édition)
 
+---
 
+## Stack technique
 
-<!-- ABOUT THE PROJECT -->
-## About The Project
+| Couche        | Détail |
+|---------------|--------|
+| Backend       | **PHP 8.2+**, **Laravel 11** |
+| Frontend      | **Vite 4**, **Alpine.js**, CSS modulaire (`resources/css/`), **Blade** |
+| PDF           | **TCPDF** (factures) |
+| iCal          | **ics-parser** |
+| Qualité       | **Laravel Pint**, **PHPStan** (Larastan), **PHPUnit** |
 
-[![Planary][planary-screenshot]](https://raw.githubusercontent.com/marcyves/plarany/main/_doc/screencapture.png)
+> Le dépôt n’embarque pas Tailwind en dépendance npm : l’UI repose sur des feuilles CSS dédiées et des composants Blade.
 
+---
 
+## Prérequis
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+- **PHP** 8.2 ou supérieur (extensions habituelles Laravel : `pdo`, `mbstring`, `openssl`, `tokenizer`, `xml`, etc.)
+- **Composer** 2.x  
+- **Node.js** + **npm** (pour Vite)  
+- **Base de données** : MySQL / MariaDB (ou SQLite pour un essai rapide, en adaptant `.env`)
 
+---
 
+## Installation
 
-### Built With
+```bash
+git clone https://github.com/marcyves/VRP-Resource-Planning.git
+cd VRP-Resource-Planning
 
-This section list any major frameworks/libraries used to bootstrap this project.
+composer install
+cp .env.example .env
+php artisan key:generate
+```
 
-* [![Laravel][Laravel.com]][Laravel-url]
-* [![Tailwind][Tailwind.com]][Tailwind-url]
+1. Éditer **`.env`** : `APP_URL`, connexion base (`DB_*` ou `DB_DATABASE` pour SQLite), mail si besoin.  
+2. Créer les tables :
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
-<!-- GETTING STARTED -->
-## Getting Started
-
-These are the instructions on setting up your project locally.
-To get a local copy up and running follow these simple example steps.
-
-### Prerequisites
-
-If you want to run Planary you need to have a MySQL server available, npm and composer installed on your computer.
-
-### Installation
-
-_You need `composer`` to install the project and then follow the usual steps for a Laravel project._
-
-1. Clone the repo
-   ```sh
-   git clone https://github.com/marcyves/VRP.git
+   ```bash
+   php artisan migrate
    ```
-2. Install Laravel modules
-  ```sh
-  composer install
-  ```
-3. Copy .env.example to .env
-  Review Data Base parameters, you can go for SQLite or MySQL but in this case you need to set up and start a MySQL server.
-4. Set the application key
-  ```sh
-  php artisan key:generate
-  ```
-5. Create the Database
-  ```sh
-  php artisan migrate
-  ```
-6. Install NPM packages
-   ```sh
+
+3. **Lien symbolique** du stockage (si vous servez des fichiers publics / documents) :
+
+   ```bash
+   php artisan storage:link
+   ```
+
+4. Assets front :
+
+   ```bash
    npm install
+   npm run build
    ```
-7. Run Vite
-  ```sh
-  npm run dev
-  ```
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+En local, vous pouvez utiliser `npm run dev` en parallèle d’un serveur PHP (`php artisan serve` ou votre vhost).
 
+---
 
+## Développement
 
+| Commande | Rôle |
+|----------|------|
+| `php artisan serve` | Serveur de développement Laravel |
+| `npm run dev` | Vite en mode watch (HMR) |
+| `npm run build` | Build de production des assets |
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+Penser à régénérer le cache des routes si besoin : `php artisan route:cache` (production uniquement, en général).
 
+---
 
+## Internationalisation
 
-<!-- ROADMAP -->
-## Roadmap
+Fichiers de traduction sous `resources/lang/` (français, anglais, italien, variante métier `en_proj`, etc.).  
+Le paquet `joedixon/laravel-translation` est présent pour faciliter la gestion des chaînes.
 
-- [x] Create Readme
-- [ ] Add "Roadmap" to the readme
-- [ ] Multi-language Support
-    - [ ] French
-    - [ ] Italian
+---
 
-See the [open issues](https://github.com/marcyves/plarany/issues) for a full list of proposed features (and known issues).
+## Qualité & tests
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+```bash
+./vendor/bin/pint          # formatage PHP (Laravel Pint)
+./vendor/bin/phpstan analyse   # analyse statique (selon config du projet)
+php artisan test           # PHPUnit
+```
 
-## Very Short Documentation
+---
 
-### User Statuses
-  * 1 admin (for their company)
-  * 2 éditeur
-  * 3 rédacteur
-  * 4 SuperAdmin (all companies)
+## Démo
 
-## Online demo
+Une démo peut être accessible (ex. **vrp.xdm-consulting.fr**) ; les identifiants de test ne doivent **pas** figurer en clair dans le dépôt — utilisez un canal privé ou des secrets d’environnement.
 
-You can give a try to the project at 
-http://vrp.xdm-consulting.fr/
+---
 
-email: user@xdm.fr
-password: topsecret
+## Contribution
 
-<!-- CONTRIBUTING -->
-## Contributing
+Les suggestions et *pull requests* sont les bienvenues :
 
-Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
+1. Forkez le dépôt  
+2. Créez une branche (`feature/...` ou `fix/...`)  
+3. Commits clairs, PR ciblée avec description courte  
+4. Vérifiez Pint / tests quand c’est pertinent  
 
-If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement".
-Don't forget to give the project a star! Thanks again!
+---
 
-1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+## Licence
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+Distribué sous **GNU GPLv3** — voir le fichier [`LICENSE`](./LICENSE).
 
+---
 
-
-<!-- LICENSE -->
-## License
-
-Distributed under the GPL 3 License. See `LICENSE.txt` for more information.
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
-
-<!-- CONTACT -->
 ## Contact
 
-Marc Augier - [@marcyves](https://twitter.com/marcyves)
+**Marc Augier** — [@marcyves](https://github.com/marcyves) · [LinkedIn](https://linkedin.com/in/marcaugier)
 
-Project Link: [https://github.com/users/marcyves/projects/3](https://github.com/users/marcyves/projects/3)
+Si le projet vous est utile, vous pouvez soutenir le travail :  
+[![Buy Me A Coffee](https://cdn.buymeacoffee.com/buttons/v2/default-blue.png)](https://www.buymeacoffee.com/marcyves)
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+---
 
-
-
-<!-- ACKNOWLEDGMENTS -->
-## Acknowledgments
-
-Resources I find helpful and would like to give credit to.
-
-* [Best README Template](https://github.com/marcyves/VRP)
-* [Choose an Open Source License](https://choosealicense.com)
-* [GitHub Emoji Cheat Sheet](https://www.webpagefx.com/tools/emoji-cheat-sheet)
-* [Malven's Flexbox Cheatsheet](https://flexbox.malven.co/)
-* [Malven's Grid Cheatsheet](https://grid.malven.co/)
-* [Img Shields](https://shields.io)
-* [GitHub Pages](https://pages.github.com)
-* [Font Awesome](https://fontawesome.com)
-* [React Icons](https://react-icons.github.io/react-icons/search)
-* [Tailwind documentation](https://tailwindcss.com/docs/installation)
-* [Flowbite](https://flowbite.com/)
-* [Awesome Badges](https://dev.to/envoy_/150-badges-for-github-pnk)
-
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-## vous avez aimé ?
-Pourquoi pas me remercier en m'offrant un café ?
-
-<a href="https://www.buymeacoffee.com/marcyves" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-blue.png" alt="Buy Me A Coffee" width="210" ></a>
-
-Réalisé par [@marcyves](https://github.com/marcyves)
-
-## Notice
-
-
-
-<!-- MARKDOWN LINKS & IMAGES -->
-<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/othneildrew/Best-README-Template.svg?style=for-the-badge
-[contributors-url]: https://github.com/marcyves/VRP/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/othneildrew/Best-README-Template.svg?style=for-the-badge
-[forks-url]: https://github.com/marcyves/VRP/network/members
-[stars-shield]: https://img.shields.io/github/stars/othneildrew/Best-README-Template.svg?style=for-the-badge
-[stars-url]: https://github.com/marcyves/VRP/stargazers
-[issues-shield]: https://img.shields.io/github/issues/othneildrew/Best-README-Template.svg?style=for-the-badge
-[issues-url]: https://github.com/marcyves/VRP/issues
-[license-shield]: https://img.shields.io/github/license/othneildrew/Best-README-Template.svg?style=for-the-badge
-[license-url]: https://github.com/marcyves/VRP/blob/master/LICENSE.txt
-[linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
-[linkedin-url]: https://linkedin.com/in/marcaugier
-[planary-screenshot]: https://raw.githubusercontent.com/marcyves/plarany/main/_doc/screencapture.png
-[Next.js]: https://img.shields.io/badge/next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white
-[Next-url]: https://nextjs.org/
-[React.js]: https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
-[React-url]: https://reactjs.org/
-[Vue.js]: https://img.shields.io/badge/Vue.js-35495E?style=for-the-badge&logo=vuedotjs&logoColor=4FC08D
-[Vue-url]: https://vuejs.org/
-[Angular.io]: https://img.shields.io/badge/Angular-DD0031?style=for-the-badge&logo=angular&logoColor=white
-[Angular-url]: https://angular.io/
-[Svelte.dev]: https://img.shields.io/badge/Svelte-4A4A55?style=for-the-badge&logo=svelte&logoColor=FF3E00
-[Svelte-url]: https://svelte.dev/
-[Laravel.com]: https://img.shields.io/badge/Laravel-FF2D20?style=for-the-badge&logo=laravel&logoColor=white
-[Laravel-url]: https://laravel.com
-[Bootstrap.com]: https://img.shields.io/badge/Bootstrap-563D7C?style=for-the-badge&logo=bootstrap&logoColor=white
-[Bootstrap-url]: https://getbootstrap.com
-[JQuery.com]: https://img.shields.io/badge/jQuery-0769AD?style=for-the-badge&logo=jquery&logoColor=white
-[JQuery-url]: https://jquery.com 
-[Tailwind-url]: https://tailwindui.com/
-[Tailwind.com]: https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white
+*README mis à jour pour refléter le dépôt **VRP-Resource-Planning** et la stack Laravel 11 / Vite.*
