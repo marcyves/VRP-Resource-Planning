@@ -20,12 +20,11 @@
     }
 }
 
-.school-card {
-    padding: 1.5rem;
+main section > ul.school-grid > li {
     transition: transform 0.2s, box-shadow 0.2s;
 }
 
-.school-card:hover {
+main section > ul.school-grid > li:hover {
     transform: translateY(-4px);
 }
 

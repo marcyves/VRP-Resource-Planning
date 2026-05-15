@@ -1,14 +1,10 @@
 <x-app-layout>
-    @push('styles')
-    @vite(['resources/css/courses.css'])
-    @endpush
-
-    <x-slot name="header">
+<x-slot name="header">
         <h2>{{ __('messages.course_create') }} {{$school->name}}</h2>
     </x-slot>
 
-    <section class="glass-background">
-        <form action="{{route('course.store', $school->id)}}" method="post" class="group-form glass-background-solid">
+    <section>
+        <form action="{{route('course.store', $school->id)}}" method="post" class="group-form">
             @csrf
 
             <div class="form-group">

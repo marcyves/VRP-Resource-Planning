@@ -1,14 +1,10 @@
 <x-app-layout>
-    @push('styles')
-    @vite(['resources/css/schools.css'])
-    @endpush
-
-    <x-slot name="header">
+<x-slot name="header">
         <h2>{{ __('messages.school_details') }}</h2>
     </x-slot>
 
     <div class="school-details-grid">
-        <section class="glass-background">
+        <section>
             @php
             $school_name = $school->name;
             $school_id = $school->id;
@@ -19,7 +15,7 @@
             </article>
         </section>
 
-        <section class="glass-background">
+        <section>
             <h3 class="school-section-header">{{ __('messages.address') }}</h3>
             <div class="school-address-box">
                 <div class="address-content">
@@ -33,19 +29,19 @@
             </div>
         </section>
 
-        <section class="glass-background">
+        <section>
             <h3 class="school-section-header">Invoices</h3>
             <div class="bills">
                 <x-table-invoices :invoices="$invoices" />
             </div>
         </section>
 
-        <section class="glass-background">
+        <section>
             <h3 class="school-section-header">Documents</h3>
             <x-documents-school-table :documents="$documents" :school_id="$school_id" />
 
             <div class="school-upload-container">
-                <form action="{{route('document.store', $school_id)}}" class="school-upload-form glass-background-solid" method="post" enctype="multipart/form-data">
+                <form action="{{route('document.store', $school_id)}}" class="school-upload-form" method="post" enctype="multipart/form-data">
                     @csrf
                     <div class="upload-inputs">
                         <div class="school-form-input">

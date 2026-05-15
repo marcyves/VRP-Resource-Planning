@@ -1,4 +1,5 @@
-/* Form System */
+/* Form System — complements semantic.css element rules */
+
 .form-group {
     margin-bottom: var(--spacing-4);
 }
@@ -7,7 +8,7 @@
     display: block;
     font-size: 0.875rem;
     font-weight: 700;
-    color: #374151;
+    color: var(--brand-accent);
     margin-bottom: var(--spacing-1);
 }
 
@@ -16,17 +17,17 @@
     padding: 0.6rem;
     border: 1px solid var(--border-color);
     border-radius: var(--rounded-md);
-    background-color: rgba(255, 255, 255, 0.7);
+    background-color: oklch(1 0 0 / 0.7);
     color: inherit;
     font-size: 1rem;
     box-shadow: var(--shadow-sm);
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .form-input:focus {
     outline: none;
     border-color: var(--brand-secondary);
-    box-shadow: 0 0 0 3px rgba(83, 140, 233, 0.3);
+    box-shadow: 0 0 0 3px oklch(0.645 0.152 259.712 / 0.3);
 }
 
 .form-error {
@@ -40,21 +41,8 @@
 .nice-form {
     display: flex;
     flex-direction: column;
-    min-width: 50rem;
+    min-width: min(50rem, 100%);
     width: 90%;
-    padding: 1rem;
+    padding: var(--spacing-4);
     gap: 0.6rem;
-}
-
-.login-form {
-    min-width: 10rem;
-    width: 90%;
-    margin: 1px auto;
-    text-align: center;
-}
-
-.login-form input {
-    margin: 1px auto;
-    text-align: center;
-    background-color: var(--main-bg-color);
 }

@@ -1,14 +1,10 @@
 <x-app-layout>
-    @push('styles')
-    @vite(['resources/css/schools.css'])
-    @endpush
-
-    <x-slot name="header">
+<x-slot name="header">
         <h2>{{ __('messages.school_edit') }}</h2>
     </x-slot>
 
-    <section class="glass-background">
-        <form action="{{route('school.update', $school->id)}}" method="post" class="school-create-form glass-background-solid">
+    <section>
+        <form action="{{route('school.update', $school->id)}}" method="post" class="school-create-form">
             @csrf
             <div class="school-form-input">
                 <x-text-input type="text" name="name" placeholder="{{ __('messages.name') }}" value="{{old('name',$school->name)}}" />

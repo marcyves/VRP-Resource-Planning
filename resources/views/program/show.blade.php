@@ -1,9 +1,5 @@
 <x-app-layout>
-    @push('styles')
-    @vite(['resources/css/programs.css'])
-    @endpush
-
-    <x-slot name="header">
+<x-slot name="header">
         <div class="header-content">
             <h2 class="header-title">
                 {{ __('Program Details')}} : {{$program->name}}
@@ -26,11 +22,11 @@
         </div>
     </x-slot>
 
-    <section class="program-list-section glass-background">
+    <section class="program-list-section">
         <h2 class="card-subtitle mb-4">{{__('messages.course_list')}}</h2>
         <div class="program-course-grid">
             @foreach($courses as $course)
-            <div class="program-course-item glass-background">
+            <div class="program-course-item">
                 <a class="nav-link font-bold" href="{{route('course.show', $course->id)}}">
                     {{$course->name}}
                 </a>

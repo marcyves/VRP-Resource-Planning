@@ -1,8 +1,4 @@
 <x-app-layout>
-    @push('styles')
-    @vite(['resources/css/schools.css', 'resources/css/pie.css'])
-    @endpush
-
     <x-slot name="header">
         <div class="header-actions">
             <h2>{{ __('messages.schools_list') }}</h2>
@@ -14,7 +10,7 @@
         </div>
     </x-slot>
 
-    <section class="glass-background">
+    <section>
         <ul class="school-grid">
             @php
             $total_amount = 0;
@@ -25,7 +21,7 @@
             $total_amount += $school->amount;
             $amounts[] = $school->amount;
             @endphp
-            <li class="school-card glass-background">
+            <li>
                 <x-school-header :school_name="$school->name" :school_id="$school->id" />
                 <div class="school-stats">
                     @money($school->amount) €
@@ -35,7 +31,7 @@
         </ul>
     </section>
 
-    <section class="glass-background">
+    <section>
         <div class="total-line">
             <span>Total invoices:</span>
             <span>@money($total_amount)€</span>
@@ -43,7 +39,7 @@
     </section>
 
     @if($total_amount > 0)
-    <section class="glass-background">
+    <section>
         @php
         $current_percent = 0;
         $gradient_parts = [];
@@ -63,8 +59,8 @@
     @endif
 
     @if(Auth::user()->getMode() == "Edit")
-    <section class="glass-background">
-        <form action="{{route('school.store')}}" method="post" class="school-create-form glass-background-solid">
+    <section>
+        <form action="{{route('school.store')}}" method="post" class="school-create-form">
             @csrf
             <div class="school-form-input">
                 <x-text-input type="text" name="name" id="name" placeholder="{{ __('messages.name') }}" value="{{old('name')}}" />

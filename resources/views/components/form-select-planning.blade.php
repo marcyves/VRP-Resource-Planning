@@ -1,7 +1,7 @@
     @if(Auth::user()->getMode() == "Edit")
     <form action="{{ route('planning.create')}}" method="post" class="cool-box">
         @csrf
-        <input type="date" name="date" value="{{$year}}-{{substr("0".$month,-2)}}-{{ $day }}" class="glass-background">
+        <input type="date" name="date" value="{{$year}}-{{substr("0".$month,-2)}}-{{ $day }}">
         <label>Select a Course: </label>
         <select name="course" class="course-select my-box" onchange="this.form.submit()">
             @if($mode == 'selected')

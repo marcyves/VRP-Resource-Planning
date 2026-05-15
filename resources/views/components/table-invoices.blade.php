@@ -72,7 +72,7 @@
         </table>
     </div>
 
-    <div class="summary-container glass-background">
+    <div class="summary-container">
         <div class="summary-item">
             <span>{{ __('messages.total_gain')}} :</span>
             <strong>@money($total)</strong>

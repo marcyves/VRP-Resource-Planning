@@ -1,14 +1,10 @@
 <x-app-layout>
-    @push('styles')
-    @vite(['resources/css/plannings.css'])
-    @endpush
-
-    <x-slot name="header">
+<x-slot name="header">
         <h2>{{ __('Group Planification: ') . $date }}</h2>
     </x-slot>
 
-    <section class="glass-background">
-        <form action="{{route('planning.store')}}" method="post" class="group-form glass-background-solid">
+    <section>
+        <form action="{{route('planning.store')}}" method="post" class="group-form">
             @csrf
             <input type="hidden" name="date" value="{{$date}}">
             <input type="hidden" name="course" value="{{$course->id}}">

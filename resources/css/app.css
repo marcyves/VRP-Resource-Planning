@@ -1,4 +1,5 @@
 @import url("global.css");
+@import url("semantic.css");
 @import url("layout.css");
 @import url("buttons.css");
 @import url("forms.css");
@@ -152,28 +153,6 @@ form.cool-box {
 }
 
 /* Use .glass-background-solid or .card instead of .nice-box / .school-box */
-
-.nice-form {
-    display: flex;
-    flex-direction: column;
-    min-width: 50rem;
-    width: 90%;
-    padding: 1rem;
-    gap: 0.6rem;
-}
-
-.login-form {
-    min-width: 10rem;
-    width: 90%;
-    margin: 1px auto;
-    text-align: center;
-}
-
-.login-form input {
-    margin: 1px auto;
-    text-align: center;
-    background-color: var(--main-bg-color);
-}
 
 @media (min-width: 640px) {
     .school-details {

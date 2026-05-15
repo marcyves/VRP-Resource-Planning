@@ -9,11 +9,27 @@
     margin-bottom: 2rem;
 }
 
-.course-card {
-    padding: 1.5rem;
-    border-radius: 0.75rem;
-    border: 1px solid var(--border-color);
-    transition: all 0.3s ease;
+main .course-info-grid > article {
+    padding: var(--spacing-6);
+    border-radius: var(--rounded-lg);
+    border: var(--border-standard);
+    background: var(--surface-card);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+main .course-info-grid > article:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+}
+
+.card-label {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--brand-primary);
+    margin-bottom: var(--spacing-1);
 }
 
 .course-title {
@@ -30,5 +46,5 @@
 }
 
 .course-groups-section {
-    margin-top: 2rem;
+    margin-top: var(--spacing-8);
 }

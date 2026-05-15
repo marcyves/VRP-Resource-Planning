@@ -28,15 +28,16 @@
     }
 }
 
-.group-card {
-    padding: 1.5rem;
-    transition: transform 0.2s, box-shadow 0.2s;
+main section > ul > li,
+main .group-grid > * {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    transition: transform 0.2s, box-shadow 0.2s;
 }
 
-.group-card:hover {
+main section > ul > li:hover,
+main .group-grid > *:hover {
     transform: translateY(-4px);
 }
 

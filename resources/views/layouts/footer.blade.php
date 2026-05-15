@@ -1,3 +1,3 @@
-<footer class="glass-background">
+<footer>
 &copy; 2024 Marc Augier
 </footer>

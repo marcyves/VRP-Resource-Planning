@@ -1,15 +1,11 @@
 <x-app-layout>
-    @push('styles')
-    @vite(['resources/css/bills.css', 'resources/css/cards.css'])
-    @endpush
-
-    <x-slot name="header">
+<x-slot name="header">
         <h2>{{ __('messages.invoice_create') }}</h2>
     </x-slot>
 
     @if(Auth::user()->getMode() == "Edit")
-    <section class="bills-container glass-background">
-        <form action="{{route('invoice.store')}}" method="post" class="group-form glass-background-solid">
+    <section class="bills-container">
+        <form action="{{route('invoice.store')}}" method="post" class="group-form">
             @csrf
 
             <div class="form-group mb-4">
@@ -17,7 +13,7 @@
             </div>
 
             <div class="card-grid">
-                <div class="card glass-background">
+                <div class="card">
                     <div class="card-content-text">
                         <h2 class="card-subtitle">{{$company->name}}</h2>
                         <ul class="flex-list">
@@ -34,7 +30,7 @@
                     </div>
                 </div>
 
-                <div class="card glass-background">
+                <div class="card">
                     <div class="card-content-text">
                         <h2 class="card-subtitle">Banque: {{$company->bank_name}}</h2>
                         <table class="simple-table mt-2">
@@ -63,7 +59,7 @@
                     </div>
                 </div>
 
-                <div class="card glass-background">
+                <div class="card">
                     <div class="card-content-text">
                         <h2 class="card-subtitle">Client</h2>
                         <ul class="flex-list">
@@ -78,7 +74,7 @@
                     </div>
                 </div>
 
-                <div class="card glass-background">
+                <div class="card">
                     <div class="card-content-text">
                         <h2 class="card-subtitle">Items</h2>
                         <ul class="bill-list">

@@ -1,15 +1,11 @@
 <x-app-layout>
-    @push('styles')
-    @vite(['resources/css/courses.css'])
-    @endpush
-
-    <x-slot name="header">
+<x-slot name="header">
         <h2>{{ __('Course Update') }}</h2>
     </x-slot>
 
-    <section class="glass-background">
+    <section>
         @isset($course)
-        <form action="{{route('course.update', $course->id)}}" method="post" class="group-form glass-background-solid">
+        <form action="{{route('course.update', $course->id)}}" method="post" class="group-form">
             @csrf
             @method('put')
 

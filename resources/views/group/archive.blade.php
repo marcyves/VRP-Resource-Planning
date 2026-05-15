@@ -2,14 +2,9 @@
     <div class="group-section-header">
         <h2 class="header-title">{{ __('Groupes Archivés') }}</h2>
     </div>
-
-    @push('styles')
-    @vite(['resources/css/groups.css'])
-    @endpush
-
-    <div class="group-grid">
+<div class="group-grid">
         @foreach ($inactive as $group)
-        <div class="group-card glass-background">
+        <div class="group-card">
             <x-group-details :group="$group" :occurences="$occurences" :active="false" />
 
             <div class="group-associated-courses mt-4 pt-4 border-t border-gray-100">

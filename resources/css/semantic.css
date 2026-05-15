@@ -1,0 +1,441 @@
+/* Semantic HTML styling — prefer elements over utility classes */
+
+/* ── Surfaces ─────────────────────────────────────────────── */
+
+main > section,
+footer {
+    background: var(--surface-glass);
+    backdrop-filter: blur(10px);
+    border-radius: var(--rounded-lg);
+    border: 1px solid oklch(1 0 0 / 0.3);
+    box-shadow: var(--shadow-lg);
+}
+
+main > section + section {
+    margin-top: var(--spacing-4);
+}
+
+/* Muted section (e.g. inactive groups) */
+.group-section-header + section {
+    opacity: 0.75;
+}
+
+/* Legacy alias — prefer bare <section> */
+.glass-background {
+    background: var(--surface-glass);
+    backdrop-filter: blur(10px);
+    border-radius: var(--rounded-lg);
+    border: 1px solid oklch(1 0 0 / 0.3);
+    box-shadow: var(--shadow-lg);
+}
+
+.glass-background-solid,
+main section > form,
+main form.glass-background-solid {
+    background: var(--surface-card);
+    border-radius: var(--rounded-lg);
+    border: var(--border-standard);
+    box-shadow: var(--shadow-md);
+}
+
+/* ── Cards in lists & grids ───────────────────────────────── */
+
+main section > ul > li,
+main .group-grid > *,
+main .course-info-grid > * {
+    padding: var(--spacing-6);
+    border-radius: var(--rounded-lg);
+    border: var(--border-standard);
+    background: var(--surface-card);
+    box-shadow: var(--shadow-md);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    list-style: none;
+}
+
+main section > ul > li:hover,
+main .group-grid > *:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+}
+
+main form > article,
+main form .card {
+    padding: var(--spacing-4);
+    border-radius: var(--rounded-lg);
+    border: var(--border-standard);
+    background: var(--surface-glass);
+    box-shadow: var(--shadow-md);
+}
+
+main form > div:has(> article),
+main form > div:has(> .card),
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--spacing-6);
+    width: 100%;
+}
+
+/* ── Typography in cards ──────────────────────────────────── */
+
+main section h2,
+main section h3,
+.card-subtitle {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--brand-primary);
+    margin: 0 0 var(--spacing-2);
+}
+
+main section header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--spacing-3) var(--spacing-4);
+    width: auto;
+}
+
+/* ── Lists ────────────────────────────────────────────────── */
+
+main section > ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-4);
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+main section > ul.school-grid,
+main section > ul.group-grid,
+main .group-grid {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: var(--spacing-6);
+}
+
+@media (min-width: 640px) {
+    main section > ul.school-grid,
+    main section > ul.group-grid,
+    main .group-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (min-width: 1024px) {
+    main section > ul.school-grid,
+    main section > ul.group-grid,
+    main .group-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+main section > ul.group-list {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+main section ul:not(.school-grid):not(.group-grid):not(.group-list) {
+    flex-direction: column;
+    gap: var(--spacing-2);
+}
+
+/* ── Tables ───────────────────────────────────────────────── */
+
+main table,
+table.simple-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.875rem;
+    color: var(--brand-accent);
+    background: oklch(1 0 0 / 0.85);
+    border-radius: var(--rounded-md);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+}
+
+main table thead,
+table.simple-table thead {
+    background: oklch(1 0 0 / 0.6);
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+}
+
+main table th,
+main table td,
+table.simple-table th,
+table.simple-table td {
+    padding: var(--spacing-3) var(--spacing-2);
+    text-align: left;
+    vertical-align: middle;
+}
+
+main table tbody tr:nth-child(odd),
+table.simple-table tbody tr:nth-child(odd) {
+    background: oklch(0.55 0.12 283 / 0.08);
+}
+
+main table th:last-child {
+    text-align: right;
+}
+
+main table td:last-child:has(form) {
+    display: flex;
+    gap: var(--spacing-2);
+    justify-content: flex-end;
+    align-items: center;
+    white-space: nowrap;
+}
+
+main table img {
+    max-height: 1.5rem;
+    width: auto;
+}
+
+/* ── Forms ────────────────────────────────────────────────── */
+
+main form,
+body:has(> .maintenance-title) form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-4);
+}
+
+main form > div,
+body:has(> .maintenance-title) form > div {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-1);
+}
+
+main form > div:last-child,
+body:has(> .maintenance-title) form > p,
+body:has(> .maintenance-title) form > footer {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-end;
+    gap: var(--spacing-4);
+}
+
+main form label,
+body:has(> .maintenance-title) form label {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-2);
+    font-size: 0.875rem;
+    cursor: pointer;
+}
+
+main form input:not([type="checkbox"]):not([type="radio"]):not([type="hidden"]),
+main form select,
+main form textarea,
+body:has(> .maintenance-title) form input:not([type="checkbox"]):not([type="hidden"]) {
+    width: 100%;
+    padding: 0.6rem;
+    border: 1px solid var(--border-color);
+    border-radius: var(--rounded-md);
+    background-color: oklch(1 0 0 / 0.7);
+    font-size: 1rem;
+    box-shadow: var(--shadow-sm);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+main form input:focus,
+main form select:focus,
+main form textarea:focus,
+body:has(> .maintenance-title) form input:focus {
+    outline: none;
+    border-color: var(--brand-secondary);
+    box-shadow: 0 0 0 3px oklch(0.645 0.152 259.712 / 0.3);
+}
+
+main form input[type="checkbox"],
+body:has(> .maintenance-title) form input[type="checkbox"] {
+    width: 1rem;
+    height: 1rem;
+    accent-color: var(--brand-primary);
+}
+
+/* Login form (centered, compact) */
+form.login-form {
+    max-width: 24rem;
+    margin: 0 auto;
+    text-align: center;
+}
+
+form.login-form input {
+    text-align: center;
+}
+
+/* ── Header feedback ──────────────────────────────────────── */
+
+header [role="alert"],
+header .alert,
+header > ul {
+    margin: var(--spacing-4) auto;
+    max-width: 90%;
+    padding: var(--spacing-4);
+    border-radius: var(--rounded-md);
+    border: 1px solid transparent;
+    list-style: none;
+}
+
+header .alert-success,
+header [data-variant="success"] {
+    background-color: var(--feedback-success);
+    color: var(--feedback-success-text);
+}
+
+header .alert-warning,
+header [data-variant="warning"] {
+    background-color: var(--feedback-warning);
+    color: var(--feedback-warning-text);
+}
+
+header .alert-danger,
+header > ul {
+    background-color: var(--feedback-danger);
+    color: var(--feedback-danger-text);
+}
+
+/* ── Breadcrumbs ──────────────────────────────────────────── */
+
+nav.breadcrumb button {
+    background: none;
+    border: none;
+    color: inherit;
+    font: inherit;
+    font-size: 0.875rem;
+    padding: var(--spacing-1);
+    cursor: pointer;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+nav.breadcrumb button:hover {
+    color: oklch(1 0 0);
+}
+
+nav.breadcrumb li {
+    display: inline;
+}
+
+/* ── Guest layout ─────────────────────────────────────────── */
+
+body:has(> .maintenance-title) {
+    align-items: center;
+}
+
+body:has(> .maintenance-title) a {
+    color: oklch(1 0 0);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+body:has(> .maintenance-title) > p,
+body:has(> .maintenance-title) > div:not([role]) {
+    max-width: 28rem;
+    margin: var(--spacing-4) auto;
+    padding: 0 var(--spacing-4);
+    font-size: 0.875rem;
+    color: oklch(1 0 0 / 0.85);
+    text-align: center;
+}
+
+body:has(> .maintenance-title) footer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: var(--spacing-4);
+    margin-top: auto;
+    max-width: 28rem;
+}
+
+/* ── Totals & figures ─────────────────────────────────────── */
+
+.total-line {
+    display: flex;
+    justify-content: space-between;
+    font-weight: 700;
+    padding: var(--spacing-2);
+}
+
+main figure {
+    margin: 0;
+    text-align: center;
+}
+
+/* Article blocks (course groups, cards) */
+main article > header h3 {
+    margin: 0 0 var(--spacing-1);
+    font-size: 1.125rem;
+}
+
+main article > header h3 a {
+    color: var(--brand-primary);
+    font-weight: 700;
+}
+
+main article > header p {
+    margin: 0 0 var(--spacing-2);
+    font-size: 0.875rem;
+    color: oklch(0.45 0.02 264);
+}
+
+main article > footer {
+    display: flex;
+    gap: var(--spacing-2);
+    justify-content: flex-end;
+    margin-top: var(--spacing-4);
+    padding-top: var(--spacing-2);
+    border-top: var(--border-standard);
+}
+
+main .course-groups-section > header,
+main .course-details-section > header.header-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-4);
+    padding: 0;
+    width: auto;
+    background: none;
+    border: none;
+    box-shadow: none;
+}
+
+main .course-groups-section > header h2 {
+    margin: 0;
+    font-size: 1.25rem;
+    color: var(--brand-primary);
+}
+
+main .course-available-groups {
+    margin-top: var(--spacing-8);
+}
+
+main .course-available-groups > h2 {
+    margin-bottom: var(--spacing-4);
+}
+
+/* ── Definition lists (info blocks) ───────────────────────── */
+
+main dl {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: var(--spacing-2) var(--spacing-4);
+    margin: 0;
+}
+
+main dt {
+    font-weight: 600;
+    color: var(--brand-primary);
+}
+
+main dd {
+    margin: 0;
+}

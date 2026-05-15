@@ -1,18 +1,14 @@
 <x-app-layout>
-    @push('styles')
-    @vite(['resources/css/calendar-manage.css'])
-    @endpush
-
-    <x-slot name="header">
+<x-slot name="header">
         <h2>
             {{ __('Gestion des Calendriers ICS') }}
         </h2>
     </x-slot>
 
-    <section class="glass-background">
+    <section>
         <h3>Importer un nouveau fichier</h3>
         <p>https://openclassrooms.com/fr/calendars/7818421-da9af1c19d0c12a77e8c35ba485aef36.ics</p>
-        <div class="card glass-background">
+        <div class="card">
             <form action="{{ route('calendar.upload') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="calendar-upload-grid">
@@ -44,7 +40,7 @@
         </div>
     </section>
 
-    <section class="glass-background">
+    <section>
         <h3>Historique des fichiers importés</h3>
         <div class="history-container">
             <table class="history-table">

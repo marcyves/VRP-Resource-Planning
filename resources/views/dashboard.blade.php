@@ -1,9 +1,5 @@
 <x-app-layout>
-    @push('styles')
-    @vite(['resources/css/schools.css', 'resources/css/bills.css'])
-    @endpush
-
-    <x-slot name="header">
+<x-slot name="header">
         <h2 class="header-title">{{ __('messages.dashboard') }}</h2>
 
         <div class="dashboard-stats mt-4">
@@ -22,7 +18,7 @@
         <div class="school-sections">
             @foreach ($schools as $school)
             @if($school->courses->count() > 0)
-            <article class="school-card glass-background">
+            <article class="school-card">
                 <x-school-header :school_name="$school->name" :school_id="$school->id" />
 
                 @php
@@ -48,7 +44,7 @@
         </div>
 
         @if ($gross_total_time > 0)
-        <div class="summary-container glass-background mt-8">
+        <div class="summary-container mt-8">
             <div class="summary-item">
                 <span>{{ __('messages.total_time') }}:</span>
                 <strong>{{ $gross_total_time }}h</strong>

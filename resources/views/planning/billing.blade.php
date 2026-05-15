@@ -1,24 +1,20 @@
 <x-app-layout>
-    @push('styles')
-    @vite(['resources/css/plannings.css', 'resources/css/bills.css'])
-    @endpush
-
-    <x-slot name="header">
+<x-slot name="header">
         <h2 class="print:hidden">{{ __('Billing Preparation') }} @monthName($current_month) {{$current_year}}</h2>
     </x-slot>
 
     <section class="planning-calendar-container">
-        <div class="planning-controls glass-background">
+        <div class="planning-controls">
             <x-period-selector :years="$years" :months="$months" :current_year="$current_year" :current_month="$current_month" route="billing" />
         </div>
 
         @if($monthly_hours == 0)
-        <div class="alert alert-warning glass-background">
+        <div class="alert alert-warning">
             No hours logged this month
         </div>
         @else
         @foreach($schools as $school => $courses)
-        <div class="card-wide glass-background">
+        <div class="card-wide">
             <h2 class="school-section-header">{{ $school }}</h2>
             @foreach($courses['courses'] as $course_id => $schedules)
             @php
@@ -38,8 +34,7 @@
                             @endif
                             {{ \Carbon\Carbon::parse($schedule['begin'])->format('d/m/Y H:i') }} - {{ \Carbon\Carbon::parse($schedule['end'])->format('H:i') }}
                             <span class="status-indicator {{ $schedule['duration'] != $schedules['duration'] ? 'text-danger' : 'text-success' }}">
-                                @if($schedule['billable_rate'] != 1)
-                                ({{ number_format($schedule['billable_rate'], 2) }})
+                                @if}})
                                 @endif
                                 ({{ number_format($schedule['duration'], 1) }} h)
                             </span>

@@ -1,16 +1,12 @@
 <x-app-layout>
-    @push('styles')
-    @vite(['resources/css/groups.css'])
-    @endpush
-
     <x-slot name="header">
         <h2>{{ __('messages.groups_list') }}</h2>
     </x-slot>
 
-    <section class="glass-background">
+    <section>
         <ul class="group-list">
             @foreach ($groups as $group)
-            <li class="group-card glass-background">
+            <li>
                 <x-group-details :group="$group" :occurences="$occurences" :active="true" />
             </li>
             @endforeach
@@ -29,10 +25,10 @@
         </form>
     </div>
 
-    <section class="glass-background opacity-75">
+    <section>
         <ul class="group-grid">
             @foreach ($inactive as $group)
-            <li class="group-card glass-background">
+            <li>
                 <x-group-details :group="$group" :occurences="$occurences" :active="false" />
             </li>
             @endforeach
@@ -44,8 +40,8 @@
     @endif
 
     @if(Auth::user()->getMode() == "Edit")
-    <section class="glass-background">
-        <form action="{{route('group.save', 0)}}" method="post" class="group-form glass-background-solid">
+    <section>
+        <form action="{{route('group.save', 0)}}" method="post" class="group-form">
             @csrf
             <div class="form-group">
                 <x-text-input type="text" name="name" id="name" placeholder="{{ __('messages.name') }}" />

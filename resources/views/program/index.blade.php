@@ -5,10 +5,10 @@
         </h2>
     </x-slot>
 
-    <section class="glass-background">
+    <section>
         <ul class="list">
             @foreach ($programs as $program)
-            <li class="card glass-background">
+            <li class="card">
                 <div class="card-content">
                     <a href="{{route('program.show', $program->id)}}" class="card-content-text">
                         <button class="card-title btn-text-link">
@@ -34,7 +34,7 @@
     </section>
 
     @if(Auth::user()->getMode() == "Edit")
-    <section class="glass-background">
+    <section>
         <form action="{{route('program.store')}}" method="post"
             class="mx-auto px-6 py-2 bg-white shadow-md mb-6 flex items-center justify-items-start">
             @csrf

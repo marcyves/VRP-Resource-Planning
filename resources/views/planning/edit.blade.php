@@ -1,9 +1,5 @@
 <x-app-layout>
-    @push('styles')
-    @vite(['resources/css/plannings.css'])
-    @endpush
-
-    <x-slot name="header">
+<x-slot name="header">
         <h2>{{ __('Group Planification') }}</h2>
     </x-slot>
 
@@ -22,8 +18,8 @@
     $end_minutes = explode(":", $end_time)[1];
     @endphp
 
-    <section class="glass-background">
-        <form action="{{route('planning.update', $planning->id)}}" method="post" class="group-form glass-background-solid">
+    <section>
+        <form action="{{route('planning.update', $planning->id)}}" method="post" class="group-form">
             @csrf
             @method('put')
 

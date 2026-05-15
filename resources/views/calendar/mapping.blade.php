@@ -1,15 +1,11 @@
 <x-app-layout>
-    @push('styles')
-    @vite(['resources/css/calendar-mapping.css'])
-    @endpush
-
-    <x-slot name="header">
+<x-slot name="header">
         <h2>
             {{ __('Configuration du Mapping') }}
         </h2>
     </x-slot>
 
-    <section class="glass-background">
+    <section>
         @if($source->url)
         Lien : {{ $source->url }}<br>
         @endif
@@ -17,7 +13,7 @@
         École : {{ $source->school->name }}
     </section>
 
-    <section class="glass-background">
+    <section>
         <h4>
             Analyse du fichier : Exemple d'événement trouvé
         </h4>

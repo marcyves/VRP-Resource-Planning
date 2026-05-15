@@ -1,15 +1,11 @@
 <x-app-layout>
-    @push('styles')
-    @vite(['resources/css/groups.css'])
-    @endpush
-
-    <x-slot name="header">
+<x-slot name="header">
         <h2>{{ __('messages.group_edit') }}</h2>
     </x-slot>
 
     @if(Auth::user()->getMode() == "Edit")
-    <section class="glass-background">
-        <form action="{{route('group.update', $group->id)}}" method="post" class="group-form glass-background-solid">
+    <section>
+        <form action="{{route('group.update', $group->id)}}" method="post" class="group-form">
             @csrf
             @method('put')
 

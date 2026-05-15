@@ -30,9 +30,9 @@
         <x-alert type="warning" class="alert alert-warning" />
         <x-alert type="danger" class="alert alert-danger" />
         @if($errors->any())
-        <ul class="alert alert-danger list-unstyled">
+        <ul role="alert">
             @foreach($errors->all() as $error)
-            <li>- {{ $error }}</li>
+            <li>{{ $error }}</li>
             @endforeach
         </ul>
         @endif

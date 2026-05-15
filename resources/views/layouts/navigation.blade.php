@@ -1,8 +1,5 @@
 <nav class="nav-main">
-    @push('styles')
-    @vite(['resources/css/navigation.css'])
-    @endpush
-    <!-- Primary Navigation Menu -->
+<!-- Primary Navigation Menu -->
     <!-- Logo -->
     <a href="{{ route('dashboard') }}" class="nav-logo">
         <x-application-logo />

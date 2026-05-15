@@ -1,5 +1,5 @@
 @props(['values'])
-<div class="metrics glass-background">
+<div class="metrics">
     <h2>{{$values['title']}}</h2>
     <div class="metrics-row">
         <div class="histogram">

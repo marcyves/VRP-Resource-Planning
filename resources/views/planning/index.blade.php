@@ -1,9 +1,5 @@
 <x-app-layout>
-    @push('styles')
-    @vite(['resources/css/plannings.css', 'resources/css/calendar.css'])
-    @endpush
-
-    <x-slot name="header">
+<x-slot name="header">
         <h2>{{ __('messages.planning') }} @monthName($current_month) {{$current_year}}</h2>
     </x-slot>
 
@@ -25,7 +21,7 @@
         </div>
 
         <!-- (B) CALENDAR -->
-        <div id="calWrap" class="glass-background">
+        <div id="calWrap">
             <div class="calHead">
                 @foreach ($weekdays as $weekday)
                 <div class="calCell">{{__($weekday)}}</div>
