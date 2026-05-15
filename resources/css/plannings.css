@@ -221,6 +221,30 @@ main form.planning-create-form .planning-create-form__control--date::-webkit-cal
     min-width: 7rem;
 }
 
+main form.planning-create-form .planning-create-form__submit {
+    flex: 0 0 auto;
+    height: 1.4rem;
+    min-height: 1.4rem;
+    margin: 0;
+    padding: 0 0.55rem;
+    border: 1px solid var(--brand-primary);
+    border-radius: var(--rounded-md);
+    background: var(--brand-primary);
+    color: oklch(1 0 0);
+    font-family: inherit;
+    font-size: 0.75rem;
+    font-weight: 600;
+    line-height: 1;
+    cursor: pointer;
+    box-shadow: none;
+    white-space: nowrap;
+}
+
+main form.planning-create-form .planning-create-form__submit:hover {
+    background: var(--brand-accent);
+    border-color: var(--brand-accent);
+}
+
 main form.planning-create-form .planning-create-form__control:focus {
     box-shadow: 0 0 0 2px oklch(0.645 0.152 259.712 / 0.25);
 }

@@ -54,5 +54,9 @@
                 @endforeach
             @endif
         </select>
+
+        <button type="submit" class="planning-create-form__submit" aria-label="{{ __('actions.confirm') }}">
+            Ok
+        </button>
     </form>
 @endif
