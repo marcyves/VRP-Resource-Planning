@@ -1,5 +1,5 @@
     @if(Auth::user()->getMode() == "Edit")
-    <form action="{{ route('planning.create')}}" method="post" class="cool-box">
+    <form action="{{ route('planning.create.start') }}" method="post" class="cool-box">
         @csrf
         <input type="date" name="date" value="{{$year}}-{{substr("0".$month,-2)}}-{{ $day }}">
         <label>Select a Course: </label>

@@ -72,7 +72,6 @@ class GroupController extends Controller
                     'name' => $request->name,
                     'short_name' => $request->short_name,
                     'size' => $request->size,
-                    'course_id' => $course_id,
                     'company_id' => $company_id,
                     'active' => $active,
                     'year' => $year,

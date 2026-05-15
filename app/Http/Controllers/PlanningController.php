@@ -129,12 +129,34 @@ class PlanningController extends Controller
     }
 
     /**
+     * Accept course/date selection and redirect to the create form (PRG).
+     */
+    public function startCreate(Request $request)
+    {
+        $validated = $request->validate([
+            'date' => 'required|date',
+            'course' => 'required|exists:courses,id',
+        ]);
+
+        $request->session()->put('planning_create_date', $validated['date']);
+        $request->session()->put('planning_create_course_id', $validated['course']);
+
+        return redirect()->route('planning.create');
+    }
+
+    /**
      * Show the form for creating a new resource.
      */
     public function create(Request $request)
     {
-        $date = $request->date;
-        $course = Course::find($request->course);
+        $date = $request->session()->get('planning_create_date');
+        $courseId = $request->session()->get('planning_create_course_id');
+
+        if (! $date || ! $courseId) {
+            return redirect()->route('planning.index');
+        }
+
+        $course = Course::findOrFail($courseId);
         $school = $course->getSchool();
 
         session()->put('course', $course->name);
@@ -153,62 +175,64 @@ class PlanningController extends Controller
      */
     public function store(Request $request)
     {
-        $group_id = $request->group;
-        $course_id = $request->course;
+        $group_id = (int) $request->group;
+        $course_id = (int) $request->course;
 
-        if ($group_id == 0) {
-            $validated = $request->validate([
+        if ($course_id === 0 && session('course_id') !== null) {
+            $course_id = (int) session('course_id');
+        }
+
+        $planningFields = $request->validate([
+            'date' => 'required|date',
+            'hour' => 'required',
+            'minutes' => 'required',
+            'session_length' => 'required',
+            'course' => 'required|exists:courses,id',
+        ]);
+
+        $course_id = (int) $planningFields['course'];
+        $session_length = $planningFields['session_length'];
+        $date = $planningFields['date'];
+        $hour = $planningFields['hour'];
+        $minutes = $planningFields['minutes'];
+
+        if ($group_id === 0) {
+            $groupFields = $request->validate([
                 'name' => 'required|max:80',
                 'short_name' => 'required|min:3',
                 'size' => 'required|min:0',
+                'year' => 'nullable|digits:4',
             ]);
-
-            $company_id = Auth::user()->company_id;
-            $active = false;
-
-            if ($course_id == 0 && session('course_id') != null) {
-                $course_id = session('course_id');
-                $active = true;
-            }
 
             try {
                 $group = Group::create([
-                    'name' => $request->name,
-                    'short_name' => $request->short_name,
-                    'size' => $request->size,
+                    'name' => $groupFields['name'],
+                    'short_name' => $groupFields['short_name'],
+                    'size' => $groupFields['size'],
+                    'company_id' => Auth::user()->company_id,
+                    'year' => $groupFields['year'] ?? now()->format('Y'),
+                    'active' => true,
+                ]);
+
+                GroupCourse::create([
+                    'group_id' => $group->id,
                     'course_id' => $course_id,
-                    'company_id' => $company_id,
-                    'year' => $request->year,
-                    'active' => $active,
                 ]);
 
                 $group_id = $group->id;
 
                 session()->flash('success', "Groupe enregistré avec succès.");
-
-                if ($course_id == 0) {
-                    session()->flash('danger', "Pas de cours sélectionné");
-                    return redirect()->back();
-                } else {
-                    GroupCourse::create([
-                        'group_id' => $group->id,
-                        'course_id' => $course_id
-                    ]);
-                }
             } catch (\Exception $e) {
-                dd($e);
                 session()->flash('danger', "Erreur lors de l'enregistrement du groupe.");
 
                 return redirect(route('planning.index'));
-                //                return redirect()->back();
             }
+        } else {
+            $request->validate([
+                'group' => 'required|integer|exists:groups,id',
+            ]);
+            $group_id = (int) $request->group;
         }
-
-        $session_length = $request->session_length;
-
-        $date = $request->date;
-        $hour = $request->hour;
-        $minutes = $request->minutes;
 
         session(['current_year' => substr($date, 0, 4)]);
         session(['current_month' => substr($date, 5, 2)]);

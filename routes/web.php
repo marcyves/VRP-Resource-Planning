@@ -77,18 +77,21 @@ Route::middleware('auth')->group(function () {
     Route::get('/group/link/{group_id}', [GroupController::class, 'link'])->name('group.link');
     Route::get('/group/switch/{group_id}', [GroupController::class, 'switch'])->name('group.switch');
     Route::delete('/group/unlink/{group_id}', [GroupController::class, 'unlink'])->name('group.unlink');
-    Route::post('/group/{course_id}', [GroupController::class, 'store'])->name('group.save');
-    Route::resource('/group', GroupController::class);
+    Route::post('/group/{course_id}', [GroupController::class, 'store'])->name('group.save')->whereNumber('course_id');
+    Route::resource('/group', GroupController::class)
+        ->except(['create', 'store'])
+        ->whereNumber('group');
 
     Route::get('/planning', [PlanningController::class, 'index'])->name('planning.index');
     Route::get('/planning/previous', [PlanningController::class, 'previous'])->name('planning.previous');
     Route::get('/planning/next', [PlanningController::class, 'next'])->name('planning.next');
     Route::post('/planning/period', [PlanningController::class, 'index'])->name('planning.period');
-    Route::get('/planning/{id}', [PlanningController::class, 'edit'])->name('planning.edit');
-    Route::put('/planning/{id}', [PlanningController::class, 'update'])->name('planning.update');
-    Route::delete('/planning/{id}', [PlanningController::class, 'destroy'])->name('planning.delete');
-    Route::post('/planning/create', [PlanningController::class, 'create'])->name('planning.create');
+    Route::get('/planning/create', [PlanningController::class, 'create'])->name('planning.create');
+    Route::post('/planning/create', [PlanningController::class, 'startCreate'])->name('planning.create.start');
     Route::post('/planning/store', [PlanningController::class, 'store'])->name('planning.store');
+    Route::get('/planning/{id}', [PlanningController::class, 'edit'])->name('planning.edit')->whereNumber('id');
+    Route::put('/planning/{id}', [PlanningController::class, 'update'])->name('planning.update')->whereNumber('id');
+    Route::delete('/planning/{id}', [PlanningController::class, 'destroy'])->name('planning.delete')->whereNumber('id');
 
     Route::get('/billing', [BillingController::class, 'billing'])->name('billing.index');
     Route::get('/billing/previous', [BillingController::class, 'previous'])->name('billing.previous');
