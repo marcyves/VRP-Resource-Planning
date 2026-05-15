@@ -1,19 +1,27 @@
 @props(['years', 'months', 'current_year', 'current_month', 'route'])
-<!-- (A) PERIOD SELECTOR -->
-<form class="period-form" action="{{route($route.".index")}}" method="get" >
-    @csrf
-    <button type="submit" formaction="{{route($route.".previous")}}" class="cool-box icon"><</button>
-    <select id="current_month" name="current_month" onchange="this.form.submit()" class="cool-box calSelect">
-        @foreach ($months as $index => $month)
-            <option value="{{$index}}" @if($index==$current_month-1) selected @endif>{{$month}}</option>                    
-        @endforeach
-    </select>
-    <button type="submit" formaction="{{route($route.".next")}}" class="cool-box icon">></button>
-</form>
-@if($route == "billing")
-<form class="period-form" action="{{route($route.".byDate")}}" method="get" >
-    <button type="submit" class="cool-box">
-        Date
-    </button>
-</form>
-@endif
+
+<div class="period-controls">
+    <nav class="period-nav" aria-label="{{ __('messages.planning') }}">
+        <a href="{{ route($route.'.previous') }}" class="period-nav__btn" aria-label="{{ __('pagination.previous') }}">‹</a>
+
+        <form class="period-nav__form" action="{{ route($route.'.index') }}" method="get">
+            <select
+                id="period-month-{{ $route }}"
+                name="current_month"
+                class="period-nav__select"
+                onchange="this.form.submit()"
+                aria-label="{{ __('messages.planning') }}"
+            >
+                @foreach ($months as $index => $month)
+                    <option value="{{ $index }}" @selected($index == $current_month - 1)>{{ $month }}</option>
+                @endforeach
+            </select>
+        </form>
+
+        <a href="{{ route($route.'.next') }}" class="period-nav__btn" aria-label="{{ __('pagination.next') }}">›</a>
+    </nav>
+
+    @if($route === 'billing')
+        <a href="{{ route('billing.byDate') }}" class="period-nav__link">{{ __('messages.date_billing') }}</a>
+    @endif
+</div>
