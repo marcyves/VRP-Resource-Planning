@@ -1,29 +1,25 @@
 <x-app-layout>
 <x-slot name="header">
         <h2 class="header-title">
-            {{ __('Profile') }}
+            {{ __('messages.profile') }}
         </h2>
     </x-slot>
 
-    <div class="profile-container">
-        <div class="profile-section-list">
-            <div class="profile-section-card">
-                <div class="profile-form-container">
-                    @include('profile.partials.update-profile-information-form')
-                </div>
-            </div>
-
-            <div class="profile-section-card">
-                <div class="profile-form-container">
-                    @include('profile.partials.update-password-form')
-                </div>
-            </div>
-
-            <div class="profile-section-card">
-                <div class="profile-form-container">
-                    @include('profile.partials.delete-user-form')
-                </div>
-            </div>
+    <section>
+        <div class="profile-form-container">
+            @include('profile.partials.update-profile-information-form')
         </div>
-    </div>
+    </section>
+
+    <section>
+        <div class="profile-form-container">
+            @include('profile.partials.update-password-form')
+        </div>
+    </section>
+
+    <section>
+        <div class="profile-form-container">
+            @include('profile.partials.delete-user-form')
+        </div>
+    </section>
 </x-app-layout>
