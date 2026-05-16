@@ -30,6 +30,7 @@ main section > ul.school-grid > li:hover {
 
 .school-stats {
     margin-top: 1rem;
+    margin-left: calc(6px + var(--spacing-4));
     font-size: 1.25rem;
     font-weight: 700;
 }
