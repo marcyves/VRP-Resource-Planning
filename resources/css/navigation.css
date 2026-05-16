@@ -144,13 +144,17 @@
 
 .nav-form {
     display: inline-flex;
+    align-items: center;
     color: var(--main-text-color);
 }
 
 .nav-form select {
-    font-size: smaller;
+    box-sizing: border-box;
+    height: calc(0.875rem + 1rem + 2px);
+    font-size: 0.875rem;
+    line-height: 1;
     border-radius: var(--rounded-md);
-    padding: 0 8px;
-    margin: 1rem;
+    padding: 0 0.75rem;
+    margin: 0;
     min-width: 4.5rem;
 }
