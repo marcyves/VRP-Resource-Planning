@@ -58,32 +58,28 @@
             </select>
         </form>
 
-        <div class="nav-user">
-            <x-dropdown align="right" width="48">
-                <x-slot name="trigger">
-                    <button class="nav-user-btn">
-                        <span>{{ Auth::user()->name }} ({{Auth::user()->getStatusName()}})</span>
-                        <div class="nav-user-icon">
-                            <svg class="icon-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
-                            </svg>
-                        </div>
+        <details class="nav-user">
+            <summary class="nav-user-btn">
+                <span>{{ Auth::user()->name }} ({{Auth::user()->getStatusName()}})</span>
+                <span class="nav-user-icon">
+                    <svg class="icon-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                    </svg>
+                </span>
+            </summary>
+
+            <div class="nav-user-menu">
+                <a class="nav-user-menu__link" href="{{ route('profile.edit') }}">
+                    {{ __('messages.profile') }}
+                </a>
+
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+                    <button type="submit" class="nav-user-menu__link nav-user-menu__button">
+                        {{ __('messages.logout') }}
                     </button>
-                </x-slot>
-
-                <x-slot name="content">
-                    <x-dropdown-link :href="route('profile.edit')">
-                        {{ __('messages.profile') }}
-                    </x-dropdown-link>
-
-                    <form method="POST" action="{{ route('logout') }}">
-                        @csrf
-                        <x-dropdown-link :href="route('logout')" onclick="event.preventDefault(); this.closest('form').submit();">
-                            {{ __('messages.logout') }}
-                        </x-dropdown-link>
-                    </form>
-                </x-slot>
-            </x-dropdown>
-        </div>
+                </form>
+            </div>
+        </details>
     </div>
 </nav>
