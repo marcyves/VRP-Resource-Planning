@@ -165,7 +165,7 @@ main form.planning-create-form {
     font-size: 0.75rem;
     font-weight: 600;
     color: var(--brand-accent);
-    #ffffff-space: nowrap;
+    white-space: nowrap;
     cursor: default;
 }
 
@@ -237,7 +237,7 @@ main form.planning-create-form .planning-create-form__submit {
     line-height: 1;
     cursor: pointer;
     box-shadow: none;
-    #ffffff-space: nowrap;
+    white-space: nowrap;
 }
 
 main form.planning-create-form .planning-create-form__submit:hover {

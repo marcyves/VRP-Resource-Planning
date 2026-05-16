@@ -304,7 +304,7 @@ main .school-details-grid > section {
 .documents-school-list__year {
     text-align: right;
     font-variant-numeric: tabular-nums;
-    #ffffff-space: nowrap;
+    white-space: nowrap;
 }
 
 .documents-school-list__actions {

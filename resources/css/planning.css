@@ -18,6 +18,6 @@
     background-color: #bfdbfe99;
     color: var(--main-text-color);
     font-size: smaller;
-    #ffffff-space: nowrap;
+    white-space: nowrap;
     border-radius: 0 0 6px 6px;
 }

@@ -14,30 +14,30 @@
         </div>
         @else
         @foreach($schools as $school => $courses)
-        <div class="card-wide">
+        <div class="card-wide billing-school-box">
             <h2 class="school-section-header">{{ $school }}</h2>
             @foreach($courses['courses'] as $course_id => $schedules)
             @php
             $current_group = "";
             @endphp
-            <div class="cool-box">
-                <h3 class="card-subtitle"> - {{ $schedules['course_name'] }}</h3>
+            <div class="cool-box billing-course-box">
+                <h3 class="billing-course-title">{{ $schedules['course_name'] }}</h3>
                 <ul class="bill-list">
                     @foreach($schedules['schedule'] as $planning_id => $schedule)
                     @if($current_group != $schedule['group'])
                     @php $current_group = $schedule['group']; @endphp
-                    <li class="group-title">{{ $current_group }}</li>
+                    <li class="billing-group-title">{{ $current_group }}</li>
                     @endif
                     <li class="ml-4">
                         @if(Auth::user()->getMode() == "Edit")
-                        <a class="nav-link" href="{{route('planning.edit',$planning_id, 'billing')}}">
+                        <a class="billing-schedule-link" href="{{route('planning.edit',$planning_id, 'billing')}}">
                             @endif
                             {{ \Carbon\Carbon::parse($schedule['begin'])->format('d/m/Y H:i') }} - {{ \Carbon\Carbon::parse($schedule['end'])->format('H:i') }}
-                            <span class="status-indicator {{ $schedule['duration'] != $schedules['duration'] ? 'text-danger' : 'text-success' }}">
+                            <span class="billing-hours-badge {{ $schedule['duration'] != $schedules['duration'] ? 'billing-hours-badge--warning' : '' }}">
                                 @if($schedule['billable_rate'] != 1)
                                 ({{ number_format($schedule['billable_rate'], 2) }})
                                 @endif
-                                ({{ number_format($schedule['duration'], 1) }} h)
+                                {{ number_format($schedule['duration'], 1) }} h
                             </span>
                             @if(Auth::user()->getMode() == "Edit")
                         </a>
@@ -61,7 +61,7 @@
 
                 <div class="header-actions">
                     @if(isset($schedule['bill']) && $schedule['bill'] != "")
-                    <span class="text-success">{{ __('messages.invoice_already_assigned') }}</span>
+                    <span class="billing-invoice-assigned">{{ __('messages.invoice_already_assigned') }}</span>
                     @else
                     <form action="{{route('billing.setBill')}}" class="nav-form" method="post">
                         @csrf

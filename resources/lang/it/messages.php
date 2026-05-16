@@ -134,7 +134,7 @@ return array (
   'import_history' => 'Storico file importati',
   'import_new_file' => 'Importa un nuovo file',
   'inactive_groups' => 'Gruppi inattivi',
-  'invoice_already_assigned' => 'Fattura gia assegnata',
+  'invoice_already_assigned' => 'Fattura già assegnata',
   'invoice_id' => 'N. fattura',
   'invoice_list' => 'Lista fatture',
   'invoices' => 'Fatture',

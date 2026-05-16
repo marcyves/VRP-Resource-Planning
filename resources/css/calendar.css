@@ -152,7 +152,7 @@
 
   .evt {
     font-size: 14px;
-    #ffffff-space: nowrap;
+    white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
     cursor: pointer;

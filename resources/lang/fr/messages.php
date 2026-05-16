@@ -164,7 +164,7 @@ return array(
   'import_history' => 'Historique des fichiers importes',
   'import_new_file' => 'Importer un nouveau fichier',
   'inactive_groups' => 'Groupes inactifs',
-  'invoice_already_assigned' => 'Facture deja assignee',
+  'invoice_already_assigned' => 'Facture déjà assignée',
   'items' => 'Lignes',
   'key' => 'Clé',
   'link' => 'Lien',

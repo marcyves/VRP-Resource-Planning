@@ -68,12 +68,12 @@
     min-width: 0;
     overflow: hidden;
     text-overflow: ellipsis;
-    #ffffff-space: nowrap;
+    white-space: nowrap;
 }
 
 .chart-legend__amount {
     font-weight: 600;
-    #ffffff-space: nowrap;
+    white-space: nowrap;
 }
 
 @media (max-width: 900px) {

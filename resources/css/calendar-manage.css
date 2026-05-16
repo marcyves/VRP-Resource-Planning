@@ -84,7 +84,7 @@
 .history-body td {
     padding: 1rem 1.5rem;
     font-size: 0.875rem;
-    #ffffff-space: nowrap;
+    white-space: nowrap;
 }
 
 .history-td-date {
