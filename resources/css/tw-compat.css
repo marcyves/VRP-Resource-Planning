@@ -118,7 +118,7 @@
 .nav-logo svg {
     height: 2.25rem;
     width: auto;
-    fill: currentColor;
+    fill: none;
 }
 
 .nav-user-btn {

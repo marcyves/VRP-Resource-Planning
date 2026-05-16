@@ -37,16 +37,38 @@
         @php
         $current_percent = 0;
         $gradient_parts = [];
-        foreach($amounts as $index => $amount) {
+        $chart_items = [];
+        foreach($schools as $index => $school) {
+        $amount = $school->amount ?? 0;
+        if ($amount <= 0) {
+        continue;
+        }
         $percent = ($amount / $total_amount) * 100;
         $next_percent = $current_percent + $percent;
-        $gradient_parts[] = "var(--c{$index}) {$current_percent}% {$next_percent}%";
+        $color_index = count($chart_items) % 9;
+        $gradient_parts[] = "var(--c{$color_index}) {$current_percent}% {$next_percent}%";
+        $chart_items[] = [
+            'name' => html_entity_decode($school->name),
+            'amount' => $amount,
+            'color_index' => $color_index,
+        ];
         $current_percent = $next_percent;
         }
         $gradient_str = implode(',', $gradient_parts);
         @endphp
         <figure class="charts">
-            <div class="pie" style="background-image: conic-gradient(from 30deg, {!! $gradient_str !!});"></div>
+            <div class="charts__content">
+                <div class="pie" style="background-image: conic-gradient(from 30deg, {!! $gradient_str !!});"></div>
+                <div class="chart-legend" role="list" aria-label="{{ __('messages.invoices_by_school') }}">
+                    @foreach ($chart_items as $item)
+                    <div class="chart-legend__item" role="listitem">
+                        <span class="chart-legend__swatch" style="background-color: var(--c{{ $item['color_index'] }});" aria-hidden="true"></span>
+                        <span class="chart-legend__school">{{ $item['name'] }}</span>
+                        <span class="chart-legend__amount">@money($item['amount']) €</span>
+                    </div>
+                    @endforeach
+                </div>
+            </div>
             <figcaption>{{ __('messages.invoices_by_school') }}</figcaption>
         </figure>
     </section>

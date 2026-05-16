@@ -13,15 +13,80 @@
 .charts {
     display: flex;
     place-content: center;
-    flex-flow: wrap;
     flex-direction: column;
     gap: 2rem;
 }
 
+.charts__content {
+    display: grid;
+    grid-template-columns: minmax(18rem, 32rem) max-content;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-6);
+    width: 100%;
+}
+
 .pie {
-    flex: 1 0 500px;
-    max-width: 80%;
+    width: min(100%, 32rem);
     aspect-ratio: 1;
     border-radius: 50%;
     box-shadow: 8px 8px 6px 4px rgba(8, 42, 196, 0.2);
+}
+
+.chart-legend {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-2);
+    margin: 0;
+    padding: var(--spacing-3);
+    width: fit-content;
+    max-width: min(100%, 24rem);
+    border: 1px solid oklch(1 0 0 / 0.55);
+    border-radius: var(--rounded-lg);
+    background: oklch(0.98 0.01 264 / 0.82);
+    box-shadow: var(--shadow-md);
+    color: var(--brand-primary);
+}
+
+.chart-legend__item {
+    display: grid;
+    grid-template-columns: auto minmax(0, 14rem) max-content;
+    align-items: center;
+    gap: var(--spacing-2);
+    font-size: 0.9375rem;
+}
+
+.chart-legend__swatch {
+    width: 0.9rem;
+    height: 0.9rem;
+    border-radius: 999px;
+    border: 1px solid oklch(1 0 0 / 0.5);
+    box-shadow: 0 1px 2px oklch(0 0 0 / 0.12);
+}
+
+.chart-legend__school {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.chart-legend__amount {
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+@media (max-width: 900px) {
+    .charts__content {
+        grid-template-columns: 1fr;
+    }
+
+    .pie {
+        justify-self: center;
+        width: min(100%, 24rem);
+    }
+
+    .chart-legend {
+        justify-self: center;
+    }
 }
