@@ -26,21 +26,19 @@
         </x-nav-link>
 
         <div class="toggle-system">
-            <div class="toggle-container edit">
+            <span class="toggle-label">{{ Auth::user()->getMode() }}</span>
+            <label class="toggle-container edit" for="edit-toggle">
                 <input class="toggle-checkbox" type="checkbox" id="edit-toggle" {{ Auth::user()->getMode() == "Edit" ? 'checked' : '' }}>
-                <span class="toggle-label">{{ Auth::user()->getMode() }}</span>
-                <div class="toggle-track">
-                    <div class="toggle-thumb"></div>
-                </div>
-            </div>
+                <span class="toggle-track">
+                    <span class="toggle-thumb"></span>
+                </span>
+            </label>
         </div>
 
         <script>
-            document.getElementById('edit-toggle').addEventListener('click', (e) => {
+            document.getElementById('edit-toggle')?.addEventListener('change', (e) => {
                 e.target.classList.add('toggled-once');
                 window.location.href = "{{ route('profile.switch') }}";
-            }, {
-                once: true
             });
         </script>
 
