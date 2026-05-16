@@ -26,7 +26,7 @@ class SchoolController extends Controller
         }
 
         $schools = Auth::user()->getSchoolsAndBudget($current_year);
-        $inactiveSchools = Auth::user()->getSchools()->getNoCourse();
+        $inactiveSchools = Auth::user()->getSchools()->getNoCourse($current_year);
 
         return view('school.index', compact('schools', 'inactiveSchools', 'current_year'));
     }

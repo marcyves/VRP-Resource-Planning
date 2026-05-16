@@ -164,13 +164,21 @@ class CourseCollection extends Collection
         }
     }
 
-    public function getNoCourse()
+    public function getNoCourse($year = 'all')
     {
         $list = $this->map(function(School $school){
             return $school->id;
         });
+
         $schools_without_course = School::whereIn('schools.id', $list)
-        ->whereDoesntHave('courses', function (Builder $query){})->get();
+            ->whereDoesntHave('courses', function (Builder $query) use ($year) {
+                if ($year !== 'all') {
+                    $query->where('year', $year);
+                }
+            })
+            ->orderBy('schools.name')
+            ->get();
+
         return $schools_without_course;
     }
         

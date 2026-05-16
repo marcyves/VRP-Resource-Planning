@@ -141,9 +141,14 @@ main .group-grid {
 }
 
 @media (min-width: 1024px) {
-    main section > ul.school-grid,
     main section > ul.group-grid,
     main .group-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (min-width: 1414px) {
+    main section > ul.school-grid {
         grid-template-columns: repeat(3, 1fr);
     }
 }
