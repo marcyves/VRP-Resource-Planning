@@ -5,6 +5,7 @@
         <h2>
             {{ __('Maintenance') }}
         </h2>
+        <img class="maintenance-notice__logo" src="{{ asset('images/VRP.jpeg') }}" alt="VRP" width="200">
         <p>The site is currently in maintenance, sorry for the inconvenience</p>
     </div>
    

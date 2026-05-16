@@ -11,20 +11,39 @@
   margin: 1rem auto;
 }
 
+.maintenance-notice {
+  padding: var(--spacing-6);
+}
+
 .maintenance-title {
  font-size:x-large;
  font-weight: 900;
 }
 
+.maintenance-notice__logo {
+  display: block;
+  width: min(12rem, 70%);
+  height: auto;
+  margin: var(--spacing-4) auto;
+  border-radius: var(--rounded-md);
+}
+
 .maintenance-notice h2 {
  font-size: larger;
  font-weight: 900;
+ margin: 0;
+ padding-top: var(--spacing-2);
 }
 
 .maintenance-notice p {
   margin: 0;
+  padding: 0 var(--spacing-2) var(--spacing-2);
   font-size: 14px;
   opacity: 0.9;
+}
+
+body:has(> .maintenance-notice) > .maintenance-logo {
+  display: none;
 }
 
 .maintenance-logo {
