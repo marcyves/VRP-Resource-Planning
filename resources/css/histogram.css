@@ -29,8 +29,8 @@
     display: inline-flex;
 }
 .histogram-bar {
-    background-color: rgba(255, 255, 255, 0.75);
-    box-shadow: 8px 8px 2px 1px rgba(8, 42, 196, 0.2);
+    background-color: #ffffffbf;
+    box-shadow: 8px 8px 2px 1px #082ac433;
     border-radius: 5px 5px 0 0;
     display: inline-block;
     margin: 0 8px;
@@ -39,7 +39,7 @@
 }
 
 .histogram-label {
-    color: black;
+    color: #000000;
     position: relative;
     top: -1.5em;
     left: 0.5em;

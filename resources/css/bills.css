@@ -1,5 +1,5 @@
  .bills table {
-   background-color: rgba(245, 245, 245, 0.8);
+   background-color: #f5f5f5cc;
    width: 100%;
    margin-bottom: 2rem;
    border-radius: 10px;
@@ -9,12 +9,12 @@
 
 
  :is(tbody, table)>tr:nth-child(odd) {
-   background-color: rgba(85, 50, 192, 0.1);
+   background-color: #5532c01a;
  }
 
  .bills td {
    padding: 0 0.5em;
-   white-space: nowrap;
+   #ffffff-space: nowrap;
  }
 
  .money {
@@ -39,8 +39,8 @@
    flex-direction: column;
    /* flex-col */
 
-   background-color: rgba(255, 255, 255, 0.75);
-   box-shadow: 8px 8px 2px 1px rgba(8, 42, 196, 0.2);
+   background-color: #ffffffbf;
+   box-shadow: 8px 8px 2px 1px #082ac433;
    justify-content: space-between;
    padding: 0.5rem;
    margin: 6px;
@@ -50,7 +50,7 @@
  }
 
  .bill-tag {
-   color: white;
+   color: #ffffff;
    padding: 0.25rem 0.5rem;
  }
 

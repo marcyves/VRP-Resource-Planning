@@ -32,7 +32,7 @@ body:has(> .maintenance-title) form.login-form .login-card-logo {
 
 body:has(> .maintenance-title) form.login-form .login-card-header h2 {
     margin: 0;
-    color: oklch(1 0 0);
+    color: #ffffff;
     font-size: 1.25rem;
     font-weight: 700;
 }

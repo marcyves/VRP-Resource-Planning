@@ -11,15 +11,15 @@
     display: flex;
     justify-content: center;
     align-items: flex-start;
-    background-color: rgba(107, 114, 128, 0.75);
+    background-color: #6b7280bf;
 }
 
 .modal-container {
-    background-color: white;
+    background-color: #ffffff;
     margin-bottom: 1.5rem;
     border-radius: var(--rounded-md);
     overflow: hidden;
-    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    box-shadow: 0 20px 25px -5px #0000001a, 0 10px 10px -5px #0000000a;
     transition: all 0.3s;
     width: 100%;
 }
@@ -30,7 +30,7 @@
     right: 0;
     bottom: 0;
     left: 0;
-    background-color: rgb(107, 114, 128);
+    background-color: #6b7280;
     opacity: 0.75;
 }
 

@@ -17,7 +17,7 @@
     padding: 0.6rem;
     border: 1px solid var(--border-color);
     border-radius: var(--rounded-md);
-    background-color: oklch(1 0 0 / 0.7);
+    background-color: #ffffffb2;
     color: inherit;
     font-size: 1rem;
     box-shadow: var(--shadow-sm);
@@ -27,7 +27,7 @@
 .form-input:focus {
     outline: none;
     border-color: var(--brand-secondary);
-    box-shadow: 0 0 0 3px oklch(0.645 0.152 259.712 / 0.3);
+    box-shadow: 0 0 0 3px #538ce94c;
 }
 
 .form-error {

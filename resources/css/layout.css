@@ -8,7 +8,7 @@
     margin: -1px;
     overflow: hidden;
     clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
+    #ffffff-space: nowrap;
     border: 0;
 }
 
@@ -47,7 +47,7 @@
 }
 
 .bg-white {
-    background-color: white;
+    background-color: #ffffff;
 }
 
 .rounded-md {
@@ -92,7 +92,7 @@
 .breadcrumb {
     background-color: var(--brand-primary);
     padding: var(--spacing-2) var(--spacing-6);
-    color: rgba(255, 255, 255, 0.7);
+    color: #ffffffb2;
     font-size: 0.875rem;
 }
 
@@ -105,7 +105,7 @@
 }
 
 .breadcrumb a {
-    color: white;
+    color: #ffffff;
     text-decoration: none;
 }
 
@@ -139,9 +139,9 @@
     height: 2rem;
     margin: 2px;
     padding: 0;
-    border: 1px solid oklch(0 0 0 / 0.14);
+    border: 1px solid #00000024;
     border-radius: var(--rounded-md);
-    background: transparent;
+    background: #00000000;
     cursor: pointer;
     transition: background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
 }
@@ -150,14 +150,14 @@
 .icon.icon--add:hover,
 .icon.icon--payed:hover,
 .icon.icon--invoice-manual:hover {
-    background: oklch(1 0 0 / 0.75);
-    border-color: oklch(0 0 0 / 0.22);
+    background: #ffffffbf;
+    border-color: #00000038;
     box-shadow: var(--shadow-sm);
 }
 
 .icon.icon--delete:hover {
-    background: oklch(0.97 0.02 20 / 0.85);
-    border-color: oklch(0.55 0.14 25 / 0.28);
+    background: #fff0efd9;
+    border-color: #b54a4647;
     box-shadow: var(--shadow-sm);
 }
 
@@ -191,16 +191,16 @@
     height: 1.75rem;
     margin: 2px;
     padding: 0.1rem 0.2rem;
-    border: 1px solid oklch(0 0 0 / 0.12);
+    border: 1px solid #0000001f;
     border-radius: var(--rounded-md);
-    background: transparent;
+    background: #00000000;
     cursor: pointer;
     transition: background-color 0.15s ease, border-color 0.15s ease;
 }
 
 .icon.icon--pdf-view:hover {
-    background: oklch(1 0 0 / 0.7);
-    border-color: oklch(0 0 0 / 0.2);
+    background: #ffffffb2;
+    border-color: #00000033;
 }
 
 .icon.icon--pdf-view:focus-visible {

@@ -83,7 +83,7 @@ main section.school-panel .school-panel__header {
     padding: 0;
     border: none;
     border-radius: var(--rounded-md);
-    background: transparent;
+    background: #00000000;
     color: var(--brand-primary);
     cursor: pointer;
     transition: background-color 0.2s ease, color 0.2s ease;
@@ -95,7 +95,7 @@ main section.school-panel .school-panel__header {
 }
 
 .school-panel__toggle:hover {
-    background: oklch(1 0 0 / 0.25);
+    background: #ffffff40;
     color: var(--brand-accent);
 }
 
@@ -224,7 +224,7 @@ main .school-details-grid > section {
     background: var(--surface-glass);
     backdrop-filter: blur(10px);
     border-radius: var(--rounded-lg);
-    border: 1px solid oklch(1 0 0 / 0.3);
+    border: 1px solid #ffffff4c;
     box-shadow: var(--shadow-lg);
     padding: var(--spacing-4);
 }
@@ -262,7 +262,7 @@ main .school-details-grid > section {
     align-items: center;
     padding: var(--spacing-3);
     border-radius: var(--rounded-md);
-    background: oklch(1 0 0 / 0.85);
+    background: #ffffffd9;
     border: var(--border-standard);
     font-size: 0.875rem;
     color: var(--brand-accent);
@@ -270,7 +270,7 @@ main .school-details-grid > section {
 }
 
 .documents-school-list__row:nth-child(odd) {
-    background: oklch(0.55 0.12 283 / 0.08);
+    background: #6966b514;
 }
 
 /* Icônes type fichier (pdf, doc…) : cadre légèrement paysage pour éviter l’effet trop étroit */
@@ -304,7 +304,7 @@ main .school-details-grid > section {
 .documents-school-list__year {
     text-align: right;
     font-variant-numeric: tabular-nums;
-    white-space: nowrap;
+    #ffffff-space: nowrap;
 }
 
 .documents-school-list__actions {
@@ -440,7 +440,7 @@ main form.school-upload-form > .upload-actions input[type="file"].form-input.sch
 /* Schools without courses — inactive block at page bottom */
 .schools-inactive-section {
     padding-top: var(--spacing-6);
-    border-top: 1px dashed oklch(0 0 0 / 0.2);
+    border-top: 1px dashed #00000033;
 }
 
 .schools-inactive-section .school-panel__title,
@@ -454,7 +454,7 @@ main form.school-upload-form > .upload-actions input[type="file"].form-input.sch
 
 .school-grid--inactive > li {
     opacity: 0.7;
-    background: oklch(0.96 0.01 264 / 0.55);
+    background: #eef2f98c;
     border-style: dashed;
     filter: grayscale(0.35);
 }

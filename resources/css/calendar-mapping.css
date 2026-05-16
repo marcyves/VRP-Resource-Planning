@@ -110,10 +110,10 @@
     font-size: 0.875rem;
     font-weight: 500;
     color: var(--text-muted);
-    background-color: white;
+    background-color: #ffffff;
     border: 1px solid #D1D5DB;
     border-radius: 0.375rem;
-    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    box-shadow: 0 1px 2px 0 #0000000d;
     text-decoration: none;
     transition: background-color 0.2s;
 }

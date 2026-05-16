@@ -6,7 +6,7 @@ main > section {
     background: var(--surface-glass);
     backdrop-filter: blur(10px);
     border-radius: var(--rounded-lg);
-    border: 1px solid oklch(1 0 0 / 0.3);
+    border: 1px solid #ffffff4c;
     box-shadow: var(--shadow-lg);
 }
 
@@ -18,12 +18,11 @@ body > footer {
     max-width: none;
     border-radius: 0;
     border: none;
-    border-top: 1px solid oklch(1 0 0 / 0.12);
+    border-top: 1px solid #ffffff1f;
     box-shadow: none;
     backdrop-filter: none;
-    background: oklch(0.22 0.07 283);
-    background: color-mix(in oklch, var(--brand-primary) 92%, black);
-    color: oklch(0.94 0.02 264 / 0.88);
+    background: #171439;
+    color: #e4ebf9e0;
     font-size: 0.8125rem;
     letter-spacing: 0.04em;
     text-align: center;
@@ -43,7 +42,7 @@ main > section + section {
     background: var(--surface-glass);
     backdrop-filter: blur(10px);
     border-radius: var(--rounded-lg);
-    border: 1px solid oklch(1 0 0 / 0.3);
+    border: 1px solid #ffffff4c;
     box-shadow: var(--shadow-lg);
 }
 
@@ -172,7 +171,7 @@ table.simple-table {
     border-collapse: collapse;
     font-size: 0.875rem;
     color: var(--brand-accent);
-    background: oklch(1 0 0 / 0.85);
+    background: #ffffffd9;
     border-radius: var(--rounded-md);
     overflow: hidden;
     box-shadow: var(--shadow-sm);
@@ -180,7 +179,7 @@ table.simple-table {
 
 main table thead,
 table.simple-table thead {
-    background: oklch(1 0 0 / 0.6);
+    background: #ffffff99;
     text-transform: uppercase;
     font-size: 0.75rem;
     letter-spacing: 0.05em;
@@ -197,7 +196,7 @@ table.simple-table td {
 
 main table tbody tr:nth-child(odd),
 table.simple-table tbody tr:nth-child(odd) {
-    background: oklch(0.55 0.12 283 / 0.08);
+    background: #6966b514;
 }
 
 main table th:last-child {
@@ -209,7 +208,7 @@ main table td:last-child:has(form) {
     gap: var(--spacing-1);
     justify-content: flex-end;
     align-items: center;
-    white-space: nowrap;
+    #ffffff-space: nowrap;
 }
 
 main table img {
@@ -233,7 +232,7 @@ body:has(> .maintenance-title) form {
     background: var(--surface-glass);
     backdrop-filter: blur(10px);
     border-radius: var(--rounded-lg);
-    border: 1px solid oklch(1 0 0 / 0.3);
+    border: 1px solid #ffffff4c;
     box-shadow: var(--shadow-lg);
 }
 
@@ -271,7 +270,7 @@ body:has(> .maintenance-title) form input:not([type="checkbox"]):not([type="hidd
     padding: 0.6rem;
     border: 1px solid var(--border-color);
     border-radius: var(--rounded-md);
-    background-color: oklch(1 0 0 / 0.7);
+    background-color: #ffffffb2;
     font-size: 1rem;
     box-shadow: var(--shadow-sm);
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
@@ -283,7 +282,7 @@ main form textarea:focus,
 body:has(> .maintenance-title) form input:focus {
     outline: none;
     border-color: var(--brand-secondary);
-    box-shadow: 0 0 0 3px oklch(0.645 0.152 259.712 / 0.3);
+    box-shadow: 0 0 0 3px #538ce94c;
 }
 
 main form input[type="checkbox"],
@@ -302,7 +301,7 @@ header > ul {
     max-width: 90%;
     padding: var(--spacing-4);
     border-radius: var(--rounded-md);
-    border: 1px solid transparent;
+    border: 1px solid #00000000;
     list-style: none;
 }
 
@@ -339,7 +338,7 @@ nav.breadcrumb button {
 }
 
 nav.breadcrumb button:hover {
-    color: oklch(1 0 0);
+    color: #ffffff;
 }
 
 nav.breadcrumb li {
@@ -353,7 +352,7 @@ body:has(> .maintenance-title) {
 }
 
 body:has(> .maintenance-title) a {
-    color: oklch(1 0 0);
+    color: #ffffff;
     text-decoration: underline;
     text-underline-offset: 2px;
 }
@@ -364,7 +363,7 @@ body:has(> .maintenance-title) > div:not([role]) {
     margin: var(--spacing-4) auto;
     padding: 0 var(--spacing-4);
     font-size: 0.875rem;
-    color: oklch(1 0 0 / 0.85);
+    color: #ffffffd9;
     text-align: center;
 }
 

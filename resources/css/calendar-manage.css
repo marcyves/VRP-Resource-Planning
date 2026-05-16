@@ -39,10 +39,10 @@
 
 .calendar-select-field:focus,
 .calendar-url-field:focus {
-    outline: 2px solid transparent;
+    outline: 2px solid #00000000;
     outline-offset: 2px;
     border-color: #3B82F6;
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5);
+    box-shadow: 0 0 0 3px #3b82f680;
 }
 
 /* History Table Styles */
@@ -56,7 +56,7 @@
 .history-table {
     width: 100%;
     border-collapse: collapse;
-    background-color: white;
+    background-color: #ffffff;
 }
 
 .history-header {
@@ -84,7 +84,7 @@
 .history-body td {
     padding: 1rem 1.5rem;
     font-size: 0.875rem;
-    white-space: nowrap;
+    #ffffff-space: nowrap;
 }
 
 .history-td-date {

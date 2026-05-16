@@ -99,11 +99,11 @@
 }
 
 .shadow-lg {
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 10px 15px -3px #0000001a, 0 4px 6px -2px #0000000d;
 }
 
 .ring-1 {
-    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 0 0 1px #0000000d;
 }
 
 .ring-black {
@@ -125,7 +125,7 @@
     display: inline-flex;
     align-items: center;
     padding: 0.5rem 0.75rem;
-    border: 1px solid transparent;
+    border: 1px solid #00000000;
     /* border-transparent */
     font-size: 0.875rem;
     /* text-sm */
@@ -137,7 +137,7 @@
     /* rounded-md */
     color: var(--text-muted);
     /* text-gray-500 */
-    background-color: white;
+    background-color: #ffffff;
     /* bg-white */
     cursor: pointer;
     transition: all 150ms ease-in-out;

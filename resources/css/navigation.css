@@ -1,7 +1,7 @@
 /* Navigation System */
 .nav-main {
     background-color: var(--surface-nav);
-    color: white;
+    color: #ffffff;
     padding: var(--spacing-4) var(--spacing-6);
     display: flex;
     justify-content: space-between;
@@ -18,25 +18,25 @@
 }
 
 .nav-logo {
-    color: white;
+    color: #ffffff;
 }
 
 .nav-link {
-    color: rgba(255, 255, 255, 0.8);
+    color: #ffffffcc;
     font-weight: 500;
     text-decoration: none;
     transition: color 0.2s;
     font-size: 0.875rem;
     padding: var(--spacing-1) 0;
-    border-bottom: 2px solid transparent;
+    border-bottom: 2px solid #00000000;
 }
 
 .nav-link:hover {
-    color: white;
+    color: #ffffff;
 }
 
 .nav-link.active {
-    color: white;
+    color: #ffffff;
     border-bottom-color: var(--brand-secondary);
 }
 
@@ -47,7 +47,7 @@
     color: var(--text-muted);
     text-decoration: none;
     font-weight: 500;
-    border-left: 4px solid transparent;
+    border-left: 4px solid #00000000;
     transition: all 0.2s;
 }
 
@@ -65,9 +65,9 @@
 .nav-user-btn {
     display: flex;
     align-items: center;
-    background: transparent;
+    background: #00000000;
     border: none;
-    color: white;
+    color: #ffffff;
     cursor: pointer;
     font-size: 0.875rem;
     font-weight: 500;
@@ -114,13 +114,13 @@
 
 .nav-user-menu__link:hover,
 .nav-user-menu__link:focus {
-    background: oklch(0.96 0.01 264);
+    background: #eef2f9;
     color: var(--brand-accent);
 }
 
 .nav-user-menu__button {
     border: 0;
-    background: transparent;
+    background: #00000000;
     cursor: pointer;
     font: inherit;
 }

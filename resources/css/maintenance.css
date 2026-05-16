@@ -1,12 +1,12 @@
 .maintenance-notice, .maintenance-title {
   padding: 1rem;
   text-align: center;
-  background: rgba(255, 255, 255, 0.2);
+  background: #ffffff33;
   backdrop-filter: blur(10px);
   border-radius: var(--rounded-md);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  color: white;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  border: 1px solid #ffffff4c;
+  color: #ffffff;
+  box-shadow: 0 8px 32px #0000001a;
   max-width: 80vw;
   margin: 1rem auto;
 }

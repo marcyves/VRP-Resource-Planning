@@ -8,16 +8,16 @@
 .planning-date {
     text-align: center;
     padding: .25rem;
-    background-color: rgb(191, 219, 254);
+    background-color: #bfdbfe;
     width: 10%;
 }
 
 .planning-total {
     text-align: center;
     padding: .25rem;
-    background-color: rgba(191, 219, 254, .6);
+    background-color: #bfdbfe99;
     color: var(--main-text-color);
     font-size: smaller;
-    white-space: nowrap;
+    #ffffff-space: nowrap;
     border-radius: 0 0 6px 6px;
 }

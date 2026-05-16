@@ -1,9 +1,9 @@
 /* Card and Surface System */
 .glass-background {
-    background: rgba(255, 255, 255, 0.2);
+    background: #ffffff33;
     backdrop-filter: blur(10px);
     border-radius: var(--rounded-lg);
-    border: 1px solid rgba(255, 255, 255, 0.3);
+    border: 1px solid #ffffff4c;
     box-shadow: var(--shadow-lg);
 }
 
@@ -81,7 +81,7 @@
 }
 
 .cool-box:hover {
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: #ffffff1a;
 }
 
 .card-actions {
