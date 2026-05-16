@@ -25,9 +25,9 @@ body:has(> .maintenance-title) form.login-form .login-card-header {
 
 body:has(> .maintenance-title) form.login-form .login-card-logo {
     display: block;
-    width: min(10rem, 70%);
+    width: min(20rem, 92%);
     height: auto;
-    border-radius: var(--rounded-md);
+    border-radius: var(--rounded-lg);
 }
 
 body:has(> .maintenance-title) form.login-form .login-card-header h2 {
