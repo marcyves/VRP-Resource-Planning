@@ -1,11 +1,11 @@
 <section>
     <header>
         <h2 class="card-subtitle">
-            {{ __('Profile Information') }}
+            {{ __('messages.profile_information') }}
         </h2>
 
         <p class="form-description">
-            {{ __("Update your account's profile information and email address.") }}
+            {{ __('messages.profile_information_description') }}
         </p>
     </header>
 
@@ -29,29 +29,29 @@
         @method('patch')
 
         <div class="form-group">
-            <x-input-label for="name" :value="__('Name')" />
+            <x-input-label for="name" :value="__('messages.name')" />
             <x-text-input id="name" name="name" type="text" :value="old('name', $user->name)" required autofocus autocomplete="name" />
             <x-input-error :messages="$errors->get('name')" />
         </div>
 
         <div class="form-group">
-            <x-input-label for="email" :value="__('Email')" />
+            <x-input-label for="email" :value="__('messages.email')" />
             <x-text-input id="email" name="email" type="email" :value="old('email', $user->email)" required autocomplete="username" />
             <x-input-error :messages="$errors->get('email')" />
 
             @if ($user instanceof \Illuminate\Contracts\Auth\MustVerifyEmail && ! $user->hasVerifiedEmail())
             <div class="mt-4">
                 <p class="text-sm">
-                    {{ __('Your email address is unverified.') }}
+                    {{ __('messages.email_unverified') }}
 
                     <button form="send-verification" class="nav-link text-sm">
-                        {{ __('Click here to re-send the verification email.') }}
+                        {{ __('messages.resend_verification_link') }}
                     </button>
                 </p>
 
                 @if (session('status') === 'verification-link-sent')
                 <p class="mt-2 status-indicator text-success text-sm">
-                    {{ __('A new verification link has been sent to your email address.') }}
+                    {{ __('messages.verification_link_sent_to_email') }}
                 </p>
                 @endif
             </div>
@@ -59,7 +59,7 @@
         </div>
 
         <div class="form-group">
-            <x-input-label for="status_id" :value="__('Status')" />
+            <x-input-label for="status_id" :value="__('messages.status')" />
             <select class="form-input" name="status_id" id="status_id">
                 @foreach ($statuses as $status)
                 <option value="{{$status->id}}" @if ($status->id == old('status_id', $user->status_id)) selected="selected" @endif>
@@ -71,11 +71,11 @@
         </div>
 
         <div class="form-actions mt-6">
-            <x-button-primary>{{ __('Save') }}</x-button-primary>
+            <x-button-primary>{{ __('messages.save') }}</x-button-primary>
 
             @if (session('status') === 'profile-updated')
             <p x-data="{ show: true }" x-show="show" x-transition x-init="setTimeout(() => show = false, 2000)" class="status-indicator text-success text-sm">
-                {{ __('Saved.') }}
+                {{ __('messages.saved') }}
             </p>
             @endif
         </div>

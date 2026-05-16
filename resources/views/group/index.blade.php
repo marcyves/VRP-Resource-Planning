@@ -17,10 +17,10 @@
     <div class="group-section-header">
         <h3 class="group-title">{{ __('messages.inactive_groups') }}</h3>
         <form action="{{ route('group.index') }}" method="GET" class="nav-form">
-            <x-text-input type="text" name="search" placeholder="Search..." value="{{ request('search') }}" />
-            <x-button-primary type="submit">Search</x-button-primary>
+            <x-text-input type="text" name="search" placeholder="{{ __('messages.search') }}" value="{{ request('search') }}" />
+            <x-button-primary type="submit">{{ __('messages.search') }}</x-button-primary>
             @if(request('search'))
-            <a href="{{ route('group.index') }}" class="btn btn-secondary">Clear</a>
+            <a href="{{ route('group.index') }}" class="btn btn-secondary">{{ __('messages.clear') }}</a>
             @endif
         </form>
     </div>

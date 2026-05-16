@@ -1,16 +1,16 @@
 <x-app-layout>
 <x-slot name="header">
-        <h2 class="print:hidden">{{ __('Billing Preparation') }} @monthName($current_month) {{$current_year}}</h2>
+        <h2 class="print:hidden">{{ __('messages.billing_preparation') }} @monthName($current_month) {{$current_year}}</h2>
     </x-slot>
 
-    <section class="planning-calendar-container">
-        <div class="planning-controls">
-            <x-period-selector :years="$years" :months="$months" :current_year="$current_year" :current_month="$current_month" route="billing" />
-        </div>
+    <section class="planning-controls print:hidden">
+        <x-period-selector :years="$years" :months="$months" :current_year="$current_year" :current_month="$current_month" route="billing" />
+    </section>
 
+    <section class="planning-calendar-container">
         @if($monthly_hours == 0)
         <div class="alert alert-warning">
-            No hours logged this month
+            {{ __('messages.no_hours_logged_this_month') }}
         </div>
         @else
         @foreach($schools as $school => $courses)
@@ -49,19 +49,19 @@
                     @endforeach
                 </ul>
                 <div class=" total-line">
-                    <span>Time worked: {{ number_format($schedules['hours'], 2) }} hours</span>
-                    <span>Total: {{ number_format($schedules['gain'], 2) }} € HT / {{ number_format($schedules['gain']*1.2, 2) }} € TTC</span>
+                    <span>{{ __('messages.time_worked') }}: {{ number_format($schedules['hours'], 2) }} {{ __('messages.hours') }}</span>
+                    <span>{{ __('messages.total') }}: {{ number_format($schedules['gain'], 2) }} € HT / {{ number_format($schedules['gain']*1.2, 2) }} € TTC</span>
                 </div>
             </div>
             @endforeach
 
             <div class="total-line border-t pt-4 mt-4">
-                <span>Total Time worked: {{ number_format($courses['hours'], 2) }} hours</span>
-                <span>School Total: {{ number_format($courses['gain'], 2) }} € HT / {{ number_format($courses['gain']*1.2, 2) }} € TTC</span>
+                <span>{{ __('messages.total_time_worked') }}: {{ number_format($courses['hours'], 2) }} {{ __('messages.hours') }}</span>
+                <span>{{ __('messages.school_total') }}: {{ number_format($courses['gain'], 2) }} € HT / {{ number_format($courses['gain']*1.2, 2) }} € TTC</span>
 
                 <div class="header-actions">
                     @if(isset($schedule['bill']) && $schedule['bill'] != "")
-                    <span class="text-success">Invoice already assigned</span>
+                    <span class="text-success">{{ __('messages.invoice_already_assigned') }}</span>
                     @else
                     <form action="{{route('billing.setBill')}}" class="nav-form" method="post">
                         @csrf
@@ -69,13 +69,13 @@
                         <input type="hidden" name="course_id" value="{{$course_id}}">
                         <input type="hidden" name="month" value="{{$current_month}}">
                         <input type="hidden" name="year" value="{{$current_year}}">
-                        <label for="invoice_id">Assign:</label>
+                        <label for="invoice_id">{{ __('messages.assign') }}:</label>
                         <select name="invoice_id" id="invoice_id" class="form-input">
                             @foreach ($bills as $bill)
                             <option value="{{$bill->id}}">{{$bill->id}}</option>
                             @endforeach
                         </select>
-                        <x-button-secondary type="submit">Save</x-button-secondary>
+                        <x-button-secondary type="submit">{{ __('messages.save') }}</x-button-secondary>
                     </form>
                     <form action="{{route('invoice.create')}}" class="nav-form" method="get">
                         @csrf
@@ -85,7 +85,7 @@
                         <input type="hidden" name="year" value="{{$current_year}}">
                         <x-text-input type="date" name="bill_date" id="bill_date" value="{{date('Y-m-d')}}" />
                         <input type="hidden" name="cmd" value="detailed">
-                        <x-button-primary type="submit">Create</x-button-primary>
+                        <x-button-primary type="submit">{{ __('messages.create') }}</x-button-primary>
                     </form>
                     @endif
                 </div>
@@ -96,13 +96,13 @@
 
         <div class="planning-summary">
             <div class="planning-summary-item">
-                Time worked = {{ number_format($monthly_hours, 2) }} hours
+                {{ __('messages.time_worked') }} = {{ number_format($monthly_hours, 2) }} {{ __('messages.hours') }}
             </div>
             <div class="planning-summary-item">
-                Monthly gain = {{ number_format($monthly_gain, 2) }} €
+                {{ __('messages.monthly_gain') }} = {{ number_format($monthly_gain, 2) }} €
             </div>
             <div class="planning-summary-item">
-                Average Rate = @if ($monthly_hours > 0) {{ number_format($monthly_gain/$monthly_hours, 2) }} @else 0 @endif €
+                {{ __('messages.hour_rate') }} = @if ($monthly_hours > 0) {{ number_format($monthly_gain/$monthly_hours, 2) }} @else 0 @endif €
             </div>
         </div>
     </section>

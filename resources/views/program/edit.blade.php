@@ -1,6 +1,6 @@
 <x-app-layout>
 <x-slot name="header">
-        <h2>{{ __('Program Modification') }}</h2>
+        <h2>{{ __('messages.program_modification') }}</h2>
     </x-slot>
 
     <section>
@@ -9,7 +9,7 @@
             @method('put')
 
             <div class="form-group">
-                <x-input-label for="name">Name</x-input-label>
+                <x-input-label for="name">{{ __('messages.name') }}</x-input-label>
                 <x-text-input type="text" name="name" id="name" value="{{old('name',$program->name)}}" />
             </div>
 

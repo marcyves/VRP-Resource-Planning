@@ -15,7 +15,7 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
     <body>
-        <h1 class="maintenance-title">VRP Resource Planning</h1>
+        <h1 class="maintenance-title">{{ config('app.name') }}</h1>
         <img  class="maintenance-logo" src="/images/VRP.jpeg" alt="VRP" width="200">
             {{ $slot }}
         <footer>

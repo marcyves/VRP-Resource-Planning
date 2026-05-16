@@ -7,7 +7,7 @@
         <form action="{{route('group.save', $course_id)}}" method="post" class="group-form">
             @csrf
             <x-form-group-create />
-            <x-button-primary>Create</x-button-primary>
+            <x-button-primary>{{ __('messages.create') }}</x-button-primary>
         </form>
     </section>
 </x-app-layout>

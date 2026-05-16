@@ -2,7 +2,7 @@
     <x-slot name="header">
         <div class="flex">
             <h2 class="header-title grow py-2">
-                Mon entreprise
+                {{ __('messages.my_company') }}
             </h2>
         </div>
     </x-slot>
@@ -21,7 +21,7 @@
             </li>
             <li class="card">
                 <div class="card-content-text">
-                    <h2>Contact</h2>
+                    <h2>{{ __('messages.contact') }}</h2>
                     <ul>
                         <li>{{$company->phone}}</li>
                         <li>{{$company->email}}</li>
@@ -31,11 +31,11 @@
             </li>
             <li class="card">
                 <div class="card-content-text">
-                <h2>IBAN</h2>
+                <h2>{{ __('messages.iban') }}</h2>
                 <ul>
-                    <li>Titulaire du compte: {{$company->iban_name}}</li>
-                    <li>Code IBAN: {{$company->account}}</li>
-                    <li>Code BIC/SWIFT: {{$company->bic}}</li>
+                    <li>{{ __('messages.account_holder') }}: {{$company->iban_name}}</li>
+                    <li>{{ __('messages.iban_code') }}: {{$company->account}}</li>
+                    <li>{{ __('messages.bic_code') }}: {{$company->bic}}</li>
                 </ul>
                 </div>
             </li>

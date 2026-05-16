@@ -1,6 +1,6 @@
 <x-app-layout>
 <x-slot name="header">
-        <h2>{{ __('Group Planification') }}</h2>
+        <h2>{{ __('messages.group_planning') }}</h2>
     </x-slot>
 
     @php
@@ -24,7 +24,7 @@
             @method('put')
 
             <div class="form-group">
-                <label for="day" class="form-label">Date</label>
+                <label for="day" class="form-label">{{ __('messages.date') }}</label>
                 <div class="nav-form">
                     <select id="day" name="day" class="form-input">
                         @for($d=1;$d<32;$d++)
@@ -41,7 +41,7 @@
             </div>
 
             <div class="form-group">
-                <label for="begin" class="form-label">Begin</label>
+                <label for="begin" class="form-label">{{ __('messages.begin') }}</label>
                 <div class="nav-form">
                     <select name="hour" id="begin" class="form-input">
                         @for($h=8;$h<22;$h++)
@@ -57,7 +57,7 @@
             </div>
 
             <div class="form-group">
-                <label for="end" class="form-label">End</label>
+                <label for="end" class="form-label">{{ __('messages.end') }}</label>
                 <div class="nav-form">
                     <select name="end_hour" id="end" class="form-input">
                         @for($h=8;$h<22;$h++)
@@ -73,12 +73,12 @@
             </div>
 
             <div class="form-group">
-                <label for="rate" class="form-label">Billable rate</label>
+                <label for="rate" class="form-label">{{ __('messages.billable_rate') }}</label>
                 <x-text-input type="text" id="rate" value="{{$planning->billable_rate}}" name="billable_rate" />
             </div>
 
             <div class="form-group">
-                <label class="form-label">Group</label>
+                <label class="form-label">{{ __('messages.group') }}</label>
                 <select name="group_id" class="form-input">
                     @foreach ($groups as $group)
                     <option value="{{$group->id}}" @if($group->id == $planning->group_id) selected @endif>
@@ -89,7 +89,7 @@
             </div>
 
             <div class="form-group">
-                <label class="form-label">Course</label>
+                <label class="form-label">{{ __('messages.course') }}</label>
                 <select name="course_id" class="form-input">
                     @foreach ($courses as $course)
                     <option value="{{$course->id}}" @if($course->id == $planning->course_id) selected @endif>
@@ -99,7 +99,7 @@
                 </select>
             </div>
 
-            <x-button-primary>Plan</x-button-primary>
+            <x-button-primary>{{ __('messages.plan') }}</x-button-primary>
         </form>
     </section>
 </x-app-layout>

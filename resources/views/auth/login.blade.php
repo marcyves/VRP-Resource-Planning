@@ -5,7 +5,7 @@
         @csrf
 
         <header class="login-card-header">
-            <h2>{{ __('Log in') }}</h2>
+            <h2>{{ __('messages.login') }}</h2>
             <img class="login-card-logo" src="{{ asset('images/VRP.jpeg') }}" alt="VRP" width="160">
         </header>
 
@@ -13,7 +13,7 @@
             <x-text-input id="email"
                 type="email"
                 name="email"
-                :placeholder="__('Email')"
+                :placeholder="__('messages.email')"
                 :value="old('email')" required autofocus autocomplete="username" />
             <x-input-error :messages="$errors->get('email')" />
         </div>
@@ -22,24 +22,24 @@
             <x-text-input id="password"
                 type="password"
                 name="password"
-                :placeholder="__('Password')"
+                :placeholder="__('messages.password')"
                 required autocomplete="current-password" />
             <x-input-error :messages="$errors->get('password')" />
         </div>
 
         <label for="remember_me" class="login-remember">
             <input id="remember_me" type="checkbox" name="remember">
-            <span>{{ __('Remember me') }}</span>
+            <span>{{ __('messages.remember_me') }}</span>
         </label>
 
         @if (Route::has('password.request'))
         <p class="login-forgot">
-            <a href="{{ route('password.request') }}">{{ __('Forgot your password?') }}</a>
+            <a href="{{ route('password.request') }}">{{ __('messages.forgot_password') }}</a>
         </p>
         @endif
 
         <footer class="login-actions">
-            <x-button-primary>{{ __('Log in') }}</x-button-primary>
+            <x-button-primary>{{ __('messages.login') }}</x-button-primary>
         </footer>
     </form>
 </x-guest-layout>

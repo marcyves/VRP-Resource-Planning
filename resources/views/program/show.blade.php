@@ -2,7 +2,7 @@
 <x-slot name="header">
         <div class="header-content">
             <h2 class="header-title">
-                {{ __('Program Details')}} : {{$program->name}}
+                {{ __('messages.program_details') }} : {{$program->name}}
             </h2>
             @if(Auth::user()->getMode() == "Edit")
             <div class="header-actions">

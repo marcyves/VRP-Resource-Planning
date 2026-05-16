@@ -1,16 +1,16 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="print:hidden">{{ __('Billing Preparation') }} @monthName($current_month) {{$current_year}}</h2>
+        <h2 class="print:hidden">{{ __('messages.billing_preparation') }} @monthName($current_month) {{$current_year}}</h2>
     </x-slot>
 
-    <section class="planning-calendar-container">
-        <div class="planning-controls">
-            <x-period-selector :years="$years" :months="$months" :current_year="$current_year" :current_month="$current_month" route="billing" />
-        </div>
+    <section class="planning-controls print:hidden">
+        <x-period-selector :years="$years" :months="$months" :current_year="$current_year" :current_month="$current_month" route="billing" />
+    </section>
 
+    <section class="planning-calendar-container">
         @if($monthly_hours == 0)
         <div class="alert alert-warning">
-            No hours logged this month
+            {{ __('messages.no_hours_logged_this_month') }}
         </div>
         @else
         @foreach($schools as $school => $courses)
@@ -44,15 +44,15 @@
                     @endforeach
                 </ul>
                 <div class="total-line">
-                    <span>Time worked: {{ number_format($schedules['hours'], 2) }} hours</span>
-                    <span>Total: {{ number_format($schedules['gain'], 2) }} €</span>
+                    <span>{{ __('messages.time_worked') }}: {{ number_format($schedules['hours'], 2) }} {{ __('messages.hours') }}</span>
+                    <span>{{ __('messages.total') }}: {{ number_format($schedules['gain'], 2) }} €</span>
                 </div>
             </div>
             @endforeach
 
             <div class="total-line border-t pt-4 mt-4">
-                <span>Total Time worked: {{ number_format($courses['hours'], 2) }} hours</span>
-                <span>School Total: {{ number_format($courses['gain'], 2) }} €</span>
+                <span>{{ __('messages.total_time_worked') }}: {{ number_format($courses['hours'], 2) }} {{ __('messages.hours') }}</span>
+                <span>{{ __('messages.school_total') }}: {{ number_format($courses['gain'], 2) }} €</span>
 
                 <div class="header-actions">
                     <form action="{{route('billing.setBill')}}" class="nav-form" method="post">
@@ -61,13 +61,13 @@
                         <input type="hidden" name="course_id" value="{{$schedules['course_id']}}">
                         <input type="hidden" name="month" value="{{$current_month}}">
                         <input type="hidden" name="year" value="{{$current_year}}">
-                        <label for="invoice_id">Bill:</label>
+                        <label for="invoice_id">{{ __('messages.bill') }}:</label>
                         <select name="invoice_id" id="invoice_id" class="form-input">
                             @foreach ($bills as $bill)
                             <option value="{{$bill->id}}">{{$bill->id}}</option>
                             @endforeach
                         </select>
-                        <x-button-secondary type="submit">Save</x-button-secondary>
+                        <x-button-secondary type="submit">{{ __('messages.save') }}</x-button-secondary>
                     </form>
                 </div>
             </div>
@@ -76,13 +76,13 @@
 
         <div class="planning-summary">
             <div class="planning-summary-item">
-                Time worked = {{ number_format($monthly_hours, 2) }} hours
+                {{ __('messages.time_worked') }} = {{ number_format($monthly_hours, 2) }} {{ __('messages.hours') }}
             </div>
             <div class="planning-summary-item">
-                Monthly gain = {{ number_format($monthly_gain, 2) }} €
+                {{ __('messages.monthly_gain') }} = {{ number_format($monthly_gain, 2) }} €
             </div>
             <div class="planning-summary-item">
-                Average Rate = @if ($monthly_hours > 0) {{ number_format($monthly_gain/$monthly_hours, 2) }} @else 0 @endif €
+                {{ __('messages.hour_rate') }} = @if ($monthly_hours > 0) {{ number_format($monthly_gain/$monthly_hours, 2) }} @else 0 @endif €
             </div>
         </div>
         @endif

@@ -1,26 +1,26 @@
 <x-app-layout>
 <x-slot name="header">
         <h2>
-            {{ __('Configuration du Mapping') }}
+            {{ __('messages.mapping_configuration') }}
         </h2>
     </x-slot>
 
     <section>
         @if($source->url)
-        Lien : {{ $source->url }}<br>
+        {{ __('messages.link') }} : {{ $source->url }}<br>
         @endif
-        Fichier : {{ $source->filename }} |
-        École : {{ $source->school->name }}
+        {{ __('messages.file') }} : {{ $source->filename }} |
+        {{ __('messages.school') }} : {{ $source->school->name }}
     </section>
 
     <section>
         <h4>
-            Analyse du fichier : Exemple d'événement trouvé
+            {{ __('messages.file_analysis_event_example') }}
         </h4>
         <table class="mapping-example-table">
             <tr>
                 <td>
-                    Titre (Summary)
+                    {{ __('messages.summary_title') }}
                 </td>
                 <td>
                     {{ $exampleEvent['summary'] }}
@@ -28,23 +28,23 @@
             </tr>
             <tr>
                 <td>
-                    Horaires
+                    {{ __('messages.schedule') }}
                 </td>
                 <td>
-                    Du {{ $exampleEvent['start'] }} au {{ $exampleEvent['end'] }}
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    Lieu
-                </td>
-                <td>
-                    {{ $exampleEvent['location'] ?: 'Non renseigné' }}
+                    {{ __('messages.from') }} {{ $exampleEvent['start'] }} {{ __('messages.to') }} {{ $exampleEvent['end'] }}
                 </td>
             </tr>
             <tr>
                 <td>
-                    Description
+                    {{ __('messages.location') }}
+                </td>
+                <td>
+                    {{ $exampleEvent['location'] ?: __('messages.not_provided') }}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    {{ __('messages.description') }}
                 </td>
                 <td>
                     {{ Str::limit($exampleEvent['description'], 80) }}
@@ -57,12 +57,12 @@
 
             <div class="mapping-source-container">
                 <label class="mapping-source-label">
-                    Quel champ de l'ICS contient le nom du cours/groupe ?
+                    {{ __('messages.ics_source_field_question') }}
                 </label>
                 <select name="ics_source_field" class="mapping-source-select">
                     @foreach ($icsFields as $key => $label)
-                    <option value="{{ $key }}">{{ $label }} (Ex:
-                        "{{ $exampleEvent[$key] ?? 'vide' }}")</option>
+                    <option value="{{ $key }}">{{ $label }} ({{ __('messages.example_abbr') }}:
+                        "{{ $exampleEvent[$key] ?? __('messages.empty') }}")</option>
                     @endforeach
                 </select>
             </div>
@@ -70,9 +70,9 @@
             <table class="mapping-table">
                 <thead class="mapping-config-header">
                     <tr>
-                        <th>Texte détecté</th>
-                        <th class="text-course">Cours (Tarification)</th>
-                        <th class="text-group">Groupe (Optionnel)</th>
+                        <th>{{ __('messages.detected_text') }}</th>
+                        <th class="text-course">{{ __('messages.course_pricing') }}</th>
+                        <th class="text-group">{{ __('messages.group_optional') }}</th>
                     </tr>
                 </thead>
                 <tbody class="mapping-body">
@@ -83,7 +83,7 @@
                         <td>
                             <select name="mappings[{{ $label }}][course_id]"
                                 class="mapping-select">
-                                <option value="">-- Aucun cours --</option>
+                                <option value="">{{ __('messages.no_course') }}</option>
                                 @foreach ($courses as $course)
                                 <option value="{{ $course->id }}">
                                     {{ $course->name }}
@@ -96,7 +96,7 @@
                         <td>
                             <select name="mappings[{{ $label }}][group_id]"
                                 class="mapping-select">
-                                <option value="">-- Aucun groupe --</option>
+                                <option value="">{{ __('messages.no_group') }}</option>
                                 @foreach ($groups as $group)
                                 <option value="{{ $group->id }}">
                                     {{ $group->name }}
@@ -113,14 +113,14 @@
             <div class="mapping-footer">
                 <p class="footer-info">
                     <i class="fas fa-info-circle mr-1"></i>
-                    Les liens que vous créez seront mémorisés pour les prochains imports de cette école.
+                    {{ __('messages.calendar_mapping_memory_notice') }}
                 </p>
                 <div class="footer-actions">
                     <a href="{{ route('calendar.index') }}"
                         class="btn-cancel">
-                        Annuler
+                        {{ __('messages.cancel') }}
                     </a>
-                    <x-button-primary>Valider et Importer le Planning</x-button-primary>
+                    <x-button-primary>{{ __('messages.validate_and_import_planning') }}</x-button-primary>
                 </div>
             </div>
         </form>

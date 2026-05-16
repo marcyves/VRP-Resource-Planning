@@ -1,5 +1,5 @@
 <x-guest-layout>
-    <p>{{ __('Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.') }}</p>
+    <p>{{ __('messages.forgot_password_intro') }}</p>
 
     <x-auth-session-status :status="session('status')" />
 
@@ -7,13 +7,13 @@
         @csrf
 
         <p>
-            <x-input-label for="email" :value="__('Email')" />
+            <x-input-label for="email" :value="__('messages.email')" />
             <x-text-input id="email" type="email" name="email" :value="old('email')" required autofocus />
             <x-input-error :messages="$errors->get('email')" />
         </p>
 
         <footer>
-            <x-button-primary>{{ __('Email Password Reset Link') }}</x-button-primary>
+            <x-button-primary>{{ __('messages.email_password_reset_link') }}</x-button-primary>
         </footer>
     </form>
 </x-guest-layout>

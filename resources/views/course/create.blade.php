@@ -8,17 +8,17 @@
             @csrf
 
             <div class="form-group">
-                <x-input-label for="name">Name</x-input-label>
-                <x-text-input type="text" name="name" id="name" placeholder="Name" />
+                <x-input-label for="name">{{ __('messages.name') }}</x-input-label>
+                <x-text-input type="text" name="name" id="name" placeholder="{{ __('messages.name') }}" />
             </div>
 
             <div class="form-group">
-                <x-input-label for="short_name">Short Name</x-input-label>
-                <x-text-input type="text" name="short_name" id="short_name" placeholder="Short Name" />
+                <x-input-label for="short_name">{{ __('messages.short_name') }}</x-input-label>
+                <x-text-input type="text" name="short_name" id="short_name" placeholder="{{ __('messages.short_name') }}" />
             </div>
 
             <div class="form-group">
-                <x-input-label for="program_id">Program</x-input-label>
+                <x-input-label for="program_id">{{ __('messages.program') }}</x-input-label>
                 <select name="program_id" id="program_id" class="form-input">
                     @foreach ($programs as $program)
                     <option value="{{$program->id}}">{{$program->name}}</option>
@@ -27,32 +27,32 @@
             </div>
 
             <div class="form-group">
-                <x-input-label for="sessions">Number of sessions</x-input-label>
-                <x-text-input type="text" name="sessions" id="sessions" placeholder="Number of sessions" />
+                <x-input-label for="sessions">{{ __('messages.number_of_sessions') }}</x-input-label>
+                <x-text-input type="text" name="sessions" id="sessions" placeholder="{{ __('messages.number_of_sessions') }}" />
             </div>
 
             <div class="form-group">
-                <x-input-label for="session_length">Session length</x-input-label>
-                <x-text-input type="text" name="session_length" id="session_length" placeholder="Session length" />
+                <x-input-label for="session_length">{{ __('messages.session_length') }}</x-input-label>
+                <x-text-input type="text" name="session_length" id="session_length" placeholder="{{ __('messages.session_length') }}" />
             </div>
 
             <div class="form-group">
-                <x-input-label for="rate">Rate</x-input-label>
-                <x-text-input type="text" name="rate" id="rate" placeholder="Rate" />
+                <x-input-label for="rate">{{ __('messages.rate') }}</x-input-label>
+                <x-text-input type="text" name="rate" id="rate" placeholder="{{ __('messages.rate') }}" />
             </div>
 
             <div class="form-group">
-                <x-input-label for="year">Year</x-input-label>
-                <x-text-input type="text" name="year" id="year" value="{{now()->format('Y')}}" placeholder="Year" />
+                <x-input-label for="year">{{ __('messages.year') }}</x-input-label>
+                <x-text-input type="text" name="year" id="year" value="{{now()->format('Y')}}" placeholder="{{ __('messages.year') }}" />
             </div>
 
             <div class="form-group">
-                <x-input-label for="semester">Semester</x-input-label>
-                <x-text-input type="text" name="semester" id="semester" placeholder="Semester" />
+                <x-input-label for="semester">{{ __('messages.semester') }}</x-input-label>
+                <x-text-input type="text" name="semester" id="semester" placeholder="{{ __('messages.semester') }}" />
             </div>
 
             <div class="form-actions">
-                <x-button-primary>Create</x-button-primary>
+                <x-button-primary>{{ __('messages.create') }}</x-button-primary>
             </div>
         </form>
     </section>

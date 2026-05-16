@@ -1,6 +1,6 @@
 <x-app-layout>
 <x-slot name="header">
-        <h2>{{ __('Group Planification: ') . $date }}</h2>
+        <h2>{{ __('messages.group_planning') }}: {{ $date }}</h2>
     </x-slot>
 
     <section>
@@ -11,9 +11,9 @@
             <input type="hidden" name="session_length" value="{{$session_length}}">
 
             <div class="form-group">
-                <label class="form-label">Group</label>
+                <label class="form-label">{{ __('messages.group') }}</label>
                 <select name="group" class="form-input">
-                    <option value="0" selected>New group below</option>
+                    <option value="0" selected>{{ __('messages.new_group_below') }}</option>
                     @foreach ($groups as $group)
                     @if($group->sessions == 0 or $group->sessions == $course->sessions)
                     <option value="{{$group->id}}">{{$group->name}}</option>
@@ -23,7 +23,7 @@
             </div>
 
             <div class="form-group">
-                <label class="form-label">Time</label>
+                <label class="form-label">{{ __('messages.time') }}</label>
                 <div class="nav-form">
                     <select name="hour" class="form-input">
                         @for ($h=8;$h<20;$h++)
@@ -40,7 +40,7 @@
 
             <x-form-group-create :course_id="$course->id" />
 
-            <x-button-primary>Plan</x-button-primary>
+            <x-button-primary>{{ __('messages.plan') }}</x-button-primary>
         </form>
     </section>
 </x-app-layout>

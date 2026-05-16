@@ -3,10 +3,10 @@
     <x-auth-session-status class="mb-4" :status="session('status')" />
     <div class="maintenance-notice">
         <h2>
-            {{ __('Maintenance') }}
+            {{ __('messages.maintenance') }}
         </h2>
         <img class="maintenance-notice__logo" src="{{ asset('images/VRP.jpeg') }}" alt="VRP" width="200">
-        <p>The site is currently in maintenance, sorry for the inconvenience</p>
+        <p>{{ __('messages.maintenance_notice') }}</p>
     </div>
    
 </x-guest-layout>

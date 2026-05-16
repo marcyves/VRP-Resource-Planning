@@ -3,10 +3,15 @@
         <h2>{{ __('messages.planning') }} @monthName($current_month) {{$current_year}}</h2>
     </x-slot>
 
-    <section class="planning-calendar-container">
+    <section class="planning-controls">
         <x-nav-link :href="route('calendar.index')" :active="request()->routeIs('calendar.index')">
             {{ __('messages.calendar') }}
         </x-nav-link>
+        <x-period-selector :years="$years" :months="$months" :current_year="$current_year" :current_month="$current_month" route="planning" />
+        <x-form-select-planning :mode="$mode" :schools="$schools" :courses="$courses" :planning="$planning" :day="$current_day" :month="$current_month" :year="$current_year" />
+    </section>
+
+    <section class="planning-calendar-container">
         <!-- (A) PERIOD SELECTOR & CONTROLS -->
         @php
         $firstDay = mktime(0, 0, 0, $current_month, 1, $current_year);
@@ -14,11 +19,6 @@
         $startDay = date('N', $firstDay);
         $day = 1;
         @endphp
-
-        <div class="planning-controls">
-            <x-period-selector :years="$years" :months="$months" :current_year="$current_year" :current_month="$current_month" route="planning" />
-            <x-form-select-planning :mode="$mode" :schools="$schools" :courses="$courses" :planning="$planning" :day="$current_day" :month="$current_month" :year="$current_year" />
-        </div>
 
         <!-- (B) CALENDAR -->
         <div id="calWrap">

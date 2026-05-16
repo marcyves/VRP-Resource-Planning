@@ -5,14 +5,14 @@
         </a>
     </div>
     <div class="group-info">
-        {{$group->size}} students - {{$group->year}}
+        {{$group->size}} {{ __('messages.students') }} - {{$group->year}}
     </div>
 
     @if(Auth::user()->getMode() == "Edit")
     <div class="group-actions">
         <form action="{{route('group.switch', $group->id)}}" method="get">
-            <button class="btn-text" type="submit" title="{{ $active ? 'Deactivate' : 'Activate' }}">
-                <img src="/icons/arrow-{{ $active ? 'down' : 'up' }}.svg" alt="{{ $active ? 'Down' : 'Up' }}" class="nav-user-icon">
+            <button class="btn-text" type="submit" title="{{ $active ? __('messages.deactivate') : __('messages.activate') }}">
+                <img src="/icons/arrow-{{ $active ? 'down' : 'up' }}.svg" alt="{{ $active ? __('messages.down') : __('messages.up') }}" class="nav-user-icon">
             </button>
         </form>
         <form action="{{route('group.edit', $group->id)}}" method="get">

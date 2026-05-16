@@ -29,7 +29,7 @@
     padding: var(--spacing-4);
     background: var(--surface-glass);
     border-radius: var(--rounded-lg);
-    margin-bottom: var(--spacing-8);
+    margin-bottom: 0;
 }
 
 @media (min-width: 768px) {

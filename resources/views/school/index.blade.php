@@ -27,7 +27,7 @@
 
     <section>
         <div class="total-line">
-            <span>Total invoices:</span>
+            <span>{{ __('messages.total_invoices') }}:</span>
             <span>@money($total_amount)€</span>
         </div>
     </section>

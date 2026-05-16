@@ -30,21 +30,21 @@
         </section>
 
         <section>
-            <h3 class="school-section-header">Invoices</h3>
+            <h3 class="school-section-header">{{ __('messages.invoices') }}</h3>
             <div class="bills">
                 <x-table-invoices :invoices="$invoices" />
             </div>
         </section>
 
         <section>
-            <h3 class="school-section-header">Documents</h3>
+            <h3 class="school-section-header">{{ __('messages.documents') }}</h3>
             <x-documents-school-table :documents="$documents" :school_id="$school_id" />
 
             <div class="school-upload-container">
                 <form action="{{route('document.store', $school_id)}}" class="school-upload-form" method="post" enctype="multipart/form-data">
                     @csrf
                     <div class="school-form-input school-form-input--description">
-                        <x-text-input type="text" name="description" id="desc" placeholder="Document Description" />
+                        <x-text-input type="text" name="description" id="desc" placeholder="{{ __('messages.document_description') }}" />
                         <x-input-error :messages="$errors->get('description')" />
                     </div>
                     <div class="school-form-input school-form-input--year">
@@ -54,7 +54,7 @@
                     <div class="upload-actions">
                         <input type="file" class="form-input school-upload-file" name="document">
                         <x-input-error :messages="$errors->get('document')" />
-                        <x-button-primary type="submit">Upload</x-button-primary>
+                        <x-button-primary type="submit">{{ __('messages.upload') }}</x-button-primary>
                     </div>
                 </form>
             </div>

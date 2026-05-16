@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2>
-            {{ __('Programs') }}
+            {{ __('messages.programs') }}
         </h2>
     </x-slot>
 
