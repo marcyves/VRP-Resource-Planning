@@ -133,11 +133,17 @@ class User extends Authenticatable
         return $schools->getCourses($current_year, $current_semester);;
     }
 
-    public function getInvoices()
+    public function getInvoices($year = 'all')
     {
-        return Invoice::select(['invoices.*', 'schools.name as school'])->where('invoices.company_id', $this->company_id)
+        $query = Invoice::select(['invoices.*', 'schools.name as school'])->where('invoices.company_id', $this->company_id)
             ->join('schools', 'schools.id', '=', 'invoices.school_id')
-            ->orderBy('invoices.id')->get();
+            ->orderBy('invoices.id');
+
+        if ($year !== 'all') {
+            $query->whereYear('invoices.bill_date', $year);
+        }
+
+        return $query->get();
     }
 
     public function getPlannedAmountPerMonth($year)

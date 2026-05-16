@@ -29,14 +29,15 @@ class InvoiceController extends Controller
     public function index()
     {
         $user = Auth::user();
-        $bills = $user->getInvoices();
+        $current_year = session('current_year', now()->format('Y'));
+        $bills = $user->getInvoices($current_year);
 
         $invoice_id_number = $this->invoiceService->calculateNextInvoiceId($user);
         $invoice_id = $user->company->bill_prefix . $invoice_id_number;
         $company = $user->company;
         $schools = $user->getSchools();
 
-        return view('invoice.index', compact('bills', 'invoice_id', 'company', 'schools'));
+        return view('invoice.index', compact('bills', 'invoice_id', 'company', 'schools', 'current_year'));
     }
 
     /**
