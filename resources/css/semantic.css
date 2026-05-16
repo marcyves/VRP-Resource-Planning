@@ -418,7 +418,7 @@ main article > header h3 a {
 main article > header p {
     margin: 0 0 var(--spacing-2);
     font-size: 0.875rem;
-    color: oklch(0.45 0.02 264);
+    color: var(--text-muted);
 }
 
 main article > footer {

@@ -33,7 +33,7 @@
 .profile-form-container .form-description {
     max-width: 38rem;
     margin: 0;
-    color: oklch(0.45 0.02 264);
+    color: var(--text-muted);
     line-height: 1.5;
 }
 

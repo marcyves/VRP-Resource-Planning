@@ -135,7 +135,7 @@
     /* font-medium */
     border-radius: var(--rounded-md);
     /* rounded-md */
-    color: #6b7280;
+    color: var(--text-muted);
     /* text-gray-500 */
     background-color: white;
     /* bg-white */

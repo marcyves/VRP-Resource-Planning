@@ -187,7 +187,7 @@ main form.school-create-form .school-form-input .form-input {
     border: 1px solid #D1D5DB;
     border-radius: 0.375rem;
     font-weight: 600;
-    color: #6B7280;
+    color: var(--text-muted);
     text-decoration: none;
     transition: color 0.2s, border-color 0.2s;
 }
@@ -241,7 +241,7 @@ main .school-details-grid > section {
     padding: var(--spacing-4);
     font-size: 0.9375rem;
     font-style: italic;
-    color: oklch(0.45 0.02 264);
+    color: var(--text-muted);
     text-align: center;
 }
 
@@ -448,7 +448,7 @@ main form.school-upload-form > .upload-actions input[type="file"].form-input.sch
     font-weight: 600;
     letter-spacing: 0.04em;
     text-transform: uppercase;
-    color: oklch(0.45 0.02 264);
+    color: var(--text-muted);
 }
 
 .school-grid--inactive > li {
@@ -467,6 +467,6 @@ main form.school-upload-form > .upload-actions input[type="file"].form-input.sch
     margin: var(--spacing-2) 0 0;
     font-size: 0.8125rem;
     font-style: italic;
-    color: oklch(0.5 0.02 264);
+    color: var(--text-subtle);
     text-align: center;
 }

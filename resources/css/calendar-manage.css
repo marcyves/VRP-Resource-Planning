@@ -25,7 +25,7 @@
 .calendar-input-divider {
     text-align: center;
     font-weight: bold;
-    color: #9CA3AF;
+    color: var(--text-muted);
     padding: 0.5rem 0;
 }
 
@@ -69,7 +69,7 @@
     text-align: left;
     font-size: 0.75rem;
     font-weight: 500;
-    color: #6B7280;
+    color: var(--text-muted);
     text-transform: uppercase;
 }
 
@@ -88,7 +88,7 @@
 }
 
 .history-td-date {
-    color: #6B7280;
+    color: var(--text-muted);
 }
 
 .history-td-school {
@@ -97,7 +97,7 @@
 }
 
 .history-td-file {
-    color: #4B5563;
+    color: var(--text-subtle);
     font-style: italic;
 }
 
@@ -115,5 +115,5 @@
 .history-empty-state {
     padding: 2.5rem 1.5rem;
     text-align: center;
-    color: #6B7280;
+    color: var(--text-muted);
 }
