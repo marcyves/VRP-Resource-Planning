@@ -3,6 +3,38 @@
 body:has(> .maintenance-title) form.login-form {
     align-items: center;
     text-align: center;
+    padding: var(--spacing-6);
+}
+
+body:has(form.login-form) > .maintenance-logo {
+    display: none;
+}
+
+body:has(> .maintenance-title) form.login-form .login-card-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-3);
+    width: 100%;
+    margin: 0;
+    padding: 0 0 var(--spacing-2);
+    background: none;
+    border: none;
+    box-shadow: none;
+}
+
+body:has(> .maintenance-title) form.login-form .login-card-logo {
+    display: block;
+    width: min(10rem, 70%);
+    height: auto;
+    border-radius: var(--rounded-md);
+}
+
+body:has(> .maintenance-title) form.login-form .login-card-header h2 {
+    margin: 0;
+    color: oklch(1 0 0);
+    font-size: 1.25rem;
+    font-weight: 700;
 }
 
 body:has(> .maintenance-title) form.login-form .login-field {

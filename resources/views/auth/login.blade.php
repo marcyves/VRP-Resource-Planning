@@ -4,6 +4,11 @@
     <form method="POST" action="{{ route('login') }}" class="login-form">
         @csrf
 
+        <header class="login-card-header">
+            <h2>{{ __('Log in') }}</h2>
+            <img class="login-card-logo" src="{{ asset('images/VRP.jpeg') }}" alt="VRP" width="160">
+        </header>
+
         <div class="login-field">
             <x-text-input id="email"
                 type="email"
