@@ -16,6 +16,7 @@ class GroupController extends Controller
     {
         $user = Auth::user();
         $groups = $user->getGroups();
+        $current_year = session('current_year', now()->format('Y'));
         
         $search = request('search');
         $inactiveQuery = $user->getGroupsQuery(false);
@@ -34,9 +35,9 @@ class GroupController extends Controller
         $courses = GroupCourse::whereIn('group_id', $list)
             ->join('courses', 'courses.id', '=', 'group_course.course_id');
 
-        $occurences = $groups->getGroupOccurences();
+        $occurences = $groups->getGroupOccurences($current_year);
 
-        return view('group.index', compact('groups', 'occurences', 'inactive', 'courses'));
+        return view('group.index', compact('groups', 'occurences', 'inactive', 'courses', 'current_year'));
     }
 
     /**

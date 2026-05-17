@@ -55,6 +55,8 @@ return array(
   'semester' => 'Semester',
   'session_length' => 'Duration',
   'sessions' => 'Sessions',
+  'hide_sessions' => 'Hide sessions',
+  'show_sessions' => 'Show sessions',
   'short_name' => 'Short name',
   'size' => 'size',
   'time' => 'Time',

@@ -59,6 +59,36 @@ main .group-grid > *:hover {
     margin-bottom: 1rem;
 }
 
+.group-sessions-toggle {
+    align-self: flex-end;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    margin: calc(-1 * var(--spacing-2)) 0 var(--spacing-2);
+    padding: 0;
+    border: var(--border-standard);
+    border-radius: var(--rounded-md);
+    background: var(--surface-card);
+    color: var(--brand-primary);
+    cursor: pointer;
+}
+
+.group-sessions-toggle:hover {
+    color: var(--brand-accent);
+    box-shadow: var(--shadow-sm);
+}
+
+.group-sessions-toggle svg {
+    width: 1.15rem;
+    height: 1.15rem;
+}
+
+.group-sessions-list {
+    margin-top: var(--spacing-2);
+}
+
 .group-actions {
     display: flex;
     gap: 0.5rem;

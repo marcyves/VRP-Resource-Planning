@@ -76,6 +76,8 @@ return array(
   'semester' => 'Semestre',
   'session_length' => 'Durée',
   'sessions' => 'Sessions',
+  'hide_sessions' => 'Masquer les sessions',
+  'show_sessions' => 'Afficher les sessions',
   'short_name' => 'Nom abrégé',
   'size' => 'taille',
   'time' => 'Durée du cours',
