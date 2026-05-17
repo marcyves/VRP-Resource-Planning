@@ -96,6 +96,11 @@ main .group-grid > *:hover {
     margin-top: auto;
 }
 
+.group-archive-toggle svg {
+    display: block;
+    color: var(--brand-primary);
+}
+
 /* Detail View */
 .group-section-header {
     display: flex;

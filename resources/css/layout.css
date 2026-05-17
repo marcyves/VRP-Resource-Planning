@@ -133,7 +133,8 @@
 .icon.icon--delete,
 .icon.icon--add,
 .icon.icon--payed,
-.icon.icon--invoice-manual {
+.icon.icon--invoice-manual,
+.icon.icon--archive {
     box-sizing: border-box;
     width: 2rem;
     height: 2rem;
@@ -149,7 +150,8 @@
 .icon.icon--edit:hover,
 .icon.icon--add:hover,
 .icon.icon--payed:hover,
-.icon.icon--invoice-manual:hover {
+.icon.icon--invoice-manual:hover,
+.icon.icon--archive:hover {
     background: #ffffffbf;
     border-color: #00000038;
     box-shadow: var(--shadow-sm);
@@ -165,7 +167,8 @@
 .icon.icon--delete:focus-visible,
 .icon.icon--add:focus-visible,
 .icon.icon--payed:focus-visible,
-.icon.icon--invoice-manual:focus-visible {
+.icon.icon--invoice-manual:focus-visible,
+.icon.icon--archive:focus-visible {
     outline: 2px solid var(--brand-secondary);
     outline-offset: 2px;
 }
@@ -174,7 +177,8 @@
 .icon.icon--delete img,
 .icon.icon--add img,
 .icon.icon--payed img,
-.icon.icon--invoice-manual img {
+.icon.icon--invoice-manual img,
+.icon.icon--archive svg {
     width: 1.125rem;
     height: 1.125rem;
     max-width: 100%;

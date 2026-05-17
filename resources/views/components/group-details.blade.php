@@ -30,8 +30,22 @@
     @if(Auth::user()->getMode() == "Edit")
     <div class="group-actions">
         <form action="{{route('group.switch', $group->id)}}" method="get">
-            <button class="btn-text" type="submit" title="{{ $active ? __('messages.deactivate') : __('messages.activate') }}">
-                <img src="/icons/arrow-{{ $active ? 'down' : 'up' }}.svg" alt="{{ $active ? __('messages.down') : __('messages.up') }}" class="nav-user-icon">
+            <button class="icon icon--archive group-archive-toggle" type="submit" title="{{ $active ? __('messages.deactivate') : __('messages.activate') }}" aria-label="{{ $active ? __('messages.deactivate') : __('messages.activate') }}">
+                @if($active)
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M4 7.5h16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                    <path d="M6 7.5V19a1.5 1.5 0 0 0 1.5 1.5h9A1.5 1.5 0 0 0 18 19V7.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+                    <path d="M8 4h8l1.5 3.5h-11L8 4Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+                    <path d="M12 10.5v5.5m0 0 2.25-2.25M12 16l-2.25-2.25" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                @else
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M4 7.5h16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                    <path d="M6 7.5V19a1.5 1.5 0 0 0 1.5 1.5h9A1.5 1.5 0 0 0 18 19V7.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+                    <path d="M8 4h8l1.5 3.5h-11L8 4Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+                    <path d="M12 16V10.5m0 0 2.25 2.25M12 10.5l-2.25 2.25" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                @endif
             </button>
         </form>
         <form action="{{route('group.edit', $group->id)}}" method="get">
