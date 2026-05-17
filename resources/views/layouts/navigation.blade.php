@@ -24,6 +24,9 @@
         <x-nav-link :href="route('invoice.index')" :active="request()->routeIs('invoice.index')">
             {{ __('messages.invoices') }}
         </x-nav-link>
+        <x-nav-link :href="route('treasury.index')" :active="request()->routeIs('treasury.*')">
+            {{ __('messages.treasury') }}
+        </x-nav-link>
 
         <div class="toggle-system">
             <span class="toggle-label">{{ Auth::user()->getMode() }}</span>

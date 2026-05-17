@@ -1,12 +1,6 @@
 <x-app-layout>
 <x-slot name="header">
         <h2 class="header-title">{{ __('messages.dashboard') }}</h2>
-
-        <div class="dashboard-stats mt-4">
-            @foreach ($histograms as $histogram)
-            <x-histogram :values="$histogram" />
-            @endforeach
-        </div>
     </x-slot>
 
     <section class="dashboard-container">

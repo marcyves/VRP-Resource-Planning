@@ -13,6 +13,7 @@ use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\DateSelectionController;
 use App\Http\Controllers\CalendarFileController;
+use App\Http\Controllers\TreasuryController;
 use Illuminate\Support\Facades\DB;
 
 use Illuminate\Support\Facades\Route;
@@ -104,6 +105,18 @@ Route::middleware('auth')->group(function () {
     Route::get('/invoice/payed/{invoice_id}', [InvoiceController::class, 'payed'])->name('invoice.payed');
     Route::resource('/invoice', InvoiceController::class);
     Route::resource('/documents', DocumentController::class);
+
+    Route::get('/treasury', [TreasuryController::class, 'index'])->name('treasury.index');
+    Route::post('/treasury/balance', [TreasuryController::class, 'updateBalance'])->name('treasury.balance.update');
+    Route::get('/treasury/reports/{expenseReport}', [TreasuryController::class, 'showReport'])->name('treasury.reports.show');
+    Route::post('/treasury/reports/{expenseReport}/validate', [TreasuryController::class, 'validateReport'])->name('treasury.reports.validate');
+    Route::post('/treasury/reports/{expenseReport}/pay', [TreasuryController::class, 'payReport'])->name('treasury.reports.pay');
+    Route::get('/treasury/reports/{expenseReport}/pdf', [TreasuryController::class, 'downloadReportPdf'])->name('treasury.reports.pdf');
+    Route::get('/treasury/expenses/create', [TreasuryController::class, 'createExpense'])->name('treasury.expenses.create');
+    Route::post('/treasury/expenses', [TreasuryController::class, 'storeExpense'])->name('treasury.expenses.store');
+    Route::get('/treasury/expenses/{expense}/edit', [TreasuryController::class, 'editExpense'])->name('treasury.expenses.edit');
+    Route::put('/treasury/expenses/{expense}', [TreasuryController::class, 'updateExpense'])->name('treasury.expenses.update');
+    Route::delete('/treasury/expenses/{expense}', [TreasuryController::class, 'destroyExpense'])->name('treasury.expenses.destroy');
 
     Route::get('/company/', [CompanyController::class, 'show'])->name('company.show');
     Route::get('/company/{company_id}', [CompanyController::class, 'show'])->name('company.show_any');

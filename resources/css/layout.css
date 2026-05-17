@@ -134,6 +134,9 @@
 .icon.icon--add,
 .icon.icon--payed,
 .icon.icon--payment-restore,
+.icon.icon--validate,
+.icon.icon--validate-cancel,
+.icon.icon--pdf-download,
 .icon.icon--invoice-manual,
 .icon.icon--archive {
     box-sizing: border-box;
@@ -152,6 +155,9 @@
 .icon.icon--add:hover,
 .icon.icon--payed:hover,
 .icon.icon--payment-restore:hover,
+.icon.icon--validate:hover,
+.icon.icon--validate-cancel:hover,
+.icon.icon--pdf-download:hover,
 .icon.icon--invoice-manual:hover,
 .icon.icon--archive:hover {
     background: #ffffffbf;
@@ -170,6 +176,9 @@
 .icon.icon--add:focus-visible,
 .icon.icon--payed:focus-visible,
 .icon.icon--payment-restore:focus-visible,
+.icon.icon--validate:focus-visible,
+.icon.icon--validate-cancel:focus-visible,
+.icon.icon--pdf-download:focus-visible,
 .icon.icon--invoice-manual:focus-visible,
 .icon.icon--archive:focus-visible {
     outline: 2px solid var(--brand-secondary);
@@ -181,6 +190,9 @@
 .icon.icon--add img,
 .icon.icon--payed img,
 .icon.icon--payment-restore svg,
+.icon.icon--validate svg,
+.icon.icon--validate-cancel svg,
+.icon.icon--pdf-download svg,
 .icon.icon--invoice-manual img,
 .icon.icon--archive svg {
     width: 1.125rem;
@@ -193,6 +205,12 @@
 }
 
 .icon.icon--payment-restore svg {
+    color: var(--brand-primary);
+}
+
+.icon.icon--validate svg,
+.icon.icon--validate-cancel svg,
+.icon.icon--pdf-download svg {
     color: var(--brand-primary);
 }
 

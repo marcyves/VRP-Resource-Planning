@@ -66,37 +66,7 @@ class SchoolController extends Controller
         $years = $schools->getYears();
         session()->put('years', $years);
 
-        $bills_amount = Auth::user()->getInvoicesAmountPerYear($current_year);
-        $bills_payed_amount = Auth::user()->getInvoicesPayedAmountPerYear($current_year);
-        $bills_count = Auth::user()->getInvoicesCountPerYear($current_year);
-
-        $amounts = Auth::user()->getInvoicesAmountPerMonth($current_year);
-
-        $amounts_planned = Auth::user()->getPlannedAmountPerMonth($current_year);
-        $total_planned = 0;
-        foreach ($amounts_planned as $amount) {
-            $total_planned += $amount;
-        }
-
-        $solde = $bills_amount-$bills_payed_amount;
-        $not_planned = $bills_amount-$total_planned;
-
-        $histograms[] = [
-            'title' => "Factures : $bills_count Montant : " . number_format($bills_amount * 1.2, 2) .
-                       " € | Payé : ".number_format($bills_payed_amount * 1.2, 2).
-                       " € | Solde : ".number_format($solde* 1.2, 2).
-                       " € | Hors Planning : ".number_format($not_planned* 1.2, 2)." €",
-            'amounts' => $amounts,
-            'total' => $bills_amount
-        ];
-
-                $histograms[] = [
-            'title' => "Planning " . number_format($total_planned * 1.2, 2) . " €",
-            'amounts' => $amounts_planned,
-            'total' => $total_planned
-        ];
-
-        return view('dashboard', compact('schools', 'courses', 'current_year', 'current_semester', 'years', 'histograms'));
+        return view('dashboard', compact('schools', 'courses', 'current_year', 'current_semester', 'years'));
     }
 
     public function list()
