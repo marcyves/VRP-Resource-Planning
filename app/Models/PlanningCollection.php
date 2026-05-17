@@ -16,7 +16,7 @@ class PlanningCollection extends Collection
         });
 
         $query = Planning::whereIn('group_id', $list)
-        ->select(['group_id', 'courses.name as course_name', 'begin', 'end'])
+        ->select(['plannings.id as planning_id', 'group_id', 'courses.name as course_name', 'begin', 'end'])
         ->join('courses', 'plannings.course_id', '=', 'courses.id')
         ->orderBy('begin', 'asc');
 

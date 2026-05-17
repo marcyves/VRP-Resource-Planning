@@ -39,6 +39,7 @@ return array (
   'mark_as_paid' => 'Mark as paid',
   'semester' => 'Semester',
   'session_length' => 'Duration',
+  'session_locked_by_invoice' => 'This session is linked to an invoice and can no longer be edited or deleted.',
   'sessions' => 'Sessions',
   'hide_sessions' => 'Hide sessions',
   'show_sessions' => 'Show sessions',

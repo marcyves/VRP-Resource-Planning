@@ -306,6 +306,12 @@ class PlanningController extends Controller
     {
         try {
             $planning = Planning::findOrFail($id);
+            if ($planning->invoice_id) {
+                session()->flash('danger', __('messages.session_locked_by_invoice'));
+
+                return redirect()->back();
+            }
+
             $session_length = $planning->GetSessionLength();
 
             $day = $request->day;
@@ -348,6 +354,12 @@ class PlanningController extends Controller
     {
         try {
             $planning = Planning::findOrFail($id);
+            if ($planning->invoice_id) {
+                session()->flash('danger', __('messages.session_locked_by_invoice'));
+
+                return redirect()->back();
+            }
+
             $planning->delete();
 
             session()->flash('success', "Session effacée avec succès.");

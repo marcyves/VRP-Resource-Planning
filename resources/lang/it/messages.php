@@ -40,6 +40,7 @@ return array (
   'mark_as_paid' => 'Segna come pagata',
   'semester' => 'Semestro',
   'session_length' => 'Durata',
+  'session_locked_by_invoice' => 'Questa sessione è collegata a una fattura e non può più essere modificata o eliminata.',
   'sessions' => 'Sessioni',
   'hide_sessions' => 'Nascondi le sessioni',
   'show_sessions' => 'Mostra le sessioni',

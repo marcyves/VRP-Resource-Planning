@@ -16,13 +16,21 @@
     $end_time = explode(" ", $planning->end)[1];
     $end_hour = explode(":", $end_time)[0];
     $end_minutes = explode(":", $end_time)[1];
+    $session_locked = (bool) $planning->invoice_id;
     @endphp
 
     <section>
+        @if($session_locked)
+        <p class="planning-entry-locked">
+            {{ __('messages.session_locked_by_invoice') }}
+        </p>
+        @endif
+
         <form action="{{route('planning.update', $planning->id)}}" method="post" class="group-form">
             @csrf
             @method('put')
 
+            <fieldset {{ $session_locked ? 'disabled' : '' }}>
             <div class="form-group">
                 <label for="day" class="form-label">{{ __('messages.date') }}</label>
                 <div class="nav-form">
@@ -99,7 +107,8 @@
                 </select>
             </div>
 
-            <x-button-primary>{{ __('messages.plan') }}</x-button-primary>
+            <x-button-primary :disabled="$session_locked">{{ __('messages.plan') }}</x-button-primary>
+            </fieldset>
         </form>
     </section>
 </x-app-layout>

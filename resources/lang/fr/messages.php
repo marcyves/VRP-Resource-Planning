@@ -75,6 +75,7 @@ return array(
   'school_dashboard' => 'Tableau de bord',
   'semester' => 'Semestre',
   'session_length' => 'Durée',
+  'session_locked_by_invoice' => 'Cette session est liée à une facture et ne peut plus être modifiée ni supprimée.',
   'sessions' => 'Sessions',
   'hide_sessions' => 'Masquer les sessions',
   'show_sessions' => 'Afficher les sessions',

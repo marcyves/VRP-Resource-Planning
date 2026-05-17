@@ -63,9 +63,11 @@
 <ul class="flex-list group-sessions-list" x-show="showSessions" x-transition>
     @foreach($groupOccurences as $occurence)
     <li>
-        <strong class="group-session-course">{{$occurence->course_name}}</strong>
-        <span class="group-session-begin">{{ \Carbon\Carbon::parse($occurence->begin)->format('d/m/Y H:i') }}</span>
-        <span class="group-session-end">{{ \Carbon\Carbon::parse($occurence->end)->format('H:i') }}</span>
+        <a class="group-session-link" href="{{ route('planning.edit', $occurence->planning_id) }}">
+            <strong class="group-session-course">{{$occurence->course_name}}</strong>
+            <span class="group-session-begin">{{ \Carbon\Carbon::parse($occurence->begin)->format('d/m/Y H:i') }}</span>
+            <span class="group-session-end">{{ \Carbon\Carbon::parse($occurence->end)->format('H:i') }}</span>
+        </a>
     </li>
     @endforeach
 </ul>

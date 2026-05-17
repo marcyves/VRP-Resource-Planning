@@ -23,12 +23,12 @@
                 {{ \Carbon\Carbon::parse($event->end)->format('H:i') }}: {{ number_format($event->session_length * $event->rate, 2) }} €
             </div>
             @if($event->invoice_id)
-            <div class="planning-event-invoice">
+            <div class="planning-entry-locked" title="{{ __('messages.session_locked_by_invoice') }}">
                 {{ $event->invoice_id }}
             </div>
             @endif
         </div>
-        @if(Auth::user()->getMode() == "Edit")
+        @if(Auth::user()->getMode() == "Edit" && !$event->invoice_id)
         <div class="planning-tools">
             <a href="{{route('planning.edit',$event->id)}}" title="{{ __('messages.edit') }}">
                 <x-button-edit />

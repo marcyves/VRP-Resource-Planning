@@ -21,3 +21,23 @@
     white-space: nowrap;
     border-radius: 0 0 6px 6px;
 }
+
+.planning-entry-locked {
+    display: inline-flex;
+    align-items: center;
+    width: fit-content;
+    margin-top: var(--spacing-2);
+    padding: var(--spacing-1) var(--spacing-2);
+    border: 1px solid #15803d;
+    border-radius: var(--rounded-md);
+    background: #dcfce7;
+    color: #14532d;
+    font-size: 0.8125rem;
+    font-weight: 700;
+}
+
+main form.group-form fieldset {
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
