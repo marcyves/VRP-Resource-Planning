@@ -50,20 +50,32 @@
                     </td>
                     @if(Auth::user()->getMode() == "Edit")
                     <td class="card-actions">
+                        @php
+                        $isPaid = $bill->paid_at !== null;
+                        @endphp
                         <a href="{{route('invoice.show', $bill->id)}}" class="btn-icon" title="{{ __('messages.view') }}">
                             <x-button-view />
                         </a>
                         <form class="inline-form" action="{{route('invoice.payed', $bill->id)}}" method="get">
-                            <x-button-payed />
+                            <x-button-payed :paid="$isPaid" />
                         </form>
-                        <form class="inline-form" action="{{route('invoice.edit', $bill->id)}}" method="get">
-                            <x-button-edit />
-                        </form>
-                        <form class="inline-form" action="{{route('invoice.destroy', $bill->id)}}" method="post">
-                            @csrf
-                            @method('delete')
-                            <x-button-delete />
-                        </form>
+                        @if($isPaid)
+                        <button class="icon icon--edit icon--disabled" type="button" aria-label="{{ __('messages.invoice_paid_locked') }}" disabled>
+                            <img src="{{ asset('icons/edit.svg') }}" alt="" width="18" height="18" decoding="async">
+                        </button>
+                        <button class="icon icon--delete icon--disabled" type="button" aria-label="{{ __('messages.invoice_paid_locked') }}" disabled>
+                            <img src="{{ asset('icons/trash.svg') }}" alt="" width="18" height="18" decoding="async">
+                        </button>
+                        @else
+                            <form class="inline-form" action="{{route('invoice.edit', $bill->id)}}" method="get">
+                                <x-button-edit />
+                            </form>
+                            <form class="inline-form" action="{{route('invoice.destroy', $bill->id)}}" method="post">
+                                @csrf
+                                @method('delete')
+                                <x-button-delete />
+                            </form>
+                        @endif
                     </td>
                     @endif
                 </tr>

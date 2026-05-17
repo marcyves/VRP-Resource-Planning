@@ -56,6 +56,8 @@ return array(
   'invoice_list' => 'Factures',
   'invoice_payed' => 'Facture payée',
   'mark_as_paid' => 'Marquer comme payée',
+  'cancel_payment' => 'Annuler le paiement',
+  'invoice_paid_locked' => 'Une facture payée ne peut plus être modifiée ni supprimée.',
   'invoice_details' => 'Détails d\'une facture',
   'invoice_edit' => 'Modifier une facture',
   'invoice_delete' => 'Supprimer une facture',

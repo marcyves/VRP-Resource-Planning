@@ -133,6 +133,7 @@
 .icon.icon--delete,
 .icon.icon--add,
 .icon.icon--payed,
+.icon.icon--payment-restore,
 .icon.icon--invoice-manual,
 .icon.icon--archive {
     box-sizing: border-box;
@@ -150,6 +151,7 @@
 .icon.icon--edit:hover,
 .icon.icon--add:hover,
 .icon.icon--payed:hover,
+.icon.icon--payment-restore:hover,
 .icon.icon--invoice-manual:hover,
 .icon.icon--archive:hover {
     background: #ffffffbf;
@@ -167,6 +169,7 @@
 .icon.icon--delete:focus-visible,
 .icon.icon--add:focus-visible,
 .icon.icon--payed:focus-visible,
+.icon.icon--payment-restore:focus-visible,
 .icon.icon--invoice-manual:focus-visible,
 .icon.icon--archive:focus-visible {
     outline: 2px solid var(--brand-secondary);
@@ -177,6 +180,7 @@
 .icon.icon--delete img,
 .icon.icon--add img,
 .icon.icon--payed img,
+.icon.icon--payment-restore svg,
 .icon.icon--invoice-manual img,
 .icon.icon--archive svg {
     width: 1.125rem;
@@ -186,6 +190,19 @@
     object-fit: contain;
     display: block;
     filter: none;
+}
+
+.icon.icon--payment-restore svg {
+    color: var(--brand-primary);
+}
+
+.icon.icon--disabled,
+.icon.icon--disabled:hover {
+    opacity: 0.35;
+    cursor: not-allowed;
+    background: #00000000;
+    border-color: #00000024;
+    box-shadow: none;
 }
 
 /* Bouton « voir » PDF : proportions proches du logo, sans étirement en carré */

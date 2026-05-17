@@ -38,6 +38,8 @@ return array (
   'invoices_by_school' => 'Fatture per scuola',
   'invoice_create' => 'Crea fattura',
   'mark_as_paid' => 'Segna come pagata',
+  'cancel_payment' => 'Annulla il pagamento',
+  'invoice_paid_locked' => 'Una fattura pagata non può più essere modificata o eliminata.',
   'semester' => 'Semestro',
   'session_length' => 'Durata',
   'session_locked_by_invoice' => 'Questa sessione è collegata a una fattura e non può più essere modificata o eliminata.',

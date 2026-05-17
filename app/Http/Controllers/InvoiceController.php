@@ -166,6 +166,12 @@ class InvoiceController extends Controller
      */
     public function edit(Invoice $invoice)
     {
+        if ($invoice->paid_at) {
+            session()->flash('danger', __('messages.invoice_paid_locked'));
+
+            return redirect()->route('invoice.index');
+        }
+
         return view('invoice.edit', compact('invoice'));
     }
 
@@ -174,6 +180,12 @@ class InvoiceController extends Controller
      */
     public function update(Request $request, Invoice $invoice)
     {
+        if ($invoice->paid_at) {
+            session()->flash('danger', __('messages.invoice_paid_locked'));
+
+            return redirect()->route('invoice.index');
+        }
+
         $validated = $request->validate([
             'id' => 'required',
             'description' => 'required'
@@ -203,9 +215,13 @@ class InvoiceController extends Controller
     {
         try {
             $bill = Invoice::findOrFail($invoice_id);
-            $bill->paid_at = Carbon::now();
+            $wasPaid = $bill->paid_at !== null;
+            $bill->paid_at = $wasPaid ? null : Carbon::now();
             $bill->save();
-            session()->flash('success', "Facture " . $bill->id . " payée avec succès.");
+            session()->flash('success', $wasPaid
+                ? "Paiement de la facture " . $bill->id . " annulé avec succès."
+                : "Facture " . $bill->id . " payée avec succès."
+            );
             return redirect()->back();
         } catch (\Exception $e) {
             session()->flash('danger', "Erreur lors du payement de la facture: " . $e->getMessage());
@@ -218,6 +234,12 @@ class InvoiceController extends Controller
     public function destroy(Invoice $invoice)
     {
         try {
+            if ($invoice->paid_at) {
+                session()->flash('danger', __('messages.invoice_paid_locked'));
+
+                return redirect()->back();
+            }
+
             $invoice->delete();
             $planning_list = Planning::where('invoice_id', Auth::user()->company->bill_prefix . $invoice->id)->get();
 

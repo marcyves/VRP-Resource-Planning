@@ -20,6 +20,8 @@ return array(
   'edit' => 'Edit',
   'gain' => 'Gain',
   'mark_as_paid' => 'Mark as paid',
+  'cancel_payment' => 'Cancel payment',
+  'invoice_paid_locked' => 'A paid invoice can no longer be edited or deleted.',
   'group_create' => 'Create Group',
   'groups' => 'Groups',
   'groups_available' => 'Available Groups',

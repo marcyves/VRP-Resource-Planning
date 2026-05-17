@@ -37,6 +37,8 @@ return array (
   'invoices_by_school' => 'Bills by Client',
   'invoice_create' => 'Create bill',
   'mark_as_paid' => 'Mark as paid',
+  'cancel_payment' => 'Cancel payment',
+  'invoice_paid_locked' => 'A paid invoice can no longer be edited or deleted.',
   'semester' => 'Semester',
   'session_length' => 'Duration',
   'session_locked_by_invoice' => 'This session is linked to an invoice and can no longer be edited or deleted.',
