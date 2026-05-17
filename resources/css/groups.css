@@ -1,6 +1,7 @@
 /* Group Views Styles */
 
-.group-grid {
+.group-grid,
+.group-list {
     display: grid;
     grid-template-columns: repeat(1, 1fr);
     gap: 1.5rem;
@@ -8,22 +9,16 @@
     list-style: none;
 }
 
-.group-list {
-    display: flex;
-    flex-direction: row;
-    gap: 1.5rem;
-    padding: 0;
-    list-style: none;
-}
-
 @media (min-width: 640px) {
-    .group-grid {
+    .group-grid,
+    .group-list {
         grid-template-columns: repeat(2, 1fr);
     }
 }
 
 @media (min-width: 1024px) {
-    .group-grid {
+    .group-grid,
+    .group-list {
         grid-template-columns: repeat(3, 1fr);
     }
 }
@@ -86,7 +81,42 @@ main .group-grid > *:hover {
 }
 
 .group-sessions-list {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--spacing-1);
     margin-top: var(--spacing-2);
+    margin-left: 0;
+    padding-left: 0;
+    width: 100%;
+}
+
+.group-sessions-list li {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) max-content max-content;
+    gap: var(--spacing-2);
+    align-items: baseline;
+    width: 100%;
+    min-width: 0;
+    font-size: 0.8125rem;
+}
+
+.group-session-course {
+    min-width: 0;
+    overflow: hidden;
+    color: var(--brand-primary);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.group-session-begin,
+.group-session-end {
+    color: var(--text-muted);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+}
+
+.group-session-end::before {
+    content: "- ";
 }
 
 .group-actions {

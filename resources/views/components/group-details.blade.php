@@ -63,9 +63,9 @@
 <ul class="flex-list group-sessions-list" x-show="showSessions" x-transition>
     @foreach($groupOccurences as $occurence)
     <li>
-        <strong>{{$occurence->course_name}}</strong>:
-        {{ \Carbon\Carbon::parse($occurence->begin)->format('d/m/Y H:i') }} -
-        {{ \Carbon\Carbon::parse($occurence->end)->format('H:i') }}
+        <strong class="group-session-course">{{$occurence->course_name}}</strong>
+        <span class="group-session-begin">{{ \Carbon\Carbon::parse($occurence->begin)->format('d/m/Y H:i') }}</span>
+        <span class="group-session-end">{{ \Carbon\Carbon::parse($occurence->end)->format('H:i') }}</span>
     </li>
     @endforeach
 </ul>
