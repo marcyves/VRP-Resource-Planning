@@ -2,6 +2,8 @@
 .course-table {
     background-color: #ffffff4c;
     width: 100%;
+    min-width: 72rem;
+    table-layout: fixed;
     margin-top: 1rem;
     box-shadow: 0 4px 6px 1px #0000001a,
         0 2px 4px 1px #0000000f;
@@ -12,9 +14,75 @@
     border-radius: 0.4rem;
 }
 
+.course-table-container {
+    overflow-x: auto;
+}
+
+.course-table th,
+.course-table td {
+    overflow-wrap: anywhere;
+}
+
+.course-table :is(th, td):nth-child(1) {
+    width: 10%;
+    text-align: center;
+}
+
+.course-table :is(th, td):nth-child(2) {
+    width: 15%;
+    text-align: left;
+}
+
+.course-table :is(th, td):nth-child(3),
+.course-table :is(th, td):nth-child(4),
+.course-table :is(th, td):nth-child(5),
+.course-table :is(th, td):nth-child(6),
+.course-table :is(th, td):nth-child(7),
+.course-table :is(th, td):nth-child(8),
+.course-table :is(th, td):nth-child(9) {
+    width: 5%;
+    text-align: center;
+}
+
+.course-table :is(th, td):nth-child(10) {
+    width: 8%;
+    text-align: center;
+}
+
+.course-table :is(th, td):nth-child(11) {
+    width: 12%;
+    text-align: center;
+    white-space: nowrap;
+}
+
+.course-table :is(th, td):nth-child(12) {
+    width: 10%;
+}
+
+.course-table td:last-child:has(form) {
+    display: table-cell;
+    text-align: right;
+    white-space: nowrap;
+}
+
+.course-table__actions-form {
+    display: inline;
+}
+
 .course-table th {
     font-weight: bold;
 }
+
+.course-table tbody th[scope="row"],
+.course-table tbody th[scope="row"] .btn-text-link {
+    text-align: left;
+}
+
+.course-table tbody th[scope="row"] form {
+    display: flex;
+    justify-content: flex-start;
+}
+
 .course-table tr th:first-child {
     padding-left: 1rem;
 }

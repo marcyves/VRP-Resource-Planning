@@ -1,6 +1,6 @@
 @props(['course'])
 <tr>
-    <td>
+    <td class="course-table__actions">
         <form action="{{ route('program.show', $course->program_id) }}" method="get">
             @csrf
             <x-button-primary class="btn-text-link">{{ $course->program_name }}</x-button-primary>
@@ -29,14 +29,14 @@
     <td>@money($course->rate * $course->session_length * $course->sessions * $course->groups_count)</td>
     @if (Auth::user()->getMode() == 'Edit')
     <td>
-        <form action="{{ route('course.edit', $course->id) }}" method="get">
-            <x-button-edit />
-        </form>
-        <form action="{{ route('course.destroy', $course->id) }}" method="post">
-            @csrf
-            @method('delete')
-            <x-button-delete />
-        </form>
+            <form action="{{ route('course.edit', $course->id) }}" method="get" class="course-table__actions-form">
+                <x-button-edit />
+            </form>
+            <form action="{{ route('course.destroy', $course->id) }}" method="post" class="course-table__actions-form">
+                @csrf
+                @method('delete')
+                <x-button-delete />
+            </form>
     </td>
     @endif
 </tr>

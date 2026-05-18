@@ -11,7 +11,9 @@
             <th scope="col">{{ __('messages.recurring') }}</th>
             <th scope="col">{{ __('messages.rate') }}</th>
             <th scope="col">{{ __('messages.gain') }}</th>
-            <th scope="col" class="sr-only">{{ __('messages.actions') }}</th>
+            <th scope="col">
+                <span class="sr-only">{{ __('messages.actions') }}</span>
+            </th>
         </tr>
 </thead>
 <tbody>
