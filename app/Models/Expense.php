@@ -14,6 +14,7 @@ class Expense extends Model
         'company_id',
         'expense_report_id',
         'expense_date',
+        'payment_date',
         'label',
         'vendor',
         'amount',

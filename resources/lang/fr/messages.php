@@ -287,4 +287,11 @@ return array(
   'treasury_balance_saved' => 'Solde de départ enregistré avec succès.',
   'monthly_treasury_histogram' => 'Histogramme mensuel',
   'planned_amounts' => 'Montants planifiés',
+  'payment_date' => 'Date de paiement',
+  'submitted_expense_reports' => 'Notes de frais soumises',
+  'validated_expense_reports' => 'Notes de frais validées',
+  'paid_expense_reports' => 'Notes de frais payées',
+  'submitted' => 'Soumises',
+  'validated' => 'Validées',
+  'paid' => 'Payées',
 );

@@ -287,7 +287,7 @@ class InvoiceGenerator extends TCPDF
   public function Header()
   {
     // Logo
-    $image_file = 'logo-XDM.png';
+    $image_file = public_path('icons/logo-XDM.png');
     $this->Image($image_file, 10, 10, 20, '', 'PNG', '', 'T', false, 300, '', false, false, 0, false, false, false);
     // Set font
     $this->setTitleFont();

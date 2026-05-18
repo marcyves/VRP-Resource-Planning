@@ -40,6 +40,15 @@ class TreasuryController extends Controller
             ->get();
 
         $expenseTotal = $reports->sum(fn ($report) => $report->expenses->sum('amount'));
+        $submittedExpenseReportTotal = $reports
+            ->where('status', 'draft')
+            ->sum(fn ($report) => $report->expenses->sum('amount'));
+        $validatedExpenseReportTotal = $reports
+            ->where('status', 'validated')
+            ->sum(fn ($report) => $report->expenses->sum('amount'));
+        $paidExpenseReportTotal = $reports
+            ->where('status', 'paid')
+            ->sum(fn ($report) => $report->expenses->sum('amount'));
         $standaloneTotal = $standaloneExpenses->sum('amount');
         $allExpenses = Expense::where('company_id', $companyId)
             ->whereYear('expense_date', $year)
@@ -56,7 +65,12 @@ class TreasuryController extends Controller
                 'opening_amount' => 0,
             ]
         );
-        $closingBalance = $treasuryBalance->opening_amount + $invoicePaidTotal - $expenseTotal - $standaloneTotal;
+        $closingBalance = $treasuryBalance->opening_amount
+            + $invoicePaidTotal
+            - $submittedExpenseReportTotal
+            - $validatedExpenseReportTotal
+            - $paidExpenseReportTotal
+            - $standaloneTotal;
 
         return view('treasury.index', compact(
             'year',
@@ -65,6 +79,9 @@ class TreasuryController extends Controller
             'reports',
             'standaloneExpenses',
             'expenseTotal',
+            'submittedExpenseReportTotal',
+            'validatedExpenseReportTotal',
+            'paidExpenseReportTotal',
             'standaloneTotal',
             'treasuryBalance',
             'closingBalance',
@@ -154,7 +171,7 @@ class TreasuryController extends Controller
         return redirect()->route('treasury.reports.show', $expenseReport);
     }
 
-    public function payReport(ExpenseReport $expenseReport)
+    public function payReport(Request $request, ExpenseReport $expenseReport)
     {
         $this->authorizeCompany($expenseReport);
 
@@ -171,10 +188,14 @@ class TreasuryController extends Controller
 
         abort_unless($expenseReport->status === 'validated', 403);
 
+        $validated = $request->validate([
+            'payment_date' => 'required|date',
+        ]);
+
         $expenseReport->update([
             'status' => 'paid',
             'submitted_at' => $expenseReport->submitted_at ?? now()->toDateString(),
-            'reimbursed_at' => now()->toDateString(),
+            'reimbursed_at' => $validated['payment_date'],
         ]);
 
         session()->flash('success', __('messages.expense_report_paid'));
@@ -198,7 +219,10 @@ class TreasuryController extends Controller
 
     public function storeExpense(Request $request)
     {
-        $expense = Expense::create($this->expenseAttributes($request));
+        $attributes = $this->expenseAttributes($request);
+        $expense = $request->boolean('is_recurring') && filled($attributes['recurring_until'])
+            ? $this->createRecurringExpenses($attributes, $request)
+            : Expense::create($attributes);
 
         session()->flash('success', __('messages.expense_saved'));
 
@@ -236,10 +260,11 @@ class TreasuryController extends Controller
             : redirect()->route('treasury.index');
     }
 
-    private function expenseAttributes(Request $request): array
+    private function expenseAttributes(Request $request, ?Carbon $expenseDate = null, ?Carbon $paymentDate = null): array
     {
         $validated = $request->validate([
             'expense_date' => 'required|date',
+            'payment_date' => 'nullable|date',
             'label' => 'required|max:255',
             'vendor' => 'nullable|max:255',
             'amount' => 'required|numeric|min:0',
@@ -250,15 +275,16 @@ class TreasuryController extends Controller
             'include_in_expense_report' => 'nullable|boolean',
             'is_recurring' => 'nullable|boolean',
             'recurring_frequency' => 'nullable|required_if:is_recurring,1|in:monthly,yearly',
-            'recurring_until' => 'nullable|date|after_or_equal:expense_date',
+            'recurring_until' => 'nullable|required_if:is_recurring,1|date|after_or_equal:expense_date',
             'notes' => 'nullable',
         ]);
 
-        $date = Carbon::parse($validated['expense_date']);
+        $date = $expenseDate ?: Carbon::parse($validated['expense_date']);
+        $paidAt = $paymentDate ?: ($validated['payment_date'] ?? null);
         $reportId = null;
 
         if ($request->boolean('include_in_expense_report') || $request->filled('expense_report_id')) {
-            $report = $request->filled('expense_report_id')
+            $report = $request->filled('expense_report_id') && !$request->boolean('is_recurring')
                 ? ExpenseReport::findOrFail($validated['expense_report_id'])
                 : ExpenseReport::firstOrCreate([
                     'company_id' => Auth::user()->company_id,
@@ -273,11 +299,12 @@ class TreasuryController extends Controller
         return [
             'company_id' => Auth::user()->company_id,
             'expense_report_id' => $reportId,
-            'expense_date' => $validated['expense_date'],
+            'expense_date' => $date->toDateString(),
+            'payment_date' => $paidAt ? Carbon::parse($paidAt)->toDateString() : null,
             'label' => $validated['label'],
             'vendor' => $validated['vendor'] ?? null,
             'amount' => $validated['amount'],
-            'tax_amount' => $validated['tax_amount'] ?? null,
+            'tax_amount' => $validated['tax_amount'] ?? $this->defaultTaxAmount($validated['amount']),
             'category' => $validated['category'] ?? null,
             'payment_method' => $validated['payment_method'] ?? null,
             'is_recurring' => $request->boolean('is_recurring'),
@@ -285,6 +312,36 @@ class TreasuryController extends Controller
             'recurring_until' => $request->boolean('is_recurring') ? ($validated['recurring_until'] ?? null) : null,
             'notes' => $validated['notes'] ?? null,
         ];
+    }
+
+    private function createRecurringExpenses(array $attributes, Request $request): Expense
+    {
+        $date = Carbon::parse($attributes['expense_date']);
+        $paymentDate = $attributes['payment_date'] ? Carbon::parse($attributes['payment_date']) : null;
+        $until = Carbon::parse($attributes['recurring_until']);
+        $frequency = $attributes['recurring_frequency'];
+        $firstExpense = null;
+
+        while ($date->lessThanOrEqualTo($until)) {
+            $occurrenceAttributes = $this->expenseAttributes($request, $date, $paymentDate);
+            $expense = Expense::create($occurrenceAttributes);
+            $firstExpense ??= $expense;
+
+            if ($frequency === 'yearly') {
+                $date->addYearNoOverflow();
+                $paymentDate?->addYearNoOverflow();
+            } else {
+                $date->addMonthNoOverflow();
+                $paymentDate?->addMonthNoOverflow();
+            }
+        }
+
+        return $firstExpense;
+    }
+
+    private function defaultTaxAmount(float|int|string $amount): float
+    {
+        return round((float) $amount / 6, 2);
     }
 
     private function authorizeCompany(Expense|ExpenseReport|TreasuryBalance $record): void
@@ -368,9 +425,9 @@ class TreasuryController extends Controller
         $pdf->SetAutoPageBreak(true, 12);
         $pdf->AddPage();
 
-        $logo = public_path('images/xdm.svg');
+        $logo = public_path('icons/logo-XDM.png');
         if (file_exists($logo)) {
-            $pdf->ImageSVG($logo, 10, 10, 22);
+            $pdf->Image($logo, 10, 10, 22, '', 'PNG', '', 'T', false, 300, '', false, false, 0, false, false, false);
         }
 
         $pdf->SetFont('helvetica', 'B', 16);
@@ -401,18 +458,23 @@ class TreasuryController extends Controller
         $pdf->Cell(86, 5, __('messages.beneficiary') . ': ' . $beneficiary, 0, 1);
         $pdf->SetX(107);
         $pdf->Cell(86, 5, __('messages.status') . ': ' . __('messages.expense_report_status_' . $expenseReport->status), 0, 1);
+        if ($expenseReport->reimbursed_at) {
+            $pdf->SetX(107);
+            $pdf->Cell(86, 5, __('messages.payment_date') . ': ' . Carbon::parse($expenseReport->reimbursed_at)->format('d/m/Y'), 0, 1);
+        }
 
         $tableY = $y + 52;
         $pdf->SetXY(10, $tableY);
         $pdf->SetFillColor(230, 230, 230);
         $pdf->SetFont('helvetica', 'B', 9);
-        $pdf->Cell(22, 7, __('messages.date'), 1, 0, 'L', true);
-        $pdf->Cell(55, 7, __('messages.description'), 1, 0, 'L', true);
-        $pdf->Cell(32, 7, __('messages.category'), 1, 0, 'L', true);
-        $pdf->Cell(24, 7, __('messages.vendor'), 1, 0, 'L', true);
-        $pdf->Cell(17, 7, __('messages.amount_ht'), 1, 0, 'R', true);
-        $pdf->Cell(17, 7, __('messages.tax_amount'), 1, 0, 'R', true);
-        $pdf->Cell(18, 7, __('messages.amount_ttc'), 1, 1, 'R', true);
+        $pdf->Cell(20, 7, __('messages.date'), 1, 0, 'L', true);
+        $pdf->Cell(20, 7, __('messages.payment_date'), 1, 0, 'L', true);
+        $pdf->Cell(45, 7, __('messages.description'), 1, 0, 'L', true);
+        $pdf->Cell(28, 7, __('messages.category'), 1, 0, 'L', true);
+        $pdf->Cell(23, 7, __('messages.vendor'), 1, 0, 'L', true);
+        $pdf->Cell(16, 7, __('messages.amount_ht'), 1, 0, 'R', true);
+        $pdf->Cell(16, 7, __('messages.tax_amount'), 1, 0, 'R', true);
+        $pdf->Cell(17, 7, __('messages.amount_ttc'), 1, 1, 'R', true);
 
         $pdf->SetFont('helvetica', '', 8);
         $totalHt = 0;
@@ -424,20 +486,21 @@ class TreasuryController extends Controller
             $totalHt += $ht;
             $totalTax += $tax;
             $totalTtc += $expense->amount;
-            $pdf->Cell(22, 6, Carbon::parse($expense->expense_date)->format('d/m/Y'), 1);
-            $pdf->Cell(55, 6, $expense->label, 1);
-            $pdf->Cell(32, 6, $expense->category, 1);
-            $pdf->Cell(24, 6, $expense->vendor, 1);
-            $pdf->Cell(17, 6, $this->formatPdfMoney($ht), 1, 0, 'R');
-            $pdf->Cell(17, 6, $this->formatPdfMoney($tax), 1, 0, 'R');
-            $pdf->Cell(18, 6, $this->formatPdfMoney($expense->amount), 1, 1, 'R');
+            $pdf->Cell(20, 6, Carbon::parse($expense->expense_date)->format('d/m/Y'), 1);
+            $pdf->Cell(20, 6, $expense->payment_date ? Carbon::parse($expense->payment_date)->format('d/m/Y') : '', 1);
+            $pdf->Cell(45, 6, $expense->label, 1);
+            $pdf->Cell(28, 6, $expense->category, 1);
+            $pdf->Cell(23, 6, $expense->vendor, 1);
+            $pdf->Cell(16, 6, $this->formatPdfMoney($ht), 1, 0, 'R');
+            $pdf->Cell(16, 6, $this->formatPdfMoney($tax), 1, 0, 'R');
+            $pdf->Cell(17, 6, $this->formatPdfMoney($expense->amount), 1, 1, 'R');
         }
 
         $pdf->SetFont('helvetica', 'B', 10);
-        $pdf->Cell(133, 8, __('messages.total'), 1, 0, 'R', true);
-        $pdf->Cell(17, 8, $this->formatPdfMoney($totalHt), 1, 0, 'R', true);
-        $pdf->Cell(17, 8, $this->formatPdfMoney($totalTax), 1, 0, 'R', true);
-        $pdf->Cell(18, 8, $this->formatPdfMoney($totalTtc), 1, 1, 'R', true);
+        $pdf->Cell(136, 8, __('messages.total'), 1, 0, 'R', true);
+        $pdf->Cell(16, 8, $this->formatPdfMoney($totalHt), 1, 0, 'R', true);
+        $pdf->Cell(16, 8, $this->formatPdfMoney($totalTax), 1, 0, 'R', true);
+        $pdf->Cell(17, 8, $this->formatPdfMoney($totalTtc), 1, 1, 'R', true);
 
         return $pdf;
     }

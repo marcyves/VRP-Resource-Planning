@@ -58,9 +58,21 @@
                             <th>{{ __('messages.paid_invoices_ttc') }}</th>
                             <td class="money">@money($invoicePaidTotal)</td>
                         </tr>
-                        <tr>
+                        <tr class="treasury-summary-table__group">
                             <th>{{ __('messages.expense_reports') }}</th>
-                            <td class="money">- @money($expenseTotal)</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <th>{{ __('messages.submitted') }}</th>
+                            <td class="money">- @money($submittedExpenseReportTotal)</td>
+                        </tr>
+                        <tr>
+                            <th>{{ __('messages.validated') }}</th>
+                            <td class="money">- @money($validatedExpenseReportTotal)</td>
+                        </tr>
+                        <tr>
+                            <th>{{ __('messages.paid') }}</th>
+                            <td class="money">- @money($paidExpenseReportTotal)</td>
                         </tr>
                         <tr>
                             <th>{{ __('messages.standalone_expenses') }}</th>
@@ -88,9 +100,16 @@
             <div class="treasury-report-list">
                 @foreach($reports as $report)
                     <a class="treasury-report-card" href="{{ route('treasury.reports.show', $report) }}">
-                        <h4>@monthName($report->month) {{ $report->year }}</h4>
-                        <strong>@money($report->expenses->sum('amount'))</strong>
-                        <span>{{ $report->expenses->count() }} {{ __('messages.expenses') }}</span>
+                        <div class="treasury-report-card__main">
+                            <h4>@monthName($report->month) {{ $report->year }}</h4>
+                            <strong>@money($report->expenses->sum('amount'))</strong>
+                        </div>
+                        <div class="treasury-report-card__meta">
+                            <span>{{ $report->expenses->count() }} {{ __('messages.expenses') }}</span>
+                            <span class="treasury-status treasury-status--{{ $report->status }}">
+                                {{ __('messages.expense_report_status_' . $report->status) }}
+                            </span>
+                        </div>
                     </a>
                 @endforeach
             </div>
@@ -110,6 +129,7 @@
                 <thead>
                     <tr>
                         <th>{{ __('messages.date') }}</th>
+                        <th>{{ __('messages.payment_date') }}</th>
                         <th>{{ __('messages.description') }}</th>
                         <th>{{ __('messages.category') }}</th>
                         <th>{{ __('messages.amount') }}</th>
@@ -123,6 +143,7 @@
                     @foreach($standaloneExpenses as $expense)
                     <tr>
                         <td>@formatDate($expense->expense_date)</td>
+                        <td>@formatDate($expense->payment_date)</td>
                         <td>{{ $expense->label }}</td>
                         <td>{{ $expense->category }}</td>
                         <td class="money">@money($expense->amount)</td>

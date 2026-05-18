@@ -20,6 +20,12 @@
             </div>
 
             <div class="form-group">
+                <x-input-label for="payment_date" :value="__('messages.payment_date')" />
+                <x-text-input id="payment_date" name="payment_date" type="date" :value="old('payment_date', $expense->payment_date)" />
+                <x-input-error :messages="$errors->get('payment_date')" />
+            </div>
+
+            <div class="form-group">
                 <x-input-label for="label" :value="__('messages.description')" />
                 <x-text-input id="label" name="label" type="text" :value="old('label', $expense->label)" required />
                 <x-input-error :messages="$errors->get('label')" />
@@ -78,11 +84,13 @@
                     <option value="monthly" @selected(old('recurring_frequency', $expense->recurring_frequency) === 'monthly')>{{ __('messages.monthly') }}</option>
                     <option value="yearly" @selected(old('recurring_frequency', $expense->recurring_frequency) === 'yearly')>{{ __('messages.yearly') }}</option>
                 </select>
+                <x-input-error :messages="$errors->get('recurring_frequency')" />
             </div>
 
             <div class="form-group">
                 <x-input-label for="recurring_until" :value="__('messages.recurring_until')" />
                 <x-text-input id="recurring_until" name="recurring_until" type="date" :value="old('recurring_until', $expense->recurring_until)" />
+                <x-input-error :messages="$errors->get('recurring_until')" />
             </div>
 
             <div class="form-actions">
@@ -91,4 +99,27 @@
             </div>
         </form>
     </section>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const amountInput = document.getElementById('amount');
+            const taxInput = document.getElementById('tax_amount');
+            let lastAutoTax = taxInput?.value === '' ? '' : null;
+
+            amountInput?.addEventListener('input', () => {
+                if (!taxInput || (taxInput.value !== '' && taxInput.value !== lastAutoTax)) {
+                    return;
+                }
+
+                const amount = Number.parseFloat(amountInput.value);
+                if (Number.isNaN(amount)) {
+                    taxInput.value = '';
+                    lastAutoTax = '';
+                    return;
+                }
+
+                lastAutoTax = (amount / 6).toFixed(2);
+                taxInput.value = lastAutoTax;
+            });
+        });
+    </script>
 </x-app-layout>

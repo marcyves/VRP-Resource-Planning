@@ -267,4 +267,11 @@ return array (
   'treasury_balance_saved' => 'Saldo iniziale registrato con successo.',
   'monthly_treasury_histogram' => 'Istogramma mensile',
   'planned_amounts' => 'Importi pianificati',
+  'payment_date' => 'Data di pagamento',
+  'submitted_expense_reports' => 'Note spese presentate',
+  'validated_expense_reports' => 'Note spese validate',
+  'paid_expense_reports' => 'Note spese pagate',
+  'submitted' => 'Presentate',
+  'validated' => 'Validate',
+  'paid' => 'Pagate',
 );

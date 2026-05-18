@@ -271,4 +271,11 @@ return array(
   'treasury_balance_saved' => 'Opening balance saved successfully.',
   'monthly_treasury_histogram' => 'Monthly histogram',
   'planned_amounts' => 'Planned amounts',
+  'payment_date' => 'Payment date',
+  'submitted_expense_reports' => 'Submitted expense reports',
+  'validated_expense_reports' => 'Validated expense reports',
+  'paid_expense_reports' => 'Paid expense reports',
+  'submitted' => 'Submitted',
+  'validated' => 'Validated',
+  'paid' => 'Paid',
 );
