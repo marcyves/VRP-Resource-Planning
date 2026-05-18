@@ -3,7 +3,14 @@
         <h2>{{ __('messages.treasury') }} {{ $year }}</h2>
     </x-slot>
 
-    <section>
+    <x-module-tabs :tabs="[
+        ['href' => '#treasury-summary', 'label' => __('messages.summary'), 'active' => true],
+        ['href' => '#expense-reports', 'label' => __('messages.expense_reports'), 'active' => false],
+        ['href' => '#standalone-expenses', 'label' => __('messages.standalone_expenses'), 'active' => false],
+        ['href' => route('treasury.expenses.create'), 'label' => __('messages.expense_create'), 'active' => false],
+    ]" />
+
+    <section id="treasury-summary">
         <header class="treasury-section-header">
             <h3>{{ __('messages.monthly_treasury_histogram') }}</h3>
         </header>
@@ -88,10 +95,9 @@
         </div>
     </section>
 
-    <section>
+    <section id="expense-reports">
         <header class="treasury-section-header">
             <h3>{{ __('messages.expense_reports') }}</h3>
-            <a class="btn btn-primary" href="{{ route('treasury.expenses.create') }}">{{ __('messages.expense_create') }}</a>
         </header>
 
         @if($reports->isEmpty())
@@ -116,10 +122,9 @@
         @endif
     </section>
 
-    <section>
+    <section id="standalone-expenses">
         <header class="treasury-section-header">
             <h3>{{ __('messages.expenses') }}</h3>
-            <a class="btn btn-secondary" href="{{ route('treasury.expenses.create', ['standalone' => 1]) }}">{{ __('messages.expense_create_standalone') }}</a>
         </header>
 
         @if($standaloneExpenses->isEmpty())

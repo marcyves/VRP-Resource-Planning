@@ -4,7 +4,16 @@
     </x-slot>
 
     <section>
-        <form class="group-form treasury-expense-form" method="post" action="{{ $expense->exists ? route('treasury.expenses.update', $expense) : route('treasury.expenses.store') }}">
+        @php
+            $includeInReport = old('include_in_expense_report', (bool) $expense->expense_report_id || !request('standalone'));
+        @endphp
+
+        <form
+            class="group-form treasury-expense-form"
+            method="post"
+            action="{{ $expense->exists ? route('treasury.expenses.update', $expense) : route('treasury.expenses.store') }}"
+            x-data="{ includeInReport: @js((bool) $includeInReport) }"
+        >
             @csrf
             @if($expense->exists)
                 @method('put')
@@ -13,19 +22,23 @@
                 <input type="hidden" name="expense_report_id" value="{{ $expense->expense_report_id }}">
             @endif
 
+            <label class="treasury-checkbox">
+                <input type="hidden" name="include_in_expense_report" value="0">
+                <input type="checkbox" name="include_in_expense_report" value="1" x-model="includeInReport" @checked($includeInReport)>
+                {{ __('messages.include_in_expense_report') }}
+            </label>
+
             <div class="form-group">
                 <x-input-label for="expense_date" :value="__('messages.date')" />
                 <x-text-input id="expense_date" name="expense_date" type="date" :value="old('expense_date', $expense->expense_date)" required />
                 <x-input-error :messages="$errors->get('expense_date')" />
             </div>
 
-            @if(request('standalone') || ($expense->exists && !$expense->expense_report_id))
-                <div class="form-group">
-                    <x-input-label for="payment_date" :value="__('messages.payment_date')" />
-                    <x-text-input id="payment_date" name="payment_date" type="date" :value="old('payment_date', $expense->payment_date)" />
-                    <x-input-error :messages="$errors->get('payment_date')" />
-                </div>
-            @endif
+            <div class="form-group" x-show="!includeInReport" x-cloak>
+                <x-input-label for="payment_date" :value="__('messages.payment_date')" />
+                <x-text-input id="payment_date" name="payment_date" type="date" :value="old('payment_date', $expense->payment_date)" x-bind:disabled="includeInReport" />
+                <x-input-error :messages="$errors->get('payment_date')" />
+            </div>
 
             <div class="form-group">
                 <x-input-label for="label" :value="__('messages.description')" />
@@ -68,11 +81,6 @@
                 <x-input-label for="payment_method" :value="__('messages.payment_method')" />
                 <x-text-input id="payment_method" name="payment_method" type="text" :value="old('payment_method', $expense->payment_method)" />
             </div>
-
-            <label class="treasury-checkbox">
-                <input type="checkbox" name="include_in_expense_report" value="1" @checked(old('include_in_expense_report', (bool) $expense->expense_report_id || !request('standalone')))>
-                {{ __('messages.include_in_expense_report') }}
-            </label>
 
             <label class="treasury-checkbox">
                 <input type="checkbox" name="is_recurring" value="1" @checked(old('is_recurring', $expense->is_recurring))>

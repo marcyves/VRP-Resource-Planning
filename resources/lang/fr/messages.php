@@ -294,4 +294,10 @@ return array(
   'submitted' => 'Soumises',
   'validated' => 'Validées',
   'paid' => 'Payées',
+  'activity' => 'Activité',
+  'reference_data' => 'Référentiel',
+  'module_navigation' => 'Navigation du module',
+  'by_date' => 'Par date',
+  'summary' => 'Synthèse',
+  'workload_plan' => 'Plan de charge',
 );

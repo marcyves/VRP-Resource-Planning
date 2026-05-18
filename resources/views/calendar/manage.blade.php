@@ -5,6 +5,12 @@
         </h2>
     </x-slot>
 
+    <x-module-tabs :tabs="[
+        ['href' => route('planning.index'), 'label' => __('messages.planning'), 'active' => request()->routeIs('planning.*')],
+        ['href' => route('calendar.index'), 'label' => __('messages.calendar'), 'active' => request()->routeIs('calendar.*')],
+        ['href' => route('billing.index'), 'label' => __('messages.billing_preparation'), 'active' => request()->routeIs('billing.index')],
+    ]" />
+
     <section>
         <h3>{{ __('messages.import_new_file') }}</h3>
         <p>https://openclassrooms.com/fr/calendars/7818421-da9af1c19d0c12a77e8c35ba485aef36.ics</p>

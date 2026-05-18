@@ -3,10 +3,13 @@
         <h2>{{ __('messages.planning') }} @monthName($current_month) {{$current_year}}</h2>
     </x-slot>
 
+    <x-module-tabs :tabs="[
+        ['href' => route('planning.index'), 'label' => __('messages.planning'), 'active' => request()->routeIs('planning.*')],
+        ['href' => route('calendar.index'), 'label' => __('messages.calendar'), 'active' => request()->routeIs('calendar.*')],
+        ['href' => route('billing.index'), 'label' => __('messages.billing_preparation'), 'active' => request()->routeIs('billing.index')],
+    ]" />
+
     <section class="planning-controls">
-        <x-nav-link :href="route('calendar.index')" :active="request()->routeIs('calendar.index')">
-            {{ __('messages.calendar') }}
-        </x-nav-link>
         <x-period-selector :years="$years" :months="$months" :current_year="$current_year" :current_month="$current_month" route="planning" />
         <x-form-select-planning :mode="$mode" :schools="$schools" :courses="$courses" :planning="$planning" :day="$current_day" :month="$current_month" :year="$current_year" />
     </section>

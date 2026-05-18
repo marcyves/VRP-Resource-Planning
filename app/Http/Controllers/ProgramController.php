@@ -57,8 +57,14 @@ class ProgramController extends Controller
      */
     public function show(String $program_id)
     {
-        $program = Program::find($program_id);
-        $courses = Course::getProgramCoursesForCompany($program_id);
+        $program = Program::findOrFail($program_id);
+        $courses = Course::getProgramCoursesForCompany($program_id)
+            ->load('school')
+            ->sortBy([
+                ['year', 'desc'],
+                ['semester', 'asc'],
+                ['name', 'asc'],
+            ]);
 
         return view('program.show', compact('program', 'courses'));
     }

@@ -278,4 +278,10 @@ return array(
   'submitted' => 'Submitted',
   'validated' => 'Validated',
   'paid' => 'Paid',
+  'activity' => 'Activity',
+  'reference_data' => 'Reference data',
+  'module_navigation' => 'Module navigation',
+  'by_date' => 'By date',
+  'summary' => 'Summary',
+  'workload_plan' => 'Workload plan',
 );

@@ -5,6 +5,13 @@
         </h2>
     </x-slot>
 
+    <x-module-tabs :tabs="[
+        ['href' => route('dashboard'), 'label' => __('messages.workload_plan'), 'active' => request()->routeIs('dashboard', 'school.dashboard')],
+        ['href' => route('school.index'), 'label' => __('messages.schools'), 'active' => request()->routeIs('school.index', 'school.list', 'school.show', 'school.create', 'school.edit', 'school.add', 'course.*')],
+        ['href' => route('program.index'), 'label' => __('messages.programs'), 'active' => request()->routeIs('program.*')],
+        ['href' => route('group.index'), 'label' => __('messages.groups'), 'active' => request()->routeIs('group.*')],
+    ]" />
+
     <section>
         <ul class="list">
             @foreach ($programs as $program)

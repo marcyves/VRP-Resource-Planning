@@ -12,17 +12,179 @@
     margin-top: 1.5rem;
 }
 
+.program-detail-card {
+    padding: var(--spacing-2) var(--spacing-3);
+    border: var(--border-standard);
+    border-radius: var(--rounded-lg);
+    background: var(--surface-card);
+    box-shadow: var(--shadow-md);
+}
+
+.program-detail-card__header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--spacing-4);
+    margin-bottom: var(--spacing-1);
+}
+
+.program-detail-card__header h3 {
+    margin: 0;
+    color: var(--brand-primary);
+    font-size: 1.2rem;
+}
+
+.program-detail-card__title,
+.program-detail-card__actions,
+.program-detail-card__icon-actions,
+.program-course-item__actions {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-1);
+}
+
+.program-detail-card__title {
+    gap: var(--spacing-2);
+}
+
+.program-detail-card__actions,
+.program-detail-card__icon-actions,
+.program-course-item__actions {
+    justify-content: flex-end;
+}
+
+.program-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: var(--spacing-2);
+}
+
+.program-stats-grid article {
+    padding: 0.35rem 0.65rem;
+    border-radius: var(--rounded-md);
+    background: #eef2f9;
+}
+
+.program-stats-grid span {
+    display: block;
+    color: var(--text-muted);
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+.program-stats-grid strong {
+    display: block;
+    margin-top: 0;
+    color: var(--brand-primary);
+    font-size: 0.95rem;
+}
+
+.program-section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--spacing-3);
+}
+
+.program-section-header h3 {
+    margin: 0;
+    color: var(--brand-primary);
+}
+
 .program-course-grid {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: var(--spacing-3);
 }
 
 .program-course-item {
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: minmax(12rem, 1.4fr) minmax(16rem, 1.6fr) minmax(8rem, 0.8fr);
+    gap: var(--spacing-3);
     align-items: center;
-    padding: 1rem;
-    border-radius: 0.5rem;
-    border: 1px solid var(--border-color);
+    padding: var(--spacing-3);
+    border-radius: var(--rounded-md);
+    border: var(--border-standard);
+    background: var(--surface-card);
+}
+
+.program-course-item--editable {
+    grid-template-columns: minmax(12rem, 1.4fr) minmax(16rem, 1.6fr) minmax(8rem, 0.8fr) auto;
+}
+
+.program-course-item__main,
+.program-course-item__amount {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-1);
+}
+
+.program-course-item__title {
+    color: var(--brand-primary);
+    font-weight: 800;
+    text-decoration: none;
+}
+
+.program-course-item__title:hover,
+.program-course-item__title:focus {
+    color: var(--brand-accent);
+}
+
+.program-course-item__main span,
+.program-course-item__amount span {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+}
+
+.program-course-item__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-1);
+}
+
+.program-course-item__meta span {
+    padding: 0.25rem 0.5rem;
+    border-radius: var(--rounded-sm);
+    background: #eef2f9;
+    color: var(--brand-primary);
+    font-size: 0.8rem;
+    font-weight: 700;
+}
+
+.program-course-item__amount {
+    align-items: flex-end;
+    text-align: right;
+}
+
+.program-course-item__amount strong {
+    color: var(--brand-primary);
+}
+
+.program-empty {
+    padding: var(--spacing-4);
+    border: var(--border-standard);
+    border-radius: var(--rounded-md);
+    background: var(--surface-card);
+    color: var(--text-muted);
+    font-weight: 700;
+}
+
+@media (max-width: 900px) {
+    .program-detail-card__header {
+        flex-direction: column;
+    }
+
+    .program-stats-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .program-course-item {
+        grid-template-columns: 1fr;
+        align-items: flex-start;
+    }
+
+    .program-course-item__amount {
+        align-items: flex-start;
+        text-align: left;
+    }
 }

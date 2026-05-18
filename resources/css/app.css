@@ -27,6 +27,10 @@
 @import url("tw-compat.css");
 @import url("login.css");
 
+[x-cloak] {
+    display: none !important;
+}
+
 
 @-webkit-keyframes AnimateBG {
     0% {

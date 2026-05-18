@@ -274,4 +274,10 @@ return array (
   'submitted' => 'Presentate',
   'validated' => 'Validate',
   'paid' => 'Pagate',
+  'activity' => 'Attività',
+  'reference_data' => 'Archivio',
+  'module_navigation' => 'Navigazione modulo',
+  'by_date' => 'Per data',
+  'summary' => 'Sintesi',
+  'workload_plan' => 'Piano di carico',
 );

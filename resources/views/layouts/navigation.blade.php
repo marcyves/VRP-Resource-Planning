@@ -1,33 +1,27 @@
 <nav class="nav-main">
-<!-- Primary Navigation Menu -->
-    <!-- Logo -->
-    <a href="{{ route('dashboard') }}" class="nav-logo">
+    <a href="{{ route('treasury.index') }}" class="nav-logo">
         <x-application-logo />
     </a>
-    <!-- Navigation Links -->
+
     <div class="nav-links">
-        <x-nav-link :href="route('planning.index')" :active="request()->routeIs('planning.index')">
+        <x-nav-link :href="route('planning.index')" :active="request()->routeIs('planning.*', 'calendar.*', 'billing.*')">
             {{ __('messages.planning') }}
         </x-nav-link>
-        <x-nav-link :href="route('billing.index')" :active="request()->routeIs('billing.index')">
-            {{ __('messages.billing') }}
-        </x-nav-link>
-        <x-nav-link :href="route('school.index')" :active="request()->routeIs('school.index', 'school.list')">
-            {{ __('messages.schools') }}
-        </x-nav-link>
-        <x-nav-link :href="route('program.index')" :active="request()->routeIs('program.index')">
-            {{ __('messages.programs') }}
-        </x-nav-link>
-        <x-nav-link :href="route('group.index')" :active="request()->routeIs('group.index')">
-            {{ __('messages.groups') }}
-        </x-nav-link>
-        <x-nav-link :href="route('invoice.index')" :active="request()->routeIs('invoice.index')">
+
+        <x-nav-link :href="route('invoice.index')" :active="request()->routeIs('invoice.*')">
             {{ __('messages.invoices') }}
         </x-nav-link>
+
         <x-nav-link :href="route('treasury.index')" :active="request()->routeIs('treasury.*')">
             {{ __('messages.treasury') }}
         </x-nav-link>
 
+        <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard', 'school.dashboard', 'school.index', 'school.list', 'school.show', 'school.create', 'school.edit', 'school.add', 'program.*', 'course.*', 'group.*')">
+            {{ __('messages.workload_plan') }}
+        </x-nav-link>
+    </div>
+
+    <div class="nav-context">
         <div class="toggle-system">
             <span class="toggle-label">{{ Auth::user()->getMode() }}</span>
             <label class="toggle-container edit" for="edit-toggle">
