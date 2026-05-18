@@ -122,6 +122,7 @@ class TreasuryController extends Controller
         if (request('report_id')) {
             $report = ExpenseReport::findOrFail(request('report_id'));
             $this->authorizeCompany($report);
+            $this->ensureReportIsDraft($report);
         }
 
         $expense = new Expense([
@@ -232,6 +233,7 @@ class TreasuryController extends Controller
     public function editExpense(Expense $expense)
     {
         $this->authorizeCompany($expense);
+        $this->ensureExpenseIsEditable($expense);
         $options = $this->expenseOptions();
 
         return view('treasury.expense-form', compact('expense', 'options'));
@@ -240,6 +242,7 @@ class TreasuryController extends Controller
     public function updateExpense(Request $request, Expense $expense)
     {
         $this->authorizeCompany($expense);
+        $this->ensureExpenseIsEditable($expense);
         $expense->update($this->expenseAttributes($request));
 
         session()->flash('success', __('messages.expense_saved'));
@@ -250,6 +253,7 @@ class TreasuryController extends Controller
     public function destroyExpense(Expense $expense)
     {
         $this->authorizeCompany($expense);
+        $this->ensureExpenseIsEditable($expense);
         $reportId = $expense->expense_report_id;
         $expense->delete();
 
@@ -268,7 +272,7 @@ class TreasuryController extends Controller
             'label' => 'required|max:255',
             'vendor' => 'nullable|max:255',
             'amount' => 'required|numeric|min:0',
-            'tax_amount' => 'nullable|numeric|min:0',
+            'tax_amount' => 'nullable|numeric|min:0|max:100',
             'category' => 'nullable|max:255',
             'payment_method' => 'nullable|max:255',
             'expense_report_id' => 'nullable|integer|exists:expense_reports,id',
@@ -300,11 +304,11 @@ class TreasuryController extends Controller
             'company_id' => Auth::user()->company_id,
             'expense_report_id' => $reportId,
             'expense_date' => $date->toDateString(),
-            'payment_date' => $paidAt ? Carbon::parse($paidAt)->toDateString() : null,
+            'payment_date' => $reportId ? null : ($paidAt ? Carbon::parse($paidAt)->toDateString() : null),
             'label' => $validated['label'],
             'vendor' => $validated['vendor'] ?? null,
             'amount' => $validated['amount'],
-            'tax_amount' => $validated['tax_amount'] ?? $this->defaultTaxAmount($validated['amount']),
+            'tax_amount' => $validated['tax_amount'] ?? $this->defaultTaxRate(),
             'category' => $validated['category'] ?? null,
             'payment_method' => $validated['payment_method'] ?? null,
             'is_recurring' => $request->boolean('is_recurring'),
@@ -339,9 +343,24 @@ class TreasuryController extends Controller
         return $firstExpense;
     }
 
-    private function defaultTaxAmount(float|int|string $amount): float
+    private function ensureExpenseIsEditable(Expense $expense): void
     {
-        return round((float) $amount / 6, 2);
+        if (!$expense->expense_report_id) {
+            return;
+        }
+
+        $expense->loadMissing('report');
+        $this->ensureReportIsDraft($expense->report);
+    }
+
+    private function ensureReportIsDraft(ExpenseReport $report): void
+    {
+        abort_unless($report->status === 'draft', 403);
+    }
+
+    private function defaultTaxRate(): float
+    {
+        return 20;
     }
 
     private function authorizeCompany(Expense|ExpenseReport|TreasuryBalance $record): void
@@ -467,40 +486,36 @@ class TreasuryController extends Controller
         $pdf->SetXY(10, $tableY);
         $pdf->SetFillColor(230, 230, 230);
         $pdf->SetFont('helvetica', 'B', 9);
-        $pdf->Cell(20, 7, __('messages.date'), 1, 0, 'L', true);
-        $pdf->Cell(20, 7, __('messages.payment_date'), 1, 0, 'L', true);
-        $pdf->Cell(45, 7, __('messages.description'), 1, 0, 'L', true);
-        $pdf->Cell(28, 7, __('messages.category'), 1, 0, 'L', true);
-        $pdf->Cell(23, 7, __('messages.vendor'), 1, 0, 'L', true);
-        $pdf->Cell(16, 7, __('messages.amount_ht'), 1, 0, 'R', true);
-        $pdf->Cell(16, 7, __('messages.tax_amount'), 1, 0, 'R', true);
-        $pdf->Cell(17, 7, __('messages.amount_ttc'), 1, 1, 'R', true);
+        $pdf->Cell(22, 7, __('messages.date'), 1, 0, 'L', true);
+        $pdf->Cell(55, 7, __('messages.description'), 1, 0, 'L', true);
+        $pdf->Cell(32, 7, __('messages.category'), 1, 0, 'L', true);
+        $pdf->Cell(24, 7, __('messages.vendor'), 1, 0, 'L', true);
+        $pdf->Cell(17, 7, __('messages.amount_ht'), 1, 0, 'R', true);
+        $pdf->Cell(17, 7, __('messages.tax_amount'), 1, 0, 'R', true);
+        $pdf->Cell(18, 7, __('messages.amount_ttc'), 1, 1, 'R', true);
 
         $pdf->SetFont('helvetica', '', 8);
         $totalHt = 0;
-        $totalTax = 0;
         $totalTtc = 0;
         foreach ($expenseReport->expenses as $expense) {
-            $tax = $expense->tax_amount ?? 0;
-            $ht = $expense->amount - $tax;
+            $taxRate = $this->expenseTaxRate($expense);
+            $ht = $this->expenseNetAmount($expense);
             $totalHt += $ht;
-            $totalTax += $tax;
             $totalTtc += $expense->amount;
-            $pdf->Cell(20, 6, Carbon::parse($expense->expense_date)->format('d/m/Y'), 1);
-            $pdf->Cell(20, 6, $expense->payment_date ? Carbon::parse($expense->payment_date)->format('d/m/Y') : '', 1);
-            $pdf->Cell(45, 6, $expense->label, 1);
-            $pdf->Cell(28, 6, $expense->category, 1);
-            $pdf->Cell(23, 6, $expense->vendor, 1);
-            $pdf->Cell(16, 6, $this->formatPdfMoney($ht), 1, 0, 'R');
-            $pdf->Cell(16, 6, $this->formatPdfMoney($tax), 1, 0, 'R');
-            $pdf->Cell(17, 6, $this->formatPdfMoney($expense->amount), 1, 1, 'R');
+            $pdf->Cell(22, 6, Carbon::parse($expense->expense_date)->format('d/m/Y'), 1);
+            $pdf->Cell(55, 6, $expense->label, 1);
+            $pdf->Cell(32, 6, $expense->category, 1);
+            $pdf->Cell(24, 6, $expense->vendor, 1);
+            $pdf->Cell(17, 6, $this->formatPdfMoney($ht), 1, 0, 'R');
+            $pdf->Cell(17, 6, number_format($taxRate, 2, ',', ' ') . '%', 1, 0, 'R');
+            $pdf->Cell(18, 6, $this->formatPdfMoney($expense->amount), 1, 1, 'R');
         }
 
         $pdf->SetFont('helvetica', 'B', 10);
-        $pdf->Cell(136, 8, __('messages.total'), 1, 0, 'R', true);
-        $pdf->Cell(16, 8, $this->formatPdfMoney($totalHt), 1, 0, 'R', true);
-        $pdf->Cell(16, 8, $this->formatPdfMoney($totalTax), 1, 0, 'R', true);
-        $pdf->Cell(17, 8, $this->formatPdfMoney($totalTtc), 1, 1, 'R', true);
+        $pdf->Cell(133, 8, __('messages.total'), 1, 0, 'R', true);
+        $pdf->Cell(17, 8, $this->formatPdfMoney($totalHt), 1, 0, 'R', true);
+        $pdf->Cell(17, 8, '', 1, 0, 'R', true);
+        $pdf->Cell(18, 8, $this->formatPdfMoney($totalTtc), 1, 1, 'R', true);
 
         return $pdf;
     }
@@ -508,5 +523,15 @@ class TreasuryController extends Controller
     private function formatPdfMoney(float|int|string|null $amount): string
     {
         return number_format((float) $amount, 2, ',', ' ') . ' €';
+    }
+
+    private function expenseTaxRate(Expense $expense): float
+    {
+        return (float) ($expense->tax_amount ?? 20);
+    }
+
+    private function expenseNetAmount(Expense $expense): float
+    {
+        return (float) $expense->amount / (1 + ($this->expenseTaxRate($expense) / 100));
     }
 }

@@ -250,7 +250,7 @@ return array(
   'no_expense_report' => 'Aucune note de frais pour cette année.',
   'no_standalone_expense' => 'Aucune dépense hors note pour cette année.',
   'vendor' => 'Fournisseur',
-  'tax_amount' => 'TVA',
+  'tax_amount' => 'TVA %',
   'category' => 'Catégorie',
   'payment_method' => 'Moyen de paiement',
   'include_in_expense_report' => 'Inclure dans une note de frais mensuelle',

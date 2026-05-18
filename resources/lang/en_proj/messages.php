@@ -230,7 +230,7 @@ return array (
   'no_expense_report' => 'No expense report for this year.',
   'no_standalone_expense' => 'No standalone expense for this year.',
   'vendor' => 'Vendor',
-  'tax_amount' => 'Tax',
+  'tax_amount' => 'Tax %',
   'category' => 'Category',
   'payment_method' => 'Payment method',
   'include_in_expense_report' => 'Include in monthly expense report',

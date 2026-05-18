@@ -5,9 +5,10 @@
 
     <section>
         @php
-            $totalTax = $expenseReport->expenses->sum(fn ($expense) => $expense->tax_amount ?? 0);
+            $taxRate = fn ($expense) => (float) ($expense->tax_amount ?? 20);
+            $amountHt = fn ($expense) => $expense->amount / (1 + ($taxRate($expense) / 100));
             $totalTtc = $expenseReport->expenses->sum('amount');
-            $totalHt = $totalTtc - $totalTax;
+            $totalHt = $expenseReport->expenses->sum(fn ($expense) => $amountHt($expense));
         @endphp
 
         <header class="treasury-section-header">
@@ -64,9 +65,11 @@
                                 </form>
                             @endif
                         @endif
+                        @if($expenseReport->status === 'draft')
                         <a class="icon icon--add" href="{{ route('treasury.expenses.create', ['report_id' => $expenseReport->id]) }}" aria-label="{{ __('messages.add_expense_to_report') }}" title="{{ __('messages.add_expense_to_report') }}">
                             <img src="{{ asset('icons/add-circle-svgrepo-com.svg') }}" alt="" width="20" height="20" decoding="async">
                         </a>
+                        @endif
                     @endif
                 </div>
             </div>
@@ -79,7 +82,6 @@
                 <thead>
                     <tr>
                         <th>{{ __('messages.date') }}</th>
-                        <th>{{ __('messages.payment_date') }}</th>
                         <th>{{ __('messages.description') }}</th>
                         <th>{{ __('messages.vendor') }}</th>
                         <th>{{ __('messages.category') }}</th>
@@ -87,7 +89,7 @@
                         <th>{{ __('messages.tax_amount') }}</th>
                         <th>{{ __('messages.amount_ttc') }}</th>
                         <th>{{ __('messages.recurring') }}</th>
-                        @if(Auth::user()->getMode() == "Edit")
+                        @if(Auth::user()->getMode() == "Edit" && $expenseReport->status === 'draft')
                             <th>{{ __('messages.actions') }}</th>
                         @endif
                     </tr>
@@ -96,15 +98,14 @@
                     @foreach($expenseReport->expenses as $expense)
                     <tr>
                         <td>@formatDate($expense->expense_date)</td>
-                        <td>@formatDate($expense->payment_date)</td>
                         <td>{{ $expense->label }}</td>
                         <td>{{ $expense->vendor }}</td>
                         <td>{{ $expense->category }}</td>
-                        <td class="money">@money($expense->amount - ($expense->tax_amount ?? 0))</td>
-                        <td class="money">@money($expense->tax_amount ?? 0)</td>
+                        <td class="money">@money($amountHt($expense))</td>
+                        <td class="money">{{ number_format($taxRate($expense), 2) }}%</td>
                         <td class="money">@money($expense->amount)</td>
                         <td>{{ $expense->is_recurring ? __('messages.yes') : __('messages.no') }}</td>
-                        @if(Auth::user()->getMode() == "Edit")
+                        @if(Auth::user()->getMode() == "Edit" && $expenseReport->status === 'draft')
                         <td class="card-actions">
                             <form class="inline-form" action="{{ route('treasury.expenses.edit', $expense) }}" method="get">
                                 <x-button-edit />
@@ -121,12 +122,12 @@
                 </tbody>
                 <tfoot>
                     <tr>
-                        <th colspan="5">{{ __('messages.total') }}</th>
+                        <th colspan="4">{{ __('messages.total') }}</th>
                         <th class="money">@money($totalHt)</th>
-                        <th class="money">@money($totalTax)</th>
+                        <th></th>
                         <th class="money">@money($totalTtc)</th>
                         <th></th>
-                        @if(Auth::user()->getMode() == "Edit")
+                        @if(Auth::user()->getMode() == "Edit" && $expenseReport->status === 'draft')
                             <th></th>
                         @endif
                     </tr>

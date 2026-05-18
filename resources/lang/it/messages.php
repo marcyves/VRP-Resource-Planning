@@ -230,7 +230,7 @@ return array (
   'no_expense_report' => 'Nessuna nota spese per quest’anno.',
   'no_standalone_expense' => 'Nessuna spesa fuori nota per quest’anno.',
   'vendor' => 'Fornitore',
-  'tax_amount' => 'IVA',
+  'tax_amount' => 'IVA %',
   'category' => 'Categoria',
   'payment_method' => 'Metodo di pagamento',
   'include_in_expense_report' => 'Includi nella nota spese mensile',
