@@ -6,7 +6,7 @@
 
         <header class="login-card-header">
             <h2>{{ __('messages.login') }}</h2>
-            <img class="login-card-logo" src="{{ asset('images/login_illustration.jpg') }}" alt="" width="320">
+            <img class="login-card-logo" src="{{ asset('images/VRP-login.png') }}" alt="" width="320">
         </header>
 
         <div class="login-field">
