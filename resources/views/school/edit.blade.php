@@ -12,6 +12,18 @@
             <div class="school-form-input">
                 <x-text-input type="text" name="code" placeholder="{{ __('messages.code') }}" value="{{old('code',$school->code)}}" />
             </div>
+            <fieldset class="school-form-fieldset">
+                <legend>{{ __('messages.legal_identifiers') }} ({{ __('messages.b2b_optional') }})</legend>
+                <div class="school-form-input">
+                    <x-text-input type="text" name="siren" placeholder="{{ __('messages.siren') }}" maxlength="9" pattern="[0-9]{9}" value="{{ old('siren', $school->siren) }}" />
+                </div>
+                <div class="school-form-input">
+                    <x-text-input type="text" name="siret" placeholder="{{ __('messages.siret') }}" maxlength="14" pattern="[0-9]{14}" value="{{ old('siret', $school->siret) }}" />
+                </div>
+                <div class="school-form-input">
+                    <x-text-input type="text" name="vat_number" placeholder="{{ __('messages.vat_number') }}" value="{{ old('vat_number', $school->vat_number) }}" />
+                </div>
+            </fieldset>
             <div class="school-form-input">
                 <x-text-input type="text" name="address2" id="address2" placeholder="{{ __('messages.address') }} 1" value="{{old('address2',$school->address2)}}" />
             </div>

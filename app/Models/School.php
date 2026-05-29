@@ -5,9 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 
 class School extends Model
@@ -15,7 +15,25 @@ class School extends Model
     use HasFactory;
 
     public $timestamps = false;
-    public $fillable = ['name', 'code', 'company_id', 'address', 'city', 'zip', 'country', 'phone', 'email', 'website', 'logo', 'description'];
+
+    public $fillable = [
+        'name',
+        'code',
+        'siren',
+        'siret',
+        'vat_number',
+        'company_id',
+        'address',
+        'address2',
+        'city',
+        'zip',
+        'country',
+        'phone',
+        'email',
+        'website',
+        'logo',
+        'description',
+    ];
 
     public function users(): BelongsToMany
     {
@@ -43,35 +61,36 @@ class School extends Model
             ->count();
     }
 
-    public function getCourses(String $year = 'all')
+    public function getCourses(string $year = 'all')
     {
-        if($year == 'all'){
+        if ($year == 'all') {
             return Course::where('school_id', $this->id)
-            ->select(['courses.*', 'schools.name as school_name', 'programs.name as program_name'])
-            ->leftJoin('programs', 'courses.program_id', '=', 'programs.id')
-            ->leftJoin('schools', 'courses.school_id', '=', 'schools.id')
-            ->withCount('groups')
-            ->orderBy('year', 'asc')
-            ->orderBy('semester', 'asc')
-            ->orderBy('school_name', 'asc')
-            ->orderBy('program_name', 'asc')
-            ->orderBy('name', 'asc')
-            ->get();
-        }else{
-        return Course::where('school_id', $this->id)
-            ->select(['courses.*', 'schools.name as school_name', 'programs.name as program_name'])
-            ->leftJoin('programs', 'courses.program_id', '=', 'programs.id')
-            ->leftJoin('schools', 'courses.school_id', '=', 'schools.id')
-            ->withCount('groups')
-            ->where('year', '=', $year)
-            ->orderBy('semester', 'asc')
-            ->orderBy('school_name', 'asc')
-            ->orderBy('program_name', 'asc')
-            ->orderBy('name', 'asc')
-            ->get();
+                ->select(['courses.*', 'schools.name as school_name', 'programs.name as program_name'])
+                ->leftJoin('programs', 'courses.program_id', '=', 'programs.id')
+                ->leftJoin('schools', 'courses.school_id', '=', 'schools.id')
+                ->withCount('groups')
+                ->orderBy('year', 'asc')
+                ->orderBy('semester', 'asc')
+                ->orderBy('school_name', 'asc')
+                ->orderBy('program_name', 'asc')
+                ->orderBy('name', 'asc')
+                ->get();
+        } else {
+            return Course::where('school_id', $this->id)
+                ->select(['courses.*', 'schools.name as school_name', 'programs.name as program_name'])
+                ->leftJoin('programs', 'courses.program_id', '=', 'programs.id')
+                ->leftJoin('schools', 'courses.school_id', '=', 'schools.id')
+                ->withCount('groups')
+                ->where('year', '=', $year)
+                ->orderBy('semester', 'asc')
+                ->orderBy('school_name', 'asc')
+                ->orderBy('program_name', 'asc')
+                ->orderBy('name', 'asc')
+                ->get();
         }
     }
-     /**
+
+    /**
      * Create a new Eloquent Collection instance.
      *
      * @param  array<int, \Illuminate\Database\Eloquent\Model>  $models
@@ -82,20 +101,20 @@ class School extends Model
         return new CourseCollection($models);
     }
 
-    public function getDocuments(String $year = 'all')
+    public function getDocuments(string $year = 'all')
     {
         return Document::select()->where('school_id', '=', $this->id)->get();
 
     }
 
-    public function getInvoices(String $year = 'all')
+    public function getInvoices(string $year = 'all')
     {
         return Invoice::select(['invoices.*', 'schools.name as school'])
-        ->join('schools', 'schools.id', '=', 'invoices.school_id')
-        ->where([
-            [   'school_id', '=', $this->id],
-            [   'bill_date', '>=', $year."-01-01"],
-            [   'bill_date', '<=', $year."-12-31"]
-        ])->get();
+            ->join('schools', 'schools.id', '=', 'invoices.school_id')
+            ->where([
+                ['school_id', '=', $this->id],
+                ['bill_date', '>=', $year.'-01-01'],
+                ['bill_date', '<=', $year.'-12-31'],
+            ])->get();
     }
 }

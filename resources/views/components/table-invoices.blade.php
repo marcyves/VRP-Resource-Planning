@@ -13,6 +13,7 @@
                     <th>{{ __('messages.amount') }} HT</th>
                     <th>{{ __('messages.amount') }} TTC</th>
                     <th>{{ __('messages.date_billing') }}</th>
+                    <th>{{ __('messages.electronic_invoice_status') }}</th>
                     <th>{{ __('messages.date_payment') }}</th>
                     @if(Auth::user()->getMode() == "Edit")
                     <th>{{ __('messages.actions') }}</th>
@@ -40,6 +41,11 @@
                         @if($bill->created_at)
                         {{$bill->bill_date}}
                         @endif
+                    </td>
+                    <td>
+                        <span class="invoice-e-status invoice-e-status--{{ $bill->electronic_invoice_status?->value ?? 'draft' }}">
+                            {{ $bill->electronicStatusLabel() }}
+                        </span>
                     </td>
                     <td class="date">
                         @if($bill->paid_at)

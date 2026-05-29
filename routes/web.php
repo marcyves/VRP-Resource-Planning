@@ -1,21 +1,20 @@
 <?php
 
+use App\Http\Controllers\BillingController;
+use App\Http\Controllers\CalendarController;
+use App\Http\Controllers\CalendarFileController;
+use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\CourseController;
+use App\Http\Controllers\DateSelectionController;
 use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\GroupController;
+use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\PlanningController;
-use App\Http\Controllers\BillingController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProgramController;
 use App\Http\Controllers\SchoolController;
-use App\Http\Controllers\InvoiceController;
-use App\Http\Controllers\CalendarController;
-use App\Http\Controllers\CompanyController;
-use App\Http\Controllers\DateSelectionController;
-use App\Http\Controllers\CalendarFileController;
 use App\Http\Controllers\TreasuryController;
 use Illuminate\Support\Facades\DB;
-
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -32,6 +31,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     try {
         DB::connection()->getPDO();
+
         return redirect(route('login'));
     } catch (\Exception $e) {
         return view('maintenance');
@@ -119,6 +119,8 @@ Route::middleware('auth')->group(function () {
     Route::delete('/treasury/expenses/{expense}', [TreasuryController::class, 'destroyExpense'])->name('treasury.expenses.destroy');
 
     Route::get('/company/', [CompanyController::class, 'show'])->name('company.show');
+    Route::get('/company/edit', [CompanyController::class, 'edit'])->name('company.edit');
+    Route::put('/company', [CompanyController::class, 'update'])->name('company.update');
     Route::get('/company/{company_id}', [CompanyController::class, 'show'])->name('company.show_any');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -127,4 +129,4 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__ . '/auth.php';
+require __DIR__.'/auth.php';

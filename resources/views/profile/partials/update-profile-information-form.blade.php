@@ -59,6 +59,18 @@
         </div>
 
         <div class="form-group">
+            <x-input-label for="phone" :value="__('messages.phone')" />
+            <x-text-input id="phone" name="phone" type="text" :value="old('phone', $user->phone)" autocomplete="tel" />
+            <x-input-error :messages="$errors->get('phone')" />
+        </div>
+
+        <div class="form-group">
+            <x-input-label for="website" :value="__('messages.website')" />
+            <x-text-input id="website" name="website" type="text" :value="old('website', $user->website)" autocomplete="url" />
+            <x-input-error :messages="$errors->get('website')" />
+        </div>
+
+        <div class="form-group">
             <x-input-label for="status_id" :value="__('messages.status')" />
             <select class="form-input" name="status_id" id="status_id">
                 @foreach ($statuses as $status)

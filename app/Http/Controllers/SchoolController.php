@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\School;
-use App\Models\Invoice;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -20,7 +19,7 @@ class SchoolController extends Controller
         session()->forget('school_id');
 
         $current_year = session('current_year');
-        if (!isset($current_year)) {
+        if (! isset($current_year)) {
             $current_year = now()->format('Y');
             session()->put('current_year', $current_year);
         }
@@ -45,7 +44,7 @@ class SchoolController extends Controller
             $current_year = $request->current_year;
         } else {
             $current_year = session('current_year');
-            if (!isset($current_year)) {
+            if (! isset($current_year)) {
                 $current_year = now()->format('Y');
             }
         }
@@ -55,8 +54,8 @@ class SchoolController extends Controller
             $current_semester = $request->current_semester;
         } else {
             $current_semester = session('current_semester');
-            if (!isset($current_semester)) {
-                $current_semester = "all";
+            if (! isset($current_semester)) {
+                $current_semester = 'all';
             }
         }
         session()->put('current_semester', $current_semester);
@@ -74,7 +73,7 @@ class SchoolController extends Controller
         return redirect()->route('school.index', [], 301);
     }
 
-    public function add(String $school_id)
+    public function add(string $school_id)
     {
         $school = School::find($school_id);
 
@@ -89,7 +88,7 @@ class SchoolController extends Controller
      */
     public function store(Request $request)
     {
-        //dd($request->all());
+        // dd($request->all());
         $validated = $request->validate([
             'name' => 'required|max:80',
         ]);
@@ -99,7 +98,11 @@ class SchoolController extends Controller
             $school = School::create([
                 'name' => $request->name,
                 'company_id' => $company_id,
+                'siren' => $request->siren,
+                'siret' => $request->siret,
+                'vat_number' => $request->vat_number,
                 'address' => $request->address,
+                'address2' => $request->address2,
                 'city' => $request->city,
                 'zip' => $request->zip,
                 'country' => $request->country,
@@ -107,10 +110,10 @@ class SchoolController extends Controller
                 'email' => $request->email,
                 'website' => $request->website,
                 'logo' => $request->logo,
-                'description' => $request->description
+                'description' => $request->description,
             ]);
 
-            session()->flash('success', 'Ecole ' . $school->name . ' enregistrée avec succès.');
+            session()->flash('success', 'Ecole '.$school->name.' enregistrée avec succès.');
             session()->put('school', $school->name);
             session()->put('school_id', $school->id);
 
@@ -118,7 +121,7 @@ class SchoolController extends Controller
         } catch (\Exception $e) {
             dd($e);
 
-            session()->flash('danger', "Erreur lors de l'enregistrement de l'école " . $request->name . '.');
+            session()->flash('danger', "Erreur lors de l'enregistrement de l'école ".$request->name.'.');
 
             return redirect()->back();
         }
@@ -131,7 +134,7 @@ class SchoolController extends Controller
     {
 
         $year = session()->get('current_year');
-        if (!isset($year)) {
+        if (! isset($year)) {
             $year = now()->format('Y');
         }
 
@@ -148,13 +151,13 @@ class SchoolController extends Controller
         $invoices = $school->getInvoices($year);
         $documents = $school->getDocuments();
 
-        return view('school.show', compact('school',  'courses', 'documents', 'invoices'));
+        return view('school.show', compact('school', 'courses', 'documents', 'invoices'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(String $school_id)
+    public function edit(string $school_id)
     {
         $school = School::findOrFail($school_id);
         session()->put('school', $school->name);
@@ -166,17 +169,24 @@ class SchoolController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, String $school_id)
+    public function update(Request $request, string $school_id)
     {
         $validated = $request->validate([
             'name' => 'required|max:80',
+            'siren' => ['nullable', 'digits:9'],
+            'siret' => ['nullable', 'digits:14'],
+            'vat_number' => ['nullable', 'string', 'max:20'],
         ]);
 
         try {
             $school = School::findOrFail($school_id);
             $school->name = $request->name;
             $school->code = $request->code;
+            $school->siren = $request->siren;
+            $school->siret = $request->siret;
+            $school->vat_number = $request->vat_number;
             $school->address = $request->address;
+            $school->address2 = $request->address2;
             $school->city = $request->city;
             $school->zip = $request->zip;
             $school->country = $request->country;
@@ -192,13 +202,13 @@ class SchoolController extends Controller
 
             $school->save();
 
-            session()->flash('success', 'Ecole ' . $request->name . ' modifiée avec succès.');
+            session()->flash('success', 'Ecole '.$request->name.' modifiée avec succès.');
 
             return redirect(route('dashboard'));
         } catch (\Exception $e) {
             // dd($e);
 
-            session()->flash('danger', "Erreur lors de la modification de l'école " . $request->name . '.');
+            session()->flash('danger', "Erreur lors de la modification de l'école ".$request->name.'.');
 
             return redirect()->back();
         }
@@ -211,7 +221,8 @@ class SchoolController extends Controller
     {
         if ($school->countCourses() > 0) {
 
-            session()->flash('danger', "On ne peut pas effacer une école qui a des cours enregistrés.");
+            session()->flash('danger', 'On ne peut pas effacer une école qui a des cours enregistrés.');
+
             return redirect()->back();
         }
         session()->forget('school');
@@ -219,7 +230,7 @@ class SchoolController extends Controller
 
         $school->delete();
 
-        session()->flash('warning', "Ecole supprimée avec succès.");
+        session()->flash('warning', 'Ecole supprimée avec succès.');
 
         return redirect()->back();
     }

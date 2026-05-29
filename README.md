@@ -173,10 +173,11 @@ Planning / billing → Préparation facture → PDF (visualisation)
 
 ### Phases de développement prévues
 
-**Phase 1 — Fondations (sans rupture)**  
+**Phase 1 — Fondations (sans rupture)** ✅ *en place*  
 - Porter TVA, SIREN, SIRET dans `companies` et les clients (`schools` pour le B2B)  
 - Retirer les valeurs légales en dur du générateur PDF  
-- Table de statut e-facture (brouillon → prête → transmise → acceptée / rejetée)
+- Statut e-facture sur `invoices` (brouillon → prête → transmise → acceptée / rejetée)  
+- Écran **Mon entreprise → Identifiants légaux** pour renseigner l’émetteur
 
 **Phase 2 — Réception (échéance 2026)**  
 - Connexion PDP en réception (webhooks ou polling)  

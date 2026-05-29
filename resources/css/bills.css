@@ -162,3 +162,86 @@
    background: #fee2e2;
    color: #7f1d1d;
 }
+
+.invoice-e-status {
+   display: inline-block;
+   padding: 0.15rem 0.5rem;
+   border-radius: 0.25rem;
+   font-size: 0.75rem;
+   font-weight: 600;
+}
+
+.invoice-e-status--draft { background: #f3f4f6; color: #374151; }
+.invoice-e-status--ready { background: #dbeafe; color: #1e40af; }
+.invoice-e-status--transmitted { background: #fef3c7; color: #92400e; }
+.invoice-e-status--accepted { background: #dcfce7; color: #166534; }
+.invoice-e-status--rejected { background: #fee2e2; color: #991b1b; }
+
+.form-input--readonly,
+.form-input--readonly:focus {
+   background: #f3f4f6;
+   color: #4b5563;
+   cursor: not-allowed;
+}
+
+.company-readonly-list {
+   margin: 0.5rem 0 0;
+   padding-left: 1.25rem;
+   color: #4b5563;
+}
+
+.company-edit {
+   padding-right: 1.25rem;
+   padding-bottom: 1.5rem;
+}
+
+form.company-edit-form {
+   gap: 1.25rem;
+}
+
+.company-form-block {
+   background: #ffffff;
+   border: 1px solid #e5e7eb;
+   border-radius: 0.5rem;
+   box-shadow: 0 1px 2px rgb(0 0 0 / 6%);
+   padding: 1rem 1.25rem 1.25rem;
+   display: flex;
+   flex-direction: column;
+   gap: 0.75rem;
+}
+
+.company-form-block__title {
+   margin: 0;
+   font-size: 1.125rem;
+   font-weight: 700;
+   color: var(--brand-primary, #1e3a5f);
+   padding-bottom: 0.25rem;
+   border-bottom: 1px solid #e5e7eb;
+}
+
+.company-form-block .form-hint {
+   margin: 0;
+}
+
+.company-form-block .school-form-input:last-child {
+   margin-bottom: 0;
+}
+
+.company-form-actions {
+   display: flex;
+   flex-wrap: wrap;
+   align-items: center;
+   gap: 0.75rem;
+   margin-top: 0.25rem;
+   margin-right: 0.5rem;
+   margin-bottom: 1rem;
+   padding-bottom: 0.5rem;
+}
+
+.company-form-actions .btn {
+   text-transform: none;
+   letter-spacing: normal;
+   font-size: 0.9375rem;
+   font-weight: 600;
+   padding: 0.5rem 1rem;
+}

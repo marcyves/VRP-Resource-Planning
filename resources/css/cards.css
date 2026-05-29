@@ -8,7 +8,6 @@
 }
 
 .glass-background-solid {
-    background: var(--surface-card);
     border-radius: var(--rounded-lg);
     border: var(--border-standard);
     box-shadow: var(--shadow-md);

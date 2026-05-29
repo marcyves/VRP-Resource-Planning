@@ -25,6 +25,15 @@
                     @if($school->phone)
                     {{ __('messages.phone') }}: {{ $school->phone }}<br>
                     @endif
+                    @if($school->siren)
+                    {{ __('messages.siren') }}: {{ $school->siren }}<br>
+                    @endif
+                    @if($school->siret)
+                    {{ __('messages.siret') }}: {{ $school->siret }}<br>
+                    @endif
+                    @if($school->vat_number)
+                    {{ __('messages.vat_number') }}: {{ $school->vat_number }}<br>
+                    @endif
                 </div>
             </div>
         </section>

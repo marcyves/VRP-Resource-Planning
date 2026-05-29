@@ -46,15 +46,6 @@ main > section + section {
     box-shadow: var(--shadow-lg);
 }
 
-.glass-background-solid,
-main section > form,
-main form.glass-background-solid {
-    background: var(--surface-card);
-    border-radius: var(--rounded-lg);
-    border: var(--border-standard);
-    box-shadow: var(--shadow-md);
-}
-
 /* ── Cards in lists & grids ───────────────────────────────── */
 
 main section > ul > li,

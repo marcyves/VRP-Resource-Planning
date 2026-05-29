@@ -3,14 +3,14 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Http\Utility\Tools;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\DB;
 use Laravel\Sanctum\HasApiTokens;
-use App\Http\Utility\Tools;
 
 class User extends Authenticatable
 {
@@ -26,11 +26,13 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
+        'phone',
+        'website',
         'password',
         'status_id',
         'company_id',
         'mode',
-        'photo'
+        'photo',
     ];
 
     /**
@@ -113,15 +115,14 @@ class User extends Authenticatable
         return $query->get();
     }
 
-
-    public function getCourses($current_year = "all", $current_semester = "all")
+    public function getCourses($current_year = 'all', $current_semester = 'all')
     {
-        if (!isset($current_year)) {
+        if (! isset($current_year)) {
             $current_year = now()->format('Y');
         }
 
-        if (!isset($current_semester)) {
-            $current_semester = "all";
+        if (! isset($current_semester)) {
+            $current_semester = 'all';
         }
 
         $company_id = $this->company_id;
@@ -130,7 +131,7 @@ class User extends Authenticatable
             ->where('schools.company_id', '=', $company_id)
             ->get();
 
-        return $schools->getCourses($current_year, $current_semester);;
+        return $schools->getCourses($current_year, $current_semester);
     }
 
     public function getInvoices($year = 'all')
@@ -153,14 +154,15 @@ class User extends Authenticatable
 
         for ($i = 1; $i <= 12; $i++) {
             $planning = $schools->getBillingPlanning($year, $i);
-            if (!$planning) {
+            if (! $planning) {
                 $monthly_gain = 0;
-            }else{
+            } else {
                 [$tmp_schools, $monthly_gain, $tmp_monthly_hours] = Tools::getBillingInformation($planning);
             }
 
             $amount[] = $monthly_gain;
         }
+
         return $amount;
     }
 
@@ -171,6 +173,7 @@ class User extends Authenticatable
             $amount[] = Invoice::where('company_id', $this->company_id)
                 ->where('created_at', '>', "$year-$i-01")->where('created_at', '<', "$year-$i-31")->sum('amount');
         }
+
         return $amount;
     }
 
@@ -195,7 +198,8 @@ class User extends Authenticatable
             ->where('created_at', '<', "$year-12-31")
             ->count();
     }
-    public function getGroups(Bool $active = true)
+
+    public function getGroups(bool $active = true)
     {
         return Group::where('company_id', $this->company_id)
             ->where('active', $active)
@@ -207,9 +211,10 @@ class User extends Authenticatable
         $query = Group::where('company_id', $this->company_id)
             ->orderBy('name');
 
-        if (!is_null($active)) {
-             $query->where('active', $active);
+        if (! is_null($active)) {
+            $query->where('active', $active);
         }
+
         return $query;
     }
 
@@ -221,12 +226,13 @@ class User extends Authenticatable
     public function getMode()
     {
         if ($this->isAdmin() or $this->isEditor()) {
-            if ($this->mode == "") {
-                $this->mode = "Edit";
+            if ($this->mode == '') {
+                $this->mode = 'Edit';
             }
         } else {
-            $this->mode = "Browse";
+            $this->mode = 'Browse';
         }
+
         return $this->mode;
     }
 
@@ -237,36 +243,46 @@ class User extends Authenticatable
 
     public function isSuperAdmin()
     {
-        if ($this->status_id == 4)
+        if ($this->status_id == 4) {
             return true;
+        }
+
         return false;
     }
 
     public function isAdmin()
     {
-        if ($this->status_id == 1 or $this->status_id == 4)
+        if ($this->status_id == 1 or $this->status_id == 4) {
             return true;
+        }
+
         return false;
     }
 
     public function isEditor()
     {
-        if ($this->status_id == 2)
+        if ($this->status_id == 2) {
             return true;
+        }
+
         return false;
     }
 
-    public function isAuthor(String $id)
+    public function isAuthor(string $id)
     {
-        if ($this->status_id == 2 && $id == $this->id)
+        if ($this->status_id == 2 && $id == $this->id) {
             return true;
+        }
+
         return false;
     }
 
     public function isReader()
     {
-        if ($this->status_id == 3)
+        if ($this->status_id == 3) {
             return true;
+        }
+
         return false;
     }
 }

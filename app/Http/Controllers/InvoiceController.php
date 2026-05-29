@@ -2,27 +2,28 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\InvoiceService;
-
-use App\Models\Invoice;
-use App\Models\School;
-
+use App\Enums\ElectronicInvoiceStatus;
 use App\Http\Utility\Tools;
+use App\Models\Invoice;
 use App\Models\Planning;
+use App\Models\School;
+use App\Services\InvoiceService;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
-use Carbon\Carbon;
 
 class InvoiceController extends Controller
 {
     private $billingService;
+
     private $invoiceService;
 
     public function __construct(InvoiceService $invoiceService)
     {
         $this->invoiceService = $invoiceService;
     }
+
     /**
      * Display a listing of the resource.
      */
@@ -33,7 +34,7 @@ class InvoiceController extends Controller
         $bills = $user->getInvoices($current_year);
 
         $invoice_id_number = $this->invoiceService->calculateNextInvoiceId($user);
-        $invoice_id = $user->company->bill_prefix . $invoice_id_number;
+        $invoice_id = $user->company->bill_prefix.$invoice_id_number;
         $company = $user->company;
         $schools = $user->getSchools();
 
@@ -54,12 +55,12 @@ class InvoiceController extends Controller
 
         $user = Auth::user();
         $bill_number = $this->invoiceService->calculateNextInvoiceId($user);
-        $invoice_id = $user->company->bill_prefix . $bill_number;
+        $invoice_id = $user->company->bill_prefix.$bill_number;
 
         $company = $user->company;
         $school = School::find($school_id);
 
-        if ($cmd == "detailed") {
+        if ($cmd == 'detailed') {
             [$items, $total_amount] = Tools::getInvoiceDetails($school_id, $month, $year, $invoice_id, false);
         } else {
             $items = [];
@@ -88,9 +89,9 @@ class InvoiceController extends Controller
         $year = $request->year;
         $bill_date = $request->bill_date;
 
-        $company  =  Auth::user()->company;
-        $invoice_id =  $request->invoice_id;                           // This is the numeric part only
-        $invoice_name = $company->bill_prefix . $invoice_id;     // This is the full ID with the company prefix
+        $company = Auth::user()->company;
+        $invoice_id = $request->invoice_id;                           // This is the numeric part only
+        $invoice_name = $company->bill_prefix.$invoice_id;     // This is the full ID with the company prefix
         $school = School::find($request->school_id);
 
         // 1. Always fetch planning details first to see if this constitutes a valid agenda invoice
@@ -102,8 +103,8 @@ class InvoiceController extends Controller
             $total_amount = $request->amount;
 
             $items = [
-                [$request->description, "", "", "", "", "T"],
-                ["Montant forfaitaire", "20%", $total_amount, 1, 1, "N"]
+                [$request->description, '', '', '', '', 'T'],
+                ['Montant forfaitaire', '20%', $total_amount, 1, 1, 'N'],
             ];
         } else {
             // Use the calculated total from planning
@@ -119,6 +120,8 @@ class InvoiceController extends Controller
                 'company_id' => $company->id,
                 'school_id' => $request->school_id,
                 'amount' => $request->amount ?? $total_amount,
+                'electronic_invoice_status' => ElectronicInvoiceStatus::Ready,
+                'electronic_status_at' => Carbon::now(),
             ]);
 
             // 2. Génération et enregistrement physique du fichier via le Service
@@ -133,7 +136,7 @@ class InvoiceController extends Controller
                 $invoice->id
             );
 
-            session()->flash('success', "Facture " . $invoice_name . " enregistrée avec succès.");
+            session()->flash('success', 'Facture '.$invoice_name.' enregistrée avec succès.');
 
             return redirect(route('invoice.index'));
         } catch (\Exception $e) {
@@ -147,7 +150,7 @@ class InvoiceController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(String $bill)
+    public function show(string $bill)
     {
         $user = Auth::user();
         $company = $user->company;
@@ -156,7 +159,8 @@ class InvoiceController extends Controller
         if (Storage::exists($file_path)) {
             return Storage::download($file_path);
         } else {
-            session()->flash('danger', "File not found");
+            session()->flash('danger', 'File not found');
+
             return redirect()->back();
         }
     }
@@ -188,7 +192,7 @@ class InvoiceController extends Controller
 
         $validated = $request->validate([
             'id' => 'required',
-            'description' => 'required'
+            'description' => 'required',
         ]);
 
         try {
@@ -199,19 +203,19 @@ class InvoiceController extends Controller
 
             $invoice->save();
 
-            session()->flash('success', 'Facture ' . $request->id . ' modifiée avec succès.');
+            session()->flash('success', 'Facture '.$request->id.' modifiée avec succès.');
 
             return redirect(route('invoice.index'));
         } catch (\Exception $e) {
             dd($e);
 
-            session()->flash('danger', "Erreur lors de la modification de la facture " . $request->name . '.');
+            session()->flash('danger', 'Erreur lors de la modification de la facture '.$request->name.'.');
 
             return redirect()->back();
         }
     }
 
-    public function payed(String $invoice_id)
+    public function payed(string $invoice_id)
     {
         try {
             $bill = Invoice::findOrFail($invoice_id);
@@ -219,15 +223,18 @@ class InvoiceController extends Controller
             $bill->paid_at = $wasPaid ? null : Carbon::now();
             $bill->save();
             session()->flash('success', $wasPaid
-                ? "Paiement de la facture " . $bill->id . " annulé avec succès."
-                : "Facture " . $bill->id . " payée avec succès."
+                ? 'Paiement de la facture '.$bill->id.' annulé avec succès.'
+                : 'Facture '.$bill->id.' payée avec succès.'
             );
+
             return redirect()->back();
         } catch (\Exception $e) {
-            session()->flash('danger', "Erreur lors du payement de la facture: " . $e->getMessage());
+            session()->flash('danger', 'Erreur lors du payement de la facture: '.$e->getMessage());
+
             return redirect()->back();
         }
     }
+
     /**
      * Remove the specified resource from storage.
      */
@@ -241,19 +248,21 @@ class InvoiceController extends Controller
             }
 
             $invoice->delete();
-            $planning_list = Planning::where('invoice_id', Auth::user()->company->bill_prefix . $invoice->id)->get();
+            $planning_list = Planning::where('invoice_id', Auth::user()->company->bill_prefix.$invoice->id)->get();
 
             foreach ($planning_list as $id) {
                 $planning = Planning::find($id['id']);
-                $planning->invoice_id = "";
+                $planning->invoice_id = '';
                 $planning->update();
             }
 
-            session()->flash('success', "Facture " . Auth::user()->company->bill_prefix . $invoice->id . " supprimée avec succès.");
+            session()->flash('success', 'Facture '.Auth::user()->company->bill_prefix.$invoice->id.' supprimée avec succès.');
+
             return redirect()->back();
         } catch (\Exception $e) {
-            session()->flash('danger', "Erreur lors de la suppression de la facture.");
-            //session()->flash('danger', $e->getMessage());
+            session()->flash('danger', 'Erreur lors de la suppression de la facture.');
+
+            // session()->flash('danger', $e->getMessage());
             return redirect()->back();
         }
     }

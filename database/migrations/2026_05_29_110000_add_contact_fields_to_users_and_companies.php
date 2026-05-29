@@ -1,0 +1,32 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    public function up(): void
+    {
+        Schema::table('users', function (Blueprint $table) {
+            $table->string('phone')->nullable()->after('email');
+            $table->string('website')->nullable()->after('phone');
+        });
+
+        Schema::table('companies', function (Blueprint $table) {
+            $table->foreignId('contact_user_id')->nullable()->after('share_capital')->constrained('users')->nullOnDelete();
+        });
+    }
+
+    public function down(): void
+    {
+        Schema::table('companies', function (Blueprint $table) {
+            $table->dropForeign(['contact_user_id']);
+            $table->dropColumn('contact_user_id');
+        });
+
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropColumn(['phone', 'website']);
+        });
+    }
+};
