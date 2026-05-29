@@ -113,7 +113,7 @@ class SchoolController extends Controller
                 'description' => $request->description,
             ]);
 
-            session()->flash('success', 'Ecole '.$school->name.' enregistrée avec succès.');
+            session()->flash('success', __('messages.school_saved_success', ['name' => $school->name]));
             session()->put('school', $school->name);
             session()->put('school_id', $school->id);
 
@@ -121,7 +121,7 @@ class SchoolController extends Controller
         } catch (\Exception $e) {
             dd($e);
 
-            session()->flash('danger', "Erreur lors de l'enregistrement de l'école ".$request->name.'.');
+            session()->flash('danger', __('messages.school_save_error', ['name' => $request->name]));
 
             return redirect()->back();
         }
@@ -202,13 +202,13 @@ class SchoolController extends Controller
 
             $school->save();
 
-            session()->flash('success', 'Ecole '.$request->name.' modifiée avec succès.');
+            session()->flash('success', __('messages.school_updated_success', ['name' => $request->name]));
 
             return redirect(route('dashboard'));
         } catch (\Exception $e) {
             // dd($e);
 
-            session()->flash('danger', "Erreur lors de la modification de l'école ".$request->name.'.');
+            session()->flash('danger', __('messages.school_update_error', ['name' => $request->name]));
 
             return redirect()->back();
         }
@@ -221,7 +221,7 @@ class SchoolController extends Controller
     {
         if ($school->countCourses() > 0) {
 
-            session()->flash('danger', 'On ne peut pas effacer une école qui a des cours enregistrés.');
+            session()->flash('danger', __('messages.school_delete_has_courses'));
 
             return redirect()->back();
         }
@@ -230,7 +230,7 @@ class SchoolController extends Controller
 
         $school->delete();
 
-        session()->flash('warning', 'Ecole supprimée avec succès.');
+        session()->flash('warning', __('messages.school_deleted_success'));
 
         return redirect()->back();
     }

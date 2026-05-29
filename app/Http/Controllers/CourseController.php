@@ -59,7 +59,7 @@ class CourseController extends Controller
                     'rate' => $rate,
                         ]);
 
-            session()->flash('success', "Cours ".$request->name." enregistré avec succès.");
+            session()->flash('success', __('messages.course_saved_success', ['name' => $request->name]));
             session()->put('course', $request->name);
             session()->put('course_id', $course->id);
 
@@ -67,7 +67,7 @@ class CourseController extends Controller
         }
         catch (\Exception $e) {
             // dd($e);
-            session()->flash('danger', "Erreur lors de l'enregitrement du cours.");
+            session()->flash('danger', __('messages.course_save_error'));
 
             return redirect()->back();
         }               
@@ -137,14 +137,14 @@ class CourseController extends Controller
 
             $course->update();
 
-            session()->flash('success', "Cours ".$course->name." enregistré avec succès.");
+            session()->flash('success', __('messages.course_updated_success', ['name' => $course->name]));
             session()->put('course', $course->name);
             session()->put('course_id', $course->id);
 
             return redirect(route('dashboard'));
         }
         catch (\Exception $e) {
-            session()->flash('danger', "Erreur lors de l'enregistrement du cours.");
+            session()->flash('danger', __('messages.course_save_error'));
             session()->flash('danger', $e->getMessage());
             return redirect()->back();
         }               
@@ -163,7 +163,7 @@ class CourseController extends Controller
             return redirect(route('dashboard'));
         }
         catch (\Exception $e) {
-            session()->flash('danger', "Erreur lors de la suppression du cours.");
+            session()->flash('danger', __('messages.course_delete_error'));
             //session()->flash('danger', $e->getMessage());
             return redirect()->back();
         }                   

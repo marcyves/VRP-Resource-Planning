@@ -14,6 +14,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProgramController;
 use App\Http\Controllers\SchoolController;
 use App\Http\Controllers\TreasuryController;
+use App\Http\Middleware\SetTerminologyLocale;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
@@ -40,9 +41,9 @@ Route::get('/', function () {
 
 Route::get('/dashboard', function () {
     return redirect(route('school.dashboard'));
-})->middleware(['auth', 'verified'])->name('dashboard');
+})->middleware(['auth', 'verified', SetTerminologyLocale::class])->name('dashboard');
 
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', SetTerminologyLocale::class])->group(function () {
     //    Route::get('/calendar/import/{calendar_id}', [CalendarController::class, 'readICSFile'])->name('ics.read');
     Route::prefix('admin/calendars')->middleware(['auth'])->group(function () {
         Route::get('/', [CalendarFileController::class, 'index'])->name('calendar.index');

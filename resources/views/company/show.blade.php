@@ -17,6 +17,12 @@
             <li class="card">
                 <div class="card-content-text">
                     <h2>{{$company->name}}</h2>
+                    <p class="form-hint">
+                        {{ __('messages.terminology_profile') }}:
+                        {{ ($company->terminology_profile ?? 'education') === 'consulting'
+                            ? __('messages.terminology_profile_consulting')
+                            : __('messages.terminology_profile_education') }}
+                    </p>
                     <ul>
                         <li>{{$company->address}}</li>
                         <li>{{$company->zip }} {{$company->city}}</li>

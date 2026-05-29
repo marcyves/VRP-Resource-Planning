@@ -78,7 +78,7 @@ class GroupController extends Controller
                     'year' => $year,
                 ]);
 
-            session()->flash('success', "Groupe enregistré avec succès.");
+            session()->flash('success', __('messages.group_saved_success'));
 
             if ($course_id == 0){
                 return redirect(route('group.index'));
@@ -94,7 +94,7 @@ class GroupController extends Controller
         }
         catch (\Exception $e) {
             // dd($e);
-            session()->flash('danger', "Erreur lors de l'enregistrement du groupe.");
+            session()->flash('danger', __('messages.group_save_error'));
 
             return redirect()->back();
         }               
@@ -142,7 +142,7 @@ class GroupController extends Controller
         $group_link = GroupCourse::findOrFail($group_link->id);
         $group_link->delete();
 
-        session()->flash('success', "Groupe libéré avec succès.");
+        session()->flash('success', __('messages.group_released_success'));
 
         return redirect()->back();
 
@@ -191,13 +191,13 @@ class GroupController extends Controller
 
             //TODO add group_course record to link them
 
-            session()->flash('success', "Groupe modifié avec succès.");
+            session()->flash('success', __('messages.group_updated_success'));
 
             return redirect(route('course.show', $request->course_id));
         }
         catch (\Exception $e) {
             // dd($e);
-            session()->flash('danger', "Erreur lors de l'enregitrement du groupe.");
+            session()->flash('danger', __('messages.group_save_error'));
 
             return redirect()->back();
         }               
@@ -214,12 +214,12 @@ class GroupController extends Controller
 
             $group->delete();
 
-            session()->flash('success', "Groupe effacé avec succès.");
+            session()->flash('success', __('messages.group_deleted_success'));
     
         }
         catch (\Exception $e) {
             if($e->getCode() == 23000){
-                session()->flash('danger', "Le groupe ne peut être effacé, il est utilisé dans un cours.");
+                session()->flash('danger', __('messages.group_delete_in_use'));
 
             }else{
                 // Unknown error

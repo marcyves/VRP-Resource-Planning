@@ -217,7 +217,7 @@ class Tools
             }
             if ($group_name != $planning_detail['group_name']) {
                 $group_name = $planning_detail['group_name'];
-                array_push($items, ["Groupe : " . $group_name, "", "", "", "", "S"]);
+                array_push($items, [__('messages.invoice_line_group', ['name' => $group_name]), "", "", "", "", "S"]);
             }
             // Get planning details
             $planning = Planning::find($planning_detail['id']);

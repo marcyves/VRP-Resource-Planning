@@ -110,7 +110,12 @@ Penser à régénérer le cache des routes si besoin : `php artisan route:cache`
 
 ## Internationalisation
 
-Fichiers de traduction sous `resources/lang/` (français, anglais, italien, variante métier `en_proj`, etc.).  
+Fichiers de traduction sous `resources/lang/` (français, anglais, italien).
+
+**Contexte métier (formation vs clients/projets)** : chaque entreprise choisit un profil sur la fiche société (`education` ou `consulting`). Les libellés à l’écran passent alors par les locales `fr_consulting`, `en_consulting`, etc. (écoles → clients, programmes → projets, cours → phases). Les tables et routes (`school`, `course`, …) restent inchangées.
+
+Variable d’environnement optionnelle : `TERMINOLOGY_PROFILE=education` (défaut pour les invités / sans entreprise).
+
 Le paquet `joedixon/laravel-translation` est présent pour faciliter la gestion des chaînes.
 
 ---

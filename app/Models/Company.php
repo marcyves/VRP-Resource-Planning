@@ -13,8 +13,13 @@ class Company extends Model
 
     public $timestamps = false;
 
+    public const PROFILE_EDUCATION = 'education';
+
+    public const PROFILE_CONSULTING = 'consulting';
+
     public $fillable = [
         'name',
+        'terminology_profile',
         'bill_prefix',
         'siren',
         'siret',

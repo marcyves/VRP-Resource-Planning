@@ -9,6 +9,23 @@
             @method('PUT')
 
             <div class="company-form-block">
+                <h3 class="company-form-block__title">{{ __('messages.terminology_profile') }}</h3>
+                <p class="form-hint">{{ __('messages.terminology_profile_hint') }}</p>
+                <div class="school-form-input">
+                    <x-input-label for="terminology_profile" :value="__('messages.terminology_profile')" />
+                    <select name="terminology_profile" id="terminology_profile" class="form-input">
+                        <option value="education" @selected(old('terminology_profile', $company->terminology_profile ?? 'education') === 'education')>
+                            {{ __('messages.terminology_profile_education') }}
+                        </option>
+                        <option value="consulting" @selected(old('terminology_profile', $company->terminology_profile ?? 'education') === 'consulting')>
+                            {{ __('messages.terminology_profile_consulting') }}
+                        </option>
+                    </select>
+                    <x-input-error :messages="$errors->get('terminology_profile')" />
+                </div>
+            </div>
+
+            <div class="company-form-block">
                 <h3 class="company-form-block__title">{{ __('messages.legal_identifiers') }}</h3>
                 <p class="form-hint">{{ __('messages.company_legal_edit_hint') }}</p>
 

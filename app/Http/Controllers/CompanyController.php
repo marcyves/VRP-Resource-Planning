@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Company;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -34,6 +35,7 @@ class CompanyController extends Controller
         $company = Auth::user()->company;
 
         $validated = $request->validate([
+            'terminology_profile' => ['required', Rule::in([Company::PROFILE_EDUCATION, Company::PROFILE_CONSULTING])],
             'siren' => ['nullable', 'digits:9'],
             'siret' => ['nullable', 'digits:14'],
             'vat_number' => ['nullable', 'string', 'max:20'],

@@ -221,9 +221,9 @@ class PlanningController extends Controller
 
                 $group_id = $group->id;
 
-                session()->flash('success', "Groupe enregistré avec succès.");
+                session()->flash('success', __('messages.group_saved_success'));
             } catch (\Exception $e) {
-                session()->flash('danger', "Erreur lors de l'enregistrement du groupe.");
+                session()->flash('danger', __('messages.group_save_error'));
 
                 return redirect(route('planning.index'));
             }
@@ -256,12 +256,12 @@ class PlanningController extends Controller
                 'course_id' => $course_id,
             ]);
 
-            session()->flash('success', "Session de cours enregistrée avec succès le " . $begin . ".");
+            session()->flash('success', __('messages.planning_session_saved_success', ['date' => $begin]));
 
             return redirect(route('planning.index'));
         } catch (\Exception $e) {
             // dd($e);
-            session()->flash('danger', "Erreur lors de l'enregitrement d'une session de cours.");
+            session()->flash('danger', __('messages.planning_session_save_error'));
             return redirect(route('planning.index'));
             //            return redirect()->back();
         }
@@ -338,9 +338,9 @@ class PlanningController extends Controller
 
             $planning->save();
 
-            session()->flash('success', "Session modifiée avec succès.");
+            session()->flash('success', __('messages.planning_session_updated_success'));
         } catch (\Exception $e) {
-            session()->flash('danger', "Erreur lors de la modification de la session");
+            session()->flash('danger', __('messages.planning_session_update_error'));
             //session()->flash('danger', $e->getMessage());
             return redirect()->back();
         }
@@ -362,9 +362,9 @@ class PlanningController extends Controller
 
             $planning->delete();
 
-            session()->flash('success', "Session effacée avec succès.");
+            session()->flash('success', __('messages.planning_session_deleted_success'));
         } catch (\Exception $e) {
-            session()->flash('danger', "Erreur lors de l'effacement de la session.");
+            session()->flash('danger', __('messages.planning_session_delete_error'));
             //session()->flash('danger', $e->getMessage());
             return redirect()->back();
         }

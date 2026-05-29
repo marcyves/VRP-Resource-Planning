@@ -114,7 +114,7 @@ class BillingController extends Controller
             $planning->update();
         }
 
-        session()->flash('success', "Facture enregistrée avec succès.");
+        session()->flash('success', __('messages.billing_invoice_saved_success'));
 
         return redirect(route('billing.index'));
     }

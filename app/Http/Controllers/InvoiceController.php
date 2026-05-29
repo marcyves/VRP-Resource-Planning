@@ -136,12 +136,12 @@ class InvoiceController extends Controller
                 $invoice->id
             );
 
-            session()->flash('success', 'Facture '.$invoice_name.' enregistrée avec succès.');
+            session()->flash('success', __('messages.invoice_saved_success', ['name' => $invoice_name]));
 
             return redirect(route('invoice.index'));
         } catch (\Exception $e) {
             dd($e);
-            session()->flash('danger', "Erreur lors de l'enregistrement de la facture.");
+            session()->flash('danger', __('messages.invoice_save_error'));
 
             return redirect()->back();
         }
@@ -159,7 +159,7 @@ class InvoiceController extends Controller
         if (Storage::exists($file_path)) {
             return Storage::download($file_path);
         } else {
-            session()->flash('danger', 'File not found');
+            session()->flash('danger', __('messages.invoice_file_not_found'));
 
             return redirect()->back();
         }
@@ -203,13 +203,13 @@ class InvoiceController extends Controller
 
             $invoice->save();
 
-            session()->flash('success', 'Facture '.$request->id.' modifiée avec succès.');
+            session()->flash('success', __('messages.invoice_updated_success', ['id' => $request->id]));
 
             return redirect(route('invoice.index'));
         } catch (\Exception $e) {
             dd($e);
 
-            session()->flash('danger', 'Erreur lors de la modification de la facture '.$request->name.'.');
+            session()->flash('danger', __('messages.invoice_update_error'));
 
             return redirect()->back();
         }
@@ -223,13 +223,13 @@ class InvoiceController extends Controller
             $bill->paid_at = $wasPaid ? null : Carbon::now();
             $bill->save();
             session()->flash('success', $wasPaid
-                ? 'Paiement de la facture '.$bill->id.' annulé avec succès.'
-                : 'Facture '.$bill->id.' payée avec succès.'
+                ? __('messages.invoice_payment_cancelled_success', ['id' => $bill->id])
+                : __('messages.invoice_paid_success', ['id' => $bill->id])
             );
 
             return redirect()->back();
         } catch (\Exception $e) {
-            session()->flash('danger', 'Erreur lors du payement de la facture: '.$e->getMessage());
+            session()->flash('danger', __('messages.invoice_payment_error', ['message' => $e->getMessage()]));
 
             return redirect()->back();
         }
@@ -256,11 +256,13 @@ class InvoiceController extends Controller
                 $planning->update();
             }
 
-            session()->flash('success', 'Facture '.Auth::user()->company->bill_prefix.$invoice->id.' supprimée avec succès.');
+            session()->flash('success', __('messages.invoice_deleted_success', [
+                'name' => Auth::user()->company->bill_prefix.$invoice->id,
+            ]));
 
             return redirect()->back();
         } catch (\Exception $e) {
-            session()->flash('danger', 'Erreur lors de la suppression de la facture.');
+            session()->flash('danger', __('messages.invoice_delete_error'));
 
             // session()->flash('danger', $e->getMessage());
             return redirect()->back();

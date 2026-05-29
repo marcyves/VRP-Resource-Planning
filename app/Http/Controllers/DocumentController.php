@@ -14,7 +14,7 @@ class DocumentController extends Controller
     {
         $pathToFile = "storage/" . $this->directory . $document->file_name;
         if (!Storage::exists($pathToFile)) {
-            session()->flash('danger', "Document not found.");
+            session()->flash('danger', __('messages.document_not_found'));
             return redirect()->back();
         }
         return response()->file($pathToFile);
@@ -43,7 +43,7 @@ class DocumentController extends Controller
             'file_name' => $fileName
         ]);
 
-        session()->flash('success', "Document added successfully.");
+        session()->flash('success', __('messages.document_added_success'));
 
         return redirect()->back();
     }
@@ -53,7 +53,7 @@ class DocumentController extends Controller
         Storage::delete("public/" . $this->directory . $document->file_name);
         $document->delete();
 
-        session()->flash('success', "Document deleted successfully.");
+        session()->flash('success', __('messages.document_deleted_success'));
 
         return redirect()->back();
     }

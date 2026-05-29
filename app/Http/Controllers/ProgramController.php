@@ -40,13 +40,13 @@ class ProgramController extends Controller
                     'name' => $request->name,
                         ]);
 
-            session()->flash('success', "Programme enregistré avec succès.");
+            session()->flash('success', __('messages.program_saved_success'));
 
             return redirect(route('program.index'));
         }
         catch (\Exception $e) {
             // dd($e);
-            session()->flash('danger', "Erreur lors de l'enregitrement du programme.");
+            session()->flash('danger', __('messages.program_save_error'));
 
             return redirect()->back();
         }          
@@ -93,13 +93,13 @@ class ProgramController extends Controller
             $program->name = $request->name;
             $program->update();
 
-            session()->flash('success', "Programme modifié avec succès.");
+            session()->flash('success', __('messages.program_updated_success'));
                         
             return redirect(route('program.index'));
         }
         catch (\Exception $e) {
             // dd($e);
-            session()->flash('danger', "Erreur lors de l'enregitrement du programme.");
+            session()->flash('danger', __('messages.program_save_error'));
 
             return redirect()->back();
         }               
