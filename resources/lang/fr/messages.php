@@ -297,6 +297,7 @@ return [
     'activity' => 'Activité',
     'reference_data' => 'Référentiel',
     'module_navigation' => 'Navigation du module',
+    'nav_menu' => 'Menu principal',
     'by_date' => 'Par date',
     'summary' => 'Synthèse',
     'workload_plan' => 'Plan de charge',

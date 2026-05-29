@@ -281,6 +281,7 @@ return [
     'activity' => 'Activity',
     'reference_data' => 'Reference data',
     'module_navigation' => 'Module navigation',
+    'nav_menu' => 'Main menu',
     'by_date' => 'By date',
     'summary' => 'Summary',
     'workload_plan' => 'Workload plan',

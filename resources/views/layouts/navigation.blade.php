@@ -1,9 +1,20 @@
 <nav class="nav-main">
-    <a href="{{ route('treasury.index') }}" class="nav-logo">
+    <a href="{{ route('treasury.index') }}" class="nav-logo nav-logo--desktop">
         <x-application-logo />
     </a>
 
-    <div class="nav-links">
+    <input type="checkbox" id="nav-menu-toggle" class="nav-menu-toggle-input" aria-hidden="true" tabindex="-1">
+
+    <div class="nav-mobile-brand">
+        <a href="{{ route('treasury.index') }}" class="nav-logo nav-logo--mobile">
+            <x-application-logo />
+        </a>
+        <label for="nav-menu-toggle" class="nav-menu-toggle" aria-label="{{ __('messages.nav_menu') }}">
+            <span class="nav-menu-toggle-icon" aria-hidden="true"></span>
+        </label>
+    </div>
+
+    <div class="nav-links" id="nav-menu-panel">
         <x-nav-link :href="route('planning.index')" :active="request()->routeIs('planning.*', 'calendar.*', 'billing.*')">
             {{ __('messages.planning') }}
         </x-nav-link>
@@ -32,13 +43,6 @@
             </label>
         </div>
 
-        <script>
-            document.getElementById('edit-toggle')?.addEventListener('change', (e) => {
-                e.target.classList.add('toggled-once');
-                window.location.href = "{{ route('profile.switch') }}";
-            });
-        </script>
-
         @php
         $current_year = session('current_year');
         @endphp
@@ -57,7 +61,7 @@
 
         <details class="nav-user">
             <summary class="nav-user-btn">
-                <span>{{ Auth::user()->name }} ({{Auth::user()->getStatusName()}})</span>
+                <span class="nav-user-name">{{ Auth::user()->name }} ({{Auth::user()->getStatusName()}})</span>
                 <span class="nav-user-icon">
                     <svg class="icon-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                         <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
@@ -80,3 +84,19 @@
         </details>
     </div>
 </nav>
+
+<script>
+    document.getElementById('edit-toggle')?.addEventListener('change', (e) => {
+        e.target.classList.add('toggled-once');
+        window.location.href = "{{ route('profile.switch') }}";
+    });
+
+    document.querySelectorAll('.nav-links .nav-link')?.forEach((link) => {
+        link.addEventListener('click', () => {
+            const toggle = document.getElementById('nav-menu-toggle');
+            if (toggle) {
+                toggle.checked = false;
+            }
+        });
+    });
+</script>

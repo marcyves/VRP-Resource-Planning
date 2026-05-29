@@ -126,26 +126,19 @@
     align-items: center;
     padding: 0.5rem 0.75rem;
     border: 1px solid #00000000;
-    /* border-transparent */
     font-size: 0.875rem;
-    /* text-sm */
     line-height: 1;
-    /* leading-4 */
     font-weight: 500;
-    /* font-medium */
     border-radius: var(--rounded-md);
-    /* rounded-md */
-    color: var(--text-muted);
-    /* text-gray-500 */
-    background-color: #ffffff;
-    /* bg-white */
+    color: #ffffff;
+    background-color: #00000000;
     cursor: pointer;
     transition: all 150ms ease-in-out;
 }
 
 .nav-user-btn:hover {
-    color: #374151;
-    /* text-gray-700 */
+    color: #ffffff;
+    background-color: #ffffff1a;
 }
 
 .nav-user-btn:focus {
