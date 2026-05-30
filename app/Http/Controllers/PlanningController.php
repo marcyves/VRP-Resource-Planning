@@ -17,6 +17,64 @@ class PlanningController extends Controller
     /**
      * Display a listing of the resource.
      */
+    /**
+     * Clear school/course context and return to the agenda school selection (all schools).
+     */
+    public function schools()
+    {
+        session()->forget('course');
+        session()->forget('course_id');
+        session()->forget('school');
+        session()->forget('school_id');
+
+        return redirect()->route('planning.index');
+    }
+
+    public function selectSchool(Request $request)
+    {
+        $validated = $request->validate([
+            'school_id' => 'required|exists:schools,id',
+        ]);
+
+        $school = Auth::user()->getSchools()->firstWhere('id', (int) $validated['school_id']);
+
+        if (! $school) {
+            abort(403);
+        }
+
+        session()->put('school', $school->name);
+        session()->put('school_id', $school->id);
+        session()->forget('course');
+        session()->forget('course_id');
+
+        return redirect()->to($this->planningContextRedirectUrl($request));
+    }
+
+    public function selectCourse(Request $request)
+    {
+        $validated = $request->validate([
+            'course_id' => 'nullable|exists:courses,id',
+        ]);
+
+        if (empty($validated['course_id'])) {
+            session()->forget('course');
+            session()->forget('course_id');
+
+            return redirect()->to($this->planningContextRedirectUrl($request));
+        }
+
+        $course = Course::findOrFail($validated['course_id']);
+        $courseSchool = $course->getSchool();
+
+        if ($courseSchool->company_id !== Auth::user()->company_id) {
+            abort(403);
+        }
+
+        $this->syncPlanningBreadcrumbContext($course);
+
+        return redirect()->to($this->planningContextRedirectUrl($request));
+    }
+
     public function index(Request $request)
     {
 
@@ -67,34 +125,16 @@ class PlanningController extends Controller
 
         $current_day = now()->format('d');
 
+        $schools = Auth::user()->getSchools();
+
         if ($school_id = session()->get('school_id')) {
-            $schools = School::find($school_id);
-            $years  = Course::where('school_id', $school_id)
+            $years = Course::where('school_id', $school_id)
                 ->select(['year'])
                 ->distinct()
                 ->orderBy('year', 'asc')
                 ->get();
-
-            if ($course_id = session()->get('course_id')) {
-                $courses = Course::select(['courses.*', 'programs.name as program_name'])
-                    ->where('courses.id', '=', $course_id)
-                    ->where('year', '=', $current_year)
-                    ->leftJoin('programs', 'courses.program_id', '=', 'programs.id')
-                    ->orderBy('semester', 'asc')
-                    ->orderBy('program_name', 'asc')
-                    ->orderBy('name', 'asc')
-                    ->get();
-                $mode = 'selected';
-            } else {
-                $courses = $schools->getCourses();
-                $mode = 'single';
-            }
         } else {
-            // Collect Courses for future planning
-            $schools = Auth::user()->getSchools();
             $years = $schools->getYears();
-            $courses = $schools->getCourses($current_year, $current_semester);
-            $mode = 'multi';
         }
         // Collect Planning information for display
         //$planning = $schools->getPlanning($current_year, $current_month);
@@ -114,8 +154,6 @@ class PlanningController extends Controller
 
         return view('planning.index', compact(
             'planning',
-            'schools',
-            'courses',
             'years',
             'months',
             'weekdays',
@@ -124,7 +162,6 @@ class PlanningController extends Controller
             'current_day',
             'monthly_gain',
             'monthly_hours',
-            'mode'
         ));
     }
 
@@ -135,11 +172,19 @@ class PlanningController extends Controller
     {
         $validated = $request->validate([
             'date' => 'required|date',
-            'course' => 'required|exists:courses,id',
+            'course' => 'nullable|exists:courses,id',
         ]);
 
+        $courseId = $validated['course'] ?? session('course_id');
+
+        if (! $courseId) {
+            return redirect()
+                ->route('planning.index')
+                ->with('danger', __('messages.planning_select_course_first'));
+        }
+
         $request->session()->put('planning_create_date', $validated['date']);
-        $request->session()->put('planning_create_course_id', $validated['course']);
+        $request->session()->put('planning_create_course_id', $courseId);
 
         return redirect()->route('planning.create');
     }
@@ -149,6 +194,13 @@ class PlanningController extends Controller
      */
     public function create(Request $request)
     {
+        if ($request->old('date')) {
+            $request->session()->put('planning_create_date', $request->old('date'));
+        }
+        if ($request->old('course')) {
+            $request->session()->put('planning_create_course_id', $request->old('course'));
+        }
+
         $date = $request->session()->get('planning_create_date');
         $courseId = $request->session()->get('planning_create_course_id');
 
@@ -225,7 +277,7 @@ class PlanningController extends Controller
             } catch (\Exception $e) {
                 session()->flash('danger', __('messages.group_save_error'));
 
-                return redirect(route('planning.index'));
+                return redirect()->route('planning.create')->withInput();
             }
         } else {
             $request->validate([
@@ -260,10 +312,9 @@ class PlanningController extends Controller
 
             return redirect(route('planning.index'));
         } catch (\Exception $e) {
-            // dd($e);
             session()->flash('danger', __('messages.planning_session_save_error'));
-            return redirect(route('planning.index'));
-            //            return redirect()->back();
+
+            return redirect()->route('planning.create')->withInput();
         }
     }
 
@@ -284,6 +335,7 @@ class PlanningController extends Controller
         $planning = Planning::findOrFail($id);
         $current_group = Group::find($planning->group_id);
         $course = Course::findOrFail($planning->course_id);
+        $this->syncPlanningBreadcrumbContext($course);
         //TODO check groups are not yet fully booked
         $groups = Group::all();
 
@@ -342,13 +394,15 @@ class PlanningController extends Controller
 
             $planning->save();
 
+            $this->syncPlanningBreadcrumbContext(Course::findOrFail($planning->course_id));
+
             session()->flash('success', __('messages.planning_session_updated_success'));
         } catch (\Exception $e) {
             session()->flash('danger', __('messages.planning_session_update_error'));
             //session()->flash('danger', $e->getMessage());
             return redirect()->back();
         }
-        $schoolId = session('school_id') ?: Course::find($planning->course_id)?->school_id;
+        $schoolId = session('school_id');
 
         if ($schoolId) {
             return redirect()->route('school.show', $schoolId)->withFragment('billing');
@@ -380,5 +434,26 @@ class PlanningController extends Controller
         }
 
         return redirect(route('planning.index'));
+    }
+
+    private function syncPlanningBreadcrumbContext(Course $course): void
+    {
+        $school = $course->getSchool();
+
+        session()->put('course', $course->name);
+        session()->put('course_id', $course->id);
+        session()->put('school', $school->name);
+        session()->put('school_id', $school->id);
+    }
+
+    private function planningContextRedirectUrl(Request $request): string
+    {
+        $redirect = $request->input('redirect');
+
+        if (is_string($redirect) && $redirect !== '' && str_starts_with($redirect, url('/'))) {
+            return $redirect;
+        }
+
+        return route('planning.index');
     }
 }

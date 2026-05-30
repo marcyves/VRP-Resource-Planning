@@ -287,7 +287,8 @@ nav.breadcrumb button:hover {
 }
 
 nav.breadcrumb li {
-    display: inline;
+    display: inline-flex;
+    align-items: center;
 }
 
 /* ── Guest layout ─────────────────────────────────────────── */

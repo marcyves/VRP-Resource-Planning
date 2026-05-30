@@ -8,11 +8,15 @@
     display: none;
 }
 
-.planning-controls {
+.planning-controls,
+.planning-toolbar {
     display: flex;
-    flex-direction: column;
-    gap: var(--spacing-4);
-    padding: var(--spacing-4);
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--spacing-3) var(--spacing-4);
+    padding: var(--spacing-3) var(--spacing-4);
     background: var(--surface-container-lowest);
     border: var(--border-standard);
     border-radius: var(--rounded-xl);
@@ -20,12 +24,25 @@
     margin-bottom: var(--spacing-4);
 }
 
-@media (min-width: 768px) {
-    .planning-controls {
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-        flex-wrap: wrap;
+.planning-toolbar .module-tabs {
+    margin: 0;
+    flex: 0 1 auto;
+}
+
+.planning-toolbar .period-controls {
+    margin-left: auto;
+    flex: 0 0 auto;
+}
+
+@media (max-width: 639px) {
+    .planning-toolbar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .planning-toolbar .period-controls {
+        margin-left: 0;
+        justify-content: flex-end;
     }
 }
 
@@ -135,7 +152,7 @@ main .period-nav__form select.period-nav__select:focus {
 }
 
 /* Compact toolbar — overrides semantic.css main form rules */
-main form.planning-create-form {
+main form.planning-create-toolbar {
     flex-direction: row;
     flex-wrap: nowrap;
     align-items: center;
@@ -151,7 +168,7 @@ main form.planning-create-form {
     flex: 0 0 auto;
 }
 
-.planning-create-form__label {
+.planning-create-toolbar__label {
     margin: 0;
     padding: 0;
     font-size: 0.75rem;
@@ -161,7 +178,7 @@ main form.planning-create-form {
     cursor: default;
 }
 
-main form.planning-create-form .planning-create-form__control {
+main form.planning-create-toolbar .planning-create-toolbar__control {
     width: auto;
     margin: 0;
     padding: 0.1rem 0.3rem;
@@ -175,80 +192,24 @@ main form.planning-create-form .planning-create-form__control {
     box-shadow: none;
 }
 
-main form.planning-create-form .planning-create-form__control--date {
-    flex: 0 0 auto;
-    width: 5.5rem;
-    max-width: 5.5rem;
-    min-width: 0;
-    padding: 0 0.1rem;
-    color: inherit;
-}
-
-main form.planning-create-form .planning-create-form__control--date::-webkit-datetime-edit,
-main form.planning-create-form .planning-create-form__control--date::-webkit-datetime-edit-fields-wrapper,
-main form.planning-create-form .planning-create-form__control--date::-webkit-date-and-time-value {
-    font-family: inherit;
-    font-size: 0.75rem;
-    line-height: 1.15;
-    padding: 0;
-    margin: 0;
-    min-height: 0;
-}
-
-main form.planning-create-form .planning-create-form__control--date::-webkit-inner-spin-button {
-    display: none;
-}
-
-main form.planning-create-form .planning-create-form__control--date::-webkit-calendar-picker-indicator {
-    width: 0.65rem;
-    height: 0.65rem;
-    margin: 0;
-    padding: 0;
-    opacity: 0.75;
-}
-
-.planning-create-form__control--course {
+.planning-create-toolbar__control--course {
     width: min(14rem, 42vw);
     max-width: 16rem;
     min-width: 7rem;
 }
 
-main form.planning-create-form .planning-create-form__submit {
-    flex: 0 0 auto;
-    height: 1.4rem;
-    min-height: 1.4rem;
-    margin: 0;
-    padding: 0 0.55rem;
-    border: 1px solid var(--btn-primary-bg);
-    border-radius: var(--rounded-md);
-    background: var(--btn-primary-bg);
-    color: var(--btn-primary-fg);
-    font-family: inherit;
-    font-size: 0.75rem;
-    font-weight: 600;
-    line-height: 1;
-    cursor: pointer;
-    box-shadow: none;
-    white-space: nowrap;
-}
-
-main form.planning-create-form .planning-create-form__submit:hover {
-    background: var(--btn-primary-hover-bg);
-    border-color: var(--btn-primary-hover-bg);
-}
-
-main form.planning-create-form .planning-create-form__control:focus {
+main form.planning-create-toolbar .planning-create-toolbar__control:focus {
     box-shadow: 0 0 0 2px var(--accent-focus);
 }
 
 @media (max-width: 480px) {
-    main form.planning-create-form {
+    main form.planning-create-toolbar {
         flex-wrap: wrap;
     }
 }
 
 @media (min-width: 768px) {
-    main form.planning-create-form .planning-create-form__control--course {
+    main form.planning-create-toolbar .planning-create-toolbar__control--course {
         width: min(18rem, 28vw);
         max-width: 20rem;
     }

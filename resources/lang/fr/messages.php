@@ -362,6 +362,8 @@ return [
     'planning_session_update_error' => 'Erreur lors de la modification de la session.',
     'planning_session_deleted_success' => 'Session effacée avec succès.',
     'planning_session_delete_error' => 'Erreur lors de l\'effacement de la session.',
+    'planning_create_on_day' => 'Créer une session le :date pour le cours sélectionné',
+    'planning_select_course_first' => 'Sélectionnez d\'abord un cours dans le fil d\'Ariane.',
     'planning_delete_confirm_title' => 'Êtes-vous certain ?',
     'planning_delete_confirm_description' => 'Cette session sera définitivement supprimée.',
     'invoice_line_group' => 'Groupe : :name',

@@ -1,7 +1,92 @@
-@if (session('school') !== null || session('course') !== null)
+@if ($breadcrumbUsesSelectors ?? false)
     <nav class="breadcrumb" aria-label="Breadcrumb">
         <ul>
+            <li class="breadcrumb__segment">
+                <a href="{{ route('planning.schools') }}">{{ __('messages.schools') }}</a>
+                @if (Auth::user()->getMode() == 'Edit')
+                    <a
+                        href="{{ route('home') }}#school-create-panel"
+                        class="breadcrumb__add"
+                        aria-label="{{ __('messages.school_create') }}"
+                        title="{{ __('messages.school_create') }}"
+                    >
+                        <img src="{{ asset('icons/add-circle-svgrepo-com.svg') }}" alt="" width="18" height="18" decoding="async">
+                    </a>
+                @endif
+            </li>
+            <li aria-hidden="true">›</li>
+            <li class="breadcrumb__segment">
+                <form class="breadcrumb__form" action="{{ route('planning.selectSchool') }}" method="post">
+                    @csrf
+                    <input type="hidden" name="redirect" value="{{ url()->current() }}">
+                    <select
+                        id="breadcrumb-school"
+                        name="school_id"
+                        class="breadcrumb__select"
+                        aria-label="{{ __('messages.school') }}"
+                        onchange="this.form.submit()"
+                        required
+                    >
+                        @if (! session('school_id'))
+                            <option value="" disabled selected>{{ __('messages.select_school') }}</option>
+                        @endif
+                        @foreach ($breadcrumbSchools as $school)
+                            <option value="{{ $school->id }}" @selected((int) session('school_id') === (int) $school->id)>
+                                {{ $school->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                </form>
+            </li>
+            @if (session('school_id'))
+                <li aria-hidden="true">›</li>
+                <li class="breadcrumb__segment">
+                    <form class="breadcrumb__form" action="{{ route('planning.selectCourse') }}" method="post">
+                        @csrf
+                        <input type="hidden" name="redirect" value="{{ url()->current() }}">
+                        <select
+                            id="breadcrumb-course"
+                            name="course_id"
+                            class="breadcrumb__select"
+                            aria-label="{{ __('messages.course') }}"
+                            onchange="this.form.submit()"
+                        >
+                            <option value="" @selected(! session('course_id'))>{{ __('messages.course') }}</option>
+                            @foreach ($breadcrumbCourses as $course)
+                                <option value="{{ $course->id }}" @selected((int) session('course_id') === (int) $course->id)>
+                                    ({{ $course->program_name }}) {{ $course->name }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </form>
+                    @if (Auth::user()->getMode() == 'Edit')
+                        <a
+                            href="{{ route('course.create', session('school_id')) }}"
+                            class="breadcrumb__add"
+                            aria-label="{{ __('messages.course_create') }}"
+                            title="{{ __('messages.course_create') }}"
+                        >
+                            <img src="{{ asset('icons/add-circle-svgrepo-com.svg') }}" alt="" width="18" height="18" decoding="async">
+                        </a>
+                    @endif
+                </li>
+            @endif
+        </ul>
+    </nav>
+@elseif (session('school') !== null || session('course') !== null)
+    @php
+        $schoolsSelectionUrl = request()->routeIs('planning.*', 'calendar.*')
+            ? route('planning.schools')
+            : route('home');
+    @endphp
+
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+        <ul>
+            <li>
+                <a href="{{ $schoolsSelectionUrl }}">{{ __('messages.schools') }}</a>
+            </li>
             @if (session('school') !== null)
+                <li aria-hidden="true">›</li>
                 <li>
                     <form action="{{ route('school.show', session('school_id')) }}" method="get">
                         @csrf
@@ -10,9 +95,7 @@
                 </li>
             @endif
             @if (session('course') !== null)
-                @if (session('school') !== null)
-                    <li aria-hidden="true">›</li>
-                @endif
+                <li aria-hidden="true">›</li>
                 <li>
                     <form action="{{ route('course.show', session('course_id')) }}" method="get">
                         @csrf

@@ -26,6 +26,11 @@ class AppServiceProvider extends ServiceProvider
             \App\Http\View\Composers\NavigationComposer::class
         );
 
+        \Illuminate\Support\Facades\View::composer(
+            'layouts.breadcrumbs',
+            \App\Http\View\Composers\BreadcrumbComposer::class
+        );
+
         Carbon::setLocale(app()->getLocale());
 
         Blade::directive('money', function ($value) {

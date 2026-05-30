@@ -99,7 +99,16 @@ nav.breadcrumb {
     padding: 0;
     margin: 0;
     align-items: center;
-    gap: var(--spacing-2);
+    gap: 0.35rem 0.5rem;
+    list-style: none;
+}
+
+nav.breadcrumb ul > li[aria-hidden="true"] {
+    display: inline-flex;
+    align-items: center;
+    line-height: 1;
+    color: var(--text-subtle);
+    user-select: none;
 }
 
 @media (min-width: 768px) and (max-width: 1023px) {
@@ -109,14 +118,18 @@ nav.breadcrumb {
     }
 }
 
-.breadcrumb a,
+.breadcrumb a:not(.breadcrumb__add),
 .breadcrumb button {
+    display: inline-flex;
+    align-items: center;
+    min-height: 1.625rem;
     color: var(--text-secondary);
     text-decoration: none;
     background: none;
     border: none;
     padding: 0;
     font: inherit;
+    line-height: 1.25;
     cursor: pointer;
 }
 
@@ -124,6 +137,78 @@ nav.breadcrumb {
 .breadcrumb button:hover {
     color: var(--brand-accent);
     text-decoration: underline;
+}
+
+.breadcrumb__segment {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    max-width: 100%;
+    min-height: 1.625rem;
+}
+
+.breadcrumb__form {
+    margin: 0;
+    display: inline-flex;
+    align-items: center;
+    max-width: min(14rem, 36vw);
+}
+
+.breadcrumb__add {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 1.625rem;
+    height: 1.625rem;
+    min-height: 1.625rem;
+    padding: 0;
+    border: none;
+    border-radius: var(--rounded-md);
+    background: transparent;
+    color: var(--brand-accent);
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.breadcrumb__add:hover,
+.breadcrumb__add:focus-visible {
+    background: var(--accent-soft-hover);
+    outline: 2px solid var(--accent-focus);
+    outline-offset: 1px;
+}
+
+.breadcrumb__add img {
+    display: block;
+}
+
+nav.breadcrumb .breadcrumb__select {
+    max-width: 100%;
+    width: auto;
+    height: 1.625rem;
+    min-height: 1.625rem;
+    margin: 0;
+    padding: 0 1.5rem 0 0.35rem;
+    border: 1px solid var(--surface-input-border);
+    border-radius: var(--rounded-md);
+    background-color: var(--surface-input);
+    color: var(--text-heading);
+    font: inherit;
+    font-size: inherit;
+    font-weight: 600;
+    line-height: 1.25;
+    cursor: pointer;
+    box-shadow: none;
+    box-sizing: border-box;
+    vertical-align: middle;
+    appearance: auto;
+}
+
+nav.breadcrumb .breadcrumb__select:focus {
+    outline: none;
+    border-color: var(--brand-accent);
+    box-shadow: 0 0 0 2px var(--focus-ring);
 }
 
 .icon {

@@ -346,6 +346,8 @@ return [
     'planning_session_update_error' => 'Error while updating the session.',
     'planning_session_deleted_success' => 'Session deleted successfully.',
     'planning_session_delete_error' => 'Error while deleting the session.',
+    'planning_create_on_day' => 'Create session on :date for the selected course',
+    'planning_select_course_first' => 'Select a course in the breadcrumb first.',
     'planning_delete_confirm_title' => 'Are you sure?',
     'planning_delete_confirm_description' => 'This session will be permanently deleted.',
     'invoice_line_group' => 'Group: :name',

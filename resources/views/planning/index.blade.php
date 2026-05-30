@@ -3,12 +3,17 @@
         <h2>{{ __('messages.planning') }} @monthName($current_month) {{$current_year}}</h2>
     </x-slot>
 
-    <x-scheduling-module-tabs />
-
-    <section class="planning-controls">
+    <section class="planning-toolbar">
+        <x-scheduling-module-tabs />
         <x-period-selector :years="$years" :months="$months" :current_year="$current_year" :current_month="$current_month" route="planning" />
-        <x-form-select-planning :mode="$mode" :schools="$schools" :courses="$courses" :planning="$planning" :day="$current_day" :month="$current_month" :year="$current_year" />
     </section>
+
+    @if (Auth::user()->getMode() == 'Edit' && session('course_id'))
+        <form id="planning-create-form" action="{{ route('planning.create.start') }}" method="post" class="hidden">
+            @csrf
+            <input type="hidden" name="course" value="{{ session('course_id') }}">
+        </form>
+    @endif
 
     <x-kpi-grid :items="[
         ['icon' => 'clock', 'label' => __('messages.time_worked'), 'value' => $monthly_hours . ' ' . __('messages.hours')],
@@ -41,7 +46,7 @@
                 @endfor
                 @for ($i = $startDay; $i
                 <= 7; $i++)
-                    <x-planning-day :mode="$mode" :schools="$schools" :courses="$courses" :planning="$planning" :i="$i" :day="$day" :month="$current_month" :year="$current_year" />
+                    <x-planning-day :planning="$planning" :day="$day" :month="$current_month" :year="$current_year" />
                 @php $day++; @endphp
                 @endfor
             </div>
@@ -50,7 +55,7 @@
                 <div class="calRow">
                 @for ($i = 1; $i
                 <= 7 && $day <=$numDays; $i++)
-                    <x-planning-day :mode="$mode" :schools="$schools" :courses="$courses" :planning="$planning" :i="$i" :day="$day" :month="$current_month" :year="$current_year" />
+                    <x-planning-day :planning="$planning" :day="$day" :month="$current_month" :year="$current_year" />
                 @php $day++; @endphp
                 @endfor
                 @if($i <= 7)

@@ -88,6 +88,9 @@ Route::middleware(['auth', SetTerminologyLocale::class])->group(function () {
         ->except(['create', 'store'])
         ->whereNumber('group');
 
+    Route::get('/planning/schools', [PlanningController::class, 'schools'])->name('planning.schools');
+    Route::post('/planning/context/school', [PlanningController::class, 'selectSchool'])->name('planning.selectSchool');
+    Route::post('/planning/context/course', [PlanningController::class, 'selectCourse'])->name('planning.selectCourse');
     Route::get('/planning', [PlanningController::class, 'index'])->name('planning.index');
     Route::get('/planning/previous', [PlanningController::class, 'previous'])->name('planning.previous');
     Route::get('/planning/next', [PlanningController::class, 'next'])->name('planning.next');
