@@ -8,7 +8,7 @@
     <x-workload-module-tabs />
 
     <section>
-        <ul class="program-grid">
+        <ul class="resource-grid">
             @foreach ($programs as $program)
                 <x-program-card :program="$program" />
             @endforeach

@@ -103,25 +103,7 @@ main section > ul {
     list-style: none;
 }
 
-main section > ul.school-grid {
-    display: grid;
-    grid-template-columns: repeat(1, 1fr);
-    gap: var(--spacing-6);
-}
-
-@media (min-width: 640px) {
-    main section > ul.school-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-@media (min-width: 1414px) {
-    main section > ul.school-grid {
-        grid-template-columns: repeat(3, 1fr);
-    }
-}
-
-main section ul:not(.school-grid):not(.program-grid):not(.group-grid) {
+main section ul:not(.resource-grid) {
     flex-direction: column;
     gap: var(--spacing-2);
 }

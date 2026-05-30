@@ -40,7 +40,7 @@ Defined in `global.css` (light) and overridden in `theme.css` (dark):
 | `.btn`, `.btn-primary`, `.btn-secondary` | `buttons.css` | Actions |
 | `.nice-form`, `.nice-form--embedded` | `forms.css` | Structured forms |
 | `.data-table`, `.data-table--flat` | `tables.css` | Sessions, mapping, invoices |
-| `.school-grid`, `.school-stat` | `schools.css` | V2 school list |
+| `.resource-grid`, `.school-stat` | `cards.css`, `schools.css` | Resource list grids (schools, groups, programs) |
 | `.planning-controls`, `.period-nav` | `plannings.css` | Monthly navigation |
 | `.kpi-grid` | `dashboard.css` | Workload KPIs |
 | `.module-tabs` | via Blade component | Module tabs |

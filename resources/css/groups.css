@@ -1,48 +1,5 @@
 /* Group Views Styles */
 
-.group-grid {
-    padding: 0;
-    list-style: none;
-}
-
-main section > ul.group-grid {
-    display: grid;
-    grid-template-columns: repeat(1, 1fr);
-    gap: 1.5rem;
-}
-
-@media (min-width: 640px) {
-    main section > ul.group-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-@media (min-width: 1414px) {
-    main section > ul.group-grid {
-        grid-template-columns: repeat(3, 1fr);
-    }
-}
-
-main section > ul.group-grid > li {
-    transition: transform 0.2s, box-shadow 0.2s;
-}
-
-main section > ul.group-grid > li:hover {
-    transform: translateY(-4px);
-}
-
-.group-grid--inactive > li {
-    opacity: 0.7;
-    background: var(--surface-muted);
-    border-style: dashed;
-    filter: grayscale(0.35);
-}
-
-.group-grid--inactive > li:hover {
-    transform: none;
-    box-shadow: var(--shadow-sm);
-}
-
 .group-card-stats {
     display: flex;
     flex-wrap: wrap;

@@ -40,7 +40,7 @@ Définis dans `global.css` (clair) et surchargés dans `theme.css` (sombre) :
 | `.btn`, `.btn-primary`, `.btn-secondary` | `buttons.css` | Actions |
 | `.nice-form`, `.nice-form--embedded` | `forms.css` | Formulaires structurés |
 | `.data-table`, `.data-table--flat` | `tables.css` | Listes sessions, mapping, factures |
-| `.school-grid`, `.school-stat` | `schools.css` | Liste écoles v2 |
+| `.resource-grid`, `.school-stat` | `cards.css`, `schools.css` | Grilles de listes (écoles, groupes, programmes) |
 | `.planning-controls`, `.period-nav` | `plannings.css` | Navigation mensuelle |
 | `.kpi-grid` | `dashboard.css` | Indicateurs plan de charge |
 | `.module-tabs` | via composant Blade | Onglets de module |

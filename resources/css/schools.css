@@ -1,33 +1,5 @@
 /* School Views Styles */
 
-.school-grid {
-    display: grid;
-    grid-template-columns: repeat(1, 1fr);
-    gap: 1.5rem;
-    padding: 0;
-    list-style: none;
-}
-
-@media (min-width: 640px) {
-    .school-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-@media (min-width: 1414px) {
-    .school-grid {
-        grid-template-columns: repeat(3, 1fr);
-    }
-}
-
-main section > ul.school-grid > li {
-    transition: transform 0.2s, box-shadow 0.2s;
-}
-
-main section > ul.school-grid > li:hover {
-    transform: translateY(-4px);
-}
-
 .school-stats {
     margin-top: 1rem;
     margin-left: calc(6px + var(--spacing-4));
@@ -376,18 +348,6 @@ main .school-details-grid > section {
     letter-spacing: 0.04em;
     text-transform: uppercase;
     color: var(--text-muted);
-}
-
-.school-grid--inactive > li {
-    opacity: 0.7;
-    background: var(--surface-muted);
-    border-style: dashed;
-    filter: grayscale(0.35);
-}
-
-.school-grid--inactive > li:hover {
-    transform: none;
-    box-shadow: var(--shadow-sm);
 }
 
 .school-inactive-label {

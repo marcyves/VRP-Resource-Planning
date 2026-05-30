@@ -6,7 +6,7 @@
     <x-workload-module-tabs />
 
     <section>
-        <ul class="school-grid">
+        <ul class="resource-grid">
             @php
             $total_amount = 0;
             $total_unbilled_amount = 0;
@@ -224,7 +224,7 @@
             </header>
 
             <div id="schools-inactive-panel" x-show="open" x-transition>
-        <ul class="school-grid school-grid--inactive">
+        <ul class="resource-grid resource-grid--inactive">
             @foreach ($inactiveSchools as $school)
             <li>
                 <x-school-header :school_name="$school->name" :school_id="$school->id" />
