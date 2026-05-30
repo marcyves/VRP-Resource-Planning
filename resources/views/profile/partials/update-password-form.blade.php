@@ -1,10 +1,9 @@
-<section class="section-container">
+<section>
     <header>
-        <h2 class="card-subtitle">
+        <h2 class="profile-form__title">
             {{ __('messages.update_password') }}
         </h2>
-
-        <p class="form-description">
+        <p class="form-hint">
             {{ __('messages.update_password_description') }}
         </p>
     </header>
@@ -35,9 +34,9 @@
             <x-button-primary>{{ __('messages.save') }}</x-button-primary>
 
             @if (session('status') === 'password-updated')
-            <p x-data="{ show: true }" x-show="show" x-transition x-init="setTimeout(() => show = false, 2000)" class="status-indicator text-success text-sm">
-                {{ __('messages.saved') }}
-            </p>
+                <p x-data="{ show: true }" x-show="show" x-transition x-init="setTimeout(() => show = false, 2000)" class="status-indicator text-success">
+                    {{ __('messages.saved') }}
+                </p>
             @endif
         </div>
     </form>

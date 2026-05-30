@@ -1,28 +1,45 @@
 @props(['documents'])
+
 @if ($documents->isEmpty())
     <p class="documents-school-empty" role="status">{{ __('messages.documents_empty') }}</p>
 @else
-    <div class="documents-school-list">
-        @foreach ($documents as $document)
-            <div class="documents-school-list__row">
-                <span class="documents-school-list__icon" aria-hidden="true">
-                    <img src="{{ asset('/icons/'.substr($document->file_name, -3).'.png') }}" alt="">
-                </span>
-                <a class="documents-school-list__link" target="_blank" href="{{ route('documents.show', $document->id) }}">
-                    {{ $document->description }}
-                </a>
-                <span class="documents-school-list__year">{{ $document->year }}</span>
-                <div class="documents-school-list__actions">
+    <div class="data-table">
+        <table>
+            <thead>
+                <tr>
+                    <th>{{ __('messages.file') }}</th>
+                    <th>{{ __('messages.description') }}</th>
+                    <th>{{ __('messages.year') }}</th>
                     @if (Auth::user()->getMode() == 'Edit')
-                        <form action="{{ route('documents.edit', $document->id) }}" method="get">
-                            <x-button-edit />
-                        </form>
-                        <form action="{{ route('documents.destroy', $document->id) }}" method="get">
-                            <x-button-delete />
-                        </form>
+                        <th>{{ __('messages.actions') }}</th>
                     @endif
-                </div>
-            </div>
-        @endforeach
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($documents as $document)
+                    <tr>
+                        <td class="documents-school-table__icon">
+                            <img src="{{ asset('/icons/'.substr($document->file_name, -3).'.png') }}" alt="">
+                        </td>
+                        <td>
+                            <a class="documents-school-table__link" target="_blank" rel="noopener noreferrer" href="{{ route('documents.show', $document->id) }}">
+                                {{ $document->description }}
+                            </a>
+                        </td>
+                        <td class="date">{{ $document->year }}</td>
+                        @if (Auth::user()->getMode() == 'Edit')
+                            <td class="card-actions">
+                                <form action="{{ route('documents.edit', $document->id) }}" method="get">
+                                    <x-button-edit />
+                                </form>
+                                <form action="{{ route('documents.destroy', $document->id) }}" method="get">
+                                    <x-button-delete />
+                                </form>
+                            </td>
+                        @endif
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
     </div>
 @endif

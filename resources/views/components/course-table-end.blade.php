@@ -13,6 +13,6 @@
         <td>{{ __('messages.gain') }}</td>
         <td></td>
         <td>@money($total_budget)</td>
-        <td class="flex items-center justify-end"></td>
+        <td class="card-actions"></td>
     </tr>
 </tfoot>

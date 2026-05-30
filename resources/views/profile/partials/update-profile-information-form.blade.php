@@ -1,30 +1,29 @@
 <section>
     <header>
-        <h2 class="card-subtitle">
+        <h2 class="profile-form__title">
             {{ __('messages.profile_information') }}
         </h2>
-
-        <p class="form-description">
+        <p class="form-hint">
             {{ __('messages.profile_information_description') }}
         </p>
     </header>
 
-    @if(session()->has('success'))
-    <div class="alert alert-success mt-4">
-        {{ session()->get('success') }}
-    </div>
+    @if (session()->has('success'))
+        <div class="alert alert-success profile-form__alert">
+            {{ session()->get('success') }}
+        </div>
     @endif
-    @if(session()->has('error'))
-    <div class="alert alert-danger mt-4">
-        {{ session()->get('error')}}
-    </div>
+    @if (session()->has('error'))
+        <div class="alert alert-danger profile-form__alert">
+            {{ session()->get('error') }}
+        </div>
     @endif
 
     <form id="send-verification" method="post" action="{{ route('verification.send') }}">
         @csrf
     </form>
 
-    <form method="post" action="{{ route('profile.update') }}" class="group-form mt-6">
+    <form method="post" action="{{ route('profile.update') }}" class="group-form">
         @csrf
         @method('patch')
 
@@ -40,21 +39,20 @@
             <x-input-error :messages="$errors->get('email')" />
 
             @if ($user instanceof \Illuminate\Contracts\Auth\MustVerifyEmail && ! $user->hasVerifiedEmail())
-            <div class="mt-4">
-                <p class="text-sm">
-                    {{ __('messages.email_unverified') }}
+                <div class="profile-form__verify">
+                    <p class="form-hint">
+                        {{ __('messages.email_unverified') }}
+                        <button form="send-verification" class="nav-link" type="submit">
+                            {{ __('messages.resend_verification_link') }}
+                        </button>
+                    </p>
 
-                    <button form="send-verification" class="nav-link text-sm">
-                        {{ __('messages.resend_verification_link') }}
-                    </button>
-                </p>
-
-                @if (session('status') === 'verification-link-sent')
-                <p class="mt-2 status-indicator text-success text-sm">
-                    {{ __('messages.verification_link_sent_to_email') }}
-                </p>
-                @endif
-            </div>
+                    @if (session('status') === 'verification-link-sent')
+                        <p class="status-indicator text-success">
+                            {{ __('messages.verification_link_sent_to_email') }}
+                        </p>
+                    @endif
+                </div>
             @endif
         </div>
 
@@ -74,21 +72,21 @@
             <x-input-label for="status_id" :value="__('messages.status')" />
             <select class="form-input" name="status_id" id="status_id">
                 @foreach ($statuses as $status)
-                <option value="{{$status->id}}" @if ($status->id == old('status_id', $user->status_id)) selected="selected" @endif>
-                    {{$status->name}}
-                </option>
+                    <option value="{{ $status->id }}" @selected($status->id == old('status_id', $user->status_id))>
+                        {{ $status->name }}
+                    </option>
                 @endforeach
             </select>
             <x-input-error :messages="$errors->get('status_id')" />
         </div>
 
-        <div class="form-actions mt-6">
+        <div class="form-actions">
             <x-button-primary>{{ __('messages.save') }}</x-button-primary>
 
             @if (session('status') === 'profile-updated')
-            <p x-data="{ show: true }" x-show="show" x-transition x-init="setTimeout(() => show = false, 2000)" class="status-indicator text-success text-sm">
-                {{ __('messages.saved') }}
-            </p>
+                <p x-data="{ show: true }" x-show="show" x-transition x-init="setTimeout(() => show = false, 2000)" class="status-indicator text-success">
+                    {{ __('messages.saved') }}
+                </p>
             @endif
         </div>
     </form>
