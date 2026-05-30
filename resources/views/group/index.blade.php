@@ -9,6 +9,27 @@
         <x-group-table :groups="$groups" :occurences="$occurences" :active="true" />
     </section>
 
+    <x-modal name="confirm-group-delete" focusable maxWidth="md">
+        <div class="profile-modal-form">
+            <h2 class="modal-title">{{ __('messages.group_delete_confirm_title') }}</h2>
+            <p class="form-hint" x-show="$store.groupDelete.name">
+                <strong>{{ __('messages.name') }} :</strong>
+                <span x-text="$store.groupDelete.name"></span>
+            </p>
+            <p class="form-hint">{{ __('messages.group_delete_confirm_description') }}</p>
+            <div class="form-actions">
+                <x-button-secondary type="button" x-on:click="$dispatch('close')">
+                    {{ __('messages.cancel') }}
+                </x-button-secondary>
+                <form x-bind:action="$store.groupDelete.url" method="post">
+                    @csrf
+                    @method('delete')
+                    <x-button-danger type="submit">{{ __('messages.delete') }}</x-button-danger>
+                </form>
+            </div>
+        </div>
+    </x-modal>
+
     @if($inactive->count() > 0 || request('search'))
     <div class="group-section-header">
         <h3 class="group-title">{{ __('messages.inactive_groups') }}</h3>
@@ -33,26 +54,7 @@
     <section>
         <form action="{{route('group.save', 0)}}" method="post" class="group-form nice-form">
             @csrf
-            <div class="form-group">
-                <x-input-label for="name">{{ __('messages.name') }}</x-input-label>
-                <x-text-input type="text" name="name" id="name" />
-                <x-input-error :messages="$errors->get('name')" />
-            </div>
-            <div class="form-group">
-                <x-input-label for="short_name">{{ __('messages.short_name') }}</x-input-label>
-                <x-text-input type="text" name="short_name" id="short_name" />
-                <x-input-error :messages="$errors->get('short_name')" />
-            </div>
-            <div class="form-group">
-                <x-input-label for="size">{{ __('messages.size') }}</x-input-label>
-                <x-text-input type="text" name="size" id="size" />
-                <x-input-error :messages="$errors->get('size')" />
-            </div>
-            <div class="form-group">
-                <x-input-label for="year">{{ __('messages.year') }}</x-input-label>
-                <x-text-input type="text" name="year" id="year" />
-                <x-input-error :messages="$errors->get('year')" />
-            </div>
+            <x-form-group-create :details-row="true" />
             <div class="form-actions">
                 <x-button-primary>{{ __('messages.group_create') }}</x-button-primary>
             </div>

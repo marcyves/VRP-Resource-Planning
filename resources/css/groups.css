@@ -1,5 +1,75 @@
 /* Group Views Styles */
 
+.group-grid {
+    padding: 0;
+    list-style: none;
+}
+
+main section > ul.group-grid {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 1.5rem;
+}
+
+@media (min-width: 640px) {
+    main section > ul.group-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (min-width: 1414px) {
+    main section > ul.group-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+main section > ul.group-grid > li {
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+main section > ul.group-grid > li:hover {
+    transform: translateY(-4px);
+}
+
+.group-grid--inactive > li {
+    opacity: 0.7;
+    background: var(--surface-muted);
+    border-style: dashed;
+    filter: grayscale(0.35);
+}
+
+.group-grid--inactive > li:hover {
+    transform: none;
+    box-shadow: var(--shadow-sm);
+}
+
+.group-card-stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem 1.5rem;
+    margin: 1rem 0 0;
+    margin-left: calc(6px + var(--spacing-4));
+}
+
+.group-card-stat {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+}
+
+.group-card-stat__label {
+    color: var(--text-muted);
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+.group-card-stat__value {
+    margin: 0;
+    color: var(--text-heading);
+    font-size: 0.95rem;
+    font-weight: 600;
+}
+
 .group-section-header {
     display: flex;
     justify-content: space-between;
@@ -124,4 +194,30 @@
     margin: 0 auto;
     padding: 2rem;
     color: var(--main-text-color);
+}
+
+form.group-form.nice-form .form-group-details-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1.4fr) minmax(0, 5rem) minmax(0, 5.5rem);
+    gap: 1rem;
+    align-items: start;
+    width: 100%;
+}
+
+form.group-form.nice-form .form-group-details-row .form-group {
+    margin-bottom: 0;
+}
+
+@media (max-width: 480px) {
+    form.group-form.nice-form .form-group-details-row {
+        grid-template-columns: 1fr;
+    }
+
+    form.group-form.nice-form .form-group-details-row .form-group {
+        margin-bottom: var(--spacing-4);
+    }
+
+    form.group-form.nice-form .form-group-details-row .form-group:last-child {
+        margin-bottom: 0;
+    }
 }

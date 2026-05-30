@@ -121,7 +121,7 @@ main section > ul.school-grid {
     }
 }
 
-main section ul:not(.school-grid) {
+main section ul:not(.school-grid):not(.program-grid):not(.group-grid) {
     flex-direction: column;
     gap: var(--spacing-2);
 }
