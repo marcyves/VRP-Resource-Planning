@@ -60,7 +60,7 @@ Defined in `global.css` (light) and overridden in `theme.css` (dark):
 | `x-group-card` / `x-program-card` | Resource card (list) |
 | `x-confirm-delete-modal` | Delete confirmation (Alpine store) |
 
-Alpine stores: `createDeleteStore()` in `resources/js/delete-store.js` (`groupDelete`, `programDelete`, `planningDelete`).
+Alpine stores: `createDeleteStore()` in `resources/js/delete-store.js` (`groupDelete`, `programDelete`, `planningDelete`, `documentDelete`).
 
 ## Dark mode
 
@@ -82,7 +82,9 @@ Registered in `AppServiceProvider`:
 
 ## CSS maintenance
 
-During v2, unused legacy classes were removed (e.g. `.cool-box`, `.card-wide`, orphan `.mapping-table`, old group grids). Prefer `.data-table` and `nice-form` patterns for new screens.
+During v2, unused legacy classes were removed (e.g. `.cool-box`, `.card-wide`, orphan `.mapping-table`, old group grids, Bootstrap modals in `app.css`). Modals use `<x-modal>` (Alpine) and `modals.css` — do not reintroduce `.modal-dialog` / `.modal.fade`.
+
+Prefer `.data-table` and `nice-form` patterns for new screens.
 
 ## Front build
 

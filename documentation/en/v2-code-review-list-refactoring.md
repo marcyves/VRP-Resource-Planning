@@ -57,7 +57,7 @@ The **groups** and **programs** index refactor aimed to:
 - Two modal systems (Alpine `<x-modal>` + legacy Bootstrap in `app.css`)
 - Multiple CSS entries in `vite.config.js` while runtime only loads `app.css`
 - Propagated typo: `occurences` / `getGroupOccurences`
-- jQuery modal on `school/show` vs Alpine elsewhere
+- ~~jQuery modal on `school/show` vs Alpine elsewhere~~ → fixed (see below)
 
 ---
 
@@ -132,6 +132,19 @@ French descriptions stay per-entity for correct grammar (`Ce groupe…`, `Cette 
 | `resources/views/program/index.blade.php` | `<x-program-table :programs="$programs" />` |
 
 Props: `programs`, `active` (default `true`) — ready for a future inactive section (`:active="false"`).
+
+---
+
+### 4 — Remove legacy Bootstrap modals
+
+**Goal:** single modal system (Alpine + `<x-modal>` / `<x-confirm-delete-modal>`).
+
+| Change | Detail |
+|--------|--------|
+| School documents | `documentDelete` store + modal on `school/show`; button in `documents-school-table` |
+| Removed | `document/delete.blade.php` view, `documents.delete` route, `DocumentController::delete()`, jQuery AJAX `smallModal` |
+| CSS | Bootstrap block removed from `app.css` (~170 lines); `.modal-title` in `modals.css`; dark mode targets `.modal-container` in `theme.css` |
+| i18n | `delete_confirm_description_document` (EN/FR) |
 
 ---
 

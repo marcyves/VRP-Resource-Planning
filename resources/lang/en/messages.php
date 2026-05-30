@@ -355,6 +355,7 @@ return [
     'delete_confirm_description_group' => 'This group will be permanently deleted.',
     'delete_confirm_description_program' => 'This program will be permanently deleted.',
     'delete_confirm_description_session' => 'This session will be permanently deleted.',
+    'delete_confirm_description_document' => 'This document will be permanently deleted.',
     'invoice_line_group' => 'Group: :name',
     'invoice_saved_success' => 'Invoice :name saved successfully.',
     'invoice_save_error' => 'Error while saving the invoice.',

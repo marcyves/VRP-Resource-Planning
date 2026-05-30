@@ -58,8 +58,4 @@ class DocumentController extends Controller
         return redirect()->back();
     }
 
-    public function delete(Document $document)
-    {
-        return view('document.delete', compact('document'));
-    }
 }

@@ -57,7 +57,7 @@ Les **écoles** utilisaient déjà une grille en cartes ; les changements les in
 - Deux systèmes de modales (Alpine `<x-modal>` + legacy Bootstrap dans `app.css`)
 - Entrées CSS multiples dans `vite.config.js` alors que seul `app.css` est chargé au runtime
 - Typo propagée : `occurences` / `getGroupOccurences`
-- jQuery modal encore sur `school/show` vs Alpine ailleurs
+- ~~jQuery modal encore sur `school/show` vs Alpine ailleurs~~ → corrigé (voir ci-dessous)
 
 ---
 
@@ -130,6 +130,19 @@ Les locales `en_consulting` / `fr_consulting` héritent via `array_merge` de `en
 | `resources/views/program/index.blade.php` | `<x-program-table :programs="$programs" />` |
 
 Props : `programs`, `active` (défaut `true`) — prêt pour une future section « programmes inactifs » (`:active="false"`).
+
+---
+
+### 4 — Suppression modales Bootstrap legacy
+
+**Objectif :** un seul système de modales (Alpine + `<x-modal>` / `<x-confirm-delete-modal>`).
+
+| Changement | Détail |
+|------------|--------|
+| Documents école | `documentDelete` store + modal sur `school/show` ; bouton dans `documents-school-table` |
+| Supprimé | Vue `document/delete.blade.php`, route `documents.delete`, `DocumentController::delete()`, jQuery AJAX `smallModal` |
+| CSS | Bloc Bootstrap retiré de `app.css` (~170 lignes) ; `.modal-title` dans `modals.css` ; dark mode → `.modal-container` dans `theme.css` |
+| i18n | `delete_confirm_description_document` (EN/FR) |
 
 ---
 

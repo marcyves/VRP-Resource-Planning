@@ -96,18 +96,10 @@
     }
 }
 
-.modal-open {
-    overflow: hidden;
-}
-
-.modal {
-    position: fixed;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    z-index: 1050;
-    display: none;
-    overflow: hidden;
-    outline: 0;
+.modal-title {
+    margin-bottom: 0;
+    line-height: 1.5;
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--text-heading);
 }

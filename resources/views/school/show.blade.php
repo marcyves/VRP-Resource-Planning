@@ -95,39 +95,10 @@
         </section>
     </div>
 
-    <x-modal name="smallModal" focusable>
-        <div class="profile-modal-form">
-            <div id="smallBody">
-                <!-- Ajax content -->
-            </div>
-        </div>
-    </x-modal>
-
-    <script>
-        // Use Alpine to show x-modal if needed or standard JS
-        $(document).on('click', '#smallButton', function(event) {
-            event.preventDefault();
-            let href = $(this).attr('data-attr');
-            $.ajax({
-                url: href,
-                beforeSend: function() {
-                    $('#loader').show();
-                },
-                success: function(result) {
-                    $('#smallBody').html(result);
-                    window.dispatchEvent(new CustomEvent('open-modal', {
-                        detail: 'smallModal'
-                    }));
-                },
-                complete: function() {
-                    $('#loader').hide();
-                },
-                error: function(jqXHR, testStatus, error) {
-                    console.log(error);
-                    alert("Page " + href + " cannot open. Error:" + error);
-                    $('#loader').hide();
-                }
-            });
-        });
-    </script>
+    <x-confirm-delete-modal
+        name="confirm-document-delete"
+        store="documentDelete"
+        entity="document"
+        :hints="[['field' => 'description', 'label' => __('messages.description')]]"
+    />
 </x-app-layout>

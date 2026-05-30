@@ -371,6 +371,7 @@ return [
     'delete_confirm_description_group' => 'Ce groupe sera définitivement supprimé.',
     'delete_confirm_description_program' => 'Ce programme sera définitivement supprimé.',
     'delete_confirm_description_session' => 'Cette session sera définitivement supprimée.',
+    'delete_confirm_description_document' => 'Ce document sera définitivement supprimé.',
     'invoice_line_group' => 'Groupe : :name',
     'invoice_saved_success' => 'Facture :name enregistrée avec succès.',
     'invoice_save_error' => 'Erreur lors de l\'enregistrement de la facture.',

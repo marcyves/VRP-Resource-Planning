@@ -32,9 +32,15 @@
                                 <form action="{{ route('documents.edit', $document->id) }}" method="get">
                                     <x-button-edit />
                                 </form>
-                                <form action="{{ route('documents.destroy', $document->id) }}" method="get">
-                                    <x-button-delete />
-                                </form>
+                                <button
+                                    type="button"
+                                    class="icon icon--delete"
+                                    aria-label="{{ __('messages.delete') }}"
+                                    x-data=""
+                                    x-on:click.prevent="$store.documentDelete.request(@js(route('documents.destroy', $document->id)), @js($document->description))"
+                                >
+                                    <img src="{{ asset('icons/trash.svg') }}" alt="" width="18" height="18" decoding="async">
+                                </button>
                             </td>
                         @endif
                     </tr>

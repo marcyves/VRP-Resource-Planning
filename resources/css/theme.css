@@ -193,18 +193,12 @@ html[data-theme="dark"] .border-gray-400 {
     border-color: var(--border-subtle);
 }
 
-html[data-theme="dark"] .modal-content,
-html[data-theme="dark"] .modal-dialog .modal-content {
+html[data-theme="dark"] .modal-container {
     background-color: var(--modal-content-bg);
     border-color: var(--border-subtle);
     color: var(--text-body);
 }
 
-html[data-theme="dark"] .modal-header,
-html[data-theme="dark"] .modal-footer {
-    border-color: var(--border-subtle);
-}
-
-html[data-theme="dark"] .modal-backdrop.show {
+html[data-theme="dark"] .modal-overlay .modal-backdrop {
     opacity: 0.72;
 }
