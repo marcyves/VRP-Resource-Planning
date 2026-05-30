@@ -1,11 +1,13 @@
 <x-app-layout>
-<x-slot name="header">
-        <h2>{{ __('messages.bills') }}</h2>
+    <x-slot name="header">
+        <h2>{{ __('messages.invoice_edit') }}</h2>
     </x-slot>
+
+    <x-invoice-module-tabs active="list" />
 
     @if(Auth::user()->getMode() == "Edit")
     <section>
-        <form action="{{route('invoice.update', $invoice)}}" method="post" class="group-form">
+        <form action="{{ route('invoice.update', $invoice) }}" method="post" class="group-form nice-form">
             @csrf
             @method('patch')
 
@@ -34,7 +36,10 @@
                 <x-text-input type="datetime-local" name="paid_at" id="paid_at" value="{{ $invoice->paid_at }}" />
             </div>
 
-            <x-button-primary>{{ __('messages.update') }}</x-button-primary>
+            <div class="form-actions">
+                <a class="btn btn-secondary" href="{{ route('invoice.index') }}">{{ __('messages.cancel') }}</a>
+                <x-button-primary>{{ __('messages.update') }}</x-button-primary>
+            </div>
         </form>
     </section>
     @endif

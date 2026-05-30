@@ -1,18 +1,24 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2>
-            {{ __('messages.program_create') }}
-        </h2>
+        <h2>{{ __('messages.program_create') }}</h2>
     </x-slot>
 
-    <section>
+    <x-workload-module-tabs />
 
-        <form action="{{route('program.store')}}" method="post">
+    <section>
+        <form action="{{ route('program.store') }}" method="post" class="group-form nice-form">
             @csrf
-            <x-input-label>{{ __('messages.name') }}</x-input-label>
-            <x-text-input type="text" name="name" />
-            <br class="my-4">
-            <x-button-primary>{{ __('messages.create') }}</x-button-primary>
+
+            <div class="form-group">
+                <x-input-label for="name">{{ __('messages.name') }}</x-input-label>
+                <x-text-input type="text" name="name" id="name" value="{{ old('name') }}" required />
+                <x-input-error :messages="$errors->get('name')" />
+            </div>
+
+            <div class="form-actions">
+                <a class="btn btn-secondary" href="{{ route('program.index') }}">{{ __('messages.cancel') }}</a>
+                <x-button-primary>{{ __('messages.create') }}</x-button-primary>
+            </div>
         </form>
     </section>
 </x-app-layout>

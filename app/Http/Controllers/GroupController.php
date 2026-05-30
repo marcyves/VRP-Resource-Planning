@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Group;
 use App\Models\GroupCourse;
+use App\Models\PlanningCollection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -154,8 +155,10 @@ class GroupController extends Controller
     public function show(Group $group)
     {
         $courses = $group->getCourses();
+        $current_year = session('current_year', now()->format('Y'));
+        $occurences = (new PlanningCollection([$group]))->getGroupOccurences($current_year);
 
-        return view('group.show', compact('courses', 'group'));
+        return view('group.show', compact('courses', 'group', 'occurences'));
     }
 
     /**

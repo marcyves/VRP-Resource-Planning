@@ -3,6 +3,8 @@
         <h2>{{ __('messages.school_details') }}</h2>
     </x-slot>
 
+    <x-workload-module-tabs />
+
     <div class="school-details-grid">
         <section>
             @php
@@ -49,29 +51,38 @@
             <h3 class="school-section-header">{{ __('messages.documents') }}</h3>
             <x-documents-school-table :documents="$documents" :school_id="$school_id" />
 
-            <div class="school-upload-container">
-                <form action="{{route('document.store', $school_id)}}" class="school-upload-form" method="post" enctype="multipart/form-data">
-                    @csrf
-                    <div class="school-form-input school-form-input--description">
-                        <x-text-input type="text" name="description" id="desc" placeholder="{{ __('messages.document_description') }}" />
-                        <x-input-error :messages="$errors->get('description')" />
-                    </div>
-                    <div class="school-form-input school-form-input--year">
-                        <x-text-input type="text" name="year" id="year" value="{{ date('Y') }}" size="4" maxlength="4" inputmode="numeric" autocomplete="off" />
-                        <x-input-error :messages="$errors->get('year')" />
-                    </div>
-                    <div class="upload-actions">
-                        <input type="file" class="form-input school-upload-file" name="document">
-                        <x-input-error :messages="$errors->get('document')" />
-                        <x-button-primary type="submit">{{ __('messages.upload') }}</x-button-primary>
-                    </div>
-                </form>
-            </div>
+            @if (Auth::user()->getMode() == 'Edit')
+                <div class="school-upload-container">
+                    <form action="{{ route('document.store', $school_id) }}" class="school-document-form nice-form nice-form--embedded" method="post" enctype="multipart/form-data">
+                        @csrf
+                        <div class="school-document-form__grid">
+                            <div class="form-group">
+                                <x-input-label for="document_description">{{ __('messages.document_description') }}</x-input-label>
+                                <x-text-input type="text" name="description" id="document_description" placeholder="{{ __('messages.document_description') }}" />
+                                <x-input-error :messages="$errors->get('description')" />
+                            </div>
+                            <div class="form-group school-document-form__year">
+                                <x-input-label for="document_year">{{ __('messages.year') }}</x-input-label>
+                                <x-text-input type="text" name="year" id="document_year" value="{{ date('Y') }}" maxlength="4" inputmode="numeric" autocomplete="off" />
+                                <x-input-error :messages="$errors->get('year')" />
+                            </div>
+                            <div class="form-group school-document-form__file">
+                                <x-input-label for="document_file">{{ __('messages.file') }}</x-input-label>
+                                <input type="file" class="form-input school-document-form__file-input" name="document" id="document_file">
+                                <x-input-error :messages="$errors->get('document')" />
+                            </div>
+                        </div>
+                        <div class="form-actions">
+                            <x-button-primary type="submit">{{ __('messages.upload') }}</x-button-primary>
+                        </div>
+                    </form>
+                </div>
+            @endif
         </section>
     </div>
 
     <x-modal name="smallModal" focusable>
-        <div class="p-6">
+        <div class="profile-modal-form">
             <div id="smallBody">
                 <!-- Ajax content -->
             </div>

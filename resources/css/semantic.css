@@ -3,28 +3,27 @@
 /* ── Surfaces ─────────────────────────────────────────────── */
 
 main > section {
-    background: var(--surface-glass);
-    backdrop-filter: blur(10px);
-    border-radius: var(--rounded-lg);
-    border: 1px solid #ffffff4c;
-    box-shadow: var(--shadow-lg);
+    background: var(--surface-container-lowest);
+    border-radius: var(--rounded-xl);
+    border: var(--border-standard);
+    box-shadow: var(--shadow-sm);
 }
 
 /* Pied de page global : bandeau pleine largeur, sobre (pas le même traitement que les sections) */
 body > footer {
-    margin: var(--spacing-6) 0 0;
-    padding: var(--spacing-3) var(--spacing-4);
+    margin: 0;
+    padding: var(--spacing-4) var(--spacing-6);
     width: 100%;
     max-width: none;
     border-radius: 0;
     border: none;
-    border-top: 1px solid #ffffff1f;
+    border-top: var(--border-standard);
     box-shadow: none;
     backdrop-filter: none;
-    background: #171439;
-    color: #e4ebf9e0;
+    background: var(--surface-container-lowest);
+    color: var(--text-secondary);
     font-size: 0.8125rem;
-    letter-spacing: 0.04em;
+    letter-spacing: 0.02em;
     text-align: center;
 }
 
@@ -38,18 +37,10 @@ main > section + section {
 }
 
 /* Legacy alias — prefer bare <section> */
-.glass-background {
-    background: var(--surface-glass);
-    backdrop-filter: blur(10px);
-    border-radius: var(--rounded-lg);
-    border: 1px solid #ffffff4c;
-    box-shadow: var(--shadow-lg);
-}
 
 /* ── Cards in lists & grids ───────────────────────────────── */
 
 main section > ul > li,
-main .group-grid > *,
 main .course-info-grid > * {
     padding: var(--spacing-6);
     border-radius: var(--rounded-lg);
@@ -60,8 +51,7 @@ main .course-info-grid > * {
     list-style: none;
 }
 
-main section > ul > li:hover,
-main .group-grid > *:hover {
+main section > ul > li:hover {
     transform: translateY(-2px);
     box-shadow: var(--shadow-lg);
 }
@@ -69,15 +59,14 @@ main .group-grid > *:hover {
 main form > article,
 main form .card {
     padding: var(--spacing-4);
-    border-radius: var(--rounded-lg);
+    border-radius: var(--rounded-xl);
     border: var(--border-standard);
-    background: var(--surface-glass);
-    box-shadow: var(--shadow-md);
+    background: var(--surface-container-lowest);
+    box-shadow: var(--shadow-sm);
 }
 
 main form > div:has(> article),
-main form > div:has(> .card),
-.card-grid {
+main form > div:has(> .card) {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: var(--spacing-6);
@@ -91,7 +80,7 @@ main section h3,
 .card-subtitle {
     font-size: 0.875rem;
     font-weight: 600;
-    color: var(--brand-primary);
+    color: var(--text-heading);
     margin: 0 0 var(--spacing-2);
 }
 
@@ -114,26 +103,15 @@ main section > ul {
     list-style: none;
 }
 
-main section > ul.school-grid,
-main section > ul.group-grid,
-main .group-grid {
+main section > ul.school-grid {
     display: grid;
     grid-template-columns: repeat(1, 1fr);
     gap: var(--spacing-6);
 }
 
 @media (min-width: 640px) {
-    main section > ul.school-grid,
-    main section > ul.group-grid,
-    main .group-grid {
+    main section > ul.school-grid {
         grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-@media (min-width: 1024px) {
-    main section > ul.group-grid,
-    main .group-grid {
-        grid-template-columns: repeat(3, 1fr);
     }
 }
 
@@ -143,41 +121,36 @@ main .group-grid {
     }
 }
 
-main section > ul.group-list {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-}
-
-main section ul:not(.school-grid):not(.group-grid):not(.group-list) {
+main section ul:not(.school-grid) {
     flex-direction: column;
     gap: var(--spacing-2);
 }
 
 /* ── Tables ───────────────────────────────────────────────── */
+/* Base table styles — enhanced by .data-table in tables.css */
 
-main table,
+main table:not(.course-table),
 table.simple-table {
     width: 100%;
     border-collapse: collapse;
     font-size: 0.875rem;
-    color: var(--brand-accent);
-    background: #ffffffd9;
+    color: var(--text-body);
+    background: var(--surface-table);
     border-radius: var(--rounded-md);
     overflow: hidden;
     box-shadow: var(--shadow-sm);
 }
 
-main table thead,
+main table:not(.course-table) thead,
 table.simple-table thead {
-    background: #ffffff99;
+    background: var(--surface-table-header);
     text-transform: uppercase;
     font-size: 0.75rem;
     letter-spacing: 0.05em;
 }
 
-main table th,
-main table td,
+main table:not(.course-table) th,
+main table:not(.course-table) td,
 table.simple-table th,
 table.simple-table td {
     padding: var(--spacing-3) var(--spacing-2);
@@ -185,16 +158,16 @@ table.simple-table td {
     vertical-align: middle;
 }
 
-main table tbody tr:nth-child(odd),
+main table:not(.course-table) tbody tr:nth-child(odd),
 table.simple-table tbody tr:nth-child(odd) {
-    background: #6966b514;
+    background: var(--surface-table-stripe);
 }
 
-main table th:last-child {
+main table:not(.course-table) th:last-child {
     text-align: right;
 }
 
-main table td:last-child:has(form) {
+main table:not(.course-table) td:last-child:has(form) {
     display: flex;
     gap: var(--spacing-1);
     justify-content: flex-end;
@@ -202,7 +175,7 @@ main table td:last-child:has(form) {
     white-space: nowrap;
 }
 
-main table img {
+main table:not(.course-table) img {
     max-height: 1.5rem;
     width: auto;
 }
@@ -223,7 +196,7 @@ body:has(> .maintenance-title) form {
     background: var(--surface-glass);
     backdrop-filter: blur(10px);
     border-radius: var(--rounded-lg);
-    border: 1px solid #ffffff4c;
+    border: var(--border-standard);
     box-shadow: var(--shadow-lg);
 }
 
@@ -244,43 +217,24 @@ body:has(> .maintenance-title) form > footer {
     gap: var(--spacing-4);
 }
 
-main form label,
-body:has(> .maintenance-title) form label {
+main form input[type="checkbox"],
+main form input[type="radio"],
+body:has(> .maintenance-title) form input[type="checkbox"] {
+    width: 1rem;
+    height: 1rem;
+    accent-color: var(--brand-accent);
+}
+
+main form label:has(input[type="checkbox"]),
+main form label:has(input[type="radio"]) {
     display: inline-flex;
     align-items: center;
     gap: var(--spacing-2);
     font-size: 0.875rem;
+    text-transform: none;
+    letter-spacing: normal;
+    color: var(--text-body);
     cursor: pointer;
-}
-
-main form input:not([type="checkbox"]):not([type="radio"]):not([type="hidden"]),
-main form select,
-main form textarea,
-body:has(> .maintenance-title) form input:not([type="checkbox"]):not([type="hidden"]) {
-    width: 100%;
-    padding: 0.6rem;
-    border: 1px solid var(--border-color);
-    border-radius: var(--rounded-md);
-    background-color: #ffffffb2;
-    font-size: 1rem;
-    box-shadow: var(--shadow-sm);
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
-}
-
-main form input:focus,
-main form select:focus,
-main form textarea:focus,
-body:has(> .maintenance-title) form input:focus {
-    outline: none;
-    border-color: var(--brand-secondary);
-    box-shadow: 0 0 0 3px #538ce94c;
-}
-
-main form input[type="checkbox"],
-body:has(> .maintenance-title) form input[type="checkbox"] {
-    width: 1rem;
-    height: 1rem;
-    accent-color: var(--brand-primary);
 }
 
 /* ── Header feedback ──────────────────────────────────────── */
@@ -329,7 +283,7 @@ nav.breadcrumb button {
 }
 
 nav.breadcrumb button:hover {
-    color: #ffffff;
+    color: var(--brand-accent);
 }
 
 nav.breadcrumb li {
@@ -401,7 +355,7 @@ main article > header h3 {
 }
 
 main article > header h3 a {
-    color: var(--brand-primary);
+    color: var(--brand-accent);
     font-weight: 700;
 }
 
@@ -436,7 +390,7 @@ main .course-details-section > header.header-actions {
 main .course-groups-section > header h2 {
     margin: 0;
     font-size: 1.25rem;
-    color: var(--brand-primary);
+    color: var(--brand-accent);
 }
 
 main .course-available-groups {
@@ -458,7 +412,7 @@ main dl {
 
 main dt {
     font-weight: 600;
-    color: var(--brand-primary);
+    color: var(--brand-accent);
 }
 
 main dd {

@@ -47,7 +47,7 @@
 }
 
 .bg-white {
-    background-color: #ffffff;
+    background-color: var(--surface-container-lowest);
 }
 
 .rounded-md {
@@ -63,7 +63,7 @@
 }
 
 .border-gray-400 {
-    border-color: #9ca3af;
+    border-color: var(--border-subtle);
 }
 
 .flex {
@@ -82,21 +82,15 @@
     width: 100%;
 }
 
-.flex-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--spacing-4);
-    width: 100%;
-}
-
 nav.breadcrumb {
-    flex-shrink: 0;
+    flex-shrink: 1;
     position: relative;
-    z-index: 30;
-    background-color: var(--brand-primary);
-    padding: var(--spacing-2) var(--spacing-6);
-    color: #ffffffb2;
-    font-size: 0.875rem;
+    z-index: 1;
+    background: transparent;
+    padding: 0;
+    color: var(--text-secondary);
+    font-size: 0.8125rem;
+    min-width: 0;
 }
 
 .breadcrumb ul {
@@ -115,12 +109,20 @@ nav.breadcrumb {
     }
 }
 
-.breadcrumb a {
-    color: #ffffff;
+.breadcrumb a,
+.breadcrumb button {
+    color: var(--text-secondary);
     text-decoration: none;
+    background: none;
+    border: none;
+    padding: 0;
+    font: inherit;
+    cursor: pointer;
 }
 
-.breadcrumb a:hover {
+.breadcrumb a:hover,
+.breadcrumb button:hover {
+    color: var(--brand-accent);
     text-decoration: underline;
 }
 
@@ -155,9 +157,9 @@ nav.breadcrumb {
     height: 2rem;
     margin: 2px;
     padding: 0;
-    border: 1px solid #00000024;
+    border: 1px solid var(--icon-action-border);
     border-radius: var(--rounded-md);
-    background: #00000000;
+    background: transparent;
     cursor: pointer;
     transition: background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
 }
@@ -171,14 +173,14 @@ nav.breadcrumb {
 .icon.icon--pdf-download:hover,
 .icon.icon--invoice-manual:hover,
 .icon.icon--archive:hover {
-    background: #ffffffbf;
-    border-color: #00000038;
+    background: var(--icon-action-hover-bg);
+    border-color: var(--icon-action-hover-border);
     box-shadow: var(--shadow-sm);
 }
 
 .icon.icon--delete:hover {
-    background: #fff0efd9;
-    border-color: #b54a4647;
+    background: var(--delete-icon-hover-bg);
+    border-color: var(--delete-icon-hover-border);
     box-shadow: var(--shadow-sm);
 }
 
@@ -200,11 +202,20 @@ nav.breadcrumb {
 .icon.icon--delete img,
 .icon.icon--add img,
 .icon.icon--payed img,
+.icon.icon--invoice-manual img {
+    width: 1.125rem;
+    height: 1.125rem;
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    display: block;
+    filter: var(--icon-action-img-filter);
+}
+
 .icon.icon--payment-restore svg,
 .icon.icon--validate svg,
 .icon.icon--validate-cancel svg,
 .icon.icon--pdf-download svg,
-.icon.icon--invoice-manual img,
 .icon.icon--archive svg {
     width: 1.125rem;
     height: 1.125rem;
@@ -212,25 +223,15 @@ nav.breadcrumb {
     max-height: 100%;
     object-fit: contain;
     display: block;
-    filter: none;
-}
-
-.icon.icon--payment-restore svg {
-    color: var(--brand-primary);
-}
-
-.icon.icon--validate svg,
-.icon.icon--validate-cancel svg,
-.icon.icon--pdf-download svg {
-    color: var(--brand-primary);
+    color: var(--icon-action-fg);
 }
 
 .icon.icon--disabled,
 .icon.icon--disabled:hover {
     opacity: 0.35;
     cursor: not-allowed;
-    background: #00000000;
-    border-color: #00000024;
+    background: transparent;
+    border-color: var(--icon-action-border);
     box-shadow: none;
 }
 
@@ -241,16 +242,16 @@ nav.breadcrumb {
     height: 1.75rem;
     margin: 2px;
     padding: 0.1rem 0.2rem;
-    border: 1px solid #0000001f;
+    border: 1px solid var(--icon-action-border);
     border-radius: var(--rounded-md);
-    background: #00000000;
+    background: transparent;
     cursor: pointer;
     transition: background-color 0.15s ease, border-color 0.15s ease;
 }
 
 .icon.icon--pdf-view:hover {
-    background: #ffffffb2;
-    border-color: #00000033;
+    background: var(--icon-action-hover-bg);
+    border-color: var(--icon-action-hover-border);
 }
 
 .icon.icon--pdf-view:focus-visible {
@@ -265,6 +266,7 @@ nav.breadcrumb {
     max-height: 100%;
     object-fit: contain;
     display: block;
+    filter: var(--icon-action-img-filter);
 }
 
 /* Animations / Transitions Utilities */
@@ -369,7 +371,7 @@ nav.breadcrumb {
 }
 
 .text-success {
-    color: #4ccf59;
+    color: var(--toggle-success);
 }
 
 .status-indicator {

@@ -1,6 +1,6 @@
 .treasury-summary-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
     gap: var(--spacing-4);
 }
 
@@ -16,8 +16,8 @@
     min-height: 15rem;
     padding: var(--spacing-4) var(--spacing-3) var(--spacing-2);
     border: var(--border-standard);
-    border-radius: var(--rounded-lg);
-    background: var(--surface-card);
+    border-radius: var(--rounded-xl);
+    background: var(--surface-container-lowest);
     box-shadow: var(--shadow-sm);
 }
 
@@ -44,17 +44,17 @@
 
 .treasury-histogram__bar--issued,
 .treasury-histogram__swatch--issued {
-    background: var(--brand-primary);
+    background: var(--brand-accent);
 }
 
 .treasury-histogram__bar--paid,
 .treasury-histogram__swatch--paid {
-    background: var(--brand-secondary);
+    background: var(--chip-success-text);
 }
 
 .treasury-histogram__bar--planned,
 .treasury-histogram__swatch--planned {
-    background: var(--brand-accent);
+    background: var(--brand-secondary);
 }
 
 .treasury-histogram__bar--spent,
@@ -63,8 +63,8 @@
 }
 
 .treasury-histogram__label {
-    color: var(--text-muted);
-    font-size: 0.8rem;
+    color: var(--text-secondary);
+    font-size: 0.75rem;
     text-align: center;
     text-transform: capitalize;
 }
@@ -73,8 +73,8 @@
     display: flex;
     flex-wrap: wrap;
     gap: var(--spacing-3);
-    color: var(--text-muted);
-    font-size: 0.9rem;
+    color: var(--text-secondary);
+    font-size: 0.8125rem;
 }
 
 .treasury-histogram__legend span {
@@ -86,7 +86,7 @@
 .treasury-histogram__swatch {
     width: 0.75rem;
     height: 0.75rem;
-    border-radius: 999px;
+    border-radius: 9999px;
 }
 
 @media (max-width: 820px) {
@@ -96,6 +96,15 @@
     }
 }
 
+.treasury-summary-grid article,
+.treasury-report-card {
+    padding: var(--spacing-4);
+    border: var(--border-standard);
+    border-radius: var(--rounded-xl);
+    background: var(--surface-container-lowest);
+    box-shadow: var(--shadow-sm);
+}
+
 .treasury-report-card {
     display: grid;
     grid-template-columns: 1fr auto;
@@ -103,7 +112,7 @@
     gap: var(--spacing-3);
     color: inherit;
     text-decoration: none;
-    transition: box-shadow 0.15s ease, transform 0.15s ease;
+    transition: box-shadow 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
 }
 
 .treasury-report-card__main,
@@ -112,91 +121,83 @@
     gap: var(--spacing-2);
 }
 
+.treasury-report-card__main h4 {
+    margin: 0;
+    color: var(--text-heading);
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.treasury-report-card__main strong {
+    color: var(--text-heading);
+    font-size: 1.35rem;
+    font-weight: 700;
+}
+
 .treasury-report-card__meta {
     justify-items: end;
     padding-left: var(--spacing-3);
-    color: var(--text-muted);
-    font-weight: 600;
+    color: var(--text-secondary);
+    font-size: 0.8125rem;
+    font-weight: 500;
     text-align: right;
 }
 
 .treasury-report-card:hover {
+    border-color: var(--brand-accent);
     box-shadow: var(--shadow-md);
-    transform: translateY(-2px);
+    transform: translateY(-1px);
 }
 
-.treasury-status {
-    display: inline-flex;
-    align-self: flex-start;
-    padding: 0.2rem 0.55rem;
-    border-radius: 999px;
-    background: var(--surface-glass);
-    color: var(--brand-primary);
-    font-size: 0.78rem;
+.treasury-summary-grid h3 {
+    margin: 0 0 var(--spacing-2);
+    color: var(--text-secondary);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+.treasury-summary-grid strong {
+    color: var(--text-heading);
+    font-size: 1.35rem;
     font-weight: 700;
 }
 
-.treasury-status--validated {
-    background: #f3f8e5;
-    color: #394d06;
-}
-
-.treasury-status--paid {
-    background: #e9f7ee;
-    color: #0f5132;
-}
-
-.treasury-summary-grid article,
-.treasury-report-card {
-    padding: var(--spacing-4);
-    border: var(--border-standard);
-    border-radius: var(--rounded-lg);
-    background: var(--surface-card);
-    box-shadow: var(--shadow-sm);
-}
-
-.treasury-summary-grid h3,
-.treasury-report-card h4 {
-    margin: 0 0 var(--spacing-2);
-    color: var(--brand-primary);
-}
-
-.treasury-summary-grid strong,
-.treasury-report-card strong {
-    color: var(--brand-accent);
-    font-size: 1.35rem;
-}
-
 .treasury-summary-card--wide {
-    grid-column: span 2;
+    grid-column: 1 / -1;
 }
 
 .treasury-summary-table {
     width: 100%;
     margin-top: var(--spacing-2);
+    background: transparent;
+    box-shadow: none;
 }
 
 .treasury-summary-table th,
 .treasury-summary-table td {
     padding: 0.35rem 0;
     border: 0;
+    color: var(--text-body);
 }
 
 .treasury-summary-table th {
-    color: var(--text-muted);
+    color: var(--text-secondary);
     font-weight: 600;
     text-align: left;
 }
 
 .treasury-summary-table td {
-    color: var(--brand-accent);
+    color: var(--text-heading);
     font-weight: 700;
+    text-align: right;
 }
 
 .treasury-summary-table__group th {
     padding-top: var(--spacing-2);
-    color: var(--brand-primary);
-    font-weight: 800;
+    color: var(--text-heading);
+    font-weight: 700;
     text-align: left;
 }
 
@@ -208,13 +209,15 @@
 .treasury-summary-table__group + tr + tr th,
 .treasury-summary-table__group + tr + tr + tr th {
     padding-left: var(--spacing-4);
+    font-weight: 500;
 }
 
 .treasury-summary-table__total th,
 .treasury-summary-table__total td {
     padding-top: var(--spacing-2);
     border-top: var(--border-standard);
-    color: var(--brand-primary);
+    color: var(--text-heading);
+    font-size: 1rem;
 }
 
 @media (max-width: 720px) {
@@ -224,19 +227,56 @@
 }
 
 .treasury-balance-form {
-    display: grid;
-    gap: var(--spacing-2);
-    justify-items: start;
+    margin-top: var(--spacing-2);
 }
 
-.treasury-balance-form .form-input.treasury-balance-input {
-    width: 10rem;
-    min-width: 10rem;
-    max-width: 10rem;
+.treasury-balance-form.nice-form--embedded {
+    padding: 0;
+    border: none;
+    box-shadow: none;
+    background: transparent;
+    min-width: 0;
+    width: 100%;
+    max-width: none;
+}
+
+.treasury-balance-form__fields {
+    display: grid;
+    gap: var(--spacing-2);
+    grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
+}
+
+.treasury-balance-form .form-group {
+    margin-bottom: 0;
+}
+
+.treasury-balance-form .form-actions {
+    margin-top: var(--spacing-2);
+    padding-top: var(--spacing-2);
+    border-top: none;
+    justify-content: flex-start;
 }
 
 .treasury-balance-form .form-input.treasury-balance-input--amount {
     text-align: right;
+}
+
+.treasury-report-summary {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--spacing-2);
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+}
+
+.treasury-report-summary p {
+    margin: 0;
+}
+
+.treasury-report-summary strong {
+    color: var(--text-heading);
+    font-weight: 600;
 }
 
 .treasury-section-header {
@@ -245,6 +285,13 @@
     justify-content: space-between;
     gap: var(--spacing-3);
     margin-bottom: var(--spacing-4);
+}
+
+.treasury-section-header h3 {
+    margin: 0;
+    color: var(--text-heading);
+    font-size: 1.125rem;
+    font-weight: 600;
 }
 
 .treasury-report-toolbar {
@@ -281,10 +328,16 @@
 .treasury-report-list {
     display: grid;
     grid-template-columns: repeat(1, 1fr);
-    gap: var(--spacing-3);
+    gap: var(--spacing-4);
 }
 
 @media (min-width: 720px) {
+    .treasury-report-list {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (min-width: 1100px) {
     .treasury-report-list {
         grid-template-columns: repeat(3, 1fr);
     }
@@ -292,11 +345,17 @@
 
 .treasury-empty {
     margin: 0;
-    color: var(--text-muted);
+    padding: var(--spacing-4);
+    border: var(--border-standard);
+    border-radius: var(--rounded-xl);
+    background: var(--surface-container-low);
+    color: var(--text-secondary);
+    text-align: center;
 }
 
 .treasury-expense-form {
     max-width: 42rem;
+    margin: 0;
 }
 
 .treasury-checkbox {
@@ -304,6 +363,6 @@
     align-items: center;
     gap: var(--spacing-2);
     margin-bottom: var(--spacing-3);
-    color: var(--brand-primary);
+    color: var(--text-heading);
     font-weight: 600;
 }

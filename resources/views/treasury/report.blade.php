@@ -3,6 +3,8 @@
         <h2>{{ __('messages.expense_report_detail') }} @monthName($expenseReport->month) {{ $expenseReport->year }}</h2>
     </x-slot>
 
+    <x-treasury-module-tabs active="expense_reports" />
+
     <section>
         @php
             $taxRate = fn ($expense) => (float) ($expense->tax_amount ?? 20);
@@ -12,11 +14,13 @@
         @endphp
 
         <header class="treasury-section-header">
-            <div>
-                <p class="treasury-empty">
-                    {{ __('messages.beneficiary') }}: {{ Auth::user()->name }} -
-                    {{ __('messages.status') }}: {{ __('messages.expense_report_status_' . $expenseReport->status) }}
+            <div class="treasury-report-summary">
+                <p>
+                    {{ __('messages.beneficiary') }}: <strong>{{ Auth::user()->name }}</strong>
                 </p>
+                <span class="status-chip treasury-status treasury-status--{{ $expenseReport->status }}">
+                    {{ __('messages.expense_report_status_' . $expenseReport->status) }}
+                </span>
             </div>
             <div class="treasury-report-toolbar">
                 @if(Auth::user()->getMode() == "Edit" && $expenseReport->status === 'validated')
@@ -78,6 +82,7 @@
         @if($expenseReport->expenses->isEmpty())
             <p class="treasury-empty">{{ __('messages.no_expense_report') }}</p>
         @else
+            <div class="data-table">
             <table>
                 <thead>
                     <tr>
@@ -133,10 +138,7 @@
                     </tr>
                 </tfoot>
             </table>
+            </div>
         @endif
-    </section>
-
-    <section>
-        <a class="btn btn-secondary" href="{{ route('treasury.index') }}">{{ __('messages.back') }}</a>
     </section>
 </x-app-layout>

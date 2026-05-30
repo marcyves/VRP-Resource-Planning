@@ -1,9 +1,38 @@
 @props(['tabs'])
 
+@php
+    $resolveIcon = function (array $tab): string {
+        if (! empty($tab['icon'])) {
+            return $tab['icon'];
+        }
+
+        $href = (string) ($tab['href'] ?? '');
+
+        return match (true) {
+            str_contains($href, 'dashboard') => 'grid',
+            str_contains($href, 'school') => 'school',
+            str_contains($href, 'program') => 'layers',
+            str_contains($href, 'group') => 'users',
+            str_contains($href, 'planning') => 'calendar-range',
+            str_contains($href, 'calendar') => 'calendar',
+            str_contains($href, 'by-date') || str_contains($href, 'byDate') => 'clock',
+            str_contains($href, 'billing') => 'receipt',
+            str_contains($href, '#treasury-summary') => 'chart',
+            str_contains($href, '#expense-reports') => 'folder',
+            str_contains($href, '#standalone-expenses') => 'wallet',
+            str_contains($href, 'expenses/create') => 'plus',
+            default => 'dot',
+        };
+    };
+@endphp
+
 <nav class="module-tabs" aria-label="{{ __('messages.module_navigation') }}">
     @foreach($tabs as $tab)
         <a href="{{ $tab['href'] }}" class="module-tab {{ ($tab['active'] ?? false) ? 'active' : '' }}">
-            {{ $tab['label'] }}
+            <span class="module-tab__icon">
+                <x-module-tab-icon :name="$resolveIcon($tab)" />
+            </span>
+            <span class="module-tab__label">{{ $tab['label'] }}</span>
         </a>
     @endforeach
 </nav>

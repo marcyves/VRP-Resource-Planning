@@ -3,11 +3,12 @@
         <h2>{{ __('messages.treasury') }} {{ $year }}</h2>
     </x-slot>
 
-    <x-module-tabs :tabs="[
-        ['href' => '#treasury-summary', 'label' => __('messages.summary'), 'active' => true],
-        ['href' => '#expense-reports', 'label' => __('messages.expense_reports'), 'active' => false],
-        ['href' => '#standalone-expenses', 'label' => __('messages.standalone_expenses'), 'active' => false],
-        ['href' => route('treasury.expenses.create'), 'label' => __('messages.expense_create'), 'active' => false],
+    <x-treasury-module-tabs />
+
+    <x-kpi-grid :items="[
+        ['icon' => 'receipt', 'label' => __('messages.invoices_ttc'), 'value' => number_format($invoiceTotal, 2, ',', ' ') . ' €'],
+        ['icon' => 'wallet', 'label' => __('messages.closing_balance'), 'value' => number_format($closingBalance, 2, ',', ' ') . ' €'],
+        ['icon' => 'chart', 'label' => __('messages.paid_invoices_ttc'), 'value' => number_format($invoicePaidTotal, 2, ',', ' ') . ' €', 'variant' => 'success'],
     ]" />
 
     <section id="treasury-summary">
@@ -45,12 +46,22 @@
             </article>
             <article>
                 <h3>{{ __('messages.opening_balance') }}</h3>
-                @if(Auth::user()->getMode() == "Edit")
-                    <form class="treasury-balance-form" method="post" action="{{ route('treasury.balance.update') }}">
+                @if (Auth::user()->getMode() == 'Edit')
+                    <form class="treasury-balance-form nice-form nice-form--embedded" method="post" action="{{ route('treasury.balance.update') }}">
                         @csrf
-                        <x-text-input class="treasury-balance-input" type="date" name="opening_date" value="{{ $treasuryBalance->opening_date->format('Y-m-d') }}" />
-                        <x-text-input class="treasury-balance-input treasury-balance-input--amount" type="number" step="0.01" name="opening_amount" value="{{ $treasuryBalance->opening_amount }}" />
-                        <x-button-primary>{{ __('messages.save') }}</x-button-primary>
+                        <div class="treasury-balance-form__fields">
+                            <div class="form-group">
+                                <x-input-label for="opening_date">{{ __('messages.date') }}</x-input-label>
+                                <x-text-input type="date" name="opening_date" id="opening_date" value="{{ $treasuryBalance->opening_date->format('Y-m-d') }}" />
+                            </div>
+                            <div class="form-group">
+                                <x-input-label for="opening_amount">{{ __('messages.amount') }}</x-input-label>
+                                <x-text-input class="treasury-balance-input--amount" type="number" step="0.01" name="opening_amount" id="opening_amount" value="{{ $treasuryBalance->opening_amount }}" />
+                            </div>
+                        </div>
+                        <div class="form-actions">
+                            <x-button-primary class="btn--compact">{{ __('messages.save') }}</x-button-primary>
+                        </div>
                     </form>
                 @else
                     <span>@formatDate($treasuryBalance->opening_date)</span>
@@ -112,7 +123,7 @@
                         </div>
                         <div class="treasury-report-card__meta">
                             <span>{{ $report->expenses->count() }} {{ __('messages.expenses') }}</span>
-                            <span class="treasury-status treasury-status--{{ $report->status }}">
+                            <span class="status-chip treasury-status treasury-status--{{ $report->status }}">
                                 {{ __('messages.expense_report_status_' . $report->status) }}
                             </span>
                         </div>
@@ -130,6 +141,7 @@
         @if($standaloneExpenses->isEmpty())
             <p class="treasury-empty">{{ __('messages.no_standalone_expense') }}</p>
         @else
+            <div class="data-table">
             <table>
                 <thead>
                     <tr>
@@ -169,6 +181,7 @@
                     @endforeach
                 </tbody>
             </table>
+            </div>
         @endif
     </section>
 </x-app-layout>

@@ -3,8 +3,10 @@
         <h2>{{ __('messages.company_edit') }}</h2>
     </x-slot>
 
+    <x-settings-module-tabs active="company" />
+
     <section class="company-edit">
-        <form action="{{ route('company.update') }}" method="post" class="school-create-form company-edit-form">
+        <form action="{{ route('company.update') }}" method="post" class="school-create-form company-edit-form nice-form nice-form--wide">
             @csrf
             @method('PUT')
 
@@ -128,8 +130,8 @@
             </div>
 
             <div class="form-actions company-form-actions">
-                <x-button-primary>{{ __('messages.update') }}</x-button-primary>
                 <a href="{{ route('company.show') }}" class="btn btn-secondary">{{ __('messages.cancel') }}</a>
+                <x-button-primary>{{ __('messages.update') }}</x-button-primary>
             </div>
         </form>
     </section>

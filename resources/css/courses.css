@@ -28,14 +28,14 @@ main .course-info-grid > article:hover {
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.05em;
-    color: var(--brand-primary);
+    color: var(--text-heading);
     margin-bottom: var(--spacing-1);
 }
 
 .course-title {
     font-size: 1.25rem;
     font-weight: 700;
-    color: var(--brand-primary);
+    color: var(--text-heading);
     margin-bottom: 0.5rem;
 }
 

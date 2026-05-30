@@ -1,119 +1,78 @@
-/* Calendar Management View Styles */
+/* Calendar management — upload + import history */
 
-.calendar-upload-grid {
-    gap: 1rem;
-    align-items: flex-end;
+.calendar-upload-section,
+.calendar-history-section {
+    margin-bottom: var(--spacing-6);
+}
+
+.calendar-upload-form__grid {
+    display: grid;
+    gap: var(--spacing-4);
 }
 
 @media (min-width: 768px) {
-    .calendar-upload-grid {
-        grid-template-columns: repeat(4, 1fr);
+    .calendar-upload-form__grid {
+        grid-template-columns: minmax(12rem, 1fr) minmax(12rem, 1fr) auto minmax(16rem, 1.2fr);
+        align-items: end;
     }
 }
 
-.calendar-upload-field {
+.calendar-upload-form__divider {
     display: flex;
-    flex-direction: column;
-}
-
-.calendar-upload-field label {
-    margin-bottom: 0.5rem;
-    font-size: 0.875rem;
-    color: var(--main-text-color, #374151);
-}
-
-.calendar-input-divider {
-    text-align: center;
-    font-weight: bold;
-    color: var(--text-muted);
-    padding: 0.5rem 0;
-}
-
-.calendar-select-field,
-.calendar-url-field {
-    border-radius: 0.375rem;
-    border: 1px solid #D1D5DB;
-    padding: 0.5rem;
-    font-size: 0.875rem;
-}
-
-.calendar-select-field:focus,
-.calendar-url-field:focus {
-    outline: 2px solid #00000000;
-    outline-offset: 2px;
-    border-color: #3B82F6;
-    box-shadow: 0 0 0 3px #3b82f680;
-}
-
-/* History Table Styles */
-.history-container {
-    overflow: hidden;
-    border: 1px solid #E5E7EB;
-    border-radius: 0.5rem;
-    margin-top: 1rem;
-}
-
-.history-table {
-    width: 100%;
-    border-collapse: collapse;
-    background-color: #ffffff;
-}
-
-.history-header {
-    background-color: #F9FAFB;
-    border-bottom: 1px solid #E5E7EB;
-}
-
-.history-header th {
-    padding: 0.75rem 1.5rem;
-    text-align: left;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
     font-size: 0.75rem;
-    font-weight: 500;
-    color: var(--text-muted);
+    font-weight: 700;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
-}
-
-.history-header th.text-right {
-    text-align: right;
-}
-
-.history-body tr {
-    border-bottom: 1px solid #F3F4F6;
-}
-
-.history-body td {
-    padding: 1rem 1.5rem;
-    font-size: 0.875rem;
-    white-space: nowrap;
-}
-
-.history-td-date {
     color: var(--text-muted);
 }
 
-.history-td-school {
+@media (max-width: 767px) {
+    .calendar-upload-form__divider {
+        padding: var(--spacing-1) 0;
+    }
+}
+
+.calendar-upload-form__file {
+    width: 100%;
+    padding: 0.5rem 0.75rem;
+}
+
+.calendar-upload-form__file::file-selector-button {
+    margin-right: var(--spacing-3);
+    padding: 0.35rem 0.75rem;
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--rounded-md);
+    background: var(--surface-container);
+    color: var(--text-body);
+    font-size: 0.8125rem;
     font-weight: 500;
-    color: #111827;
+    cursor: pointer;
 }
 
-.history-td-file {
-    color: var(--text-subtle);
-    font-style: italic;
+.calendar-upload-form__file::file-selector-button:hover {
+    background: var(--surface-container-low);
 }
 
-.history-td-actions {
-    text-align: right;
-}
-
-.action-buttons-group {
-    display: flex;
-    justify-content: flex-end;
-    gap: 0.5rem;
-}
-
-/* Empty State */
-.history-empty-state {
-    padding: 2.5rem 1.5rem;
+.calendar-history-empty {
     text-align: center;
+    font-style: italic;
     color: var(--text-muted);
+}
+
+.calendar-history-section .data-table td a {
+    color: var(--brand-accent);
+    font-weight: 500;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+.calendar-history-section .data-table td a:hover {
+    color: var(--text-heading);
+}
+
+.calendar-history-section .data-table .card-actions form {
+    display: inline-flex;
 }

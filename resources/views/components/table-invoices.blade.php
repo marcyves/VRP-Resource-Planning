@@ -3,7 +3,13 @@
     $total_payed = 0;
     @endphp
 
-    <div class="bills">
+    <x-kpi-grid :items="[
+        ['icon' => 'wallet', 'label' => __('messages.total_gain'), 'value' => number_format($total, 2, ',', ' ') . ' €'],
+        ['icon' => 'receipt', 'label' => __('messages.total_payed'), 'value' => number_format($total_payed, 2, ',', ' ') . ' €', 'variant' => 'success'],
+        ['icon' => 'chart', 'label' => __('messages.total_balance'), 'value' => number_format($total - $total_payed, 2, ',', ' ') . ' €'],
+    ]" />
+
+    <div class="data-table">
         <table>
             <thead>
                 <tr>
@@ -43,15 +49,15 @@
                         @endif
                     </td>
                     <td>
-                        <span class="invoice-e-status invoice-e-status--{{ $bill->electronic_invoice_status?->value ?? 'draft' }}">
+                        <span class="status-chip invoice-e-status invoice-e-status--{{ $bill->electronic_invoice_status?->value ?? 'draft' }}">
                             {{ $bill->electronicStatusLabel() }}
                         </span>
                     </td>
                     <td class="date">
                         @if($bill->paid_at)
-                        @formatDate($bill->paid_at)
+                            <span class="status-chip status-chip--paid">@formatDate($bill->paid_at)</span>
                         @else
-                        {{ __('messages.not_payed') }}
+                            <span class="status-chip status-chip--unpaid">{{ __('messages.not_payed') }}</span>
                         @endif
                     </td>
                     @if(Auth::user()->getMode() == "Edit")
@@ -88,19 +94,4 @@
                 @endforeach
             </tbody>
         </table>
-    </div>
-
-    <div class="summary-container">
-        <div class="summary-item">
-            <span>{{ __('messages.total_gain')}} :</span>
-            <strong>@money($total)</strong>
-        </div>
-        <div class="summary-item">
-            <span>{{ __('messages.total_payed')}} :</span>
-            <strong>@money($total_payed)</strong>
-        </div>
-        <div class="summary-item total">
-            <span>{{ __('messages.total_balance')}} :</span>
-            <strong>@money($total - $total_payed)</strong>
-        </div>
     </div>

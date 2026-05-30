@@ -2,11 +2,11 @@
     padding: 0.6rem;
     min-width: 4.5rem;
     max-width: 20rem;
-    border: 1px solid var(--border-color);
+    border: 1px solid var(--surface-input-border);
     border-radius: var(--rounded-md) !important;
-    background-color: #ffffffb2;
-    color: var(--text-color);
+    background-color: var(--surface-input);
+    color: var(--text-body);
     font-size: 1rem;
-    box-shadow: 0 2px 4px #0000001a;
+    box-shadow: var(--shadow-sm);
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }

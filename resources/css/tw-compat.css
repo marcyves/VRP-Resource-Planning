@@ -115,34 +115,11 @@
 }
 
 /* Navigation Semantics */
+.app-sidebar__logo svg,
 .nav-logo svg {
-    height: 2.25rem;
+    height: auto;
     width: auto;
     fill: none;
-}
-
-.nav-user-btn {
-    display: inline-flex;
-    align-items: center;
-    padding: 0.5rem 0.75rem;
-    border: 1px solid #00000000;
-    font-size: 0.875rem;
-    line-height: 1;
-    font-weight: 500;
-    border-radius: var(--rounded-md);
-    color: #ffffff;
-    background-color: #00000000;
-    cursor: pointer;
-    transition: all 150ms ease-in-out;
-}
-
-.nav-user-btn:hover {
-    color: #ffffff;
-    background-color: #ffffff1a;
-}
-
-.nav-user-btn:focus {
-    outline: none;
 }
 
 .ml-1 {

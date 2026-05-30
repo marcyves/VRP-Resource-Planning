@@ -3,6 +3,8 @@
         <h2>{{ __('messages.schools_empty_list') }}</h2>
     </x-slot>
 
+    <x-workload-module-tabs />
+
     <section class="schools-list-container">
         <ul class="resource-grid">
             @foreach ($schools as $school)

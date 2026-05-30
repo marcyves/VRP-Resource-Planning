@@ -1,17 +1,15 @@
 /* Base styles for the course table */
 .course-table {
-    background-color: #ffffff4c;
     width: 100%;
     min-width: 72rem;
     table-layout: fixed;
-    margin-top: 1rem;
-    box-shadow: 0 4px 6px 1px #0000001a,
-        0 2px 4px 1px #0000000f;
+    margin-top: 0;
     overflow: hidden;
-
-    color: var(--main-text-color);
-    font-size: 0.9rem;
-    border-radius: 0.4rem;
+    color: var(--text-body);
+    font-size: 0.875rem;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
 }
 
 .course-table-container {
@@ -69,13 +67,10 @@
     display: inline;
 }
 
-.course-table th {
-    font-weight: bold;
-}
-
 .course-table tbody th[scope="row"],
 .course-table tbody th[scope="row"] .btn-text-link {
     text-align: left;
+    color: var(--text-heading);
 }
 
 .course-table tbody th[scope="row"] form {
@@ -86,16 +81,7 @@
 .course-table tr th:first-child {
     padding-left: 1rem;
 }
-.course-table thead {
-    background-color: #ffffff99;
-    border-radius: 60px;
-}
 
 .course-table tbody {
     font-weight: normal;
-}
-
-tfoot {
-    font-weight: bold;
-    background-color: var(--secondary-bg-color);
 }

@@ -3,12 +3,7 @@
         <h2>{{ __('messages.schools_list') }} @if($current_year !== 'all'){{ $current_year }}@endif</h2>
     </x-slot>
 
-    <x-module-tabs :tabs="[
-        ['href' => route('dashboard'), 'label' => __('messages.workload_plan'), 'active' => request()->routeIs('dashboard', 'school.dashboard')],
-        ['href' => route('school.index'), 'label' => __('messages.schools'), 'active' => request()->routeIs('school.index', 'school.list', 'school.show', 'school.create', 'school.edit', 'school.add', 'course.*')],
-        ['href' => route('program.index'), 'label' => __('messages.programs'), 'active' => request()->routeIs('program.*')],
-        ['href' => route('group.index'), 'label' => __('messages.groups'), 'active' => request()->routeIs('group.*')],
-    ]" />
+    <x-workload-module-tabs />
 
     <section>
         <ul class="school-grid">
@@ -90,7 +85,7 @@
             </header>
 
             <div id="school-create-panel" x-show="open" x-transition>
-            <form action="{{route('school.store')}}" method="post" class="school-create-form">
+            <form action="{{route('school.store')}}" method="post" class="school-create-form nice-form nice-form--embedded">
             @csrf
 
             <div class="school-create-form__row school-create-form__row--name-code">

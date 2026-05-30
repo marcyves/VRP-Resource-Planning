@@ -11,17 +11,19 @@
     display: flex;
     justify-content: center;
     align-items: flex-start;
-    background-color: #6b7280bf;
+    background-color: var(--modal-overlay);
 }
 
 .modal-container {
-    background-color: #ffffff;
+    background-color: var(--modal-content-bg);
     margin-bottom: 1.5rem;
     border-radius: var(--rounded-md);
     overflow: hidden;
-    box-shadow: 0 20px 25px -5px #0000001a, 0 10px 10px -5px #0000000a;
+    box-shadow: var(--shadow-lg);
     transition: all 0.3s;
     width: 100%;
+    border: var(--border-standard);
+    color: var(--text-body);
 }
 
 .modal-backdrop {
@@ -30,7 +32,7 @@
     right: 0;
     bottom: 0;
     left: 0;
-    background-color: #6b7280;
+    background-color: var(--modal-backdrop);
     opacity: 0.75;
 }
 

@@ -1,35 +1,23 @@
 /* Planning Views Styles */
 
 .planning-calendar-container {
-    padding: 1rem;
+    padding: 0;
 }
 
 .planning-summary {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    align-items: center;
-    background: var(--surface-secondary);
-    border-radius: var(--rounded-lg);
-    padding: 1.5rem;
-    margin-top: 2rem;
-    font-weight: 600;
-    color: var(--text-muted);
+    display: none;
 }
 
-.planning-summary-item {
-    margin: 0.5rem 1rem;
-}
-
-/* Planning header: month nav + date/course form */
 .planning-controls {
     display: flex;
     flex-direction: column;
     gap: var(--spacing-4);
     padding: var(--spacing-4);
-    background: var(--surface-glass);
-    border-radius: var(--rounded-lg);
-    margin-bottom: 0;
+    background: var(--surface-container-lowest);
+    border: var(--border-standard);
+    border-radius: var(--rounded-xl);
+    box-shadow: var(--shadow-sm);
+    margin-bottom: var(--spacing-4);
 }
 
 @media (min-width: 768px) {
@@ -71,8 +59,8 @@
     margin: 0;
     border: none;
     border-radius: 0;
-    background: #00000000;
-    color: var(--brand-primary);
+    background: transparent;
+    color: var(--text-heading);
     font-size: 1.35rem;
     line-height: 1;
     font-weight: 600;
@@ -82,7 +70,7 @@
 }
 
 .period-nav__btn:hover {
-    background: #538ce91f;
+    background: var(--surface-container-low);
 }
 
 .period-nav__form {
@@ -106,8 +94,8 @@ main .period-nav__form select.period-nav__select {
     font-size: 0.875rem;
     font-weight: 600;
     line-height: var(--period-nav-height);
-    color: var(--brand-primary);
-    background: #00000000;
+    color: var(--text-heading);
+    background: transparent;
     min-width: 9rem;
     max-width: 14rem;
     cursor: pointer;
@@ -119,7 +107,7 @@ main .period-nav__form select.period-nav__select {
 
 main .period-nav__form select.period-nav__select:focus {
     outline: none;
-    background: #538ce914;
+    background: var(--surface-container-low);
     box-shadow: none;
 }
 
@@ -130,7 +118,7 @@ main .period-nav__form select.period-nav__select:focus {
     border-radius: var(--rounded-md);
     border: var(--border-standard);
     background: var(--surface-card);
-    color: var(--brand-primary);
+    color: var(--text-heading);
     font-size: 0.875rem;
     font-weight: 600;
     text-decoration: none;
@@ -139,7 +127,7 @@ main .period-nav__form select.period-nav__select:focus {
 }
 
 .period-nav__link:hover {
-    background: #538ce91f;
+    background: var(--accent-soft-hover);
 }
 
 /* Compact toolbar — overrides semantic.css main form rules */
@@ -227,10 +215,10 @@ main form.planning-create-form .planning-create-form__submit {
     min-height: 1.4rem;
     margin: 0;
     padding: 0 0.55rem;
-    border: 1px solid var(--brand-primary);
+    border: 1px solid var(--btn-primary-bg);
     border-radius: var(--rounded-md);
-    background: var(--brand-primary);
-    color: #ffffff;
+    background: var(--btn-primary-bg);
+    color: var(--btn-primary-fg);
     font-family: inherit;
     font-size: 0.75rem;
     font-weight: 600;
@@ -241,12 +229,12 @@ main form.planning-create-form .planning-create-form__submit {
 }
 
 main form.planning-create-form .planning-create-form__submit:hover {
-    background: var(--brand-accent);
-    border-color: var(--brand-accent);
+    background: var(--btn-primary-hover-bg);
+    border-color: var(--btn-primary-hover-bg);
 }
 
 main form.planning-create-form .planning-create-form__control:focus {
-    box-shadow: 0 0 0 2px #538ce940;
+    box-shadow: 0 0 0 2px var(--accent-focus);
 }
 
 @media (max-width: 480px) {
@@ -262,42 +250,112 @@ main form.planning-create-form .planning-create-form__control:focus {
     }
 }
 
-/* Calendar wrapper adjustments */
+/* Calendar grid — Phase 3 */
 #calWrap {
-    overflow-x: auto;
+    overflow: hidden;
+    border: var(--border-standard);
+    border-radius: var(--rounded-xl);
+    background: var(--surface-container-lowest);
+    box-shadow: var(--shadow-sm);
+}
+
+@media (max-width: 900px) {
+    #calWrap {
+        overflow-x: auto;
+    }
 }
 
 .calHead {
     display: flex;
-    background: var(--brand-primary);
-    color: #ffffff;
-    font-weight: 700;
+    background: var(--surface-container-low);
+    color: var(--text-secondary);
+    font-weight: 600;
+    border-bottom: 1px solid var(--border-subtle);
+}
+
+.calHead .calCell {
+    padding: 0.65rem 0.5rem;
+    font-size: 0.6875rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    text-align: center;
+    border: none;
 }
 
 .calRow {
     display: flex;
     min-width: fit-content;
+    border-bottom: 1px solid var(--border-subtle);
+}
+
+.calRow:last-child {
+    border-bottom: none;
 }
 
 .calCell {
     flex: 1;
-    min-width: 120px;
-    padding: 0.5rem;
-    border: 1px solid var(--border-color);
+    min-width: 9rem;
+    padding: 0;
+    border: none;
+    border-right: 1px solid var(--border-subtle);
+}
+
+.calCell:last-child {
+    border-right: none;
+}
+
+.calDay {
+    display: flex;
+    flex-direction: column;
+    min-height: 9rem;
+    padding: 0.35rem;
+    background: var(--surface-container-lowest);
+}
+
+.calBlank {
+    min-height: 9rem;
+    background: var(--surface-container-low);
+}
+
+.calToday {
+    background: var(--surface-accent-soft);
 }
 
 .planning-event-info {
     font-weight: 600;
-    color: var(--brand-primary);
+    font-size: 0.6875rem;
+    line-height: 1.35;
+    color: var(--text-heading);
 }
 
 .planning-event-gain {
-    font-size: 0.75rem;
-    color: var(--text-muted);
+    font-size: 0.625rem;
+    color: var(--text-secondary);
 }
 
-.planning-event-invoice {
-    font-size: 0.7rem;
-    color: var(--feedback-success);
-    font-weight: 700;
+.planning-entry {
+    display: flex;
+    flex-direction: row;
+    gap: 0.25rem;
+    margin: 0.25rem 0;
+    padding: 0.35rem 0.45rem;
+    border-left: 3px solid var(--brand-accent);
+    border-radius: var(--rounded-md);
+    background: var(--surface-container-low);
+    box-shadow: none;
+    width: 100%;
+}
+
+.planning-text {
+    flex: 1;
+    min-width: 0;
+    padding-left: 0;
+    font-size: 0.6875rem;
+    line-height: 1.25;
+}
+
+.planning-tools {
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
 }

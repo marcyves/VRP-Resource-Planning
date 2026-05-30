@@ -3,16 +3,18 @@
         <h2>{{ __('messages.planning') }} @monthName($current_month) {{$current_year}}</h2>
     </x-slot>
 
-    <x-module-tabs :tabs="[
-        ['href' => route('planning.index'), 'label' => __('messages.planning'), 'active' => request()->routeIs('planning.*')],
-        ['href' => route('calendar.index'), 'label' => __('messages.calendar'), 'active' => request()->routeIs('calendar.*')],
-        ['href' => route('billing.index'), 'label' => __('messages.billing_preparation'), 'active' => request()->routeIs('billing.index')],
-    ]" />
+    <x-scheduling-module-tabs />
 
     <section class="planning-controls">
         <x-period-selector :years="$years" :months="$months" :current_year="$current_year" :current_month="$current_month" route="planning" />
         <x-form-select-planning :mode="$mode" :schools="$schools" :courses="$courses" :planning="$planning" :day="$current_day" :month="$current_month" :year="$current_year" />
     </section>
+
+    <x-kpi-grid :items="[
+        ['icon' => 'clock', 'label' => __('messages.time_worked'), 'value' => $monthly_hours . ' ' . __('messages.hours')],
+        ['icon' => 'wallet', 'label' => __('messages.monthly_gain'), 'value' => number_format($monthly_gain, 2, ',', ' ') . ' € HT'],
+        ['icon' => 'chart', 'label' => __('messages.hour_rate'), 'value' => ($monthly_hours == 0 ? '0' : number_format($monthly_gain / $monthly_hours, 2, ',', ' ')) . ' €/h'],
+    ]" />
 
     <section class="planning-calendar-container">
         <!-- (A) PERIOD SELECTOR & CONTROLS -->
@@ -60,18 +62,6 @@
         </div>
         @endwhile
         </div>
-        </div>
-
-        <div class="planning-summary">
-            <div class="planning-summary-item">
-                {{ __('messages.time_worked') }} = {{$monthly_hours}} {{ __('messages.hours') }}
-            </div>
-            <div class="planning-summary-item">
-                {{ __('messages.monthly_gain') }} = {{number_format($monthly_gain,2)}} € HT / {{number_format($monthly_gain*1.2,2)}} € TTC
-            </div>
-            <div class="planning-summary-item">
-                {{ __('messages.hour_rate') }} = @if ($monthly_hours == 0) 0 @else {{number_format($monthly_gain/$monthly_hours,2)}} @endif€
-            </div>
         </div>
     </section>
 </x-app-layout>

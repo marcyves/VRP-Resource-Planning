@@ -22,7 +22,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         \Illuminate\Support\Facades\View::composer(
-            'layouts.navigation',
+            ['layouts.navigation', 'layouts.topbar'],
             \App\Http\View\Composers\NavigationComposer::class
         );
 

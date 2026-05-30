@@ -3,12 +3,7 @@
         <h2 class="header-title">{{ $program->name }}</h2>
     </x-slot>
 
-    <x-module-tabs :tabs="[
-        ['href' => route('dashboard'), 'label' => __('messages.workload_plan'), 'active' => request()->routeIs('dashboard', 'school.dashboard')],
-        ['href' => route('school.index'), 'label' => __('messages.schools'), 'active' => request()->routeIs('school.index', 'school.list', 'school.show', 'school.create', 'school.edit', 'school.add', 'course.*')],
-        ['href' => route('program.index'), 'label' => __('messages.programs'), 'active' => request()->routeIs('program.*')],
-        ['href' => route('group.index'), 'label' => __('messages.groups'), 'active' => request()->routeIs('group.*')],
-    ]" />
+    <x-workload-module-tabs />
 
     @php
         $totalHours = $courses->sum(fn ($course) => $course->session_length * $course->sessions * $course->groups_count);
@@ -70,42 +65,55 @@
         @if($courses->isEmpty())
             <p class="program-empty">{{ __('messages.no_course') }}</p>
         @else
-            <div class="program-course-grid">
-                @foreach($courses as $course)
-                    <article class="program-course-item {{ Auth::user()->getMode() == 'Edit' ? 'program-course-item--editable' : '' }}">
-                        <div class="program-course-item__main">
-                            <a class="program-course-item__title" href="{{ route('course.show', $course->id) }}">
-                                {{ $course->name }}
-                            </a>
-                            <span>{{ $course->school?->name }}</span>
-                        </div>
-
-                        <div class="program-course-item__meta">
-                            <span>{{ __('messages.year') }} {{ $course->year }}</span>
-                            <span>{{ __('messages.semester') }} {{ $course->semester }}</span>
-                            <span>{{ $course->sessions }} x {{ $course->session_length }}h</span>
-                            <span>{{ $course->groups_count }} {{ __('messages.groups') }}</span>
-                        </div>
-
-                        <div class="program-course-item__amount">
-                            <span>@money($course->rate) €/h</span>
-                            <strong>@money($course->rate * $course->session_length * $course->sessions * $course->groups_count) €</strong>
-                        </div>
-
-                        @if(Auth::user()->getMode() == "Edit")
-                            <div class="program-course-item__actions">
-                                <form action="{{ route('course.edit', $course->id) }}" method="get">
-                                    <x-button-edit />
-                                </form>
-                                <form action="{{ route('course.destroy', $course->id) }}" method="post">
-                                    @csrf
-                                    @method('delete')
-                                    <x-button-delete />
-                                </form>
-                            </div>
-                        @endif
-                    </article>
-                @endforeach
+            <div class="data-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>{{ __('messages.name') }}</th>
+                            <th>{{ __('messages.school') }}</th>
+                            <th>{{ __('messages.year') }}</th>
+                            <th>{{ __('messages.semester') }}</th>
+                            <th>{{ __('messages.sessions') }}</th>
+                            <th>{{ __('messages.groups') }}</th>
+                            <th>{{ __('messages.rate') }}</th>
+                            <th>{{ __('messages.total') }}</th>
+                            @if (Auth::user()->getMode() == 'Edit')
+                                <th>{{ __('messages.actions') }}</th>
+                            @endif
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($courses as $course)
+                            @php
+                                $courseTotal = $course->rate * $course->session_length * $course->sessions * $course->groups_count;
+                            @endphp
+                            <tr>
+                                <td>
+                                    <a href="{{ route('course.show', $course->id) }}">{{ $course->name }}</a>
+                                </td>
+                                <td>{{ $course->school?->name }}</td>
+                                <td class="date">{{ $course->year }}</td>
+                                <td class="date">{{ $course->semester }}</td>
+                                <td class="date">{{ $course->sessions }} × {{ $course->session_length }}h</td>
+                                <td class="date">{{ $course->groups_count }}</td>
+                                <td class="money">@money($course->rate) €/h</td>
+                                <td class="money">@money($courseTotal) €</td>
+                                @if (Auth::user()->getMode() == 'Edit')
+                                    <td class="card-actions">
+                                        <form action="{{ route('course.edit', $course->id) }}" method="get">
+                                            <x-button-edit />
+                                        </form>
+                                        <form action="{{ route('course.destroy', $course->id) }}" method="post">
+                                            @csrf
+                                            @method('delete')
+                                            <x-button-delete />
+                                        </form>
+                                    </td>
+                                @endif
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
             </div>
         @endif
     </section>

@@ -1,0 +1,210 @@
+/* Theme — dark mode tokens (EduProf-inspired) */
+
+html[data-theme="dark"] {
+    color-scheme: dark;
+
+    --brand-primary: #90a8ff;
+    --brand-secondary: #1e3a8a;
+    --brand-accent: #90a8ff;
+    --brand-logo-bg: #1e3a8a;
+    --surface-accent-soft: #1e3a8a59;
+
+    --text-heading: #dce1ff;
+    --text-body: #eff1f3;
+    --text-secondary: #94a3b8;
+    --text-muted: #cbd5e1;
+    --text-subtle: #64748b;
+
+    --surface-page: #0f172a;
+    --surface-container-lowest: #1e293b;
+    --surface-container-low: #1e293b;
+    --surface-container: #334155;
+    --surface-card: #1e293b;
+    --surface-nav: #0f172a;
+
+    --border-subtle: #334155;
+    --border-standard: 1px solid #334155;
+    --border-color: #334155;
+
+    --shadow-sm: 0 1px 2px 0 #00000059;
+    --shadow-md: 0 4px 6px -1px #00000059, 0 2px 4px -2px #00000040;
+    --shadow-lg: 0 10px 15px -3px #00000059, 0 4px 6px -4px #00000040;
+
+    --topbar-bg: #1e293bcc;
+    --backdrop-overlay: #02061799;
+    --surface-input: #0f172a;
+    --surface-input-border: #475569;
+    --surface-table: #1e293b;
+    --surface-table-header: #334155;
+    --surface-table-stripe: #33415580;
+    --focus-ring: #90a8ff59;
+
+    --btn-primary-bg: #00236f;
+    --btn-primary-fg: #ffffff;
+    --btn-primary-hover-bg: #1e3a8a;
+    --btn-primary-shadow: 0 1px 2px #00000040, 0 4px 14px #00000059;
+    --btn-primary-shadow-hover: 0 2px 4px #0000004d, 0 8px 20px #00000066;
+    --btn-secondary-bg: var(--surface-container);
+    --btn-secondary-fg: var(--text-muted);
+    --btn-secondary-hover-fg: var(--text-body);
+    --btn-secondary-border: #475569;
+    --btn-secondary-hover-bg: #334155;
+    --btn-secondary-hover-border: #64748b;
+
+    --sidebar-link-active-bg: #1e3a8a66;
+    --sidebar-link-active-color: #90a8ff;
+    --sidebar-link-hover-text: #dce1ff;
+
+    --main-bg-color: var(--surface-page);
+    --box-bg-color: var(--surface-container-low);
+    --main-box-bg-color: var(--surface-container);
+    --secondary-bg-color: var(--brand-secondary);
+    --main-text-color: var(--text-heading);
+    --surface-main-bg: var(--surface-page);
+    --surface-glass: var(--surface-container-lowest);
+
+    --chip-neutral-bg: #334155;
+    --chip-neutral-text: #cbd5e1;
+    --chip-info-bg: #1e3a8a66;
+    --chip-info-text: #93c5fd;
+    --chip-warning-bg: #78350f66;
+    --chip-warning-text: #fcd34d;
+    --chip-success-bg: #14532d66;
+    --chip-success-text: #86efac;
+    --chip-danger-bg: #7f1d1d66;
+    --chip-danger-text: #fca5a5;
+
+    --feedback-success-text: #bbf7d0;
+    --feedback-warning-text: #fef08a;
+    --feedback-danger-text: #fecaca;
+    --feedback-success: #14532d;
+    --feedback-warning: #78350f;
+    --feedback-danger: #7f1d1d;
+
+    --surface-glass-border: #33415580;
+    --surface-muted: #33415580;
+    --surface-highlight: #334155;
+    --surface-row: #1e293b;
+    --surface-row-stripe: #33415580;
+    --surface-hover-subtle: #ffffff14;
+
+    --modal-overlay: var(--backdrop-overlay);
+    --modal-backdrop: #020617cc;
+    --modal-content-bg: var(--surface-container-lowest);
+
+    --chart-bar-bg: var(--surface-container);
+    --chart-bar-shadow: var(--shadow-md);
+    --chart-legend-bg: var(--surface-container-lowest);
+    --chart-legend-border: var(--border-subtle);
+    --chart-pie-shadow: var(--shadow-md);
+
+    --cal-day-bg: var(--surface-container-lowest);
+    --cal-blank-bg: var(--surface-page);
+    --cal-today-bg: #1e3a8a59;
+    --cal-today-date: #fca5a5;
+    --cal-cell-date: var(--text-subtle);
+    --cal-shadow: var(--shadow-sm);
+    --cal-overlay: var(--backdrop-overlay);
+    --cal-form-bg: var(--surface-container-lowest);
+    --cal-form-input-bg: var(--surface-input);
+    --cal-form-input-border: var(--surface-input-border);
+    --cal-form-label: var(--text-secondary);
+    --cal-close: var(--feedback-danger-text);
+    --cal-period-fg: #ffffff;
+    --cal-option-fg: var(--text-body);
+
+    --info-box-bg: #1e3a8a40;
+    --info-box-border: #334155;
+    --info-box-label: #93c5fd;
+    --info-box-input-border: #475569;
+
+    --map-course-fg: #93c5fd;
+    --map-group-fg: #86efac;
+
+    --alert-success-border: #166534;
+    --alert-warning-border: #92400e;
+    --alert-danger-border: #991b1b;
+
+    --accent-soft-hover: #90a8ff1f;
+    --accent-focus: #90a8ff40;
+
+    --toggle-track-bg: #475569;
+    --toggle-track-checked: #15803d;
+    --toggle-thumb-bg: #f1f5f9;
+
+    --delete-icon-hover-bg: #7f1d1d59;
+    --delete-icon-hover-border: #fca5a559;
+    --toggle-success: #4ade80;
+
+    --icon-action-border: var(--border-subtle);
+    --icon-action-hover-bg: var(--surface-container);
+    --icon-action-hover-border: #475569;
+    --icon-action-fg: var(--text-body);
+    --icon-action-img-filter: brightness(0) invert(1);
+}
+
+html[data-theme="dark"] .sidebar-link:hover {
+    color: var(--sidebar-link-hover-text);
+}
+
+html[data-theme="dark"] .sidebar-link--active {
+    color: var(--sidebar-link-active-color);
+    background: var(--sidebar-link-active-bg);
+}
+
+html[data-theme="dark"] .module-tab.active {
+    color: var(--sidebar-link-active-color);
+}
+
+html[data-theme="dark"] .module-tab:hover {
+    color: var(--sidebar-link-hover-text);
+}
+
+html[data-theme="dark"] .breadcrumb a:hover,
+html[data-theme="dark"] .breadcrumb button:hover {
+    color: var(--brand-accent);
+}
+
+html[data-theme="dark"] .nav-link {
+    color: var(--brand-accent);
+}
+
+html[data-theme="light"] .theme-toggle__icon--sun {
+    display: none;
+}
+
+html[data-theme="light"] .theme-toggle__icon--moon {
+    display: block;
+}
+
+html[data-theme="dark"] .theme-toggle__icon--sun {
+    display: block;
+}
+
+html[data-theme="dark"] .theme-toggle__icon--moon {
+    display: none;
+}
+
+html[data-theme="dark"] .bg-white {
+    background-color: var(--surface-container-lowest);
+}
+
+html[data-theme="dark"] .border-gray-400 {
+    border-color: var(--border-subtle);
+}
+
+html[data-theme="dark"] .modal-content,
+html[data-theme="dark"] .modal-dialog .modal-content {
+    background-color: var(--modal-content-bg);
+    border-color: var(--border-subtle);
+    color: var(--text-body);
+}
+
+html[data-theme="dark"] .modal-header,
+html[data-theme="dark"] .modal-footer {
+    border-color: var(--border-subtle);
+}
+
+html[data-theme="dark"] .modal-backdrop.show {
+    opacity: 0.72;
+}

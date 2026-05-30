@@ -3,9 +3,11 @@
         <h2>{{ __('messages.course_update') }}</h2>
     </x-slot>
 
+    <x-workload-module-tabs />
+
     <section>
         @isset($course)
-        <form action="{{route('course.update', $course->id)}}" method="post" class="group-form">
+        <form action="{{route('course.update', $course->id)}}" method="post" class="group-form nice-form">
             @csrf
             @method('put')
 
@@ -61,6 +63,7 @@
             </div>
 
             <div class="form-actions">
+                <a class="btn btn-secondary" href="{{ route('course.show', $course->id) }}">{{ __('messages.cancel') }}</a>
                 <x-button-primary>{{ __('messages.update') }}</x-button-primary>
             </div>
         </form>

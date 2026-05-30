@@ -3,21 +3,10 @@
         <h2>{{ __('messages.groups_list') }}</h2>
     </x-slot>
 
-    <x-module-tabs :tabs="[
-        ['href' => route('dashboard'), 'label' => __('messages.workload_plan'), 'active' => request()->routeIs('dashboard', 'school.dashboard')],
-        ['href' => route('school.index'), 'label' => __('messages.schools'), 'active' => request()->routeIs('school.index', 'school.list', 'school.show', 'school.create', 'school.edit', 'school.add', 'course.*')],
-        ['href' => route('program.index'), 'label' => __('messages.programs'), 'active' => request()->routeIs('program.*')],
-        ['href' => route('group.index'), 'label' => __('messages.groups'), 'active' => request()->routeIs('group.*')],
-    ]" />
+    <x-workload-module-tabs />
 
     <section>
-        <ul class="group-list">
-            @foreach ($groups as $group)
-            <li>
-                <x-group-details :group="$group" :occurences="$occurences" :active="true" />
-            </li>
-            @endforeach
-        </ul>
+        <x-group-table :groups="$groups" :occurences="$occurences" :active="true" />
     </section>
 
     @if($inactive->count() > 0 || request('search'))
@@ -33,13 +22,7 @@
     </div>
 
     <section>
-        <ul class="group-grid">
-            @foreach ($inactive as $group)
-            <li>
-                <x-group-details :group="$group" :occurences="$occurences" :active="false" />
-            </li>
-            @endforeach
-        </ul>
+        <x-group-table :groups="$inactive" :occurences="$occurences" :active="false" />
         <div class="pagination-container">
             {{ $inactive->links() }}
         </div>
@@ -48,25 +31,31 @@
 
     @if(Auth::user()->getMode() == "Edit")
     <section>
-        <form action="{{route('group.save', 0)}}" method="post" class="group-form">
+        <form action="{{route('group.save', 0)}}" method="post" class="group-form nice-form">
             @csrf
             <div class="form-group">
-                <x-text-input type="text" name="name" id="name" placeholder="{{ __('messages.name') }}" />
+                <x-input-label for="name">{{ __('messages.name') }}</x-input-label>
+                <x-text-input type="text" name="name" id="name" />
                 <x-input-error :messages="$errors->get('name')" />
             </div>
             <div class="form-group">
-                <x-text-input type="text" name="short_name" id="short_name" placeholder="{{ __('messages.short_name') }}" />
+                <x-input-label for="short_name">{{ __('messages.short_name') }}</x-input-label>
+                <x-text-input type="text" name="short_name" id="short_name" />
                 <x-input-error :messages="$errors->get('short_name')" />
             </div>
             <div class="form-group">
-                <x-text-input type="text" name="size" id="size" placeholder="{{ __('messages.size') }}" />
+                <x-input-label for="size">{{ __('messages.size') }}</x-input-label>
+                <x-text-input type="text" name="size" id="size" />
                 <x-input-error :messages="$errors->get('size')" />
             </div>
             <div class="form-group">
-                <x-text-input type="text" name="year" id="year" placeholder="{{ __('messages.year') }}" />
+                <x-input-label for="year">{{ __('messages.year') }}</x-input-label>
+                <x-text-input type="text" name="year" id="year" />
                 <x-input-error :messages="$errors->get('year')" />
             </div>
-            <x-button-primary>{{ __('messages.group_create') }}</x-button-primary>
+            <div class="form-actions">
+                <x-button-primary>{{ __('messages.group_create') }}</x-button-primary>
+            </div>
         </form>
     </section>
     @endif

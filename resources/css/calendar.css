@@ -6,27 +6,29 @@
   }
 
   .my-box {
-    box-shadow: 3px 3px 1px 1px #76559e56;
-    border: 0;
-    border-radius: 4pt;
+    box-shadow: var(--cal-shadow);
+    border: var(--border-standard);
+    border-radius: var(--rounded-md);
     padding: 2pt 4pt;
     margin: 2pt 8pt 6pt 8pt;
     width: 90%;
     font-size: smaller;
+    background: var(--surface-container-lowest);
+    color: var(--text-body);
   }
 
   .course-select {
     background-color: var(--secondary-bg-color);
     display: inline;
-    color: --var(--main-text-color);
+    color: var(--main-text-color);
   }
 
   .planning-entry {
     display: flex;
     flex-direction: row;
-    background-color: #ffffff;
-    color: --var(--main-text-color);
-    box-shadow: 3px 3px 1px 1px #76559e56;
+    background-color: var(--surface-container-lowest);
+    color: var(--main-text-color);
+    box-shadow: var(--cal-shadow);
     padding: 2pt;
     margin: 2pt 0;
     width: 95%;
@@ -61,8 +63,8 @@
   .calSelect {
     font-size: 24px;
     outline: none;
-    color: #fff;
-    background: 0;
+    color: var(--cal-period-fg);
+    background: transparent;
     cursor: pointer;
   }
 
@@ -78,13 +80,14 @@
   #calPeriod input {
     font-size: 24px;
     outline: none;
-    color: #fff;
-    background: 0;
+    color: var(--cal-period-fg);
+    background: transparent;
     cursor: pointer;
   }
 
   #calPeriod option {
-    color: #000;
+    color: var(--cal-option-fg);
+    background: var(--surface-container-lowest);
   }
 
   #calYear {
@@ -107,13 +110,13 @@
   .calDay {
     display: flex;
     flex-direction: column;
-    background-color: #fbfbe4;
+    background-color: var(--cal-day-bg);
     min-height: 10rem;
   }
 
   /* (C2) HEADER - DAY NAMES */
   .calHead .calCell {
-    color: #fff;
+    color: var(--cal-period-fg);
     background: var(--secondary-bg-color);
     font-weight: 700;
     text-align: center;
@@ -122,19 +125,19 @@
 
   /* (C3) BODY - INDIVIDUAL DAYS */
   .calBlank {
-    background: #eee;
+    background: var(--cal-blank-bg);
   }
 
   .calToday {
-    background: #feffd3;
+    background: var(--cal-today-bg);
   }
 
   .calToday .cellDate {
-    color: #ff9b9b;
+    color: var(--cal-today-date);
   }
 
   .calBody .calCell {
-    box-shadow: 3px 3px 1px 1px #2a2a9156;
+    box-shadow: var(--cal-shadow);
     border-radius: 5% 2%;
     margin: 4px;
   }
@@ -147,7 +150,7 @@
   .cellDate {
     font-size: 14px;
     font-weight: 700;
-    color: #b5b5b5;
+    color: var(--cal-cell-date);
   }
 
   .evt {
@@ -170,7 +173,7 @@
     padding: 0;
     margin: 0;
     border: 0;
-    background: #00000080;
+    background: var(--cal-overlay);
   }
 
   #calForm:is([open]) {
@@ -184,8 +187,11 @@
     position: relative;
     width: 450px;
     padding: 15px;
-    border-radius: 10px;
-    background: #fff;
+    border-radius: var(--rounded-xl);
+    background: var(--cal-form-bg);
+    border: var(--border-standard);
+    box-shadow: var(--shadow-lg);
+    color: var(--text-body);
   }
 
   #evtClose {
@@ -193,7 +199,7 @@
     top: 0;
     right: 0;
     padding: 10px;
-    color: #b12020;
+    color: var(--cal-close);
     font-size: 28px;
     font-weight: 700;
     cursor: pointer;
@@ -201,6 +207,7 @@
 
   #calForm h2 {
     margin: 0 0 15px 0;
+    color: var(--text-heading);
   }
 
   #calForm label,
@@ -210,7 +217,7 @@
   }
 
   #calForm label {
-    color: #a1a1a1;
+    color: var(--cal-form-label);
     font-weight: 700;
     font-size: 12px;
     margin-bottom: 5px;
@@ -221,8 +228,10 @@
     width: 100%;
     padding: 10px;
     margin-bottom: 10px;
-    border: 1px solid #eee;
-    background: #f5f5f5;
+    border: 1px solid var(--cal-form-input-border);
+    background: var(--cal-form-input-bg);
+    color: var(--text-body);
+    border-radius: var(--rounded-md);
   }
 
   #calForm textarea {
@@ -230,34 +239,12 @@
     resize: none;
   }
 
-  #calForm input[type=button],
   #calForm input[type=submit] {
     border: 0;
     padding: 10px;
     margin: 10px 2px 0 0;
-    color: #fff;
-    background: var(--bg-color-c);
+    color: var(--btn-primary-fg);
+    background: var(--btn-primary-bg);
+    border-radius: var(--rounded-md);
     cursor: pointer;
-  }
-
-  .mapping-table {
-    background-color: #ffffff;
-    color: var(--main-text-color);
-    border-radius: 6px;
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 1rem;
-    padding: 6px;
-  }
-
-  .mapping-table thead{
-    background-color: var(--secondary-bg-color);
-  }
-
-  .mapping-table th {
-    padding: 12px;
-  }
-
-  .mapping-table td {
-    padding: 6px;
   }

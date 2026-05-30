@@ -1,19 +1,10 @@
- .bills table {
-   background-color: #f5f5f5cc;
-   width: 100%;
-   margin-bottom: 2rem;
-   border-radius: 10px;
-   font-size: smaller;
-   color: var(--main-text-color);
- }
+.bills-container {
+    display: grid;
+    gap: var(--spacing-4);
+}
 
-
- :is(tbody, table)>tr:nth-child(odd) {
-   background-color: #5532c01a;
- }
-
- .bills td {
-   padding: 0 0.5em;
+.bills td {
+   padding: 0;
    white-space: nowrap;
  }
 
@@ -26,47 +17,23 @@
  }
 
  .bills th {
-   padding: 0.5em;
+   padding: 0;
    text-align: center;
    font-weight: 600;
  }
 
- .bills-form {
-   margin-bottom: 1.5rem;
-   /* mb-6 */
-   display: flex;
-   /* flex */
-   flex-direction: column;
-   /* flex-col */
-
-   background-color: #ffffffbf;
-   box-shadow: 8px 8px 2px 1px #082ac433;
-   justify-content: space-between;
-   padding: 0.5rem;
-   margin: 6px;
-   min-width: 30%;
-   border-radius: 0.5rem;
-   cursor: pointer;
- }
-
  .bill-tag {
-   color: var(--brand-primary);
-   padding: 0.25rem 0.5rem;
-   font-weight: 700;
- }
-
- .bill-list {
-   font-size: 0.8rem;
-
+   margin-left: var(--spacing-2);
+   vertical-align: middle;
  }
 
 .billing-school-box {
    margin: 0 0 var(--spacing-6);
    padding: var(--spacing-4);
    border: var(--border-standard);
-   border-radius: var(--rounded-lg);
-   background: #ffffffcc;
-   box-shadow: var(--shadow-md);
+   border-radius: var(--rounded-xl);
+   background: var(--surface-container-lowest);
+   box-shadow: var(--shadow-sm);
 }
 
 .billing-school-box .school-section-header {
@@ -84,6 +51,73 @@
    border-top: var(--border-standard);
 }
 
+.billing-school-box .program-section-header h2 {
+   margin: 0;
+   font-size: 1.125rem;
+}
+
+.billing-course-total {
+   margin-top: var(--spacing-3);
+}
+
+.billing-sessions-table {
+   margin-top: var(--spacing-3);
+}
+
+.billing-school-footer {
+   display: flex;
+   flex-wrap: wrap;
+   align-items: center;
+   justify-content: space-between;
+   gap: var(--spacing-4);
+   margin-top: var(--spacing-4);
+   padding-top: var(--spacing-4);
+   border-top: var(--border-standard);
+}
+
+.billing-school-footer__totals {
+   display: flex;
+   flex-wrap: wrap;
+   gap: var(--spacing-3);
+   color: var(--text-heading);
+   font-weight: 600;
+}
+
+.billing-school-footer__actions {
+   display: flex;
+   flex-wrap: wrap;
+   align-items: center;
+   justify-content: flex-end;
+   gap: var(--spacing-2);
+}
+
+.billing-assign-form {
+   display: inline-flex;
+   flex-wrap: wrap;
+   align-items: center;
+   gap: var(--spacing-2);
+   margin: 0;
+}
+
+.billing-assign-form__label {
+   font-size: 0.8125rem;
+   font-weight: 600;
+   color: var(--text-secondary);
+   white-space: nowrap;
+}
+
+.billing-assign-form__select {
+   width: auto;
+   min-width: 5rem;
+   max-width: 8rem;
+}
+
+.billing-assign-form .form-input[type="date"] {
+   width: auto;
+   min-width: 9rem;
+   max-width: 11rem;
+}
+
 .billing-school-box > .total-line > span {
    flex: 0 0 auto;
 }
@@ -96,19 +130,19 @@
 .billing-course-box {
    margin: var(--spacing-4) 0;
    padding: var(--spacing-4);
-   border: 0;
+   border: var(--border-standard);
    border-radius: var(--rounded-lg);
-   background: var(--surface-glass);
-   box-shadow: var(--shadow-sm);
+   background: var(--surface-container-low);
+   box-shadow: none;
 }
 
 .billing-course-box:hover {
-   background: var(--surface-glass);
+   background: var(--surface-container);
 }
 
 .billing-course-title {
    margin: 0 0 var(--spacing-3);
-   color: var(--brand-primary);
+   color: var(--text-heading);
    font-size: 1.1rem;
    font-weight: 800;
    line-height: 1.25;
@@ -116,13 +150,15 @@
 
 .billing-group-title {
    margin: var(--spacing-3) 0 var(--spacing-1);
-   color: var(--text-muted);
-   font-size: 0.875rem;
+   color: var(--text-secondary);
+   font-size: 0.6875rem;
    font-weight: 700;
+   letter-spacing: 0.05em;
+   text-transform: uppercase;
 }
 
 .billing-schedule-link {
-   color: var(--brand-primary);
+   color: var(--brand-accent);
    font-weight: 500;
    text-decoration: none;
 }
@@ -132,62 +168,40 @@
    text-decoration: underline;
 }
 
-.billing-invoice-assigned {
-   display: inline-flex;
-   align-items: center;
-   padding: var(--spacing-1) var(--spacing-2);
-   border: 1px solid #15803d;
-   border-radius: var(--rounded-md);
-   background: #dcfce7;
-   color: #14532d;
-   font-size: 0.875rem;
-   font-weight: 700;
-}
-
+.billing-invoice-assigned,
 .billing-hours-badge {
    display: inline-flex;
    align-items: center;
-   margin-left: var(--spacing-2);
    padding: var(--spacing-1) var(--spacing-2);
-   border: 1px solid #15803d;
    border-radius: var(--rounded-md);
-   background: #dcfce7;
-   color: #14532d;
    font-size: 0.8125rem;
    font-weight: 700;
+   background: var(--chip-success-bg);
+   color: var(--chip-success-text);
+   border: 1px solid transparent;
+}
+
+.billing-hours-badge {
+   margin-left: var(--spacing-2);
 }
 
 .billing-hours-badge--warning {
-   border-color: #b91c1c;
-   background: #fee2e2;
-   color: #7f1d1d;
+   border-color: var(--feedback-danger);
+   background: var(--chip-danger-bg);
+   color: var(--chip-danger-text);
 }
-
-.invoice-e-status {
-   display: inline-block;
-   padding: 0.15rem 0.5rem;
-   border-radius: 0.25rem;
-   font-size: 0.75rem;
-   font-weight: 600;
-}
-
-.invoice-e-status--draft { background: #f3f4f6; color: #374151; }
-.invoice-e-status--ready { background: #dbeafe; color: #1e40af; }
-.invoice-e-status--transmitted { background: #fef3c7; color: #92400e; }
-.invoice-e-status--accepted { background: #dcfce7; color: #166534; }
-.invoice-e-status--rejected { background: #fee2e2; color: #991b1b; }
 
 .form-input--readonly,
 .form-input--readonly:focus {
-   background: #f3f4f6;
-   color: #4b5563;
+   background: var(--surface-container-low);
+   color: var(--text-subtle);
    cursor: not-allowed;
 }
 
 .company-readonly-list {
    margin: 0.5rem 0 0;
    padding-left: 1.25rem;
-   color: #4b5563;
+   color: var(--text-secondary);
 }
 
 .company-edit {
@@ -200,10 +214,10 @@ form.company-edit-form {
 }
 
 .company-form-block {
-   background: #ffffff;
-   border: 1px solid #e5e7eb;
-   border-radius: 0.5rem;
-   box-shadow: 0 1px 2px rgb(0 0 0 / 6%);
+   background: var(--surface-container-lowest);
+   border: var(--border-standard);
+   border-radius: var(--rounded-xl);
+   box-shadow: var(--shadow-sm);
    padding: 1rem 1.25rem 1.25rem;
    display: flex;
    flex-direction: column;
@@ -214,9 +228,9 @@ form.company-edit-form {
    margin: 0;
    font-size: 1.125rem;
    font-weight: 700;
-   color: var(--brand-primary, #1e3a5f);
+   color: var(--text-heading);
    padding-bottom: 0.25rem;
-   border-bottom: 1px solid #e5e7eb;
+   border-bottom: var(--border-standard);
 }
 
 .company-form-block .form-hint {
@@ -244,4 +258,60 @@ form.company-edit-form {
    font-size: 0.9375rem;
    font-weight: 600;
    padding: 0.5rem 1rem;
+}
+
+.invoice-create-form__meta {
+   margin: 0 0 var(--spacing-2);
+}
+
+.invoice-create-preview {
+   margin-bottom: var(--spacing-4);
+}
+
+.invoice-create-preview .company-show-card h3 + ul + h3 {
+   margin-top: var(--spacing-4);
+}
+
+.invoice-create-items {
+   margin: 0;
+   padding: 0;
+   list-style: none;
+   display: grid;
+   gap: var(--spacing-2);
+   font-size: 0.875rem;
+}
+
+.invoice-create-items__row {
+   display: flex;
+   flex-wrap: wrap;
+   justify-content: space-between;
+   gap: var(--spacing-2);
+   padding-bottom: var(--spacing-2);
+   border-bottom: 1px solid var(--border-subtle);
+}
+
+.invoice-create-items__meta {
+   color: var(--text-muted);
+   font-size: 0.8125rem;
+}
+
+.invoice-create-items__total {
+   margin-top: var(--spacing-2);
+   padding-top: var(--spacing-3);
+   border-top: var(--border-standard);
+   text-align: right;
+   color: var(--text-heading);
+}
+
+.invoice-create-fields {
+   display: grid;
+   gap: var(--spacing-2);
+   grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+   margin-top: var(--spacing-4);
+   padding-top: var(--spacing-4);
+   border-top: var(--border-standard);
+}
+
+.invoice-create-fields__description {
+   grid-column: 1 / -1;
 }

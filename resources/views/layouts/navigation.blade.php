@@ -1,102 +1,79 @@
-<nav class="nav-main">
-    <a href="{{ route('treasury.index') }}" class="nav-logo nav-logo--desktop">
-        <x-application-logo />
+<input type="checkbox" id="sidebar-toggle" class="sidebar-toggle-input" aria-hidden="true" tabindex="-1">
+
+<label for="sidebar-toggle" class="sidebar-backdrop" aria-hidden="true"></label>
+
+<aside class="app-sidebar" aria-label="{{ __('messages.nav_menu') }}">
+    <a href="{{ route('company.show') }}" class="app-sidebar__brand">
+        <span class="app-sidebar__logo">
+            <x-application-logo />
+        </span>
+        <span class="app-sidebar__brand-text">
+            <span class="app-sidebar__app-name">{{ config('app.name') }}</span>
+            <span class="app-sidebar__app-tag">{{ Auth::user()->company->name ?? '' }}</span>
+        </span>
     </a>
 
-    <input type="checkbox" id="nav-menu-toggle" class="nav-menu-toggle-input" aria-hidden="true" tabindex="-1">
-
-    <div class="nav-mobile-brand">
-        <a href="{{ route('treasury.index') }}" class="nav-logo nav-logo--mobile">
-            <x-application-logo />
-        </a>
-        <label for="nav-menu-toggle" class="nav-menu-toggle" aria-label="{{ __('messages.nav_menu') }}">
-            <span class="nav-menu-toggle-icon" aria-hidden="true"></span>
-        </label>
-    </div>
-
-    <div class="nav-links" id="nav-menu-panel">
-        <x-nav-link :href="route('planning.index')" :active="request()->routeIs('planning.*', 'calendar.*', 'billing.*')">
+    <nav class="app-sidebar__nav">
+        <x-sidebar-nav-link
+            icon="calendar-range"
+            :href="route('planning.index')"
+            :active="request()->routeIs('planning.*', 'calendar.*', 'billing.*')"
+        >
             {{ __('messages.planning') }}
-        </x-nav-link>
+        </x-sidebar-nav-link>
 
-        <x-nav-link :href="route('invoice.index')" :active="request()->routeIs('invoice.*')">
+        <x-sidebar-nav-link
+            icon="receipt"
+            :href="route('invoice.index')"
+            :active="request()->routeIs('invoice.*')"
+        >
             {{ __('messages.invoices') }}
-        </x-nav-link>
+        </x-sidebar-nav-link>
 
-        <x-nav-link :href="route('treasury.index')" :active="request()->routeIs('treasury.*')">
+        <x-sidebar-nav-link
+            icon="wallet"
+            :href="route('treasury.index')"
+            :active="request()->routeIs('treasury.*')"
+        >
             {{ __('messages.treasury') }}
-        </x-nav-link>
+        </x-sidebar-nav-link>
 
-        <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard', 'school.dashboard', 'school.index', 'school.list', 'school.show', 'school.create', 'school.edit', 'school.add', 'program.*', 'course.*', 'group.*')">
+        <x-sidebar-nav-link
+            icon="grid"
+            :href="route('dashboard')"
+            :active="request()->routeIs('dashboard', 'school.dashboard', 'school.index', 'school.list', 'school.show', 'school.create', 'school.edit', 'school.add', 'program.*', 'course.*', 'group.*')"
+        >
             {{ __('messages.workload_plan') }}
-        </x-nav-link>
-    </div>
+        </x-sidebar-nav-link>
+    </nav>
 
-    <div class="nav-context">
-        <div class="toggle-system">
-            <span class="toggle-label">{{ Auth::user()->getMode() }}</span>
-            <label class="toggle-container edit" for="edit-toggle">
-                <input class="toggle-checkbox" type="checkbox" id="edit-toggle" {{ Auth::user()->getMode() == "Edit" ? 'checked' : '' }}>
-                <span class="toggle-track">
-                    <span class="toggle-thumb"></span>
-                </span>
-            </label>
-        </div>
-
-        @php
-        $current_year = session('current_year');
-        @endphp
-
-        <form class="nav-form" action="{{route('date.select')}}" method="post">
+    <div class="app-sidebar__footer">
+        <form method="POST" action="{{ route('logout') }}">
             @csrf
-            <select id="current_year" name="current_year" onchange="this.form.submit()">
-                <option value="all" {{ $current_year == "all" ? 'selected' : '' }}>{{ __('actions.select_all')}}</option>
-                @isset($years)
-                @foreach ($years as $year)
-                <option value="{{$year->year}}" {{ $current_year == $year->year ? 'selected' : '' }}>{{$year->year}}</option>
-                @endforeach
-                @endisset
-            </select>
-        </form>
-
-        <details class="nav-user">
-            <summary class="nav-user-btn">
-                <span class="nav-user-name">{{ Auth::user()->name }} ({{Auth::user()->getStatusName()}})</span>
-                <span class="nav-user-icon">
-                    <svg class="icon-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                        <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
-                    </svg>
+            <button type="submit" class="sidebar-link sidebar-link--button">
+                <span class="sidebar-link__icon" aria-hidden="true">
+                    <x-module-tab-icon name="logout" />
                 </span>
-            </summary>
-
-            <div class="nav-user-menu">
-                <a class="nav-user-menu__link" href="{{ route('profile.edit') }}">
-                    {{ __('messages.profile') }}
-                </a>
-
-                <form method="POST" action="{{ route('logout') }}">
-                    @csrf
-                    <button type="submit" class="nav-user-menu__link nav-user-menu__button">
-                        {{ __('messages.logout') }}
-                    </button>
-                </form>
-            </div>
-        </details>
+                <span class="sidebar-link__label">{{ __('messages.logout') }}</span>
+            </button>
+        </form>
     </div>
-</nav>
+</aside>
 
 <script>
-    document.getElementById('edit-toggle')?.addEventListener('change', (e) => {
-        e.target.classList.add('toggled-once');
-        window.location.href = "{{ route('profile.switch') }}";
-    });
+    document.addEventListener('DOMContentLoaded', () => {
+        document.getElementById('edit-toggle')?.addEventListener('change', (e) => {
+            e.target.classList.add('toggled-once');
+            window.location.href = "{{ route('profile.switch') }}";
+        });
 
-    document.querySelectorAll('.nav-links .nav-link')?.forEach((link) => {
-        link.addEventListener('click', () => {
-            const toggle = document.getElementById('nav-menu-toggle');
-            if (toggle) {
-                toggle.checked = false;
-            }
+        document.querySelectorAll('.app-sidebar__nav .sidebar-link')?.forEach((link) => {
+            link.addEventListener('click', () => {
+                const toggle = document.getElementById('sidebar-toggle');
+                if (toggle) {
+                    toggle.checked = false;
+                }
+            });
         });
     });
 </script>

@@ -1,0 +1,98 @@
+.company-show-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
+    gap: var(--spacing-4);
+}
+
+.company-show-card {
+    padding: var(--spacing-4);
+    border: var(--border-standard);
+    border-radius: var(--rounded-xl);
+    background: var(--surface-container-lowest);
+    box-shadow: var(--shadow-sm);
+}
+
+.company-show-card h3 {
+    margin: 0 0 var(--spacing-3);
+    padding-bottom: var(--spacing-2);
+    border-bottom: var(--border-standard);
+    color: var(--text-heading);
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.company-show-card ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: var(--spacing-2);
+    color: var(--text-body);
+    line-height: 1.5;
+}
+
+.company-show-card .form-hint {
+    margin: 0 0 var(--spacing-2);
+}
+
+.company-show-card a {
+    color: var(--brand-accent);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+.company-show-card a:hover {
+    color: var(--text-heading);
+}
+
+.company-show-card .simple-table {
+    width: 100%;
+    margin: var(--spacing-2) 0;
+}
+
+.company-show-card .simple-table th,
+.company-show-card .simple-table td {
+    padding: 0.35rem 0.5rem;
+    border-bottom: var(--border-standard);
+    color: var(--text-body);
+    font-size: 0.875rem;
+}
+
+.company-show-card .simple-table th {
+    color: var(--text-secondary);
+    font-weight: 600;
+    text-align: left;
+}
+
+.company-show-card__lead {
+    margin: 0 0 var(--spacing-2);
+    color: var(--text-heading);
+    font-size: 1.125rem;
+    font-weight: 700;
+}
+
+.settings-page-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--spacing-3);
+    width: 100%;
+    min-width: 0;
+}
+
+.settings-page-header__actions {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-2);
+    flex-shrink: 0;
+}
+
+.company-show-card--wide {
+    grid-column: 1 / -1;
+}
+
+@media (max-width: 640px) {
+    .company-show-card--wide {
+        grid-column: span 1;
+    }
+}

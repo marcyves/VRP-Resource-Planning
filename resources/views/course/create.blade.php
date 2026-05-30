@@ -3,8 +3,10 @@
         <h2>{{ __('messages.course_create') }} {{$school->name}}</h2>
     </x-slot>
 
+    <x-workload-module-tabs />
+
     <section>
-        <form action="{{route('course.store', $school->id)}}" method="post" class="group-form">
+        <form action="{{route('course.store', $school->id)}}" method="post" class="group-form nice-form">
             @csrf
 
             <div class="form-group">
@@ -52,6 +54,7 @@
             </div>
 
             <div class="form-actions">
+                <a class="btn btn-secondary" href="{{ route('school.show', $school->id) }}">{{ __('messages.cancel') }}</a>
                 <x-button-primary>{{ __('messages.create') }}</x-button-primary>
             </div>
         </form>

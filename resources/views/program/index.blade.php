@@ -5,48 +5,55 @@
         </h2>
     </x-slot>
 
-    <x-module-tabs :tabs="[
-        ['href' => route('dashboard'), 'label' => __('messages.workload_plan'), 'active' => request()->routeIs('dashboard', 'school.dashboard')],
-        ['href' => route('school.index'), 'label' => __('messages.schools'), 'active' => request()->routeIs('school.index', 'school.list', 'school.show', 'school.create', 'school.edit', 'school.add', 'course.*')],
-        ['href' => route('program.index'), 'label' => __('messages.programs'), 'active' => request()->routeIs('program.*')],
-        ['href' => route('group.index'), 'label' => __('messages.groups'), 'active' => request()->routeIs('group.*')],
-    ]" />
+    <x-workload-module-tabs />
 
     <section>
-        <ul class="list">
-            @foreach ($programs as $program)
-            <li class="card">
-                <div class="card-content">
-                    <a href="{{route('program.show', $program->id)}}" class="card-content-text">
-                        <button class="card-title btn-text-link">
-                            {{$program->name}}
-                        </button>
-                    </a>
-                    @if(Auth::user()->getMode() == "Edit")
-                    <div class="card-content-end">
-                        <form action="{{route('program.edit', $program->id)}}" method="get">
-                            <x-button-edit />
-                        </form>
-                        <form action="{{route('program.destroy', $program->id)}}" method="post">
-                            @csrf
-                            @method('delete')
-                            <x-button-delete />
-                        </form>
-                    </div>
-                    @endif
-                </div>
-            </li>
-            @endforeach
-        </ul>
+        <div class="data-table">
+            <table>
+                <thead>
+                    <tr>
+                        <th>{{ __('messages.name') }}</th>
+                        @if(Auth::user()->getMode() == "Edit")
+                            <th>{{ __('messages.actions') }}</th>
+                        @endif
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($programs as $program)
+                        <tr>
+                            <td>
+                                <a href="{{ route('program.show', $program->id) }}">{{ $program->name }}</a>
+                            </td>
+                            @if(Auth::user()->getMode() == "Edit")
+                                <td class="card-actions">
+                                    <form action="{{ route('program.edit', $program->id) }}" method="get">
+                                        <x-button-edit />
+                                    </form>
+                                    <form action="{{ route('program.destroy', $program->id) }}" method="post">
+                                        @csrf
+                                        @method('delete')
+                                        <x-button-delete />
+                                    </form>
+                                </td>
+                            @endif
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
     </section>
 
     @if(Auth::user()->getMode() == "Edit")
     <section>
-        <form action="{{route('program.store')}}" method="post"
-            class="mx-auto px-6 py-2 bg-white shadow-md mb-6 flex items-center justify-items-start">
+        <form action="{{ route('program.store') }}" method="post" class="group-form nice-form">
             @csrf
-            <x-text-input class="mx-6" type="text" name="name" placeholder="{{ __('messages.name') }}" />
-            <x-button-primary>{{ __('messages.program_create') }}</x-button-primary>
+            <div class="form-group">
+                <x-input-label for="program_name">{{ __('messages.name') }}</x-input-label>
+                <x-text-input type="text" name="name" id="program_name" placeholder="{{ __('messages.name') }}" required />
+            </div>
+            <div class="form-actions">
+                <x-button-primary>{{ __('messages.program_create') }}</x-button-primary>
+            </div>
         </form>
     </section>
     @endif

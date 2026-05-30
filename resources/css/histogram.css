@@ -7,6 +7,7 @@
 }
 .metrics h2{
     text-align: center;
+    color: var(--text-heading);
 }
 .metrics-row {
     display: flex;
@@ -19,27 +20,26 @@
 
 .histogram {
     width: auto;
-    height: 200px; /* Adjust height as needed */
+    height: 200px;
     overflow: hidden;
     vertical-align: bottom;
-    line-height: 0; /* Remove extra space below */
+    line-height: 0;
     display: inline-flex;
     align-items: end;
     margin-bottom: 6px;
-    display: inline-flex;
 }
 .histogram-bar {
-    background-color: #ffffffbf;
-    box-shadow: 8px 8px 2px 1px #082ac433;
+    background-color: var(--chart-bar-bg);
+    box-shadow: var(--chart-bar-shadow);
     border-radius: 5px 5px 0 0;
     display: inline-block;
     margin: 0 8px;
     min-width: 4em;
-    vertical-align: bottom; /* Align bars to the bottom */
+    vertical-align: bottom;
 }
 
 .histogram-label {
-    color: #000000;
+    color: var(--text-body);
     position: relative;
     top: -1.5em;
     left: 0.5em;

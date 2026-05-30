@@ -1,99 +1,73 @@
 /* Group Views Styles */
 
-.group-grid,
-.group-list {
-    display: grid;
-    grid-template-columns: repeat(1, 1fr);
-    gap: 1.5rem;
-    padding: 0;
-    list-style: none;
-}
-
-@media (min-width: 640px) {
-    .group-grid,
-    .group-list {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-@media (min-width: 1024px) {
-    .group-grid,
-    .group-list {
-        grid-template-columns: repeat(3, 1fr);
-    }
-}
-
-main section > ul > li,
-main .group-grid > * {
+.group-section-header {
     display: flex;
-    flex-direction: column;
     justify-content: space-between;
-    transition: transform 0.2s, box-shadow 0.2s;
+    align-items: center;
+    margin-top: 2rem;
+    margin-bottom: 1.5rem;
+    padding: 0 1.5rem;
 }
 
-main section > ul > li:hover,
-main .group-grid > *:hover {
-    transform: translateY(-4px);
-}
-
-.group-card-content {
-    display: flex;
-    flex-direction: column;
-}
-
+.group-section-header h3,
 .group-title {
-    font-size: 1.25rem;
-    font-weight: 700;
-    margin-bottom: 0.5rem;
-    color: var(--brand-primary);
+    margin: 0;
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--text-heading);
 }
 
-.group-info {
-    font-size: 0.875rem;
-    color: var(--text-subtle);
-    margin-bottom: 1rem;
+.group-table__empty {
+    color: var(--text-muted);
 }
 
-.group-sessions-toggle {
-    align-self: flex-end;
+.group-table-sessions {
+    min-width: 0;
+}
+
+.group-table-sessions summary {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 2rem;
-    height: 2rem;
-    margin: calc(-1 * var(--spacing-2)) 0 var(--spacing-2);
-    padding: 0;
-    border: var(--border-standard);
-    border-radius: var(--rounded-md);
-    background: var(--surface-card);
-    color: var(--brand-primary);
+    min-width: 1.75rem;
+    padding: 0.15rem 0.45rem;
+    border-radius: 9999px;
+    background: var(--chip-info-bg);
+    color: var(--chip-info-text);
+    font-size: 0.75rem;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
     cursor: pointer;
+    list-style: none;
 }
 
-.group-sessions-toggle:hover {
-    color: var(--brand-accent);
-    box-shadow: var(--shadow-sm);
+.group-table-sessions summary::-webkit-details-marker {
+    display: none;
 }
 
-.group-sessions-toggle svg {
-    width: 1.15rem;
-    height: 1.15rem;
+.group-table-sessions summary::after {
+    content: "";
+    display: inline-block;
+    width: 0.45rem;
+    height: 0.45rem;
+    margin-left: 0.35rem;
+    border-right: 1.5px solid currentColor;
+    border-bottom: 1.5px solid currentColor;
+    transform: rotate(45deg) translateY(-1px);
+    transition: transform 0.15s ease;
 }
 
-.group-sessions-list {
+.group-table-sessions[open] summary::after {
+    transform: rotate(-135deg) translateY(1px);
+}
+
+.group-table-sessions__list {
     display: grid;
-    grid-template-columns: 1fr;
     gap: var(--spacing-1);
-    margin-top: var(--spacing-2);
-    margin-left: 0;
-    padding-left: 0;
-    width: 100%;
-}
-
-.group-sessions-list li {
-    width: 100%;
-    min-width: 0;
-    font-size: 0.8125rem;
+    margin: var(--spacing-2) 0 0;
+    padding: 0;
+    list-style: none;
+    min-width: 14rem;
 }
 
 .group-session-link {
@@ -107,6 +81,10 @@ main .group-grid > *:hover {
     text-decoration: none;
 }
 
+.group-table-sessions__list .group-session-link {
+    padding: var(--spacing-1) 0;
+}
+
 .group-session-link:hover .group-session-course {
     color: var(--brand-accent);
     text-decoration: underline;
@@ -115,7 +93,7 @@ main .group-grid > *:hover {
 .group-session-course {
     min-width: 0;
     overflow: hidden;
-    color: var(--brand-primary);
+    color: var(--text-heading);
     text-overflow: ellipsis;
     white-space: nowrap;
 }
@@ -131,33 +109,17 @@ main .group-grid > *:hover {
     content: "- ";
 }
 
-.group-actions {
-    display: flex;
-    gap: 0.5rem;
-    justify-content: flex-end;
-    margin-top: auto;
-}
-
 .group-archive-toggle svg {
     display: block;
-    color: var(--brand-primary);
+    color: var(--text-heading);
 }
 
-/* Detail View */
-.group-section-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 2rem;
-    margin-bottom: 1.5rem;
-    padding: 0 1.5rem;
+.group-detail-card__short {
+    font-size: 0.875em;
+    font-weight: 500;
+    color: var(--text-muted);
 }
 
-.group-section {
-    margin-bottom: 2rem;
-}
-
-/* Create/Edit Form */
 .group-form {
     margin: 0 auto;
     padding: 2rem;

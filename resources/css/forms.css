@@ -1,33 +1,65 @@
-/* Form System — complements semantic.css element rules */
+/* Form System — Phase 2 */
 
-.form-group {
+.form-group,
+.form-field,
+.school-form-input {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-1);
     margin-bottom: var(--spacing-4);
 }
 
-.form-label {
+.form-label,
+.school-form-input > label,
+main form label:not(:has(input[type="checkbox"])):not(:has(input[type="radio"])) {
     display: block;
-    font-size: 0.875rem;
-    font-weight: 700;
-    color: var(--brand-accent);
-    margin-bottom: var(--spacing-1);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    margin-bottom: 0;
 }
 
-.form-input {
+.form-input,
+.school-form-input .form-input,
+main form input:not([type="checkbox"]):not([type="radio"]):not([type="hidden"]),
+main form select,
+main form textarea {
     width: 100%;
-    padding: 0.6rem;
-    border: 1px solid var(--border-color);
+    padding: 0.625rem 0.75rem;
+    border: 1px solid var(--surface-input-border);
     border-radius: var(--rounded-md);
-    background-color: #ffffffb2;
-    color: inherit;
-    font-size: 1rem;
+    background-color: var(--surface-input);
+    color: var(--text-body);
+    font-size: 0.9375rem;
+    line-height: 1.4;
     box-shadow: var(--shadow-sm);
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
 }
 
-.form-input:focus {
+.form-input:focus,
+.school-form-input .form-input:focus,
+main form input:focus,
+main form select:focus,
+main form textarea:focus {
     outline: none;
-    border-color: var(--brand-secondary);
-    box-shadow: 0 0 0 3px #538ce94c;
+    border-color: var(--brand-accent);
+    box-shadow: 0 0 0 3px var(--focus-ring);
+}
+
+.form-input:disabled,
+.form-input[readonly],
+.form-input--readonly {
+    background: var(--surface-container-low);
+    color: var(--text-subtle);
+    cursor: not-allowed;
+}
+
+.form-hint {
+    margin: 0;
+    font-size: 0.8125rem;
+    color: var(--text-subtle);
 }
 
 .form-error {
@@ -42,7 +74,72 @@
     display: flex;
     flex-direction: column;
     min-width: min(50rem, 100%);
-    width: 90%;
+    width: 100%;
+    max-width: 40rem;
+    padding: var(--spacing-6);
+    gap: var(--spacing-2);
+    border: var(--border-standard);
+    border-radius: var(--rounded-xl);
+    background: var(--surface-container-lowest);
+    box-shadow: var(--shadow-sm);
+}
+
+.form-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-end;
+    gap: var(--spacing-3);
+    margin-top: var(--spacing-2);
+    padding-top: var(--spacing-4);
+    border-top: var(--border-standard);
+}
+
+form.group-form.nice-form,
+form.school-create-form.nice-form:not(.company-edit-form) {
+    max-width: 42rem;
+    margin: 0;
+}
+
+form.company-edit-form.nice-form {
+    max-width: 52rem;
+    margin: 0;
+    width: 100%;
+}
+
+form.nice-form--wide {
+    max-width: none;
+}
+
+.nice-form--embedded {
+    max-width: none;
+    padding: 0;
+    border: none;
+    box-shadow: none;
+    background: transparent;
+}
+
+.school-form-fieldset {
+    margin: 0 0 var(--spacing-4);
     padding: var(--spacing-4);
-    gap: 0.6rem;
+    border: var(--border-standard);
+    border-radius: var(--rounded-lg);
+    background: var(--surface-container-low);
+}
+
+.school-form-fieldset legend {
+    padding: 0 var(--spacing-2);
+    color: var(--text-heading);
+    font-size: 0.875rem;
+    font-weight: 600;
+}
+
+.school-create-form__row--submit {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: var(--spacing-3);
+    margin-top: var(--spacing-2);
+    padding-top: var(--spacing-4);
+    border-top: var(--border-standard);
 }

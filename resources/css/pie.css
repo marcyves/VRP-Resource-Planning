@@ -30,7 +30,7 @@
     width: min(100%, 32rem);
     aspect-ratio: 1;
     border-radius: 50%;
-    box-shadow: 8px 8px 6px 4px #082ac433;
+    box-shadow: var(--chart-pie-shadow);
 }
 
 .chart-legend {
@@ -41,11 +41,11 @@
     padding: var(--spacing-3);
     width: fit-content;
     max-width: min(100%, 24rem);
-    border: 1px solid #ffffff8c;
+    border: 1px solid var(--chart-legend-border);
     border-radius: var(--rounded-lg);
-    background: #f5f9ffd1;
+    background: var(--chart-legend-bg);
     box-shadow: var(--shadow-md);
-    color: var(--brand-primary);
+    color: var(--text-heading);
 }
 
 .chart-legend__item {
@@ -60,7 +60,7 @@
     width: 0.9rem;
     height: 0.9rem;
     border-radius: 999px;
-    border: 1px solid #ffffff80;
+    border: 1px solid var(--border-subtle);
     box-shadow: 0 1px 2px #0000001f;
 }
 

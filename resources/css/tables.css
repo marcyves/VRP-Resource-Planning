@@ -1,0 +1,220 @@
+/* Data tables — Phase 2 */
+
+.data-table {
+    overflow: auto;
+    max-height: min(70vh, 48rem);
+    border: var(--border-standard);
+    border-radius: var(--rounded-xl);
+    background: var(--surface-table);
+    box-shadow: var(--shadow-sm);
+}
+
+.data-table table {
+    width: 100%;
+    margin: 0;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-size: 0.875rem;
+    color: var(--text-body);
+    background: transparent;
+    border-radius: 0;
+    box-shadow: none;
+    overflow: visible;
+}
+
+.data-table thead {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+}
+
+.data-table thead th {
+    padding: var(--spacing-3) var(--spacing-4);
+    background: var(--surface-table-header);
+    color: var(--text-secondary);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    text-align: left;
+    vertical-align: middle;
+    border-bottom: 1px solid var(--border-subtle);
+    white-space: nowrap;
+}
+
+.data-table tbody td,
+.data-table tbody th {
+    padding: var(--spacing-3) var(--spacing-4);
+    vertical-align: middle;
+    border-bottom: 1px solid var(--border-subtle);
+}
+
+.data-table tbody tr:last-child td,
+.data-table tbody tr:last-child th {
+    border-bottom: none;
+}
+
+.data-table tbody tr:nth-child(even) {
+    background: var(--surface-table-stripe);
+}
+
+.data-table tbody tr:hover {
+    background: var(--surface-container-low);
+}
+
+.data-table .money {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+}
+
+.data-table .date {
+    text-align: center;
+    white-space: nowrap;
+}
+
+.data-table td:last-child:has(form),
+.data-table th:last-child {
+    text-align: right;
+}
+
+.data-table td.card-actions {
+    display: flex;
+    gap: var(--spacing-1);
+    justify-content: flex-end;
+    align-items: center;
+    white-space: nowrap;
+}
+
+/* Status chips */
+.status-chip,
+.invoice-e-status {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.2rem 0.55rem;
+    border-radius: 9999px;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    line-height: 1.2;
+    white-space: nowrap;
+}
+
+.status-chip--neutral,
+.invoice-e-status--draft {
+    background: var(--chip-neutral-bg);
+    color: var(--chip-neutral-text);
+}
+
+.status-chip--info,
+.invoice-e-status--ready {
+    background: var(--chip-info-bg);
+    color: var(--chip-info-text);
+}
+
+.status-chip--warning,
+.invoice-e-status--transmitted {
+    background: var(--chip-warning-bg);
+    color: var(--chip-warning-text);
+}
+
+.status-chip--success,
+.invoice-e-status--accepted {
+    background: var(--chip-success-bg);
+    color: var(--chip-success-text);
+}
+
+.status-chip--danger,
+.invoice-e-status--rejected {
+    background: var(--chip-danger-bg);
+    color: var(--chip-danger-text);
+}
+
+.treasury-status--draft {
+    background: var(--chip-neutral-bg);
+    color: var(--chip-neutral-text);
+}
+
+.treasury-status--validated {
+    background: var(--chip-success-bg);
+    color: var(--chip-success-text);
+}
+
+.treasury-status--paid {
+    background: var(--chip-info-bg);
+    color: var(--chip-info-text);
+}
+
+.status-chip--paid {
+    background: var(--chip-success-bg);
+    color: var(--chip-success-text);
+}
+
+.status-chip--unpaid {
+    background: var(--chip-warning-bg);
+    color: var(--chip-warning-text);
+}
+
+.status-chip--bill {
+    background: var(--chip-info-bg);
+    color: var(--chip-info-text);
+}
+
+/* Flat tables — no scroll cap (billing, mapping examples) */
+.data-table--flat {
+    max-height: none;
+}
+
+.data-table--flat tbody th[scope="row"] {
+    width: 12rem;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    background: var(--surface-table-header);
+    white-space: nowrap;
+}
+
+/* Course tables inside dashboard */
+.course-table-container.data-table {
+    max-height: none;
+}
+
+.course-table.data-table__table,
+table.course-table {
+    background: transparent;
+    color: var(--text-body);
+    box-shadow: none;
+}
+
+table.course-table thead {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    background: var(--surface-table-header);
+}
+
+table.course-table thead th {
+    color: var(--text-secondary);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+table.course-table tbody tr:nth-child(even) {
+    background: var(--surface-table-stripe);
+}
+
+table.course-table tfoot {
+    background: var(--surface-container);
+    color: var(--text-heading);
+    font-weight: 600;
+}
+
+table.course-table tfoot td,
+table.course-table tfoot th {
+    border-top: 1px solid var(--border-subtle);
+}

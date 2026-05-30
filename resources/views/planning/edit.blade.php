@@ -3,6 +3,8 @@
         <h2>{{ __('messages.group_planning') }}</h2>
     </x-slot>
 
+    <x-scheduling-module-tabs />
+
     @php
     $begin_date = explode(" ", $planning->begin)[0];
     $begin_day = explode("-", $begin_date)[2];
@@ -26,7 +28,7 @@
         </p>
         @endif
 
-        <form action="{{route('planning.update', $planning->id)}}" method="post" class="group-form">
+        <form action="{{route('planning.update', $planning->id)}}" method="post" class="group-form nice-form">
             @csrf
             @method('put')
 
@@ -107,8 +109,12 @@
                 </select>
             </div>
 
-            <x-button-primary :disabled="$session_locked">{{ __('messages.plan') }}</x-button-primary>
             </fieldset>
+
+            <div class="form-actions">
+                <a class="btn btn-secondary" href="{{ route('planning.index') }}">{{ __('messages.cancel') }}</a>
+                <x-button-primary :disabled="$session_locked">{{ __('messages.plan') }}</x-button-primary>
+            </div>
         </form>
     </section>
 </x-app-layout>
