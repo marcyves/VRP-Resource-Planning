@@ -62,7 +62,15 @@
     </section>
 
     @if($total_amount > 0)
-    <section>
+    <section
+        class="school-panel"
+        x-data="{
+            open: true,
+            chartType: localStorage.getItem('school-chart-type') || 'pie'
+        }"
+        x-init="$watch('chartType', value => localStorage.setItem('school-chart-type', value))"
+        aria-labelledby="school-chart-heading"
+    >
         @php
         $current_percent = 0;
         $gradient_parts = [];
@@ -80,26 +88,79 @@
             'name' => html_entity_decode($school->name),
             'amount' => $amount,
             'color_index' => $color_index,
+            'percent' => $percent,
+            'percent_label' => number_format($percent, 1, ',', ' '),
         ];
         $current_percent = $next_percent;
         }
         $gradient_str = implode(',', $gradient_parts);
         @endphp
-        <figure class="charts">
-            <div class="charts__content">
-                <div class="pie" style="background-image: conic-gradient(from 30deg, {!! $gradient_str !!});"></div>
-                <div class="chart-legend" role="list" aria-label="{{ __('messages.invoices_by_school') }}">
-                    @foreach ($chart_items as $item)
-                    <div class="chart-legend__item" role="listitem">
-                        <span class="chart-legend__swatch" style="background-color: var(--c{{ $item['color_index'] }});" aria-hidden="true"></span>
-                        <span class="chart-legend__school">{{ $item['name'] }}</span>
-                        <span class="chart-legend__amount">@money($item['amount'])</span>
+        <div class="school-panel__box">
+            <header class="school-panel__header">
+                <h3 id="school-chart-heading" class="school-panel__title">{{ __('messages.invoices_by_school') }}</h3>
+                <x-panel-toggle controls="school-chart-panel" />
+            </header>
+
+            <div id="school-chart-panel" x-show="open" x-transition>
+                <figure class="charts">
+                    <nav class="chart-type-tabs" aria-label="{{ __('messages.chart_type_label') }}">
+                        <button
+                            type="button"
+                            class="chart-type-tabs__btn"
+                            :class="{ 'chart-type-tabs__btn--active': chartType === 'pie' }"
+                            :aria-pressed="chartType === 'pie'"
+                            @click="chartType = 'pie'"
+                        >{{ __('messages.chart_type_pie') }}</button>
+                        <button
+                            type="button"
+                            class="chart-type-tabs__btn"
+                            :class="{ 'chart-type-tabs__btn--active': chartType === 'histogram' }"
+                            :aria-pressed="chartType === 'histogram'"
+                            @click="chartType = 'histogram'"
+                        >{{ __('messages.chart_type_histogram') }}</button>
+                    </nav>
+
+                    <div class="charts__content" x-show="chartType === 'pie'" x-cloak>
+                        <div class="pie" style="background-image: conic-gradient(from 30deg, {!! $gradient_str !!});"></div>
+                        <div class="chart-legend" role="list" aria-label="{{ __('messages.invoices_by_school') }}">
+                            @foreach ($chart_items as $item)
+                            <div class="chart-legend__item" role="listitem">
+                                <span class="chart-legend__swatch" style="background-color: var(--c{{ $item['color_index'] }});" aria-hidden="true"></span>
+                                <span class="chart-legend__school">{{ $item['name'] }}</span>
+                                <span class="chart-legend__amount">
+                                    @money($item['amount'])
+                                    <span class="chart-legend__percent">{{ $item['percent_label'] }} %</span>
+                                </span>
+                            </div>
+                            @endforeach
+                        </div>
                     </div>
-                    @endforeach
-                </div>
+
+                    <div class="school-invoices-histogram" x-show="chartType === 'histogram'" x-cloak aria-label="{{ __('messages.invoices_by_school') }}">
+                        <div class="school-invoices-histogram__plot">
+                            @foreach ($chart_items as $item)
+                            <div class="school-invoices-histogram__school">
+                                <div class="school-invoices-histogram__bars">
+                                    <div class="school-invoices-histogram__stack">
+                                        <span class="school-invoices-histogram__amount">
+                                            @money($item['amount'])
+                                            <span class="school-invoices-histogram__percent">{{ $item['percent_label'] }} %</span>
+                                        </span>
+                                        <span
+                                            class="school-invoices-histogram__bar"
+                                            style="height: {{ max($item['percent'], 2) }}%; background-color: var(--c{{ $item['color_index'] }});"
+                                            title="{{ $item['name'] }}: @money($item['amount']) ({{ $item['percent_label'] }} %)"
+                                        ></span>
+                                    </div>
+                                </div>
+                                <span class="school-invoices-histogram__label" title="{{ $item['name'] }}">{{ $item['name'] }}</span>
+                            </div>
+                            @endforeach
+                        </div>
+                    </div>
+                </figure>
             </div>
-            <figcaption>{{ __('messages.invoices_by_school') }}</figcaption>
-        </figure>
+        </div>
     </section>
     @endif
 
