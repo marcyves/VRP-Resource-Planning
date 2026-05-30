@@ -70,25 +70,14 @@
         </div>
     </section>
 
-    <x-modal name="confirm-planning-delete" focusable maxWidth="md">
-        <div class="profile-modal-form">
-            <h2 class="modal-title">{{ __('messages.planning_delete_confirm_title') }}</h2>
-            <p class="form-hint" x-show="$store.planningDelete.date">
-                <strong>{{ __('messages.date') }} :</strong>
-                <span x-text="$store.planningDelete.date"></span>
-            </p>
-            <p class="form-hint" x-show="$store.planningDelete.label" x-text="$store.planningDelete.label"></p>
-            <p class="form-hint">{{ __('messages.planning_delete_confirm_description') }}</p>
-            <div class="form-actions">
-                <x-button-secondary type="button" x-on:click="$dispatch('close')">
-                    {{ __('messages.cancel') }}
-                </x-button-secondary>
-                <form x-bind:action="$store.planningDelete.url" method="post">
-                    @csrf
-                    @method('delete')
-                    <x-button-danger type="submit">{{ __('messages.delete') }}</x-button-danger>
-                </form>
-            </div>
-        </div>
-    </x-modal>
+    <x-confirm-delete-modal
+        name="confirm-planning-delete"
+        store="planningDelete"
+        :title="__('messages.planning_delete_confirm_title')"
+        :description="__('messages.planning_delete_confirm_description')"
+        :hints="[
+            ['field' => 'date', 'label' => __('messages.date')],
+            ['field' => 'label', 'plain' => true],
+        ]"
+    />
 </x-app-layout>

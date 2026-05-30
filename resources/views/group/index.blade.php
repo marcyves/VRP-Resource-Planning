@@ -9,26 +9,13 @@
         <x-group-table :groups="$groups" :occurences="$occurences" :active="true" />
     </section>
 
-    <x-modal name="confirm-group-delete" focusable maxWidth="md">
-        <div class="profile-modal-form">
-            <h2 class="modal-title">{{ __('messages.group_delete_confirm_title') }}</h2>
-            <p class="form-hint" x-show="$store.groupDelete.name">
-                <strong>{{ __('messages.name') }} :</strong>
-                <span x-text="$store.groupDelete.name"></span>
-            </p>
-            <p class="form-hint">{{ __('messages.group_delete_confirm_description') }}</p>
-            <div class="form-actions">
-                <x-button-secondary type="button" x-on:click="$dispatch('close')">
-                    {{ __('messages.cancel') }}
-                </x-button-secondary>
-                <form x-bind:action="$store.groupDelete.url" method="post">
-                    @csrf
-                    @method('delete')
-                    <x-button-danger type="submit">{{ __('messages.delete') }}</x-button-danger>
-                </form>
-            </div>
-        </div>
-    </x-modal>
+    <x-confirm-delete-modal
+        name="confirm-group-delete"
+        store="groupDelete"
+        :title="__('messages.group_delete_confirm_title')"
+        :description="__('messages.group_delete_confirm_description')"
+        :hints="[['field' => 'name', 'label' => __('messages.name')]]"
+    />
 
     @if($inactive->count() > 0 || request('search'))
     <div class="group-section-header">
