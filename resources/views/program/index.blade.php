@@ -8,11 +8,7 @@
     <x-workload-module-tabs />
 
     <section>
-        <ul class="resource-grid">
-            @foreach ($programs as $program)
-                <x-program-card :program="$program" />
-            @endforeach
-        </ul>
+        <x-program-table :programs="$programs" />
     </section>
 
     <x-confirm-delete-modal
