@@ -67,7 +67,9 @@ class InvoiceController extends Controller
             $total_amount = 0;
         }
 
-        return view('invoice.create', compact('invoice_id', 'bill_number', 'company', 'school', 'items', 'month', 'year', 'bill_date', 'total_amount'));
+        $fromSchoolBilling = $request->boolean('from_school_billing');
+
+        return view('invoice.create', compact('invoice_id', 'bill_number', 'company', 'school', 'items', 'month', 'year', 'bill_date', 'total_amount', 'fromSchoolBilling'));
     }
 
     /**
@@ -137,6 +139,10 @@ class InvoiceController extends Controller
             );
 
             session()->flash('success', __('messages.invoice_saved_success', ['name' => $invoice_name]));
+
+            if ($request->boolean('from_school_billing') && $school) {
+                return redirect()->route('school.show', $school)->withFragment('billing');
+            }
 
             return redirect(route('invoice.index'));
         } catch (\Exception $e) {

@@ -3,15 +3,19 @@
 <label for="sidebar-toggle" class="sidebar-backdrop" aria-hidden="true"></label>
 
 <aside class="app-sidebar" aria-label="{{ __('messages.nav_menu') }}">
-    <a href="{{ route('home') }}" class="app-sidebar__brand">
-        <span class="app-sidebar__logo">
-            <x-application-logo />
-        </span>
-        <span class="app-sidebar__brand-text">
-            <span class="app-sidebar__app-name">{{ config('app.name') }}</span>
-            <span class="app-sidebar__app-tag">{{ Auth::user()->company->name ?? '' }}</span>
-        </span>
-    </a>
+    <div class="app-sidebar__brand">
+        <a href="{{ route('home') }}" class="app-sidebar__brand-logo" aria-label="{{ config('app.name') }}">
+            <span class="app-sidebar__logo">
+                <x-application-logo />
+            </span>
+        </a>
+        <div class="app-sidebar__brand-text">
+            <a href="{{ route('home') }}" class="app-sidebar__app-name">{{ config('app.name') }}</a>
+            @if (Auth::user()->company)
+                <a href="{{ route('company.show') }}" class="app-sidebar__app-tag">{{ Auth::user()->company->name }}</a>
+            @endif
+        </div>
+    </div>
 
     <nav class="app-sidebar__nav">
         <x-sidebar-nav-link

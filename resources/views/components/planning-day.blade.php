@@ -13,9 +13,20 @@
     if ((int)$begin_day == $day){
     $day_gain += $event->session_length * $event->rate;
     $day_hours += $event->session_length;
+    $eventLabel = \Carbon\Carbon::parse($event->begin)->format('H:i') . ': ' . $event->short_name . ' (' . $event->group_short_name . ')';
+    $eventDate = \Carbon\Carbon::parse($event->begin)->format('d/m/Y');
+    $canEdit = Auth::user()->getMode() == 'Edit' && ! $event->invoice_id;
     @endphp
-    <div class="planning-entry">
-        <div class="planning-text">
+    <div class="planning-entry{{ $canEdit ? ' planning-entry--editable' : '' }}">
+        @if ($canEdit)
+            <a
+                href="{{ route('planning.edit', $event->id) }}"
+                class="planning-text planning-text--link"
+                aria-label="{{ __('messages.edit') }} — {{ $eventLabel }}"
+            >
+        @else
+            <div class="planning-text">
+        @endif
             <div class="planning-event-info">
                 {{ \Carbon\Carbon::parse($event->begin)->format('H:i') }}: {{ $event->short_name }} ({{ $event->group_short_name }})
             </div>
@@ -27,17 +38,22 @@
                 {{ $event->invoice_id }}
             </div>
             @endif
-        </div>
-        @if(Auth::user()->getMode() == "Edit" && !$event->invoice_id)
-        <div class="planning-tools">
-            <a href="{{route('planning.edit',$event->id)}}" title="{{ __('messages.edit') }}">
-                <x-button-edit />
+        @if ($canEdit)
             </a>
-            <form action="{{route('planning.delete',$event->id)}}" method="post">
-                @csrf
-                @method('delete')
-                <x-button-delete />
-            </form>
+        @else
+            </div>
+        @endif
+        @if ($canEdit)
+        <div class="planning-tools">
+            <button
+                type="button"
+                class="icon icon--delete"
+                aria-label="{{ __('messages.delete') }}"
+                x-data=""
+                x-on:click.prevent="$store.planningDelete.request(@js(route('planning.delete', $event->id)), @js($eventLabel), @js($eventDate))"
+            >
+                <img src="{{ asset('icons/trash.svg') }}" alt="" width="18" height="18" decoding="async">
+            </button>
         </div>
         @endif
     </div>

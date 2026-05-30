@@ -104,6 +104,9 @@
 
             <input type="hidden" name="invoice_id" value="{{ $bill_number }}">
             <input type="hidden" name="school_id" value="{{ $school->id }}">
+            @if ($fromSchoolBilling ?? false)
+                <input type="hidden" name="from_school_billing" value="1">
+            @endif
 
             <div class="invoice-create-fields">
                 <div class="form-group">
@@ -133,7 +136,7 @@
             </div>
 
             <div class="form-actions">
-                <a class="btn btn-secondary" href="{{ route('invoice.index') }}">{{ __('messages.cancel') }}</a>
+                <a class="btn btn-secondary" href="{{ ($fromSchoolBilling ?? false) ? route('school.show', $school).'#billing' : route('invoice.index') }}">{{ __('messages.cancel') }}</a>
                 <x-button-primary>{{ __('messages.bill_create') }}</x-button-primary>
             </div>
         </form>

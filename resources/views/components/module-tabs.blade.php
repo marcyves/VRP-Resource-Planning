@@ -10,7 +10,7 @@
 
         return match (true) {
             str_contains($href, 'dashboard') => 'grid',
-            str_contains($href, 'school') => 'school',
+            str_contains($href, 'school') || str_ends_with(rtrim($href, '/'), '/home') => 'school',
             str_contains($href, 'program') => 'layers',
             str_contains($href, 'group') => 'users',
             str_contains($href, 'planning') => 'calendar-range',
@@ -21,6 +21,8 @@
             str_contains($href, '#expense-reports') => 'folder',
             str_contains($href, '#standalone-expenses') => 'wallet',
             str_contains($href, 'expenses/create') => 'plus',
+            str_contains($href, 'company') => 'building',
+            str_contains($href, 'profile') => 'person',
             default => 'dot',
         };
     };

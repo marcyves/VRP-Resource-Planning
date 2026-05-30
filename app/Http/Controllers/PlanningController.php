@@ -296,7 +296,11 @@ class PlanningController extends Controller
         */
         $courses = Auth::user()->getCourses();
 
-        return view('planning.edit', compact('planning', 'current_group', 'groups', 'courses'));
+        $months = Tools::getMonthNames();
+        $beginYear = (int) Carbon::parse($planning->begin)->year;
+        $years = range($beginYear - 2, $beginYear + 2);
+
+        return view('planning.edit', compact('planning', 'current_group', 'groups', 'courses', 'months', 'years'));
     }
 
     /**

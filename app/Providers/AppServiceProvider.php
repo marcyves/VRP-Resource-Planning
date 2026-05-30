@@ -2,9 +2,9 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Facades\Blade;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -46,8 +46,8 @@ class AppServiceProvider extends ServiceProvider
         });
 
 
-        Blade::directive('monthName', function ($value){
-            return "<?php echo  date('F', mktime(0, 0, 0, $value, 1)); ?>";
+        Blade::directive('monthName', function ($value) {
+            return "<?php echo ucfirst(\\Carbon\\Carbon::parse(mktime(0, 0, 0, (int) {$value}, 1, date('Y')))->locale(\\App\\Support\\TerminologyLocale::normalizeBaseLocale(app()->getLocale()))->translatedFormat('F')); ?>";
         });
     }
 }

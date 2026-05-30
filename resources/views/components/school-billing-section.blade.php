@@ -13,7 +13,7 @@
 ])
 
 <section id="billing" class="school-billing-section">
-    <h3 class="school-section-header">{{ __('messages.billing_preparation') }} @monthName($currentMonth) {{ $currentYear }}</h3>
+    <h3 class="school-section-header">{{ __('messages.billing') }} @monthName($currentMonth) {{ $currentYear }}</h3>
 
     <div class="planning-controls print:hidden">
         <x-period-selector
@@ -132,6 +132,7 @@
                         </form>
                         <form action="{{ route('invoice.create') }}" class="billing-assign-form" method="get">
                             @csrf
+                            <input type="hidden" name="from_school_billing" value="1">
                             <input type="hidden" name="school_id" value="{{ $school->id }}">
                             <input type="hidden" name="course_id" value="{{ $courseId }}">
                             <input type="hidden" name="month" value="{{ $currentMonth }}">

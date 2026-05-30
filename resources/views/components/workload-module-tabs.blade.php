@@ -12,7 +12,7 @@
 
 <x-module-tabs :tabs="[
     ['href' => route('school.dashboard'), 'label' => __('messages.workload_plan'), 'active' => $activeTab === 'dashboard'],
-    ['href' => route('home'), 'label' => __('messages.schools'), 'active' => $activeTab === 'schools'],
+    ['href' => route('home'), 'label' => __('messages.schools'), 'active' => $activeTab === 'schools', 'icon' => 'school'],
     ['href' => route('program.index'), 'label' => __('messages.programs'), 'active' => $activeTab === 'programs'],
     ['href' => route('group.index'), 'label' => __('messages.groups'), 'active' => $activeTab === 'groups'],
 ]" />

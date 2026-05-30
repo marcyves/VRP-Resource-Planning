@@ -1,6 +1,12 @@
     @php
     $total = 0;
     $total_payed = 0;
+    foreach ($invoices as $bill) {
+        $total += $bill->amount;
+        if ($bill->paid_at !== null) {
+            $total_payed += $bill->amount;
+        }
+    }
     @endphp
 
     <x-kpi-grid :items="[
@@ -21,9 +27,7 @@
                     <th>{{ __('messages.date_billing') }}</th>
                     <th>{{ __('messages.electronic_invoice_status') }}</th>
                     <th>{{ __('messages.date_payment') }}</th>
-                    @if(Auth::user()->getMode() == "Edit")
                     <th>{{ __('messages.actions') }}</th>
-                    @endif
                 </tr>
             </thead>
 
@@ -34,15 +38,7 @@
                     <td>{{$bill->school}}</td>
                     <td>{{$bill->description}}</td>
                     <td class="money">@money($bill->amount/1.2) €</td>
-                    <td class="money">
-                        @money($bill->amount) €
-                        @php
-                        $total += $bill->amount;
-                        if($bill->paid_at != null){
-                        $total_payed += $bill->amount;
-                        }
-                        @endphp
-                    </td>
+                    <td class="money">@money($bill->amount) €</td>
                     <td class="date">
                         @if($bill->created_at)
                         {{$bill->bill_date}}
@@ -60,36 +56,36 @@
                             <span class="status-chip status-chip--unpaid">{{ __('messages.not_payed') }}</span>
                         @endif
                     </td>
-                    @if(Auth::user()->getMode() == "Edit")
                     <td class="card-actions">
-                        @php
-                        $isPaid = $bill->paid_at !== null;
-                        @endphp
-                        <a href="{{route('invoice.show', $bill->id)}}" class="btn-icon" title="{{ __('messages.view') }}">
-                            <x-button-view />
+                        <a href="{{ route('invoice.show', $bill->id) }}" class="btn-icon icon icon--pdf-view" title="{{ __('messages.invoice_view') }}" aria-label="{{ __('messages.invoice_view') }}">
+                            <img src="{{ asset('icons/pdf.png') }}" alt="" decoding="async">
                         </a>
-                        <form class="inline-form" action="{{route('invoice.payed', $bill->id)}}" method="get">
-                            <x-button-payed :paid="$isPaid" />
-                        </form>
-                        @if($isPaid)
-                        <button class="icon icon--edit icon--disabled" type="button" aria-label="{{ __('messages.invoice_paid_locked') }}" disabled>
-                            <img src="{{ asset('icons/edit.svg') }}" alt="" width="18" height="18" decoding="async">
-                        </button>
-                        <button class="icon icon--delete icon--disabled" type="button" aria-label="{{ __('messages.invoice_paid_locked') }}" disabled>
-                            <img src="{{ asset('icons/trash.svg') }}" alt="" width="18" height="18" decoding="async">
-                        </button>
-                        @else
-                            <form class="inline-form" action="{{route('invoice.edit', $bill->id)}}" method="get">
-                                <x-button-edit />
+                        @if (Auth::user()->getMode() == 'Edit')
+                            @php
+                            $isPaid = $bill->paid_at !== null;
+                            @endphp
+                            <form class="inline-form" action="{{ route('invoice.payed', $bill->id) }}" method="get">
+                                <x-button-payed :paid="$isPaid" />
                             </form>
-                            <form class="inline-form" action="{{route('invoice.destroy', $bill->id)}}" method="post">
-                                @csrf
-                                @method('delete')
-                                <x-button-delete />
-                            </form>
+                            @if ($isPaid)
+                                <button class="icon icon--edit icon--disabled" type="button" aria-label="{{ __('messages.invoice_paid_locked') }}" disabled>
+                                    <img src="{{ asset('icons/edit.svg') }}" alt="" width="18" height="18" decoding="async">
+                                </button>
+                                <button class="icon icon--delete icon--disabled" type="button" aria-label="{{ __('messages.invoice_paid_locked') }}" disabled>
+                                    <img src="{{ asset('icons/trash.svg') }}" alt="" width="18" height="18" decoding="async">
+                                </button>
+                            @else
+                                <form class="inline-form" action="{{ route('invoice.edit', $bill->id) }}" method="get">
+                                    <x-button-edit />
+                                </form>
+                                <form class="inline-form" action="{{ route('invoice.destroy', $bill->id) }}" method="post">
+                                    @csrf
+                                    @method('delete')
+                                    <x-button-delete />
+                                </form>
+                            @endif
                         @endif
                     </td>
-                    @endif
                 </tr>
                 @endforeach
             </tbody>

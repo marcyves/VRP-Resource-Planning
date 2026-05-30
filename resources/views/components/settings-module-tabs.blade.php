@@ -9,6 +9,6 @@
 @endphp
 
 <x-module-tabs :tabs="[
-    ['href' => route('company.show'), 'label' => __('messages.my_company'), 'active' => $activeTab === 'company'],
-    ['href' => route('profile.edit'), 'label' => __('messages.profile'), 'active' => $activeTab === 'profile'],
+    ['href' => route('company.show'), 'label' => __('messages.my_company'), 'active' => $activeTab === 'company', 'icon' => 'building'],
+    ['href' => route('profile.edit'), 'label' => __('messages.profile'), 'active' => $activeTab === 'profile', 'icon' => 'person'],
 ]" />

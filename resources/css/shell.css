@@ -52,17 +52,24 @@
     gap: 0.75rem;
     padding: 0 1.25rem 1.5rem;
     margin-bottom: 0.5rem;
+}
+
+.app-sidebar__brand-logo {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--rounded-md);
     text-decoration: none;
     color: inherit;
-    border-radius: var(--rounded-lg);
-    transition: background-color 0.15s ease;
+    transition: opacity 0.15s ease;
 }
 
-.app-sidebar__brand:hover {
-    background: var(--surface-container-low);
+.app-sidebar__brand-logo:hover {
+    opacity: 0.85;
 }
 
-.app-sidebar__brand:focus-visible {
+.app-sidebar__brand-logo:focus-visible {
     outline: 2px solid var(--brand-accent);
     outline-offset: 2px;
 }
@@ -97,6 +104,18 @@
     line-height: 1.2;
     color: var(--text-heading);
     letter-spacing: -0.01em;
+    text-decoration: none;
+    transition: color 0.15s ease;
+}
+
+.app-sidebar__app-name:hover {
+    color: var(--brand-accent);
+}
+
+.app-sidebar__app-name:focus-visible {
+    outline: 2px solid var(--brand-accent);
+    outline-offset: 2px;
+    border-radius: var(--rounded-sm);
 }
 
 .app-sidebar__app-tag {
@@ -106,6 +125,18 @@
     font-size: 0.75rem;
     font-weight: 500;
     color: var(--text-secondary);
+    text-decoration: none;
+    transition: color 0.15s ease;
+}
+
+.app-sidebar__app-tag:hover {
+    color: var(--brand-accent);
+}
+
+.app-sidebar__app-tag:focus-visible {
+    outline: 2px solid var(--brand-accent);
+    outline-offset: 2px;
+    border-radius: var(--rounded-sm);
 }
 
 .app-sidebar__nav {
