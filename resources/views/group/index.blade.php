@@ -12,8 +12,7 @@
     <x-confirm-delete-modal
         name="confirm-group-delete"
         store="groupDelete"
-        :title="__('messages.group_delete_confirm_title')"
-        :description="__('messages.group_delete_confirm_description')"
+        entity="group"
         :hints="[['field' => 'name', 'label' => __('messages.name')]]"
     />
 

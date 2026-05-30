@@ -1,14 +1,18 @@
 @props([
     'name',
     'store',
-    'title',
-    'description',
+    'entity',
     'hints' => [],
 ])
 
+@php
+    $deleteConfirmTitle = __('messages.delete_confirm_title');
+    $deleteConfirmDescription = __('messages.delete_confirm_description_' . $entity);
+@endphp
+
 <x-modal :name="$name" focusable maxWidth="md">
     <div class="profile-modal-form">
-        <h2 class="modal-title">{{ $title }}</h2>
+        <h2 class="modal-title">{{ $deleteConfirmTitle }}</h2>
         @foreach ($hints as $hint)
             @if (! empty($hint['plain']))
                 <p
@@ -23,7 +27,7 @@
                 </p>
             @endif
         @endforeach
-        <p class="form-hint">{{ $description }}</p>
+        <p class="form-hint">{{ $deleteConfirmDescription }}</p>
         <div class="form-actions">
             <x-button-secondary type="button" x-on:click="$dispatch('close')">
                 {{ __('messages.cancel') }}

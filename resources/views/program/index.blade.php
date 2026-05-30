@@ -18,8 +18,7 @@
     <x-confirm-delete-modal
         name="confirm-program-delete"
         store="programDelete"
-        :title="__('messages.program_delete_confirm_title')"
-        :description="__('messages.program_delete_confirm_description')"
+        entity="program"
         :hints="[['field' => 'name', 'label' => __('messages.name')]]"
     />
 

@@ -73,8 +73,7 @@
     <x-confirm-delete-modal
         name="confirm-planning-delete"
         store="planningDelete"
-        :title="__('messages.planning_delete_confirm_title')"
-        :description="__('messages.planning_delete_confirm_description')"
+        entity="session"
         :hints="[
             ['field' => 'date', 'label' => __('messages.date')],
             ['field' => 'label', 'plain' => true],
