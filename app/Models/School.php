@@ -9,6 +9,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use Illuminate\Support\Facades\DB;
+use App\Http\Utility\Tools;
 
 class School extends Model
 {
@@ -116,5 +118,61 @@ class School extends Model
                 ['bill_date', '>=', $year.'-01-01'],
                 ['bill_date', '<=', $year.'-12-31'],
             ])->get();
+    }
+
+    public function getBillingPlanning(string $year, string $month)
+    {
+        return $this->newCollection([$this])->getBillingPlanning($year, $month);
+    }
+
+    public function hasUnbilledSessionsInMonth(int $year, int $month): bool
+    {
+        [$startDate, $endDate] = Tools::billingPeriodBounds($year, $month);
+
+        return DB::table('plannings')
+            ->join('courses', 'courses.id', '=', 'plannings.course_id')
+            ->where('courses.school_id', $this->id)
+            ->where(function ($query) {
+                $query->whereNull('plannings.invoice_id')
+                    ->orWhere('plannings.invoice_id', '');
+            })
+            ->where('begin', '>', $startDate)
+            ->where('end', '<', $endDate)
+            ->exists();
+    }
+
+    public function findPreviousUnbilledPeriod(int $year, int $month): ?array
+    {
+        $year = (int) $year;
+        $month = (int) $month;
+
+        $month--;
+        if ($month < 1) {
+            $month = 12;
+            $year--;
+        }
+
+        for ($i = 0; $i < 120; $i++) {
+            if ($this->hasUnbilledSessionsInMonth($year, $month)) {
+                return ['year' => $year, 'month' => $month];
+            }
+
+            $month--;
+            if ($month < 1) {
+                $month = 12;
+                $year--;
+            }
+
+            if ($year < 1970) {
+                break;
+            }
+        }
+
+        return null;
+    }
+
+    public function hasPreviousUnbilledPeriod(int $year, int $month): bool
+    {
+        return $this->findPreviousUnbilledPeriod($year, $month) !== null;
     }
 }

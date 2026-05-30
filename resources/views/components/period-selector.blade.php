@@ -1,10 +1,14 @@
-@props(['years', 'months', 'current_year', 'current_month', 'route'])
+@props(['years', 'months', 'current_year', 'current_month', 'route', 'school' => null, 'by_date' => false])
 
 <div class="period-controls">
     <nav class="period-nav" aria-label="{{ __('messages.planning') }}">
-        <a href="{{ route($route.'.previous') }}" class="period-nav__btn" aria-label="{{ __('pagination.previous') }}">‹</a>
+        @if ($school)
+            <a href="{{ route('school.billing.previous', $school) }}" class="period-nav__btn" aria-label="{{ __('pagination.previous') }}">‹</a>
+        @else
+            <a href="{{ route($route.'.previous') }}" class="period-nav__btn" aria-label="{{ __('pagination.previous') }}">‹</a>
+        @endif
 
-        <form class="period-nav__form" action="{{ route($route.'.index') }}" method="get">
+        <form class="period-nav__form" action="{{ $school ? route('school.show', $school) : route($route.'.index') }}" method="get">
             <select
                 id="period-month-{{ $route }}"
                 name="current_month"
@@ -18,10 +22,16 @@
             </select>
         </form>
 
-        <a href="{{ route($route.'.next') }}" class="period-nav__btn" aria-label="{{ __('pagination.next') }}">›</a>
+        @if ($school)
+            <a href="{{ route('school.billing.next', $school) }}" class="period-nav__btn" aria-label="{{ __('pagination.next') }}">›</a>
+        @else
+            <a href="{{ route($route.'.next') }}" class="period-nav__btn" aria-label="{{ __('pagination.next') }}">›</a>
+        @endif
     </nav>
 
-    @if($route === 'billing')
-        <a href="{{ route('billing.byDate') }}" class="period-nav__link">{{ __('messages.date_billing') }}</a>
+    @if ($school)
+        <a href="{{ route('school.billing.byDate', $school) }}" class="period-nav__link">
+            {{ $by_date ? __('messages.course') : __('messages.by_date') }}
+        </a>
     @endif
 </div>

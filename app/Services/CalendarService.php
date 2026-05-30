@@ -193,7 +193,7 @@ class CalendarService
                             'begin'              => $event['start'],
                             'end'                => $event['end'],
                             'location'           => $event['location'] ?? '',
-                            'billable_rate'      => $rate,
+                            'billable_rate'      => 1,
                         ]);
                         $stats['created']++;
                     } else {

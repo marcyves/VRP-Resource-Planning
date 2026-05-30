@@ -344,7 +344,13 @@ class PlanningController extends Controller
             //session()->flash('danger', $e->getMessage());
             return redirect()->back();
         }
-        return redirect(route('billing.index'));
+        $schoolId = session('school_id') ?: Course::find($planning->course_id)?->school_id;
+
+        if ($schoolId) {
+            return redirect()->route('school.show', $schoolId)->withFragment('billing');
+        }
+
+        return redirect()->route('planning.index');
     }
 
     /**

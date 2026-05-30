@@ -47,6 +47,20 @@
             </div>
         </section>
 
+        <x-school-billing-section
+            :school="$school"
+            :billing-data="$billingData"
+            :monthly-hours="$monthlyHours"
+            :monthly-gain="$monthlyGain"
+            :current-year="$billingYear"
+            :current-month="$currentMonth"
+            :months="$months"
+            :years="$years"
+            :bills="$bills"
+            :by-date="$billingByDate"
+            :has-previous-unbilled="$hasPreviousUnbilled"
+        />
+
         <section>
             <h3 class="school-section-header">{{ __('messages.documents') }}</h3>
             <x-documents-school-table :documents="$documents" :school_id="$school_id" />

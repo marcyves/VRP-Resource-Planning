@@ -50,7 +50,22 @@ class Tools
             }
         }
 
-        return $current_month;
+        return (int) $current_month;
+    }
+
+    public static function getBillingYear(Request $request): int
+    {
+        if (isset($request->billing_year)) {
+            session(['billing_year' => (int) $request->billing_year]);
+        }
+
+        $billingYear = session('billing_year');
+        if (! isset($billingYear)) {
+            $billingYear = (int) now()->format('Y');
+            session(['billing_year' => $billingYear]);
+        }
+
+        return (int) $billingYear;
     }
 
     public static function getCurrentSemester(Request $request)
@@ -76,6 +91,52 @@ class Tools
         }
 
         return $months;
+    }
+
+    public static function sessionDurationHours($begin, $end): float
+    {
+        return intval((strtotime($end) - strtotime($begin)) / 60) / 60;
+    }
+
+    public static function billableMultiplier(float $billableRate, float $courseRate): float
+    {
+        $multiplier = $billableRate <= 0 ? 1.0 : $billableRate;
+
+        // Calendar import stored the course rate in billable_rate by mistake.
+        if ($multiplier > 1 && abs($multiplier - $courseRate) < 0.001) {
+            return 1.0;
+        }
+
+        if ($multiplier > 1) {
+            return $multiplier / 100;
+        }
+
+        return $multiplier;
+    }
+
+    public static function billingPeriodBounds(int $year, int $month): array
+    {
+        $startDate = trim((string) $year).'-'.substr('0'.trim((string) $month), -2).'-0 00:00:00';
+        $nextMonth = $month + 1;
+        $endYear = $year;
+
+        if ($nextMonth > 12) {
+            $nextMonth = 1;
+            $endYear++;
+        }
+
+        $endDate = trim((string) $endYear).'-'.substr('0'.trim((string) $nextMonth), -2).'-0 00:00:00';
+
+        return [$startDate, $endDate];
+    }
+
+    public static function planningGain($begin, $end, $rate, $billableRate): float
+    {
+        $rate = (float) $rate;
+
+        return self::sessionDurationHours($begin, $end)
+            * $rate
+            * self::billableMultiplier((float) $billableRate, $rate);
     }
 
     public static function getBillingInformation($planning)
@@ -131,18 +192,16 @@ class Tools
                 $school_gain   = 0;
             }
             // Collect Schedule entry
-            $end      = strtotime($event->end);
-            $begin    = strtotime($event->begin);
-            $duration = intval(($end - $begin) / 60) / 60;
-            $gain     = $duration * $event->rate * $event->billable_rate;
+            $duration = self::sessionDurationHours($event->begin, $event->end);
+            $gain     = self::planningGain($event->begin, $event->end, $event->rate, $event->billable_rate);
 
             $course_hours  += $duration;
             $course_gain   += $gain;
 
-            $school_hours  += intval(($end - $begin) / 3600);
+            $school_hours  += $duration;
             $school_gain   += $gain;
 
-            $monthly_hours += intval(($end - $begin) / 3600);
+            $monthly_hours += $duration;
             $monthly_gain  += $gain;
 
             // Add the schedule entry to the array
@@ -221,10 +280,8 @@ class Tools
             }
             // Get planning details
             $planning = Planning::find($planning_detail['id']);
-            $end      = strtotime($planning->end);
-            $begin    = strtotime($planning->begin);
-            $duration = intval(($end - $begin) / 60) / 60;
-            $billable_rate = $planning->billable_rate;
+            $duration = self::sessionDurationHours($planning->begin, $planning->end);
+            $billable_rate = self::billableMultiplier((float) $planning->billable_rate, (float) $rate);
             $duration = $duration * $billable_rate;
             $gain     = $duration * $rate;
             $course_hours  += $duration;

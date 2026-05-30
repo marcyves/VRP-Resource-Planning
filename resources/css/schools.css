@@ -31,8 +31,45 @@ main section > ul.school-grid > li:hover {
 .school-stats {
     margin-top: 1rem;
     margin-left: calc(6px + var(--spacing-4));
-    font-size: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.school-stats-totals {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem 2.5rem;
+    margin: 0;
+}
+
+.school-stat {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+}
+
+.school-stat__label {
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: var(--text-muted, #64748b);
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+
+.school-stat__value {
+    font-size: 1.125rem;
     font-weight: 700;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.35rem;
+}
+
+.school-stat__sep {
+    font-weight: 400;
+    color: var(--text-muted, #64748b);
 }
 
 /* Collapsible panels (create form, inactive schools) */

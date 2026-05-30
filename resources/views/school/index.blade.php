@@ -9,29 +9,56 @@
         <ul class="school-grid">
             @php
             $total_amount = 0;
+            $total_unbilled_amount = 0;
+            $total_unbilled_hours = 0;
             $amounts = [];
             @endphp
             @foreach ($schools as $school)
             @php
             $amount = $school->amount ?? 0;
+            $unbilledAmount = $school->unbilled_amount ?? 0;
+            $unbilledHours = $school->unbilled_hours ?? 0;
             $total_amount += $amount;
+            $total_unbilled_amount = ($total_unbilled_amount ?? 0) + $unbilledAmount;
+            $total_unbilled_hours = ($total_unbilled_hours ?? 0) + $unbilledHours;
             $amounts[] = $amount;
             @endphp
             <li>
                 <x-school-header :school_name="$school->name" :school_id="$school->id" />
-                <div class="school-stats">
-                    @money($amount) €
-                </div>
+                <dl class="school-stats">
+                    <div class="school-stat">
+                        <dt class="school-stat__label">{{ __('messages.invoiced_amount_ttc') }}</dt>
+                        <dd class="school-stat__value">@money($amount)</dd>
+                    </div>
+                    <div class="school-stat">
+                        <dt class="school-stat__label">{{ __('messages.unbilled') }}</dt>
+                        <dd class="school-stat__value">
+                            <span>@money($unbilledAmount) HT</span>
+                            <span class="school-stat__sep" aria-hidden="true">·</span>
+                            <span>{{ number_format($unbilledHours, 1, ',', ' ') }} h</span>
+                        </dd>
+                    </div>
+                </dl>
             </li>
             @endforeach
         </ul>
     </section>
 
     <section>
-        <div class="total-line">
-            <span>{{ __('messages.total_invoices') }}:</span>
-            <span>@money($total_amount)€</span>
-        </div>
+        <dl class="school-stats-totals">
+            <div class="school-stat">
+                <dt class="school-stat__label">{{ __('messages.invoiced_amount_ttc') }}</dt>
+                <dd class="school-stat__value">@money($total_amount)</dd>
+            </div>
+            <div class="school-stat">
+                <dt class="school-stat__label">{{ __('messages.unbilled') }}</dt>
+                <dd class="school-stat__value">
+                    <span>@money($total_unbilled_amount) HT</span>
+                    <span class="school-stat__sep" aria-hidden="true">·</span>
+                    <span>{{ number_format($total_unbilled_hours, 1, ',', ' ') }} h</span>
+                </dd>
+            </div>
+        </dl>
     </section>
 
     @if($total_amount > 0)
@@ -66,7 +93,7 @@
                     <div class="chart-legend__item" role="listitem">
                         <span class="chart-legend__swatch" style="background-color: var(--c{{ $item['color_index'] }});" aria-hidden="true"></span>
                         <span class="chart-legend__school">{{ $item['name'] }}</span>
-                        <span class="chart-legend__amount">@money($item['amount']) €</span>
+                        <span class="chart-legend__amount">@money($item['amount'])</span>
                     </div>
                     @endforeach
                 </div>

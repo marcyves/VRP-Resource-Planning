@@ -112,7 +112,61 @@ class User extends Authenticatable
                 ->groupBy('schools.id');
         }
 
-        return $query->get();
+        $schools = $query->get();
+        $unbilledStats = $this->getUnbilledStatsBySchool($year);
+
+        return $schools->map(function (School $school) use ($unbilledStats) {
+            $stats = $unbilledStats->get($school->id);
+            $school->unbilled_amount = $stats->unbilled_amount ?? 0;
+            $school->unbilled_hours = $stats->unbilled_hours ?? 0;
+
+            return $school;
+        });
+    }
+
+    private function getUnbilledStatsBySchool($year)
+    {
+        $query = DB::table('plannings')
+            ->join('courses', 'courses.id', '=', 'plannings.course_id')
+            ->join('schools', 'schools.id', '=', 'courses.school_id')
+            ->where('schools.company_id', '=', $this->company_id)
+            ->where(function ($q) {
+                $q->whereNull('plannings.invoice_id')
+                    ->orWhere('plannings.invoice_id', '');
+            })
+            ->select(
+                'schools.id',
+                'plannings.begin',
+                'plannings.end',
+                'courses.rate',
+                'plannings.billable_rate'
+            );
+
+        if ($year != 'all') {
+            $query->whereYear('plannings.begin', $year);
+        }
+
+        $stats = [];
+
+        foreach ($query->get() as $row) {
+            if (! isset($stats[$row->id])) {
+                $stats[$row->id] = (object) [
+                    'id' => $row->id,
+                    'unbilled_amount' => 0,
+                    'unbilled_hours' => 0,
+                ];
+            }
+
+            $stats[$row->id]->unbilled_hours += Tools::sessionDurationHours($row->begin, $row->end);
+            $stats[$row->id]->unbilled_amount += Tools::planningGain(
+                $row->begin,
+                $row->end,
+                $row->rate,
+                $row->billable_rate
+            );
+        }
+
+        return collect($stats)->keyBy('id');
     }
 
     public function getCourses($current_year = 'all', $current_semester = 'all')

@@ -3,7 +3,7 @@
 <label for="sidebar-toggle" class="sidebar-backdrop" aria-hidden="true"></label>
 
 <aside class="app-sidebar" aria-label="{{ __('messages.nav_menu') }}">
-    <a href="{{ route('company.show') }}" class="app-sidebar__brand">
+    <a href="{{ route('home') }}" class="app-sidebar__brand">
         <span class="app-sidebar__logo">
             <x-application-logo />
         </span>
@@ -17,7 +17,7 @@
         <x-sidebar-nav-link
             icon="calendar-range"
             :href="route('planning.index')"
-            :active="request()->routeIs('planning.*', 'calendar.*', 'billing.*')"
+            :active="request()->routeIs('planning.*', 'calendar.*')"
         >
             {{ __('messages.planning') }}
         </x-sidebar-nav-link>
@@ -40,8 +40,8 @@
 
         <x-sidebar-nav-link
             icon="grid"
-            :href="route('dashboard')"
-            :active="request()->routeIs('dashboard', 'school.dashboard', 'school.index', 'school.list', 'school.show', 'school.create', 'school.edit', 'school.add', 'program.*', 'course.*', 'group.*')"
+            :href="route('home')"
+            :active="request()->routeIs('home', 'dashboard', 'school.dashboard', 'school.index', 'school.list', 'school.show', 'school.create', 'school.edit', 'school.add', 'program.*', 'course.*', 'group.*')"
         >
             {{ __('messages.workload_plan') }}
         </x-sidebar-nav-link>

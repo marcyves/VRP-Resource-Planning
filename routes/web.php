@@ -39,8 +39,12 @@ Route::get('/', function () {
     }
 });
 
+Route::get('/home', [SchoolController::class, 'index'])
+    ->middleware(['auth', 'verified', SetTerminologyLocale::class])
+    ->name('home');
+
 Route::get('/dashboard', function () {
-    return redirect(route('school.dashboard'));
+    return redirect()->route('home');
 })->middleware(['auth', 'verified', SetTerminologyLocale::class])->name('dashboard');
 
 Route::middleware(['auth', SetTerminologyLocale::class])->group(function () {
@@ -95,11 +99,17 @@ Route::middleware(['auth', SetTerminologyLocale::class])->group(function () {
     Route::put('/planning/{id}', [PlanningController::class, 'update'])->name('planning.update')->whereNumber('id');
     Route::delete('/planning/{id}', [PlanningController::class, 'destroy'])->name('planning.delete')->whereNumber('id');
 
+    Route::get('/school/{school}/billing/previous', [BillingController::class, 'previous'])->name('school.billing.previous');
+    Route::get('/school/{school}/billing/next', [BillingController::class, 'next'])->name('school.billing.next');
+    Route::get('/school/{school}/billing/by-date', [BillingController::class, 'toggleByDate'])->name('school.billing.byDate');
+    Route::get('/school/{school}/billing/jump-unbilled', [BillingController::class, 'jumpToUnbilled'])->name('school.billing.jumpUnbilled');
+    Route::post('/school/{school}/billing/set-bill', [BillingController::class, 'setBill'])->name('school.billing.setBill');
+
     Route::get('/billing', [BillingController::class, 'billing'])->name('billing.index');
-    Route::get('/billing/previous', [BillingController::class, 'previous'])->name('billing.previous');
-    Route::get('/billing/next', [BillingController::class, 'next'])->name('billing.next');
+    Route::get('/billing/previous', [BillingController::class, 'legacyPrevious'])->name('billing.previous');
+    Route::get('/billing/next', [BillingController::class, 'legacyNext'])->name('billing.next');
     Route::get('/billing/byDate', [BillingController::class, 'byDate'])->name('billing.byDate');
-    Route::post('/billing/set_bill', [BillingController::class, 'setBill'])->name('billing.setBill');
+    Route::post('/billing/set_bill', [BillingController::class, 'legacySetBill'])->name('billing.setBill');
 
     Route::resource('/program', ProgramController::class);
 

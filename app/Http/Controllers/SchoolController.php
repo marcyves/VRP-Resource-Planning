@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Utility\Tools;
 use App\Models\School;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -130,13 +131,14 @@ class SchoolController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(School $school)
+    public function show(School $school, Request $request)
     {
-
-        $year = session()->get('current_year');
-        if (! isset($year)) {
-            $year = now()->format('Y');
-        }
+        $year = Tools::getCurrentYear($request);
+        $billingYear = Tools::getBillingYear($request);
+        $currentMonth = Tools::getCurrentMonth($request);
+        $months = Tools::getMonthNames();
+        $years = Auth::user()->getSchools()->getYears();
+        $billingByDate = session('school_billing_by_date', false);
 
         $courses = $school->getCourses($year);
 
@@ -146,12 +148,39 @@ class SchoolController extends Controller
         session()->put('school', $school->name);
         session()->put('school_id', $school->id);
 
-        // $school_name = $school->name;
-        // $school_id = $school->id;
         $invoices = $school->getInvoices($year);
         $documents = $school->getDocuments();
+        $bills = $invoices;
 
-        return view('school.show', compact('school', 'courses', 'documents', 'invoices'));
+        $billingData = null;
+        $monthlyHours = 0;
+        $monthlyGain = 0;
+
+        $planning = $school->getBillingPlanning($billingYear, $currentMonth);
+        if ($planning) {
+            [$schoolsBilling, $monthlyGain, $monthlyHours] = Tools::getBillingInformation($planning);
+            $billingData = reset($schoolsBilling) ?: null;
+        }
+
+        $hasPreviousUnbilled = $school->hasPreviousUnbilledPeriod($billingYear, $currentMonth);
+
+        return view('school.show', compact(
+            'school',
+            'courses',
+            'documents',
+            'invoices',
+            'billingData',
+            'monthlyHours',
+            'monthlyGain',
+            'year',
+            'billingYear',
+            'currentMonth',
+            'months',
+            'years',
+            'bills',
+            'billingByDate',
+            'hasPreviousUnbilled',
+        ));
     }
 
     /**
