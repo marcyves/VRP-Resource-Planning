@@ -21,6 +21,7 @@ Wiki-style guides from product design and implementation work (data model, workf
 | V2 — Navigation & modules | [v2-navigation-modules.md](fr/v2-navigation-modules.md) | [v2-navigation-modules.md](en/v2-navigation-modules.md) |
 | V2 — Billing per school | [v2-facturation-par-ecole.md](fr/v2-facturation-par-ecole.md) | [v2-billing-per-school.md](en/v2-billing-per-school.md) |
 | V2 — CSS design system | [v2-design-system-css.md](fr/v2-design-system-css.md) | [v2-design-system-css.md](en/v2-design-system-css.md) |
+| V2 — Code review & list refactor | [v2-revue-code-refactoring-listes.md](fr/v2-revue-code-refactoring-listes.md) | [v2-code-review-list-refactoring.md](en/v2-code-review-list-refactoring.md) |
 
 ## Repository
 

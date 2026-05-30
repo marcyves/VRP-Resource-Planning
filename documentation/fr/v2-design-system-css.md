@@ -56,6 +56,11 @@ Définis dans `global.css` (clair) et surchargés dans `theme.css` (sombre) :
 | `x-school-billing-section` | Bloc préparation facturation |
 | `x-table-invoices` | Tableau factures avec totaux |
 | `x-button-primary` / `x-button-secondary` | Boutons stylés |
+| `x-group-table` / `x-program-table` | Grilles `.resource-grid` + cartes |
+| `x-group-card` / `x-program-card` | Carte ressource (liste) |
+| `x-confirm-delete-modal` | Confirmation suppression (Alpine store) |
+
+Stores Alpine : `createDeleteStore()` dans `resources/js/delete-store.js` (`groupDelete`, `programDelete`, `planningDelete`).
 
 ## Mode sombre
 
@@ -88,5 +93,6 @@ npm run build  # production
 
 ## Voir aussi
 
+- [V2 — revue de code & refactor listes](v2-revue-code-refactoring-listes.md)
 - [V2 — vue d’ensemble](v2-interface-utilisateur.md)
 - [Configuration](configuration.md)

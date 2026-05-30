@@ -56,6 +56,11 @@ Defined in `global.css` (light) and overridden in `theme.css` (dark):
 | `x-school-billing-section` | Billing preparation block |
 | `x-table-invoices` | Invoice table with totals |
 | `x-button-primary` / `x-button-secondary` | Styled buttons |
+| `x-group-table` / `x-program-table` | `.resource-grid` wrappers + cards |
+| `x-group-card` / `x-program-card` | Resource card (list) |
+| `x-confirm-delete-modal` | Delete confirmation (Alpine store) |
+
+Alpine stores: `createDeleteStore()` in `resources/js/delete-store.js` (`groupDelete`, `programDelete`, `planningDelete`).
 
 ## Dark mode
 
@@ -88,5 +93,6 @@ npm run build  # production
 
 ## See also
 
+- [V2 — code review & list refactor](v2-code-review-list-refactoring.md)
 - [V2 — overview](v2-user-interface.md)
 - [Configuration](configuration.md)

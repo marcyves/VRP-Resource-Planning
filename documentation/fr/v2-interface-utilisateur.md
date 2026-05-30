@@ -25,6 +25,7 @@ Cette refonte est **purement présentationnelle et navigationnelle** : le modèl
 | Navigation, accueil, modules | [v2-navigation-modules.md](v2-navigation-modules.md) |
 | Facturation par école | [v2-facturation-par-ecole.md](v2-facturation-par-ecole.md) |
 | Design system CSS | [v2-design-system-css.md](v2-design-system-css.md) |
+| Revue de code & refactor listes | [v2-revue-code-refactoring-listes.md](v2-revue-code-refactoring-listes.md) |
 
 ## Parcours utilisateur type
 

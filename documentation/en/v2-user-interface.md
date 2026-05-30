@@ -25,6 +25,7 @@ This is a **presentation and navigation** refactor: data model, business routes 
 | Navigation, home, modules | [v2-navigation-modules.md](v2-navigation-modules.md) |
 | Billing per school | [v2-billing-per-school.md](v2-billing-per-school.md) |
 | CSS design system | [v2-design-system-css.md](v2-design-system-css.md) |
+| Code review & list refactor | [v2-code-review-list-refactoring.md](v2-code-review-list-refactoring.md) |
 
 ## Typical user flow
 
