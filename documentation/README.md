@@ -17,6 +17,10 @@ Wiki-style guides from product design and implementation work (data model, workf
 | Phase 1 — terminology | [phase-1-terminologie.md](fr/phase-1-terminologie.md) | [phase-1-terminology.md](en/phase-1-terminology.md) |
 | Configuration | [configuration.md](fr/configuration.md) | [configuration.md](en/configuration.md) |
 | Consulting labels | [libelles-consulting.md](fr/libelles-consulting.md) | [consulting-labels.md](en/consulting-labels.md) |
+| **V2 — UI overview** | [v2-interface-utilisateur.md](fr/v2-interface-utilisateur.md) | [v2-user-interface.md](en/v2-user-interface.md) |
+| V2 — Navigation & modules | [v2-navigation-modules.md](fr/v2-navigation-modules.md) | [v2-navigation-modules.md](en/v2-navigation-modules.md) |
+| V2 — Billing per school | [v2-facturation-par-ecole.md](fr/v2-facturation-par-ecole.md) | [v2-billing-per-school.md](en/v2-billing-per-school.md) |
+| V2 — CSS design system | [v2-design-system-css.md](fr/v2-design-system-css.md) | [v2-design-system-css.md](en/v2-design-system-css.md) |
 
 ## Repository
 

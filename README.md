@@ -13,6 +13,7 @@ Application web de **planification**, **budgétisation** et **suivi facturation*
 ## Sommaire
 
 - [Fonctionnalités](#fonctionnalités)
+- [V2 — interface utilisateur](#v2--interface-utilisateur)
 - [Stack technique](#stack-technique)
 - [Prérequis](#prérequis)
 - [Installation](#installation)
@@ -30,11 +31,38 @@ Application web de **planification**, **budgétisation** et **suivi facturation*
 ## Fonctionnalités
 
 - Gestion des **écoles** et des **cours** (programmes, volumes, tarifs)
-- **Groupes** et vue **planning** / facturation
-- **Factures** (PDF, suivi paiement)
+- **Groupes** et vue **planning** / calendrier
+- **Préparation facturation** sur la fiche de chaque école (sessions, assignation, création facture)
+- **Liste écoles** avec montants facturés et non facturés
+- **Factures** (PDF, suivi paiement) et **trésorerie**
 - **Documents** rattachés à une école
 - **Import calendrier** (mapping, gestion des évènements)
 - Authentification, rôles utilisateur liés à l’entreprise (mode lecture / édition)
+
+---
+
+## V2 — interface utilisateur
+
+La **v2** apporte une refonte de l’interface (2025–2026) : coque sidebar + topbar, design system CSS modulaire, composants Blade factorisés, mode sombre.
+
+| Changement | Détail |
+|------------|--------|
+| **Accueil** | `/home` — liste des écoles (facturé TTC, non facturé HT + heures) |
+| **Logo** | Retour à l’accueil (`home`) |
+| **Facturation** | Préparation déplacée du module Agenda vers **chaque fiche école** |
+| **Agenda** | Planning + calendrier uniquement |
+| **CSS** | Tokens `theme.css`, tableaux `.data-table`, formulaires `.nice-form` |
+
+**Documentation détaillée (fiches wiki) :**
+
+| Sujet | Français | English |
+|-------|----------|---------|
+| Vue d’ensemble v2 | [v2-interface-utilisateur.md](documentation/fr/v2-interface-utilisateur.md) | [v2-user-interface.md](documentation/en/v2-user-interface.md) |
+| Navigation & modules | [v2-navigation-modules.md](documentation/fr/v2-navigation-modules.md) | [v2-navigation-modules.md](documentation/en/v2-navigation-modules.md) |
+| Facturation par école | [v2-facturation-par-ecole.md](documentation/fr/v2-facturation-par-ecole.md) | [v2-billing-per-school.md](documentation/en/v2-billing-per-school.md) |
+| Design system CSS | [v2-design-system-css.md](documentation/fr/v2-design-system-css.md) | [v2-design-system-css.md](documentation/en/v2-design-system-css.md) |
+
+Index complet : [documentation/README.md](documentation/README.md).
 
 ---
 
@@ -117,6 +145,8 @@ Fichiers de traduction sous `resources/lang/` (français, anglais, italien).
 Variable d’environnement optionnelle : `TERMINOLOGY_PROFILE=education` (défaut pour les invités / sans entreprise). Voir `.env.example`.
 
 Documentation détaillée (fiches wiki, FR/EN) : [documentation/](documentation/README.md) — [fr/](documentation/fr/README.md) · [en/](documentation/en/README.md).
+
+**V2 interface :** [fr/v2-interface-utilisateur.md](documentation/fr/v2-interface-utilisateur.md) · [en/v2-user-interface.md](documentation/en/v2-user-interface.md).
 
 Le paquet `joedixon/laravel-translation` est présent pour faciliter la gestion des chaînes.
 
@@ -245,4 +275,4 @@ Si le projet vous est utile, vous pouvez soutenir le travail :
 
 ---
 
-*README mis à jour pour refléter le dépôt **VRP-Resource-Planning** et la stack Laravel 11 / Vite.*
+*README mis à jour pour refléter le dépôt **VRP-Resource-Planning**, la stack Laravel 11 / Vite, et la **v2 interface utilisateur**.*
