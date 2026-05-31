@@ -49,3 +49,4 @@ _doc/
 .env.prod
 /public/invoices
 /.design-inspiration
+/bootstrap/cache
