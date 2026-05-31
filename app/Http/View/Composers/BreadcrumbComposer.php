@@ -10,20 +10,27 @@ class BreadcrumbComposer
 {
     public function compose(View $view): void
     {
-        if (! Auth::check() || ! request()->routeIs('planning.*', 'calendar.*', 'invoice.*')) {
+        if (! Auth::check() || request()->routeIs(
+            'login',
+            'register',
+            'password.*',
+            'verification.*',
+            'password.confirm',
+        )) {
             $view->with('breadcrumbUsesSelectors', false);
 
             return;
         }
 
         $isInvoice = request()->routeIs('invoice.*');
+        $isPlanning = request()->routeIs('planning.*');
         $currentYear = session('current_year', now()->format('Y'));
         $currentSemester = session('current_semester', 'all');
 
         $breadcrumbSchools = Auth::user()->getSchools();
         $breadcrumbCourses = collect();
 
-        if (! $isInvoice && ($schoolId = session('school_id'))) {
+        if ($isPlanning && ($schoolId = session('school_id'))) {
             $school = $breadcrumbSchools->firstWhere('id', (int) $schoolId)
                 ?? School::query()
                     ->where('company_id', Auth::user()->company_id)
@@ -41,9 +48,15 @@ class BreadcrumbComposer
             }
         }
 
+        $module = match (true) {
+            $isInvoice => 'invoice',
+            request()->routeIs('planning.*', 'calendar.*') => 'planning',
+            default => 'workload',
+        };
+
         $view->with('breadcrumbUsesSelectors', true);
-        $view->with('breadcrumbModule', $isInvoice ? 'invoice' : 'planning');
-        $view->with('breadcrumbShowCourse', ! $isInvoice);
+        $view->with('breadcrumbModule', $module);
+        $view->with('breadcrumbShowCourse', $isPlanning);
         $view->with('breadcrumbSchools', $breadcrumbSchools);
         $view->with('breadcrumbCourses', $breadcrumbCourses);
     }

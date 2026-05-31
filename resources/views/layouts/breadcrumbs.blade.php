@@ -1,10 +1,12 @@
 @if ($breadcrumbUsesSelectors ?? false)
     @php
-        $breadcrumbModule = $breadcrumbModule ?? 'planning';
-        $breadcrumbShowCourse = $breadcrumbShowCourse ?? true;
-        $schoolsUrl = $breadcrumbModule === 'invoice'
-            ? route('invoice.schools')
-            : route('planning.schools');
+        $breadcrumbModule = $breadcrumbModule ?? 'workload';
+        $breadcrumbShowCourse = $breadcrumbShowCourse ?? false;
+        $schoolsUrl = match ($breadcrumbModule) {
+            'invoice' => route('invoice.schools'),
+            'planning' => route('planning.schools'),
+            default => route('home'),
+        };
         $selectSchoolUrl = $breadcrumbModule === 'invoice'
             ? route('invoice.selectSchool')
             : route('planning.selectSchool');
@@ -81,38 +83,6 @@
                             <img src="{{ asset('icons/add-circle-svgrepo-com.svg') }}" alt="" width="18" height="18" decoding="async">
                         </a>
                     @endif
-                </li>
-            @endif
-        </ul>
-    </nav>
-@elseif (session('school') !== null || session('course') !== null)
-    @php
-        $schoolsSelectionUrl = request()->routeIs('planning.*', 'calendar.*')
-            ? route('planning.schools')
-            : route('home');
-    @endphp
-
-    <nav class="breadcrumb" aria-label="Breadcrumb">
-        <ul>
-            <li>
-                <a href="{{ $schoolsSelectionUrl }}">{{ __('messages.schools') }}</a>
-            </li>
-            @if (session('school') !== null)
-                <li aria-hidden="true">›</li>
-                <li>
-                    <form action="{{ route('school.show', session('school_id')) }}" method="get">
-                        @csrf
-                        <button type="submit">{{ session('school') }}</button>
-                    </form>
-                </li>
-            @endif
-            @if (session('course') !== null)
-                <li aria-hidden="true">›</li>
-                <li>
-                    <form action="{{ route('course.show', session('course_id')) }}" method="get">
-                        @csrf
-                        <button type="submit">{{ session('course') }}</button>
-                    </form>
                 </li>
             @endif
         </ul>
