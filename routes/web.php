@@ -115,6 +115,8 @@ Route::middleware(['auth', SetTerminologyLocale::class])->group(function () {
 
     Route::resource('/program', ProgramController::class);
 
+    Route::get('/invoice/schools', [InvoiceController::class, 'schools'])->name('invoice.schools');
+    Route::post('/invoice/context/school', [InvoiceController::class, 'selectSchool'])->name('invoice.selectSchool');
     Route::get('/invoice/payed/{invoice_id}', [InvoiceController::class, 'payed'])->name('invoice.payed');
     Route::resource('/invoice', InvoiceController::class);
     Route::resource('/documents', DocumentController::class);

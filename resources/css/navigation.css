@@ -140,6 +140,16 @@
     box-shadow: var(--shadow-sm);
 }
 
+.module-tab--disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+.module-tab--disabled.active {
+    opacity: 0.55;
+}
+
 .page-actions {
     display: flex;
     flex-wrap: wrap;

@@ -25,6 +25,45 @@ class InvoiceController extends Controller
     }
 
     /**
+     * Clear school context and return to the invoice list.
+     */
+    public function schools()
+    {
+        session()->forget('course');
+        session()->forget('course_id');
+        session()->forget('school');
+        session()->forget('school_id');
+
+        return redirect()->route('invoice.index');
+    }
+
+    public function selectSchool(Request $request)
+    {
+        $validated = $request->validate([
+            'school_id' => 'required|exists:schools,id',
+        ]);
+
+        $school = Auth::user()->getSchools()->firstWhere('id', (int) $validated['school_id']);
+
+        if (! $school) {
+            abort(403);
+        }
+
+        session()->put('school', $school->name);
+        session()->put('school_id', $school->id);
+        session()->forget('course');
+        session()->forget('course_id');
+
+        $redirect = $request->input('redirect');
+
+        if (is_string($redirect) && $redirect !== '' && str_starts_with($redirect, url('/'))) {
+            return redirect()->to($redirect);
+        }
+
+        return redirect()->route('invoice.index');
+    }
+
+    /**
      * Display a listing of the resource.
      */
     public function index()
@@ -46,7 +85,20 @@ class InvoiceController extends Controller
      */
     public function create(Request $request)
     {
-        $school_id = $request->school_id;
+        $school_id = $request->school_id ?? session('school_id');
+
+        if (! $school_id) {
+            session()->flash('warning', __('messages.invoice_create_requires_school'));
+
+            return redirect()->route('invoice.index');
+        }
+
+        $school = Auth::user()->getSchools()->firstWhere('id', (int) $school_id);
+
+        if (! $school) {
+            abort(403);
+        }
+
         $course_id = $request->course_id;
         $bill_date = date('d/m/Y', strtotime($request->bill_date ?? 'now'));
         $month = $request->month ?? date('m');
@@ -58,10 +110,9 @@ class InvoiceController extends Controller
         $invoice_id = $user->company->bill_prefix.$bill_number;
 
         $company = $user->company;
-        $school = School::find($school_id);
 
         if ($cmd == 'detailed') {
-            [$items, $total_amount] = Tools::getInvoiceDetails($school_id, $month, $year, $invoice_id, false);
+            [$items, $total_amount] = Tools::getInvoiceDetails($school->id, $month, $year, $invoice_id, false);
         } else {
             $items = [];
             $total_amount = 0;

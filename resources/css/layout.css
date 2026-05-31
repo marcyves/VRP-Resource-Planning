@@ -235,6 +235,7 @@ nav.breadcrumb .breadcrumb__select:focus {
 .icon.icon--validate,
 .icon.icon--validate-cancel,
 .icon.icon--pdf-download,
+.icon.icon--pdf-view,
 .icon.icon--invoice-manual,
 .icon.icon--archive {
     box-sizing: border-box;
@@ -256,6 +257,7 @@ nav.breadcrumb .breadcrumb__select:focus {
 .icon.icon--validate:hover,
 .icon.icon--validate-cancel:hover,
 .icon.icon--pdf-download:hover,
+.icon.icon--pdf-view:hover,
 .icon.icon--invoice-manual:hover,
 .icon.icon--archive:hover {
     background: var(--icon-action-hover-bg);
@@ -277,6 +279,7 @@ nav.breadcrumb .breadcrumb__select:focus {
 .icon.icon--validate:focus-visible,
 .icon.icon--validate-cancel:focus-visible,
 .icon.icon--pdf-download:focus-visible,
+.icon.icon--pdf-view:focus-visible,
 .icon.icon--invoice-manual:focus-visible,
 .icon.icon--archive:focus-visible {
     outline: 2px solid var(--brand-secondary);
@@ -301,6 +304,7 @@ nav.breadcrumb .breadcrumb__select:focus {
 .icon.icon--validate svg,
 .icon.icon--validate-cancel svg,
 .icon.icon--pdf-download svg,
+.icon.icon--pdf-view svg,
 .icon.icon--archive svg {
     width: 1.125rem;
     height: 1.125rem;
@@ -318,40 +322,6 @@ nav.breadcrumb .breadcrumb__select:focus {
     background: transparent;
     border-color: var(--icon-action-border);
     box-shadow: none;
-}
-
-/* Bouton « voir » PDF : proportions proches du logo, sans étirement en carré */
-.icon.icon--pdf-view {
-    box-sizing: border-box;
-    width: 2.25rem;
-    height: 1.75rem;
-    margin: 2px;
-    padding: 0.1rem 0.2rem;
-    border: 1px solid var(--icon-action-border);
-    border-radius: var(--rounded-md);
-    background: transparent;
-    cursor: pointer;
-    transition: background-color 0.15s ease, border-color 0.15s ease;
-}
-
-.icon.icon--pdf-view:hover {
-    background: var(--icon-action-hover-bg);
-    border-color: var(--icon-action-hover-border);
-}
-
-.icon.icon--pdf-view:focus-visible {
-    outline: 2px solid var(--brand-secondary);
-    outline-offset: 2px;
-}
-
-.icon.icon--pdf-view img {
-    width: auto;
-    height: auto;
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: contain;
-    display: block;
-    filter: var(--icon-action-img-filter);
 }
 
 /* Animations / Transitions Utilities */

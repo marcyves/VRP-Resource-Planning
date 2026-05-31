@@ -57,8 +57,8 @@
                         @endif
                     </td>
                     <td class="card-actions">
-                        <a href="{{ route('invoice.show', $bill->id) }}" class="btn-icon icon icon--pdf-view" title="{{ __('messages.invoice_view') }}" aria-label="{{ __('messages.invoice_view') }}">
-                            <img src="{{ asset('icons/pdf.png') }}" alt="" decoding="async">
+                        <a href="{{ route('invoice.show', $bill->id) }}" class="icon icon--pdf-view" title="{{ __('messages.invoice_view') }}" aria-label="{{ __('messages.invoice_view') }}">
+                            <x-icon-pdf-view />
                         </a>
                         @if (Auth::user()->getMode() == 'Edit')
                             @php

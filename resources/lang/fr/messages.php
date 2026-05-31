@@ -53,6 +53,7 @@ return [
     'invoices' => 'Factures',
     'invoices_by_school' => 'Factures par école',
     'invoice_create' => 'Créer une facture',
+    'invoice_create_requires_school' => 'Sélectionnez une école dans le fil d’Ariane pour créer une facture.',
     'invoice_list' => 'Factures',
     'invoice_payed' => 'Facture payée',
     'mark_as_paid' => 'Marquer comme payée',

@@ -31,6 +31,7 @@ return [
     'hours_worked' => 'Hours Worked',
     'hours_initial' => 'h',
     'invoice_create' => 'Create invoice',
+    'invoice_create_requires_school' => 'Select a school in the breadcrumb to create an invoice.',
     'monthly_gain' => 'Monthly Gain',
     'name' => 'Name',
     'planning' => 'Planning',

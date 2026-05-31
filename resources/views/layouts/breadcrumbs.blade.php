@@ -1,8 +1,20 @@
 @if ($breadcrumbUsesSelectors ?? false)
+    @php
+        $breadcrumbModule = $breadcrumbModule ?? 'planning';
+        $breadcrumbShowCourse = $breadcrumbShowCourse ?? true;
+        $schoolsUrl = $breadcrumbModule === 'invoice'
+            ? route('invoice.schools')
+            : route('planning.schools');
+        $selectSchoolUrl = $breadcrumbModule === 'invoice'
+            ? route('invoice.selectSchool')
+            : route('planning.selectSchool');
+        $selectCourseUrl = route('planning.selectCourse');
+    @endphp
+
     <nav class="breadcrumb" aria-label="Breadcrumb">
         <ul>
             <li class="breadcrumb__segment">
-                <a href="{{ route('planning.schools') }}">{{ __('messages.schools') }}</a>
+                <a href="{{ $schoolsUrl }}">{{ __('messages.schools') }}</a>
                 @if (Auth::user()->getMode() == 'Edit')
                     <a
                         href="{{ route('home') }}#school-create-panel"
@@ -16,7 +28,7 @@
             </li>
             <li aria-hidden="true">›</li>
             <li class="breadcrumb__segment">
-                <form class="breadcrumb__form" action="{{ route('planning.selectSchool') }}" method="post">
+                <form class="breadcrumb__form" action="{{ $selectSchoolUrl }}" method="post">
                     @csrf
                     <input type="hidden" name="redirect" value="{{ url()->current() }}">
                     <select
@@ -38,10 +50,10 @@
                     </select>
                 </form>
             </li>
-            @if (session('school_id'))
+            @if ($breadcrumbShowCourse && session('school_id'))
                 <li aria-hidden="true">›</li>
                 <li class="breadcrumb__segment">
-                    <form class="breadcrumb__form" action="{{ route('planning.selectCourse') }}" method="post">
+                    <form class="breadcrumb__form" action="{{ $selectCourseUrl }}" method="post">
                         @csrf
                         <input type="hidden" name="redirect" value="{{ url()->current() }}">
                         <select
