@@ -10,17 +10,18 @@ main > section {
 }
 
 /* Pied de page global : bandeau pleine largeur, sobre (pas le même traitement que les sections) */
-body > footer {
+body > footer,
+.app-canvas > footer {
     margin: 0;
     padding: var(--spacing-4) var(--spacing-6);
     width: 100%;
     max-width: none;
     border-radius: 0;
     border: none;
-    border-top: var(--border-standard);
+    border-top: 1px solid var(--nav-border);
     box-shadow: none;
     backdrop-filter: none;
-    background: var(--surface-container-lowest);
+    background: var(--footer-bg);
     color: var(--text-secondary);
     font-size: 0.8125rem;
     letter-spacing: 0.02em;

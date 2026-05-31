@@ -22,10 +22,10 @@
     --feedback-danger-text: #fee2e2;
 
     /* Surfaces */
-    --surface-page: #f7f9fb;
+    --surface-page: #f4f6f9;
     --surface-container-lowest: #ffffff;
-    --surface-container-low: #f2f4f6;
-    --surface-container: #eceef0;
+    --surface-container-low: #eef1f5;
+    --surface-container: #e2e8f0;
     --surface-card: #ffffff;
     --surface-nav: var(--brand-primary);
 
@@ -39,12 +39,21 @@
     /* Borders & Shadows */
     --border-subtle: #e2e8f0;
     --border-standard: 1px solid #e2e8f0;
-    --shadow-sm: 0 1px 2px 0 #0000000d;
-    --shadow-md: 0 4px 6px -1px #0000000d, 0 2px 4px -2px #0000000d;
-    --shadow-lg: 0 10px 15px -3px #0000000d, 0 4px 6px -4px #0000000d;
+    --shadow-sm: 0 1px 2px 0 #0f172a0a;
+    --shadow-md: 0 4px 12px -2px #0f172a0f, 0 2px 4px -2px #0f172a0a;
+    --shadow-lg: 0 12px 24px -4px #0f172a14, 0 4px 8px -4px #0f172a0a;
 
-    /* Component tokens */
-    --topbar-bg: #ffffffcc;
+    /* Shell — variante C moderne (neutres + accent bleu) */
+    --nav-bg: #f8f9fb;
+    --nav-bg-hover: #eef1f5;
+    --nav-border: #e2e8f0;
+    --header-bg: #ffffff;
+    --footer-bg: #ffffff;
+    --topbar-bg: #ffffff;
+    --tabs-track-bg: #eef1f5;
+    --chrome-bg: var(--nav-bg);
+    --chrome-bg-hover: var(--nav-bg-hover);
+    --chrome-border: var(--nav-border);
     --backdrop-overlay: #191c1e66;
     --surface-input: #ffffff;
     --surface-input-border: var(--border-subtle);
@@ -63,7 +72,7 @@
     --btn-secondary-border: var(--border-subtle);
     --btn-secondary-hover-bg: var(--surface-container-low);
     --btn-secondary-hover-border: #cbd5e1;
-    --sidebar-link-active-bg: var(--surface-accent-soft);
+    --sidebar-link-active-bg: #ffffff;
     --sidebar-link-active-color: var(--brand-accent);
     --sidebar-link-hover-text: var(--brand-primary);
 
@@ -232,8 +241,8 @@ footer {
     box-sizing: border-box;
     margin-top: auto;
     padding: var(--spacing-4) var(--spacing-6);
-    border-top: var(--border-standard);
-    background: var(--surface-container-lowest);
+    border-top: 1px solid var(--nav-border);
+    background: var(--footer-bg);
     color: var(--text-secondary);
     font-size: 0.8125rem;
     text-align: center;

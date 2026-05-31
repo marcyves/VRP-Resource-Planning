@@ -42,8 +42,8 @@
     flex-direction: column;
     width: var(--sidebar-width);
     padding: 1.5rem 0;
-    background: var(--surface-container-lowest);
-    border-right: 1px solid var(--border-subtle);
+    background: var(--nav-bg);
+    border-right: 1px solid var(--nav-border);
 }
 
 .app-sidebar__brand {
@@ -153,7 +153,7 @@
     gap: 0.25rem;
     padding: 1rem 0.75rem 0;
     margin-top: auto;
-    border-top: 1px solid var(--border-subtle);
+    border-top: 1px solid var(--nav-border);
 }
 
 .sidebar-link {
@@ -188,7 +188,7 @@
 
 .sidebar-link:hover {
     color: var(--sidebar-link-hover-text);
-    background: var(--surface-container-low);
+    background: var(--nav-bg-hover);
 }
 
 .sidebar-link:focus-visible {
@@ -200,8 +200,8 @@
     color: var(--sidebar-link-active-color);
     font-weight: 600;
     background: var(--sidebar-link-active-bg);
-    border-color: var(--border-subtle);
-    box-shadow: var(--shadow-sm);
+    border-color: var(--nav-border);
+    box-shadow: 0 1px 3px #0f172a0f;
 }
 
 .sidebar-link--button {
@@ -228,9 +228,9 @@
     display: flex;
     flex-direction: column;
     align-items: stretch;
-    background: var(--topbar-bg);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid var(--border-subtle);
+    background: var(--header-bg);
+    border-bottom: 1px solid var(--nav-border);
+    box-shadow: 0 1px 0 #0f172a06;
 }
 
 .app-topbar__main {
@@ -366,6 +366,13 @@
     max-width: var(--container-max);
     margin: 0 auto;
     padding: var(--spacing-6);
+}
+
+.app-canvas > footer {
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    border-radius: 0;
 }
 
 @media (max-width: 1023px) {

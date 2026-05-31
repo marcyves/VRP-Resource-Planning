@@ -30,7 +30,16 @@ html[data-theme="dark"] {
     --shadow-md: 0 4px 6px -1px #00000059, 0 2px 4px -2px #00000040;
     --shadow-lg: 0 10px 15px -3px #00000059, 0 4px 6px -4px #00000040;
 
-    --topbar-bg: #1e293bcc;
+    --topbar-bg: #1e293bf2;
+    --nav-bg: #141a24;
+    --nav-bg-hover: #1e293b;
+    --nav-border: #334155;
+    --header-bg: #1e293bf2;
+    --footer-bg: #141a24;
+    --tabs-track-bg: #1e293b;
+    --chrome-bg: var(--nav-bg);
+    --chrome-bg-hover: var(--nav-bg-hover);
+    --chrome-border: var(--nav-border);
     --backdrop-overlay: #02061799;
     --surface-input: #0f172a;
     --surface-input-border: #475569;
@@ -51,7 +60,7 @@ html[data-theme="dark"] {
     --btn-secondary-hover-bg: #334155;
     --btn-secondary-hover-border: #64748b;
 
-    --sidebar-link-active-bg: #1e3a8a66;
+    --sidebar-link-active-bg: #1e293b;
     --sidebar-link-active-color: #90a8ff;
     --sidebar-link-hover-text: #dce1ff;
 
@@ -154,6 +163,8 @@ html[data-theme="dark"] .sidebar-link--active {
 
 html[data-theme="dark"] .module-tab.active {
     color: var(--sidebar-link-active-color);
+    border-color: var(--brand-accent);
+    background: var(--surface-container);
 }
 
 html[data-theme="dark"] .module-tab:hover {
