@@ -96,7 +96,15 @@
     }
 }
 
-.treasury-summary-grid article,
+.treasury-summary-grid article {
+    padding: var(--spacing-4);
+    border: var(--border-standard);
+    border-radius: var(--rounded-xl);
+    background: var(--surface-container-lowest);
+    box-shadow: var(--shadow-sm);
+    overflow: visible;
+}
+
 .treasury-report-card {
     padding: var(--spacing-4);
     border: var(--border-standard);
@@ -171,8 +179,17 @@
 .treasury-summary-table {
     width: 100%;
     margin-top: var(--spacing-2);
+    table-layout: fixed;
     background: transparent;
     box-shadow: none;
+}
+
+.treasury-summary-table th:first-child {
+    width: 42%;
+}
+
+.treasury-summary-table td:last-child {
+    width: 58%;
 }
 
 .treasury-summary-table th,
@@ -212,12 +229,90 @@
     font-weight: 500;
 }
 
+.treasury-opening-balance {
+    display: block;
+    width: max-content;
+    max-width: 100%;
+    margin-bottom: var(--spacing-3);
+    padding: var(--spacing-3);
+    border: var(--border-standard);
+    border-radius: var(--rounded-lg);
+    background: var(--surface-container-lowest);
+    box-shadow: var(--shadow-sm);
+    overflow: visible;
+}
+
 .treasury-summary-table__total th,
 .treasury-summary-table__total td {
     padding-top: var(--spacing-2);
     border-top: var(--border-standard);
     color: var(--text-heading);
     font-size: 1rem;
+}
+
+main form.treasury-balance-form--inline {
+    display: block;
+    margin: 0;
+    gap: 0;
+    max-width: 100%;
+    text-align: left;
+}
+
+main form.treasury-balance-form--inline > .treasury-balance-form__fields {
+    display: inline-flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 0.5rem;
+    width: max-content;
+    max-width: none;
+}
+
+main form.treasury-balance-form--inline input.form-input {
+    width: auto;
+    flex: 0 0 auto;
+    box-sizing: border-box;
+}
+
+main form.treasury-balance-form--inline input.form-input[type="date"] {
+    width: 10.25rem;
+    flex: 0 0 10.25rem;
+}
+
+main form.treasury-balance-form--inline input.treasury-balance-input--amount {
+    width: 7.75rem;
+    flex: 0 0 7.75rem;
+    padding-right: 0.625rem;
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+    -moz-appearance: textfield;
+    appearance: textfield;
+}
+
+main form.treasury-balance-form--inline input.treasury-balance-input--amount::-webkit-outer-spin-button,
+main form.treasury-balance-form--inline input.treasury-balance-input--amount::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+main form.treasury-balance-form--inline .btn {
+    flex: 0 0 auto;
+    flex-shrink: 0;
+    white-space: nowrap;
+}
+
+.treasury-balance-readonly {
+    display: inline-flex;
+    flex-flow: row nowrap;
+    align-items: baseline;
+    justify-content: flex-start;
+    gap: var(--spacing-2);
+    white-space: nowrap;
+}
+
+.treasury-balance-readonly__date {
+    color: var(--text-secondary);
+    font-weight: 500;
 }
 
 @media (max-width: 720px) {
@@ -240,7 +335,7 @@
     max-width: none;
 }
 
-.treasury-balance-form__fields {
+.treasury-balance-form:not(.treasury-balance-form--inline) .treasury-balance-form__fields {
     display: grid;
     gap: var(--spacing-2);
     grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));

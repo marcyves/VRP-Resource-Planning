@@ -40,36 +40,25 @@
 
     <section>
         <div class="treasury-summary-grid">
-            <article>
-                <h3>{{ __('messages.invoices_ttc') }}</h3>
-                <strong>@money($invoiceTotal)</strong>
-            </article>
-            <article>
-                <h3>{{ __('messages.opening_balance') }}</h3>
-                @if (Auth::user()->getMode() == 'Edit')
-                    <form class="treasury-balance-form nice-form nice-form--embedded" method="post" action="{{ route('treasury.balance.update') }}">
-                        @csrf
-                        <div class="treasury-balance-form__fields">
-                            <div class="form-group">
-                                <x-input-label for="opening_date">{{ __('messages.date') }}</x-input-label>
-                                <x-text-input type="date" name="opening_date" id="opening_date" value="{{ $treasuryBalance->opening_date->format('Y-m-d') }}" />
-                            </div>
-                            <div class="form-group">
-                                <x-input-label for="opening_amount">{{ __('messages.amount') }}</x-input-label>
-                                <x-text-input class="treasury-balance-input--amount" type="number" step="0.01" name="opening_amount" id="opening_amount" value="{{ $treasuryBalance->opening_amount }}" />
-                            </div>
-                        </div>
-                        <div class="form-actions">
-                            <x-button-primary class="btn--compact">{{ __('messages.save') }}</x-button-primary>
-                        </div>
-                    </form>
-                @else
-                    <span>@formatDate($treasuryBalance->opening_date)</span>
-                    <strong>@money($treasuryBalance->opening_amount)</strong>
-                @endif
-            </article>
             <article class="treasury-summary-card--wide">
-                <h3>{{ __('messages.closing_balance') }}</h3>
+                <h3>{{ __('messages.balance_opening_heading') }}</h3>
+                <div class="treasury-opening-balance">
+                    @if (Auth::user()->getMode() == 'Edit')
+                        <form class="treasury-balance-form treasury-balance-form--inline nice-form nice-form--embedded" method="post" action="{{ route('treasury.balance.update') }}">
+                            @csrf
+                            <div class="treasury-balance-form__fields">
+                                <x-text-input type="date" name="opening_date" id="opening_date" value="{{ $treasuryBalance->opening_date->format('Y-m-d') }}" aria-label="{{ __('messages.date') }}" />
+                                <x-text-input class="treasury-balance-input--amount" type="number" step="0.01" name="opening_amount" id="opening_amount" value="{{ $treasuryBalance->opening_amount }}" aria-label="{{ __('messages.amount') }}" />
+                                <x-button-primary class="btn--compact">{{ __('messages.save') }}</x-button-primary>
+                            </div>
+                        </form>
+                    @else
+                        <span class="treasury-balance-readonly">
+                            <span class="treasury-balance-readonly__date">@formatDate($treasuryBalance->opening_date)</span>
+                            <strong>@money($treasuryBalance->opening_amount)</strong>
+                        </span>
+                    @endif
+                </div>
                 <table class="treasury-summary-table">
                     <tbody>
                         <tr>
@@ -97,7 +86,7 @@
                             <td class="money">- @money($standaloneTotal)</td>
                         </tr>
                         <tr class="treasury-summary-table__total">
-                            <th>{{ __('messages.closing_balance') }}</th>
+                            <th>{{ __('messages.balance_closing') }}</th>
                             <td class="money">@money($closingBalance)</td>
                         </tr>
                     </tbody>
