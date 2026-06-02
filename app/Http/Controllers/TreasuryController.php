@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BankStatementLine;
 use App\Models\Expense;
 use App\Models\ExpenseReport;
 use App\Models\Invoice;
@@ -54,7 +55,6 @@ class TreasuryController extends Controller
             ->whereYear('expense_date', $year)
             ->get();
         $plannedAmounts = $user->getPlannedAmountPerMonth($year);
-        $monthlyChartData = $this->monthlyTreasuryChartData($year, $invoices, $allExpenses, $plannedAmounts);
         $treasuryBalance = TreasuryBalance::firstOrCreate(
             [
                 'company_id' => $companyId,
@@ -65,6 +65,7 @@ class TreasuryController extends Controller
                 'opening_amount' => 0,
             ]
         );
+        $monthlyChartData = $this->monthlyTreasuryChartData($year, $invoices, $allExpenses, $plannedAmounts, $treasuryBalance, $companyId);
         $closingBalance = $treasuryBalance->opening_amount
             + $invoicePaidTotal
             - $submittedExpenseReportTotal
@@ -395,9 +396,19 @@ class TreasuryController extends Controller
             : redirect()->route('treasury.index');
     }
 
-    private function monthlyTreasuryChartData(int $year, $invoices, $expenses, array $plannedAmounts): array
+    private function monthlyTreasuryChartData(int $year, $invoices, $expenses, array $plannedAmounts, TreasuryBalance $treasuryBalance, int $companyId): array
     {
-        $months = collect(range(1, 12))->map(function (int $month) use ($year, $invoices, $expenses, $plannedAmounts) {
+        $openingDate = Carbon::parse($treasuryBalance->opening_date)->startOfDay();
+        $openingAmount = (float) $treasuryBalance->opening_amount;
+        $bankLines = $this->deduplicatedBankLinesBetween(
+            $companyId,
+            $openingDate,
+            Carbon::create($year, 12, 31)->endOfDay(),
+        );
+
+        $runningBankBalance = null;
+
+        $months = collect(range(1, 12))->map(function (int $month) use ($year, $invoices, $expenses, $plannedAmounts, $bankLines, $openingDate, $openingAmount, &$runningBankBalance) {
             $issued = $invoices
                 ->filter(fn ($invoice) => Carbon::parse($invoice->bill_date)->month === $month)
                 ->sum('amount');
@@ -409,16 +420,44 @@ class TreasuryController extends Controller
                 ->sum('amount');
             $planned = ($plannedAmounts[$month - 1] ?? 0) * 1.2;
 
+            $monthEnd = Carbon::create($year, $month, 1)->endOfDay();
+            $bank = null;
+
+            if ($monthEnd->gte($openingDate)) {
+                if ($runningBankBalance === null) {
+                    $runningBankBalance = $openingAmount;
+                    $runningBankBalance += $bankLines
+                        ->filter(fn (BankStatementLine $line) => $line->operation_date->gte($openingDate)
+                            && $line->operation_date->lt(Carbon::create($year, $month, 1)->startOfMonth()))
+                        ->sum('amount');
+                }
+
+                $runningBankBalance += $bankLines
+                    ->filter(fn (BankStatementLine $line) => $line->operation_date->month === $month
+                        && $line->operation_date->year === $year
+                        && $line->operation_date->gte($openingDate))
+                    ->sum('amount');
+
+                $bank = $runningBankBalance;
+            }
+
             return [
                 'label' => Carbon::create($year, $month, 1)->translatedFormat('M'),
                 'issued' => $issued,
                 'paid' => $paid,
                 'spent' => $spent,
                 'planned' => $planned,
+                'bank' => $bank,
             ];
         });
 
-        $max = max(1, $months->flatMap(fn ($month) => [$month['issued'], $month['paid'], $month['spent'], $month['planned']])->max());
+        $max = max(1, $months->flatMap(fn ($month) => array_filter([
+            $month['issued'],
+            $month['paid'],
+            $month['spent'],
+            $month['planned'],
+            $month['bank'],
+        ], fn ($value) => $value !== null))->max());
 
         return $months
             ->map(fn (array $month) => $month + [
@@ -426,8 +465,28 @@ class TreasuryController extends Controller
                 'paid_height' => max(2, round($month['paid'] / $max * 100)),
                 'spent_height' => max(2, round($month['spent'] / $max * 100)),
                 'planned_height' => max(2, round($month['planned'] / $max * 100)),
+                'bank_height' => $month['bank'] === null ? 0 : max(2, round($month['bank'] / $max * 100)),
             ])
             ->all();
+    }
+
+    /**
+     * @return \Illuminate\Support\Collection<int, BankStatementLine>
+     */
+    private function deduplicatedBankLinesBetween(int $companyId, Carbon $from, Carbon $to)
+    {
+        return BankStatementLine::where('company_id', $companyId)
+            ->whereBetween('operation_date', [$from->toDateString(), $to->toDateString()])
+            ->orderBy('operation_date')
+            ->orderBy('row_index')
+            ->get()
+            ->unique(fn (BankStatementLine $line) => implode('|', [
+                $line->operation_date->toDateString(),
+                $line->label,
+                number_format((float) $line->debit, 2, '.', ''),
+                number_format((float) $line->credit, 2, '.', ''),
+            ]))
+            ->values();
     }
 
     private function buildReportPdf(ExpenseReport $expenseReport): TCPDF

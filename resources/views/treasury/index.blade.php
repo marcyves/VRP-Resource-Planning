@@ -24,6 +24,9 @@
                             <span class="treasury-histogram__bar treasury-histogram__bar--paid" style="height: {{ $month['paid_height'] }}%;" title="{{ __('messages.paid_invoices_ttc') }}: @money($month['paid'])"></span>
                             <span class="treasury-histogram__bar treasury-histogram__bar--spent" style="height: {{ $month['spent_height'] }}%;" title="{{ __('messages.expenses') }}: @money($month['spent'])"></span>
                             <span class="treasury-histogram__bar treasury-histogram__bar--planned" style="height: {{ $month['planned_height'] }}%;" title="{{ __('messages.planned_amounts') }}: @money($month['planned'])"></span>
+                            @if ($month['bank'] !== null)
+                                <span class="treasury-histogram__bar treasury-histogram__bar--bank" style="height: {{ $month['bank_height'] }}%;" title="{{ __('messages.bank_balance') }}: @money($month['bank'])"></span>
+                            @endif
                         </div>
                         <span class="treasury-histogram__label">{{ $month['label'] }}</span>
                     </div>
@@ -34,6 +37,7 @@
                 <span><i class="treasury-histogram__swatch treasury-histogram__swatch--paid"></i>{{ __('messages.paid_invoices_ttc') }}</span>
                 <span><i class="treasury-histogram__swatch treasury-histogram__swatch--spent"></i>{{ __('messages.expenses') }}</span>
                 <span><i class="treasury-histogram__swatch treasury-histogram__swatch--planned"></i>{{ __('messages.planned_amounts') }}</span>
+                <span><i class="treasury-histogram__swatch treasury-histogram__swatch--bank"></i>{{ __('messages.bank_balance') }}</span>
             </div>
         </div>
     </section>

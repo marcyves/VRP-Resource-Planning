@@ -13,6 +13,7 @@ use App\Http\Controllers\PlanningController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProgramController;
 use App\Http\Controllers\SchoolController;
+use App\Http\Controllers\BankReconciliationController;
 use App\Http\Controllers\TreasuryController;
 use App\Http\Middleware\SetTerminologyLocale;
 use Illuminate\Support\Facades\DB;
@@ -132,6 +133,12 @@ Route::middleware(['auth', SetTerminologyLocale::class])->group(function () {
     Route::get('/treasury/expenses/{expense}/edit', [TreasuryController::class, 'editExpense'])->name('treasury.expenses.edit');
     Route::put('/treasury/expenses/{expense}', [TreasuryController::class, 'updateExpense'])->name('treasury.expenses.update');
     Route::delete('/treasury/expenses/{expense}', [TreasuryController::class, 'destroyExpense'])->name('treasury.expenses.destroy');
+
+    Route::get('/treasury/reconciliation', [BankReconciliationController::class, 'index'])->name('treasury.reconciliation.index');
+    Route::post('/treasury/reconciliation/import', [BankReconciliationController::class, 'storeImport'])->name('treasury.reconciliation.import');
+    Route::get('/treasury/reconciliation/{import}', [BankReconciliationController::class, 'show'])->name('treasury.reconciliation.show');
+    Route::post('/treasury/reconciliation/{import}/lines/{line}/match', [BankReconciliationController::class, 'match'])->name('treasury.reconciliation.match');
+    Route::delete('/treasury/reconciliation/{import}/matches/{reconciliation}', [BankReconciliationController::class, 'unmatch'])->name('treasury.reconciliation.unmatch');
 
     Route::get('/company/', [CompanyController::class, 'show'])->name('company.show');
     Route::get('/company/edit', [CompanyController::class, 'edit'])->name('company.edit');
