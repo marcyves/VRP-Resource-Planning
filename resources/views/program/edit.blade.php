@@ -16,6 +16,13 @@
                 <x-input-error :messages="$errors->get('name')" />
             </div>
 
+            <div class="form-group">
+                <x-input-label for="short_description">{{ __('messages.short_description') }}</x-input-label>
+                <x-text-input type="text" name="short_description" id="short_description" value="{{ old('short_description', $program->short_description) }}" maxlength="80" />
+                <p class="form-hint">{{ __('messages.program_short_description_help') }}</p>
+                <x-input-error :messages="$errors->get('short_description')" />
+            </div>
+
             <div class="form-actions">
                 <a class="btn btn-secondary" href="{{ route('program.show', $program->id) }}">{{ __('messages.cancel') }}</a>
                 <x-button-primary>{{ __('messages.update') }}</x-button-primary>

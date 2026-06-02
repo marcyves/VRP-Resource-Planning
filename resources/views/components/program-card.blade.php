@@ -1,10 +1,13 @@
 @props(['program'])
 <li>
     <div class="card-content">
-        <a href="{{ route('program.show', $program->id) }}" class="card-content-text">
+        <a href="{{ route('program.show', $program->id) }}" class="card-content-text" title="{{ $program->name }}">
             <x-button-primary class="card-title btn-text-link">
-                {{ $program->name }}
+                {{ $program->listLabel() }}
             </x-button-primary>
+            @if($program->short_description)
+                <span class="card-subtitle">{{ $program->name }}</span>
+            @endif
         </a>
         @if (Auth::user()->getMode() == 'Edit')
             <div class="card-content-end">

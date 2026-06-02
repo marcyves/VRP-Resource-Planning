@@ -23,7 +23,7 @@
                 <x-input-label for="program_id">{{ __('messages.program') }}</x-input-label>
                 <select name="program_id" id="program_id" class="form-input">
                     @foreach ($programs as $program)
-                    <option value="{{$program->id}}">{{$program->name}}</option>
+                    <option value="{{ $program->id }}" title="{{ $program->name }}">{{ $program->listLabel() }}</option>
                     @endforeach
                 </select>
             </div>

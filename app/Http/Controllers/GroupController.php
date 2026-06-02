@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Course;
 use App\Models\Group;
 use App\Models\GroupCourse;
 use App\Models\PlanningCollection;
@@ -10,6 +11,43 @@ use Illuminate\Support\Facades\Auth;
 
 class GroupController extends Controller
 {
+    private function companyGroup(string $groupId): Group
+    {
+        return Group::forCompany(Auth::user()->company_id)->findOrFail($groupId);
+    }
+
+    private function companyCourse(int $courseId): Course
+    {
+        return Course::query()
+            ->whereHas('school', fn ($q) => $q->where('company_id', Auth::user()->company_id))
+            ->findOrFail($courseId);
+    }
+
+    /**
+     * Course to link on create: explicit route id, otherwise course in session.
+     */
+    private function resolveCourseIdForLink(string|int $routeCourseId): ?int
+    {
+        $id = (int) $routeCourseId;
+        if ($id > 0) {
+            return $id;
+        }
+
+        $sessionCourseId = session('course_id');
+
+        return $sessionCourseId ? (int) $sessionCourseId : null;
+    }
+
+    private function linkGroupToCourse(Group $group, int $courseId): void
+    {
+        $this->companyCourse($courseId);
+
+        GroupCourse::firstOrCreate([
+            'group_id' => $group->id,
+            'course_id' => $courseId,
+        ]);
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -18,27 +56,37 @@ class GroupController extends Controller
         $user = Auth::user();
         $groups = $user->getGroups();
         $current_year = session('current_year', now()->format('Y'));
-        
+        $sessionCourseId = session('course_id');
+        $sessionCourseName = session('course');
+
         $search = request('search');
         $inactiveQuery = $user->getGroupsQuery(false);
         if ($search) {
-            $inactiveQuery->where(function($q) use ($search) {
+            $inactiveQuery->where(function ($q) use ($search) {
                 $q->where('name', 'like', "%$search%")
-                  ->orWhere('short_name', 'like', "%$search%");
+                    ->orWhere('short_name', 'like', "%$search%");
             });
         }
-        $inactive = $inactiveQuery->paginate(15)->withQueryString();
+        $inactive = $inactiveQuery
+            ->paginate(15)
+            ->withQueryString()
+            ->fragment('groups-inactive');
 
-        $list = $groups->map(function(Group $group){
-            return $group->id;
-        });
+        $groupIds = $groups->pluck('id')
+            ->merge($inactive->pluck('id'))
+            ->unique()
+            ->values();
 
-        $courses = GroupCourse::whereIn('group_id', $list)
-            ->join('courses', 'courses.id', '=', 'group_course.course_id');
+        $occurences = Group::planningOccurrencesForIds($groupIds, $current_year);
 
-        $occurences = $groups->getGroupOccurences($current_year);
-
-        return view('group.index', compact('groups', 'occurences', 'inactive', 'courses', 'current_year'));
+        return view('group.index', compact(
+            'groups',
+            'occurences',
+            'inactive',
+            'current_year',
+            'sessionCourseId',
+            'sessionCourseName',
+        ));
     }
 
     /**
@@ -46,7 +94,12 @@ class GroupController extends Controller
      */
     public function create(String $course_id)
     {
-        return view('group.create', compact('course_id'));
+        $linkCourseId = $this->resolveCourseIdForLink($course_id);
+        $linkCourseName = $linkCourseId
+            ? (session('course') ?? $this->companyCourse($linkCourseId)->name)
+            : null;
+
+        return view('group.create', compact('course_id', 'linkCourseId', 'linkCourseName'));
     }
 
     /**
@@ -61,13 +114,8 @@ class GroupController extends Controller
         ]);
         
         $company_id = Auth::user()->company_id;
-        $active = false;
         $year = $request->year ?? now()->format('Y');
-
-        if($course_id ==0 && session('course_id') != null){
-            $course_id = session('course_id');
-            $active = true;
-        }
+        $linkCourseId = $this->resolveCourseIdForLink($course_id);
 
         try{
             $group = Group::create([
@@ -75,23 +123,19 @@ class GroupController extends Controller
                     'short_name' => $request->short_name,
                     'size' => $request->size,
                     'company_id' => $company_id,
-                    'active' => $active,
+                    'active' => true,
                     'year' => $year,
                 ]);
 
             session()->flash('success', __('messages.group_saved_success'));
 
-            if ($course_id == 0){
+            if ($linkCourseId === null) {
                 return redirect(route('group.index'));
-            }else{
-
-                GroupCourse::create([
-                    'group_id' => $group->id,
-                    'course_id' => $course_id
-                ]);
-
-                return redirect(route('course.show', $course_id));
             }
+
+            $this->linkGroupToCourse($group, $linkCourseId);
+
+            return redirect(route('course.show', $linkCourseId));
         }
         catch (\Exception $e) {
             // dd($e);
@@ -107,10 +151,22 @@ class GroupController extends Controller
     public function link(String $group_id)
     {
         $course_id = session()->get('course_id');
-        GroupCourse::create([
+
+        if (! $course_id) {
+            session()->flash('danger', __('messages.group_link_no_course'));
+
+            return redirect()->back();
+        }
+
+        $this->companyCourse((int) $course_id);
+        $group = $this->companyGroup($group_id);
+
+        GroupCourse::firstOrCreate([
             'course_id' => $course_id,
-            'group_id' => $group_id
+            'group_id' => $group->id,
         ]);
+
+        session()->flash('success', __('messages.group_linked_success'));
 
         return redirect()->back();
     }
@@ -120,9 +176,8 @@ class GroupController extends Controller
      */
     public function switch(String $group_id)
     {
-        $group = Group::find($group_id);
-
-        $group->active = !$group->active;
+        $group = $this->companyGroup($group_id);
+        $group->active = ! $group->active;
         $group->save();
 
         return redirect()->back();
@@ -135,13 +190,12 @@ class GroupController extends Controller
     {
         $course_id = session()->get('course_id');
 
-        $group_link = GroupCourse::where([
-            'course_id' => $course_id,
-            'group_id' => $group_id
-        ])->get()[0];
+        $this->companyGroup($group_id);
 
-        $group_link = GroupCourse::findOrFail($group_link->id);
-        $group_link->delete();
+        GroupCourse::where([
+            'course_id' => $course_id,
+            'group_id' => $group_id,
+        ])->delete();
 
         session()->flash('success', __('messages.group_released_success'));
 
@@ -154,6 +208,8 @@ class GroupController extends Controller
      */
     public function show(Group $group)
     {
+        abort_unless($group->company_id === Auth::user()->company_id, 404);
+
         $courses = $group->getCourses();
         $current_year = session('current_year', now()->format('Y'));
         $occurences = (new PlanningCollection([$group]))->getGroupOccurences($current_year);
@@ -166,11 +222,11 @@ class GroupController extends Controller
      */
     public function edit(String $group_id)
     {
-        $group = Group::find($group_id);
-        $user = Auth::user();
-        $courses = $user->getCourses(now()->format('Y'), 'all');
+        $group = $this->companyGroup($group_id);
+        $linkedCourses = $group->getCourses();
+        $returnCourseId = session('course_id');
 
-        return view('group.edit', compact('group', 'courses'));        
+        return view('group.edit', compact('group', 'linkedCourses', 'returnCourseId'));
     }
 
     /**
@@ -185,18 +241,20 @@ class GroupController extends Controller
         ]);
         
         try{
-            $group = Group::findOrFail($group_id);
+            $group = $this->companyGroup($group_id);
             $group->name = $request->name;
             $group->short_name = $request->short_name;
             $group->size = $request->size;
             $group->year = $request->year;
             $group->update();
 
-            //TODO add group_course record to link them
-
             session()->flash('success', __('messages.group_updated_success'));
 
-            return redirect(route('course.show', $request->course_id));
+            if ($request->filled('return_course_id')) {
+                return redirect(route('course.show', $request->return_course_id));
+            }
+
+            return redirect(route('group.show', $group_id));
         }
         catch (\Exception $e) {
             // dd($e);
@@ -211,10 +269,9 @@ class GroupController extends Controller
      */
     public function destroy(String $group_id)
     {
-        $group = Group::findOrFail($group_id);
+        $group = $this->companyGroup($group_id);
 
-        try{
-
+        try {
             $group->delete();
 
             session()->flash('success', __('messages.group_deleted_success'));

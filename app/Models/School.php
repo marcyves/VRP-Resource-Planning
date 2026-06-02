@@ -67,7 +67,7 @@ class School extends Model
     {
         if ($year == 'all') {
             return Course::where('school_id', $this->id)
-                ->select(['courses.*', 'schools.name as school_name', 'programs.name as program_name'])
+                ->select(Course::PROGRAM_SCHOOL_SELECT)
                 ->leftJoin('programs', 'courses.program_id', '=', 'programs.id')
                 ->leftJoin('schools', 'courses.school_id', '=', 'schools.id')
                 ->withCount('groups')
@@ -79,7 +79,7 @@ class School extends Model
                 ->get();
         } else {
             return Course::where('school_id', $this->id)
-                ->select(['courses.*', 'schools.name as school_name', 'programs.name as program_name'])
+                ->select(Course::PROGRAM_SCHOOL_SELECT)
                 ->leftJoin('programs', 'courses.program_id', '=', 'programs.id')
                 ->leftJoin('schools', 'courses.school_id', '=', 'schools.id')
                 ->withCount('groups')

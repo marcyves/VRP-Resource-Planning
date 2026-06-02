@@ -25,8 +25,8 @@
                 <x-input-label for="program_id">{{ __('messages.program') }}</x-input-label>
                 <select name="program_id" id="program_id" class="form-input">
                     @foreach ($programs as $program)
-                    <option value="{{$program->id}}" @if($program->id==$course->program_id) selected @endif>
-                        {{$program->name}}
+                    <option value="{{ $program->id }}" title="{{ $program->name }}" @selected($program->id == $course->program_id)>
+                        {{ $program->listLabel() }}
                     </option>
                     @endforeach
                 </select>

@@ -68,7 +68,7 @@
                             <option value="" @selected(! session('course_id'))>{{ __('messages.course') }}</option>
                             @foreach ($breadcrumbCourses as $course)
                                 <option value="{{ $course->id }}" @selected((int) session('course_id') === (int) $course->id)>
-                                    ({{ $course->program_name }}) {{ $course->name }}
+                                    ({{ $course->programListLabel() }}) {{ $course->name }}
                                 </option>
                             @endforeach
                         </select>

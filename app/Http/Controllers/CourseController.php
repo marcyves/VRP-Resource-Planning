@@ -87,11 +87,13 @@ class CourseController extends Controller
         session()->put('school_id', $course->school_id);
         session()->put('school', $school->name);
 
-        $groups = $course->getGroups();
+        $groups = $course->getLinkedGroups(true);
+        $inactive_linked_groups = $course->getLinkedGroups(false);
         $available_groups = $course->getAvailableGroups();
-        $occurences = $groups->getGroupOccurences();
+        $allLinkedForPlanning = $groups->merge($inactive_linked_groups);
+        $occurences = $allLinkedForPlanning->getGroupOccurences();
 
-        return view('course.show', compact('course', 'groups', 'available_groups', 'occurences'));
+        return view('course.show', compact('course', 'groups', 'inactive_linked_groups', 'available_groups', 'occurences'));
     }
 
     /**

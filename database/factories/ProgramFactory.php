@@ -17,7 +17,8 @@ class ProgramFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => 'Program: '.rand(1,10)
+            'name' => 'Program: '.rand(1, 10),
+            'short_description' => fake()->optional(0.6)->lexify('P-????'),
         ];
     }
 }

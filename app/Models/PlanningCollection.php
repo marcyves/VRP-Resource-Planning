@@ -11,20 +11,10 @@ class PlanningCollection extends Collection
 
     public function getGroupOccurences($year = 'all')
     {
-        $list = $this->map(function(Group $group){
-            return $group->id;
-        });
-
-        $query = Planning::whereIn('group_id', $list)
-        ->select(['plannings.id as planning_id', 'group_id', 'courses.name as course_name', 'begin', 'end'])
-        ->join('courses', 'plannings.course_id', '=', 'courses.id')
-        ->orderBy('begin', 'asc');
-
-        if ($year !== 'all') {
-            $query->whereYear('begin', $year);
-        }
-
-        return $query->get();
+        return Group::planningOccurrencesForIds(
+            $this->map(fn (Group $group) => $group->id),
+            $year
+        );
     }
 
     public function countGroupOccurences()

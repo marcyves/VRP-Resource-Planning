@@ -5,6 +5,10 @@
 
     <x-workload-module-tabs />
 
+    @if($linkCourseId && $linkCourseName)
+        <p class="form-hint form-hint--emphasis">{{ __('messages.group_will_link_session_course', ['name' => $linkCourseName]) }}</p>
+    @endif
+
     <section>
         <form action="{{ route('group.save', $course_id) }}" method="post" class="group-form nice-form">
             @csrf

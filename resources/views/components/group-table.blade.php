@@ -1,6 +1,10 @@
 @props(['groups', 'occurences', 'active' => true])
 
-<ul class="resource-grid{{ $active ? '' : ' resource-grid--inactive' }}">
+<ul @class([
+    'resource-grid',
+    'resource-grid--inactive' => ! $active,
+    'resource-grid--group-tiles' => ! $active,
+])>
     @foreach ($groups as $group)
         @php
             $groupOccurences = $occurences->where('group_id', $group->id);

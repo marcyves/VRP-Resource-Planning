@@ -113,7 +113,7 @@ class CourseCollection extends Collection
         if ($year == 'all'){
             if ($semester == 'all'){
                 return Course::whereIn('school_id', $list)
-            ->select(['courses.*', 'schools.name as school_name', 'programs.name as program_name'])
+            ->select(Course::PROGRAM_SCHOOL_SELECT)
             ->leftJoin('programs', 'courses.program_id', '=', 'programs.id')
             ->leftJoin('schools', 'courses.school_id', '=', 'schools.id')
             ->withCount('groups')
@@ -125,7 +125,7 @@ class CourseCollection extends Collection
             ->get();
             }else{
                 return Course::whereIn('school_id', $list)
-                ->select(['courses.*', 'schools.name as school_name', 'programs.name as program_name'])
+                ->select(Course::PROGRAM_SCHOOL_SELECT)
                 ->leftJoin('programs', 'courses.program_id', '=', 'programs.id')
                 ->leftJoin('schools', 'courses.school_id', '=', 'schools.id')
                 ->withCount('groups')
@@ -138,7 +138,7 @@ class CourseCollection extends Collection
         }else{
             if ($semester == 'all'){
                 return Course::whereIn('school_id', $list)
-                ->select(['courses.*', 'schools.name as school_name', 'programs.name as program_name'])
+                ->select(Course::PROGRAM_SCHOOL_SELECT)
                 ->leftJoin('programs', 'courses.program_id', '=', 'programs.id')
                 ->leftJoin('schools', 'courses.school_id', '=', 'schools.id')
                 ->withCount('groups')
@@ -150,7 +150,7 @@ class CourseCollection extends Collection
                 ->get();
             }else{
                 return Course::whereIn('school_id', $list)
-                ->select(['courses.*', 'schools.name as school_name', 'programs.name as program_name'])
+                ->select(Course::PROGRAM_SCHOOL_SELECT)
                 ->leftJoin('programs', 'courses.program_id', '=', 'programs.id')
                 ->leftJoin('schools', 'courses.school_id', '=', 'schools.id')
                 ->withCount('groups')

@@ -1,16 +1,12 @@
 @props(['course'])
 <tr>
-    <td class="course-table__actions">
-        <form action="{{ route('program.show', $course->program_id) }}" method="get">
-            @csrf
-            <x-button-primary class="btn-text-link">{{ $course->program_name }}</x-button-primary>
-        </form>
+    <td class="course-table__program">
+        <a href="{{ route('program.show', $course->program_id) }}" class="course-table__link">
+            <x-program-list-label :name="$course->program_name" :short-description="$course->program_short_description ?? null" />
+        </a>
     </td>
-    <th scope="row">
-        <form action="{{ route('course.show', $course->id) }}" method="get">
-            @csrf
-            <x-button-primary class="btn-text-link">{{ $course->name }}</x-button-primary>
-        </form>
+    <th scope="row" class="course-table__course">
+        <a href="{{ route('course.show', $course->id) }}" class="course-table__link">{{ $course->name }}</a>
     </th>
     <td>{{ $course->semester }}</td>
     <td>{{ $course->sessions }}</td>

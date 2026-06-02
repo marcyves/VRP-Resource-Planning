@@ -32,12 +32,14 @@ class ProgramController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|max:80',
+            'short_description' => 'nullable|string|max:80',
         ]);
 
         
         try{
             Program::create([
                     'name' => $request->name,
+                    'short_description' => $request->short_description,
                         ]);
 
             session()->flash('success', __('messages.program_saved_success'));
@@ -86,11 +88,13 @@ class ProgramController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|max:80',
+            'short_description' => 'nullable|string|max:80',
         ]);
         
         try{
             $program = Program::findOrFail($program_id);
             $program->name = $request->name;
+            $program->short_description = $request->short_description;
             $program->update();
 
             session()->flash('success', __('messages.program_updated_success'));

@@ -216,7 +216,7 @@ class PlanningController extends Controller
         session()->put('school', $school->name);
         session()->put('school_id', $school->id);
 
-        $groups = $course->getGroups();
+        $groups = $course->getLinkedGroups(true);
         $session_length = $course->session_length;
 
         return view('planning.create', compact('date', 'groups', 'session_length', 'course'));
@@ -336,16 +336,10 @@ class PlanningController extends Controller
         $current_group = Group::find($planning->group_id);
         $course = Course::findOrFail($planning->course_id);
         $this->syncPlanningBreadcrumbContext($course);
-        //TODO check groups are not yet fully booked
-        $groups = Group::all();
-
-        /*
-        select()
-        ->join('group_course', 'groups.id', '=', 'group_course.group_id')
-        ->where('group_course.course_id', '=', $course->id)
-        ->orderBy('nam', 'asc')
-        ->get();
-        */
+        $groups = $course->getLinkedGroups(true);
+        if ($current_group && $groups->where('id', $current_group->id)->isEmpty()) {
+            $groups = $groups->push($current_group);
+        }
         $courses = Auth::user()->getCourses();
 
         $months = Tools::getMonthNames();

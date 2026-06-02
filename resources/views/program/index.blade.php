@@ -26,6 +26,11 @@
                     <x-input-label for="program_name">{{ __('messages.name') }}</x-input-label>
                     <x-text-input type="text" name="name" id="program_name" placeholder="{{ __('messages.name') }}" required />
                 </div>
+                <div class="form-group">
+                    <x-input-label for="program_short_description">{{ __('messages.short_description') }}</x-input-label>
+                    <x-text-input type="text" name="short_description" id="program_short_description" placeholder="{{ __('messages.short_description') }}" maxlength="80" />
+                    <p class="form-hint">{{ __('messages.program_short_description_help') }}</p>
+                </div>
                 <div class="form-actions">
                     <x-button-primary>{{ __('messages.program_create') }}</x-button-primary>
                 </div>

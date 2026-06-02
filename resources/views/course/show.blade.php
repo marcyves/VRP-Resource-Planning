@@ -57,18 +57,32 @@
             <a class="btn btn-secondary" href="{{ route('group.new', $course->id) }}">{{ __('messages.group_create') }}</a>
             @endif
         </header>
+        <p class="form-hint">{{ __('messages.groups_course_help') }}</p>
 
         @if ($groups->isEmpty())
             <p class="program-empty" role="status">{{ __('messages.no_group') }}</p>
         @else
-            <x-course-groups-table :groups="$groups" :occurences="$occurences" />
+            <x-course-groups-table :groups="$groups" :occurences="$occurences" :show-archive="true" />
         @endif
     </section>
 
+    @if ($inactive_linked_groups->isNotEmpty())
+    <section class="course-groups-section course-groups-section--inactive">
+        <header>
+            <h2>{{ __('messages.inactive_groups_on_course') }}</h2>
+        </header>
+        <p class="form-hint">{{ __('messages.inactive_groups_on_course_help') }}</p>
+        <x-course-groups-table :groups="$inactive_linked_groups" :occurences="$occurences" :show-archive="true" :archived="true" />
+    </section>
+    @endif
+
+    @if (Auth::user()->getMode() == 'Edit')
     <section class="course-available-groups">
         <header class="program-section-header">
             <h2>{{ __('messages.groups_available') }}</h2>
         </header>
+        <p class="form-hint">{{ __('messages.groups_available_help') }}</p>
         <x-course-available-groups-table :groups="$available_groups" />
     </section>
+    @endif
 </x-app-layout>

@@ -14,6 +14,9 @@
         <header class="program-detail-card__header">
             <div class="program-detail-card__title">
                 <h3>{{ $program->name }}</h3>
+                @if($program->short_description)
+                    <p class="card-subtitle">{{ __('messages.short_description') }}: {{ $program->short_description }}</p>
+                @endif
                 @if(Auth::user()->getMode() == "Edit")
                     <div class="program-detail-card__icon-actions">
                         <form action="{{ route('program.edit', $program->id) }}" method="get">

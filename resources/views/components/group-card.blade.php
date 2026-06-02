@@ -1,16 +1,18 @@
 @props(['group', 'groupOccurences', 'active' => true])
 <li>
-    <div class="card-content">
-        <a href="{{ route('group.show', $group->id) }}" class="card-content-text">
-            <x-button-primary class="card-title btn-text-link">
-                {{ $group->name }}
-            </x-button-primary>
+    <div class="group-header card-content card-content--group">
+        <div class="group-header__titles">
+            <a
+                href="{{ route('group.show', $group->id) }}"
+                class="group-header__name"
+                title="{{ $group->name }}"
+            >{{ $group->name }}</a>
             @if ($group->short_name)
-                <span class="card-subtitle">{{ $group->short_name }}</span>
+                <span class="group-header__short" title="{{ $group->short_name }}">{{ $group->short_name }}</span>
             @endif
-        </a>
+        </div>
         @if (Auth::user()->getMode() == 'Edit')
-            <div class="card-content-end">
+            <div class="group-header__tools" role="toolbar" aria-label="{{ __('messages.actions') }}">
                 <form action="{{ route('group.switch', $group->id) }}" method="get">
                     <button class="icon icon--archive group-archive-toggle" type="submit" title="{{ $active ? __('messages.deactivate') : __('messages.activate') }}" aria-label="{{ $active ? __('messages.deactivate') : __('messages.activate') }}">
                         @if ($active)

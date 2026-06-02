@@ -13,6 +13,7 @@ Wiki-style guides from product design and implementation work (data model, workf
 |-------|----------|---------|
 | Data model | [modele-donnees-formation.md](fr/modele-donnees-formation.md) | [training-data-model.md](en/training-data-model.md) |
 | Creation workflow | [parcours-creation-ecole.md](fr/parcours-creation-ecole.md) | [school-creation-workflow.md](en/school-creation-workflow.md) |
+| Group workflow | [parcours-groupes.md](fr/parcours-groupes.md) | [group-workflow.md](en/group-workflow.md) |
 | Clients & projects context | [contexte-metier-clients-projets.md](fr/contexte-metier-clients-projets.md) | [business-context-clients-projects.md](en/business-context-clients-projects.md) |
 | Phase 1 — terminology | [phase-1-terminologie.md](fr/phase-1-terminologie.md) | [phase-1-terminology.md](en/phase-1-terminology.md) |
 | Configuration | [configuration.md](fr/configuration.md) | [configuration.md](en/configuration.md) |

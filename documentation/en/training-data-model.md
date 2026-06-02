@@ -33,9 +33,11 @@ Company
 
 - A **program** is shared across schools: reusable catalogue.
 - A **group** belongs to the **company**; the link to a course uses **`group_course`** (one group can be linked to several courses via “link”).
+- The **`active`** flag hides a group from planning without removing links or history.
 - **Planning** sessions (`plannings`) reference `course_id` and `group_id`.
 
 ## Links
 
+- [Group management](group-management.md)
 - [Creation workflow](school-creation-workflow.md)
 - [Clients & projects context](business-context-clients-projects.md)

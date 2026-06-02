@@ -2,7 +2,7 @@
 .course-table {
     width: 100%;
     min-width: 72rem;
-    table-layout: fixed;
+    table-layout: auto;
     margin-top: 0;
     overflow: hidden;
     color: var(--text-body);
@@ -21,14 +21,12 @@
     overflow-wrap: anywhere;
 }
 
-.course-table :is(th, td):nth-child(1) {
-    width: 10%;
-    text-align: center;
-}
-
+.course-table :is(th, td):nth-child(1),
 .course-table :is(th, td):nth-child(2) {
-    width: 15%;
+    width: auto;
+    max-width: none;
     text-align: left;
+    white-space: nowrap;
 }
 
 .course-table :is(th, td):nth-child(3),
@@ -38,23 +36,26 @@
 .course-table :is(th, td):nth-child(7),
 .course-table :is(th, td):nth-child(8),
 .course-table :is(th, td):nth-child(9) {
-    width: 5%;
+    width: 1%;
     text-align: center;
+    white-space: nowrap;
 }
 
 .course-table :is(th, td):nth-child(10) {
-    width: 8%;
+    width: 1%;
     text-align: center;
+    white-space: nowrap;
 }
 
 .course-table :is(th, td):nth-child(11) {
-    width: 12%;
+    width: 1%;
     text-align: center;
     white-space: nowrap;
 }
 
 .course-table :is(th, td):nth-child(12) {
-    width: 10%;
+    width: 1%;
+    white-space: nowrap;
 }
 
 .course-table td:last-child:has(form) {
@@ -67,15 +68,41 @@
     display: inline;
 }
 
-.course-table tbody th[scope="row"],
-.course-table tbody th[scope="row"] .btn-text-link {
-    text-align: left;
+.course-table__link {
+    display: inline;
+    padding: 0;
+    border: none;
+    background: transparent;
+    box-shadow: none;
+    min-height: 0;
     color: var(--text-heading);
+    font-weight: 500;
+    font-size: inherit;
+    line-height: inherit;
+    text-decoration: none;
+    white-space: nowrap;
+    cursor: pointer;
 }
 
-.course-table tbody th[scope="row"] form {
-    display: flex;
-    justify-content: flex-start;
+.course-table__link:hover {
+    color: var(--brand-accent);
+    text-decoration: underline;
+}
+
+.course-table__link:focus-visible {
+    outline: none;
+    border-radius: var(--rounded-sm);
+    box-shadow: 0 0 0 2px var(--focus-ring);
+}
+
+.course-table__program {
+    text-align: left;
+}
+
+.course-table tbody th.course-table__course,
+.course-table tbody th.course-table__course .course-table__link {
+    text-align: left;
+    font-weight: 500;
 }
 
 .course-table tr th:first-child {

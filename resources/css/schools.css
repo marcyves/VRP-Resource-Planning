@@ -1,5 +1,60 @@
 /* School Views Styles */
 
+/* School card header — name on top, tool icons below */
+.card-content--school {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--spacing-2);
+    padding: 0;
+    min-width: 0;
+}
+
+.school-header__name {
+    display: block;
+    min-width: 0;
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.3;
+    color: var(--text-heading);
+    text-decoration: none;
+    overflow-wrap: anywhere;
+}
+
+.school-header__name:hover {
+    color: var(--brand-accent);
+    text-decoration: underline;
+}
+
+.school-header__name:focus-visible {
+    outline: none;
+    border-radius: var(--rounded-sm);
+    box-shadow: 0 0 0 2px var(--focus-ring);
+}
+
+.school-header__tools {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 0.375rem;
+    padding: 0;
+}
+
+.school-header__tools form {
+    display: inline-flex;
+    margin: 0;
+}
+
+/* Schools list grid — compact cards, stay inside section */
+main section:has(> ul.resource-grid) {
+    overflow: hidden;
+}
+
+main section ul.resource-grid > li:has(.school-header) .school-stats {
+    margin-top: var(--spacing-3);
+    margin-left: 0;
+}
+
 .school-stats {
     margin-top: 1rem;
     margin-left: calc(6px + var(--spacing-4));

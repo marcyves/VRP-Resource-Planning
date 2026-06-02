@@ -7,20 +7,21 @@
 
     @if(Auth::user()->getMode() == "Edit")
     <section>
+        @if($linkedCourses->isNotEmpty())
+        <p class="form-hint group-edit-linked">
+            {{ __('messages.group_linked_courses') }}:
+            @foreach($linkedCourses as $linkedCourse)
+                <a href="{{ route('course.show', $linkedCourse->id) }}">{{ $linkedCourse->name }}</a>@if(!$loop->last), @endif
+            @endforeach
+        </p>
+        @endif
+
         <form action="{{ route('group.update', $group->id) }}" method="post" class="group-form nice-form">
             @csrf
             @method('put')
-
-            <div class="form-group">
-                <x-input-label for="course_id">{{ __('messages.course') }}</x-input-label>
-                <select name="course_id" id="course_id" class="form-input">
-                    @foreach($courses as $course)
-                    <option value="{{ $course->id }}" @selected($group->course_id == $course->id)>
-                        ({{ $course->school->name }}) {{ $course->name }}
-                    </option>
-                    @endforeach
-                </select>
-            </div>
+            @if($returnCourseId)
+                <input type="hidden" name="return_course_id" value="{{ $returnCourseId }}">
+            @endif
 
             <div class="form-group">
                 <x-input-label for="name">{{ __('messages.name') }}</x-input-label>
@@ -47,7 +48,11 @@
             </div>
 
             <div class="form-actions">
-                <a class="btn btn-secondary" href="{{ route('course.show', $group->course_id) }}">{{ __('messages.cancel') }}</a>
+                @if($returnCourseId)
+                    <a class="btn btn-secondary" href="{{ route('course.show', $returnCourseId) }}">{{ __('messages.cancel') }}</a>
+                @else
+                    <a class="btn btn-secondary" href="{{ route('group.show', $group->id) }}">{{ __('messages.cancel') }}</a>
+                @endif
                 <x-button-primary>{{ __('messages.update') }}</x-button-primary>
             </div>
         </form>
