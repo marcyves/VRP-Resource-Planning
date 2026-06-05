@@ -1,8 +1,8 @@
 /* Base styles for the course table */
 .course-table {
     width: 100%;
-    min-width: 72rem;
-    table-layout: auto;
+    min-width: 52rem;
+    table-layout: fixed;
     margin-top: 0;
     overflow: hidden;
     color: var(--text-body);
@@ -16,39 +16,89 @@
     overflow-x: auto;
 }
 
+.course-table__col--program {
+    width: 11%;
+}
+
+.course-table__col--course {
+    width: 17%;
+}
+
+.course-table__col--compact {
+    width: 6.5%;
+}
+
+.course-table__col--actions {
+    width: 5.5rem;
+}
+
 .course-table th,
 .course-table td {
     overflow-wrap: anywhere;
 }
 
-.course-table :is(th, td):nth-child(1),
-.course-table :is(th, td):nth-child(2) {
-    width: auto;
-    max-width: none;
+.course-table thead th.course-table__th {
+    padding: 0.5rem 0.35rem;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    line-height: 1.15;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    white-space: normal;
+    vertical-align: bottom;
+    text-align: center;
+    hyphens: auto;
+}
+
+.course-table thead th.course-table__th:first-child,
+.course-table thead th.course-table__th:nth-child(2) {
     text-align: left;
+}
+
+.course-table__th-stack {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.05rem;
+    max-width: 3.25rem;
+}
+
+.course-table thead th.course-table__th:first-child .course-table__th-stack,
+.course-table thead th.course-table__th:nth-child(2) .course-table__th-stack {
+    align-items: flex-start;
+}
+
+.course-table__th-line {
+    display: block;
+}
+
+.course-table__th-line--sub {
+    font-size: 0.625rem;
+    font-weight: 500;
+    letter-spacing: 0;
+    text-transform: none;
+    color: var(--text-muted);
+    line-height: 1.1;
+}
+
+.course-table tbody :is(th, td):nth-child(1),
+.course-table tbody :is(th, td):nth-child(2) {
+    text-align: left;
+    overflow: hidden;
+    text-overflow: ellipsis;
     white-space: nowrap;
 }
 
-.course-table :is(th, td):nth-child(3),
-.course-table :is(th, td):nth-child(4),
-.course-table :is(th, td):nth-child(5),
-.course-table :is(th, td):nth-child(6),
-.course-table :is(th, td):nth-child(7),
-.course-table :is(th, td):nth-child(8) {
-    width: 1%;
+.course-table tbody :is(th, td):nth-child(3),
+.course-table tbody :is(th, td):nth-child(4),
+.course-table tbody :is(th, td):nth-child(5),
+.course-table tbody :is(th, td):nth-child(6),
+.course-table tbody :is(th, td):nth-child(7),
+.course-table tbody :is(th, td):nth-child(8),
+.course-table tbody :is(th, td):nth-child(9),
+.course-table tbody :is(th, td):nth-child(10) {
     text-align: center;
-    white-space: nowrap;
-}
-
-.course-table :is(th, td):nth-child(9),
-.course-table :is(th, td):nth-child(10) {
-    width: 1%;
-    text-align: center;
-    white-space: nowrap;
-}
-
-.course-table :is(th, td):nth-child(11) {
-    width: 1%;
     white-space: nowrap;
 }
 
@@ -105,4 +155,10 @@
 
 .course-table tbody {
     font-weight: normal;
+}
+
+.course-table tfoot th,
+.course-table tfoot td {
+    font-size: 0.8125rem;
+    white-space: nowrap;
 }

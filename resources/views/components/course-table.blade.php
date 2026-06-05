@@ -16,7 +16,6 @@
             @endphp
         @endforeach
         <x-course-table-end :total_budget=$total_budget :total_time=$total_time />
-    </tbody>
 </table>
 </div>
 <!-- End course-table.blade  -->
