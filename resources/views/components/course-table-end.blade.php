@@ -9,7 +9,6 @@
         <td>{{$total_time}}</td>
         <td></td>
         <td></td>
-        <td></td>
         <td>{{ __('messages.gain') }}</td>
         <td></td>
         <td>@money($total_budget)</td>

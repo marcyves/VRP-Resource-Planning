@@ -34,13 +34,13 @@
 .course-table :is(th, td):nth-child(5),
 .course-table :is(th, td):nth-child(6),
 .course-table :is(th, td):nth-child(7),
-.course-table :is(th, td):nth-child(8),
-.course-table :is(th, td):nth-child(9) {
+.course-table :is(th, td):nth-child(8) {
     width: 1%;
     text-align: center;
     white-space: nowrap;
 }
 
+.course-table :is(th, td):nth-child(9),
 .course-table :is(th, td):nth-child(10) {
     width: 1%;
     text-align: center;
@@ -48,12 +48,6 @@
 }
 
 .course-table :is(th, td):nth-child(11) {
-    width: 1%;
-    text-align: center;
-    white-space: nowrap;
-}
-
-.course-table :is(th, td):nth-child(12) {
     width: 1%;
     white-space: nowrap;
 }

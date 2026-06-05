@@ -57,11 +57,6 @@
                 <x-text-input type="text" name="semester" id="semester" value="{{old('semester',$course->semester)}}" />
             </div>
 
-            <div class="form-group">
-                <x-input-label for="recurring">{{ __('messages.recurring') }}</x-input-label>
-                <input type="checkbox" name="recurring" id="recurring" value="1" @if($course->recurring) checked @endif class="form-checkbox" />
-            </div>
-
             <div class="form-actions">
                 <a class="btn btn-secondary" href="{{ route('course.show', $course->id) }}">{{ __('messages.cancel') }}</a>
                 <x-button-primary>{{ __('messages.update') }}</x-button-primary>

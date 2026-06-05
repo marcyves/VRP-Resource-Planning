@@ -8,7 +8,6 @@
             <th scope="col">{{ __('messages.time') }}</th>
             <th scope="col">{{ __('messages.groups') }}</th>
             <th scope="col">{{ __('messages.total_time') }}</th>
-            <th scope="col">{{ __('messages.recurring') }}</th>
             <th scope="col">{{ __('messages.rate') }}</th>
             <th scope="col">{{ __('messages.gain') }}</th>
             <th scope="col">
