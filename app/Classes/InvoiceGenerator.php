@@ -280,15 +280,17 @@ class InvoiceGenerator extends TCPDF
         $x = 10;
         $lineHeight = 4;
 
+        $billing = $company->billingDetails();
+
         $RIB = [
             'Règlement par virement sur le compte bancaire suivant:',
             '',
-            'Banque: '.$company->bank_name,
+            'Banque: '.($billing->bank_name ?? ''),
             '    Code banque      Code guichet       Numéro de compte     Clé',
-            '            '.$company->bank.'                  '.$company->branch.'                  '.$company->account.'           '.$company->key,
-            'Titulaire du compte: '.$company->iban_name,
-            'Code IBAN: '.$company->iban,
-            'Code BIC/SWIFT: '.$company->bic,
+            '            '.($billing->rib_bank_code ?? '').'                  '.($billing->rib_branch_code ?? '').'                  '.($billing->rib_account_number ?? '').'           '.($billing->rib_key ?? ''),
+            'Titulaire du compte: '.($billing->iban_holder ?? ''),
+            'Code IBAN: '.($billing->iban ?? ''),
+            'Code BIC/SWIFT: '.($billing->bic ?? ''),
         ];
 
         foreach ($RIB as $line) {

@@ -218,7 +218,7 @@ return array (
   'error_unauthorized' => 'Non autorizzato',
   'treasury' => 'Tesoreria',
   'invoices_ttc' => 'Fatture IVA inclusa',
-  'paid_invoices_ttc' => 'Fatture pagate IVA inclusa',
+  'paid_invoices_ttc' => 'Fatture incassate IVA inclusa',
   'expense_reports' => 'Note spese',
   'standalone_expenses' => 'Spese fuori nota',
   'expenses' => 'Spese',

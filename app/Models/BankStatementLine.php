@@ -4,11 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+
 class BankStatementLine extends Model
 {
     protected $fillable = [
         'bank_statement_import_id',
+        'bank_account_id',
         'company_id',
         'operation_date',
         'label',
@@ -36,18 +38,34 @@ class BankStatementLine extends Model
         return $this->belongsTo(Company::class);
     }
 
-    public function reconciliation(): HasOne
+    public function bankAccount(): BelongsTo
     {
-        return $this->hasOne(BankReconciliation::class);
+        return $this->belongsTo(BankAccount::class);
+    }
+
+    public function reconciliations(): HasMany
+    {
+        return $this->hasMany(BankReconciliation::class);
+    }
+
+    public function matchedAmount(): float
+    {
+        if ($this->relationLoaded('reconciliations')) {
+            return (float) $this->reconciliations->sum('matched_amount');
+        }
+
+        return (float) $this->reconciliations()->sum('matched_amount');
     }
 
     public function isReconciled(): bool
     {
-        if ($this->relationLoaded('reconciliation')) {
-            return $this->reconciliation !== null;
+        $matched = $this->matchedAmount();
+
+        if ($matched <= 0) {
+            return false;
         }
 
-        return $this->reconciliation()->exists();
+        return abs($matched - $this->absoluteAmount()) <= 0.02;
     }
 
     public function isCredit(): bool
@@ -63,5 +81,16 @@ class BankStatementLine extends Model
     public function absoluteAmount(): float
     {
         return abs((float) $this->amount);
+    }
+
+    public function scopeFullyReconciled($query)
+    {
+        return $query->whereRaw(
+            'ABS((
+                SELECT COALESCE(SUM(matched_amount), 0)
+                FROM bank_reconciliations
+                WHERE bank_reconciliations.bank_statement_line_id = bank_statement_lines.id
+            ) - ABS(bank_statement_lines.amount)) <= 0.02'
+        );
     }
 }

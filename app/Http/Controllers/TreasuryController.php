@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BankAccount;
 use App\Models\BankStatementLine;
+use App\Models\Company;
 use App\Models\Expense;
 use App\Models\ExpenseReport;
 use App\Models\Invoice;
@@ -55,6 +57,8 @@ class TreasuryController extends Controller
             ->whereYear('expense_date', $year)
             ->get();
         $plannedAmounts = $user->getPlannedAmountPerMonth($year);
+        $company = Company::with('billingBankAccount')->findOrFail($companyId);
+        $billingBankAccount = $company->billingBankAccount;
         $treasuryBalance = TreasuryBalance::firstOrCreate(
             [
                 'company_id' => $companyId,
@@ -65,8 +69,11 @@ class TreasuryController extends Controller
                 'opening_amount' => 0,
             ]
         );
-        $monthlyChartData = $this->monthlyTreasuryChartData($year, $invoices, $allExpenses, $plannedAmounts, $treasuryBalance, $companyId);
-        $closingBalance = $treasuryBalance->opening_amount
+        $openingAmount = $billingBankAccount
+            ? (float) $billingBankAccount->opening_amount
+            : (float) $treasuryBalance->opening_amount;
+        $monthlyChartData = $this->monthlyTreasuryChartData($year, $invoices, $allExpenses, $plannedAmounts, $billingBankAccount, $treasuryBalance, $companyId);
+        $closingBalance = $openingAmount
             + $invoicePaidTotal
             - $submittedExpenseReportTotal
             - $validatedExpenseReportTotal
@@ -84,37 +91,9 @@ class TreasuryController extends Controller
             'validatedExpenseReportTotal',
             'paidExpenseReportTotal',
             'standaloneTotal',
-            'treasuryBalance',
             'closingBalance',
             'monthlyChartData'
         ));
-    }
-
-    public function updateBalance(Request $request)
-    {
-        $user = Auth::user();
-        $current_year = session('current_year', now()->format('Y'));
-        $year = $current_year === 'all' ? now()->year : (int) $current_year;
-
-        $validated = $request->validate([
-            'opening_date' => 'required|date',
-            'opening_amount' => 'required|numeric',
-        ]);
-
-        TreasuryBalance::updateOrCreate(
-            [
-                'company_id' => $user->company_id,
-                'year' => $year,
-            ],
-            [
-                'opening_date' => $validated['opening_date'],
-                'opening_amount' => $validated['opening_amount'],
-            ]
-        );
-
-        session()->flash('success', __('messages.treasury_balance_saved'));
-
-        return redirect()->route('treasury.index');
     }
 
     public function createExpense()
@@ -396,19 +375,13 @@ class TreasuryController extends Controller
             : redirect()->route('treasury.index');
     }
 
-    private function monthlyTreasuryChartData(int $year, $invoices, $expenses, array $plannedAmounts, TreasuryBalance $treasuryBalance, int $companyId): array
+    private function monthlyTreasuryChartData(int $year, $invoices, $expenses, array $plannedAmounts, ?BankAccount $billingBankAccount, TreasuryBalance $treasuryBalance, int $companyId): array
     {
-        $openingDate = Carbon::parse($treasuryBalance->opening_date)->startOfDay();
-        $openingAmount = (float) $treasuryBalance->opening_amount;
-        $bankLines = $this->deduplicatedBankLinesBetween(
-            $companyId,
-            $openingDate,
-            Carbon::create($year, 12, 31)->endOfDay(),
-        );
+        $bankAccounts = $billingBankAccount && $billingBankAccount->active
+            ? collect([$billingBankAccount])
+            : collect();
 
-        $runningBankBalance = null;
-
-        $months = collect(range(1, 12))->map(function (int $month) use ($year, $invoices, $expenses, $plannedAmounts, $bankLines, $openingDate, $openingAmount, &$runningBankBalance) {
+        $months = collect(range(1, 12))->map(function (int $month) use ($year, $invoices, $expenses, $plannedAmounts, $bankAccounts, $treasuryBalance, $companyId) {
             $issued = $invoices
                 ->filter(fn ($invoice) => Carbon::parse($invoice->bill_date)->month === $month)
                 ->sum('amount');
@@ -421,25 +394,7 @@ class TreasuryController extends Controller
             $planned = ($plannedAmounts[$month - 1] ?? 0) * 1.2;
 
             $monthEnd = Carbon::create($year, $month, 1)->endOfDay();
-            $bank = null;
-
-            if ($monthEnd->gte($openingDate)) {
-                if ($runningBankBalance === null) {
-                    $runningBankBalance = $openingAmount;
-                    $runningBankBalance += $bankLines
-                        ->filter(fn (BankStatementLine $line) => $line->operation_date->gte($openingDate)
-                            && $line->operation_date->lt(Carbon::create($year, $month, 1)->startOfMonth()))
-                        ->sum('amount');
-                }
-
-                $runningBankBalance += $bankLines
-                    ->filter(fn (BankStatementLine $line) => $line->operation_date->month === $month
-                        && $line->operation_date->year === $year
-                        && $line->operation_date->gte($openingDate))
-                    ->sum('amount');
-
-                $bank = $runningBankBalance;
-            }
+            $bank = $this->totalBankBalanceAt($bankAccounts, $treasuryBalance, $companyId, $year, $monthEnd);
 
             return [
                 'label' => Carbon::create($year, $month, 1)->translatedFormat('M'),
@@ -470,17 +425,71 @@ class TreasuryController extends Controller
             ->all();
     }
 
+    private function totalBankBalanceAt($bankAccounts, TreasuryBalance $treasuryBalance, int $companyId, int $year, Carbon $at): ?float
+    {
+        if ($bankAccounts->isNotEmpty()) {
+            $total = 0;
+            $hasBalance = false;
+
+            foreach ($bankAccounts as $account) {
+                $balance = $this->bankAccountBalanceAt($account, $year, $at);
+                if ($balance !== null) {
+                    $hasBalance = true;
+                    $total += $balance;
+                }
+            }
+
+            return $hasBalance ? $total : null;
+        }
+
+        $openingDate = Carbon::parse($treasuryBalance->opening_date)->startOfDay();
+        if ($at->lt($openingDate)) {
+            return null;
+        }
+
+        $lines = $this->deduplicatedBankLinesBetween($companyId, $openingDate, $at);
+
+        return (float) $treasuryBalance->opening_amount + $lines->sum('amount');
+    }
+
+    private function bankAccountBalanceAt(BankAccount $account, int $year, Carbon $at): ?float
+    {
+        $openingDate = $account->opening_date
+            ? Carbon::parse($account->opening_date)->startOfDay()
+            : Carbon::create($year, 1, 1)->startOfDay();
+
+        if ($at->lt($openingDate)) {
+            return null;
+        }
+
+        $lines = $this->deduplicatedBankLinesBetween(
+            $account->company_id,
+            $openingDate,
+            $at,
+            $account->id,
+        );
+
+        return (float) $account->opening_amount + $lines->sum('amount');
+    }
+
     /**
      * @return \Illuminate\Support\Collection<int, BankStatementLine>
      */
-    private function deduplicatedBankLinesBetween(int $companyId, Carbon $from, Carbon $to)
+    private function deduplicatedBankLinesBetween(int $companyId, Carbon $from, Carbon $to, ?int $bankAccountId = null)
     {
-        return BankStatementLine::where('company_id', $companyId)
-            ->whereBetween('operation_date', [$from->toDateString(), $to->toDateString()])
+        $query = BankStatementLine::where('company_id', $companyId)
+            ->whereBetween('operation_date', [$from->toDateString(), $to->toDateString()]);
+
+        if ($bankAccountId !== null) {
+            $query->where('bank_account_id', $bankAccountId);
+        }
+
+        return $query
             ->orderBy('operation_date')
             ->orderBy('row_index')
             ->get()
             ->unique(fn (BankStatementLine $line) => implode('|', [
+                $line->bank_account_id,
                 $line->operation_date->toDateString(),
                 $line->label,
                 number_format((float) $line->debit, 2, '.', ''),

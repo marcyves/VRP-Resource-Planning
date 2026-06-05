@@ -44,7 +44,35 @@ class Company extends Model
         'key',
         'bic',
         'iban',
+        'billing_bank_account_id',
     ];
+
+    public function billingBankAccount(): BelongsTo
+    {
+        return $this->belongsTo(BankAccount::class, 'billing_bank_account_id');
+    }
+
+    /**
+     * Coordonnées bancaires pour facturation (compte lié ou anciennes colonnes société).
+     */
+    public function billingDetails(): object
+    {
+        $account = $this->relationLoaded('billingBankAccount')
+            ? $this->billingBankAccount
+            : $this->billingBankAccount()->with('bank')->first();
+
+        return (object) [
+            'bank_name' => $account?->bank?->name ?? $this->bank_name,
+            'iban_holder' => $account?->iban_holder ?? $this->iban_name,
+            'rib_bank_code' => $account?->rib_bank_code ?? $this->bank,
+            'rib_branch_code' => $account?->rib_branch_code ?? $this->branch,
+            'rib_account_number' => $account?->rib_account_number ?? $this->account,
+            'rib_key' => $account?->rib_key ?? $this->key,
+            'iban' => $account?->iban ?? $this->iban,
+            'bic' => $account?->bic ?? $this->bic,
+            'account' => $account,
+        ];
+    }
 
     public function legalFooterLine(): ?string
     {

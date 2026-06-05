@@ -29,6 +29,17 @@
                             @endif
                         </div>
                         <span class="treasury-histogram__label">{{ $month['label'] }}</span>
+                        <span @class([
+                            'treasury-histogram__balance',
+                            'money' => $month['bank'] !== null,
+                            'treasury-histogram__balance--empty' => $month['bank'] === null,
+                        ])>
+                            @if ($month['bank'] !== null)
+                                @money($month['bank'])
+                            @else
+                                —
+                            @endif
+                        </span>
                     </div>
                 @endforeach
             </div>
@@ -45,24 +56,6 @@
     <section>
         <div class="treasury-summary-grid">
             <article class="treasury-summary-card--wide">
-                <h3>{{ __('messages.balance_opening_heading') }}</h3>
-                <div class="treasury-opening-balance">
-                    @if (Auth::user()->getMode() == 'Edit')
-                        <form class="treasury-balance-form treasury-balance-form--inline nice-form nice-form--embedded" method="post" action="{{ route('treasury.balance.update') }}">
-                            @csrf
-                            <div class="treasury-balance-form__fields">
-                                <x-text-input type="date" name="opening_date" id="opening_date" value="{{ $treasuryBalance->opening_date->format('Y-m-d') }}" aria-label="{{ __('messages.date') }}" />
-                                <x-text-input class="treasury-balance-input--amount" type="number" step="0.01" name="opening_amount" id="opening_amount" value="{{ $treasuryBalance->opening_amount }}" aria-label="{{ __('messages.amount') }}" />
-                                <x-button-primary class="btn--compact">{{ __('messages.save') }}</x-button-primary>
-                            </div>
-                        </form>
-                    @else
-                        <span class="treasury-balance-readonly">
-                            <span class="treasury-balance-readonly__date">@formatDate($treasuryBalance->opening_date)</span>
-                            <strong>@money($treasuryBalance->opening_amount)</strong>
-                        </span>
-                    @endif
-                </div>
                 <table class="treasury-summary-table">
                     <tbody>
                         <tr>

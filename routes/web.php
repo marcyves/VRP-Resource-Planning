@@ -13,8 +13,9 @@ use App\Http\Controllers\PlanningController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProgramController;
 use App\Http\Controllers\SchoolController;
-use App\Http\Controllers\BankReconciliationController;
+use App\Http\Controllers\BankController;
 use App\Http\Controllers\TreasuryController;
+use App\Models\BankStatementImport;
 use App\Http\Middleware\SetTerminologyLocale;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
@@ -123,7 +124,6 @@ Route::middleware(['auth', SetTerminologyLocale::class])->group(function () {
     Route::resource('/documents', DocumentController::class);
 
     Route::get('/treasury', [TreasuryController::class, 'index'])->name('treasury.index');
-    Route::post('/treasury/balance', [TreasuryController::class, 'updateBalance'])->name('treasury.balance.update');
     Route::get('/treasury/reports/{expenseReport}', [TreasuryController::class, 'showReport'])->name('treasury.reports.show');
     Route::post('/treasury/reports/{expenseReport}/validate', [TreasuryController::class, 'validateReport'])->name('treasury.reports.validate');
     Route::post('/treasury/reports/{expenseReport}/pay', [TreasuryController::class, 'payReport'])->name('treasury.reports.pay');
@@ -134,11 +134,22 @@ Route::middleware(['auth', SetTerminologyLocale::class])->group(function () {
     Route::put('/treasury/expenses/{expense}', [TreasuryController::class, 'updateExpense'])->name('treasury.expenses.update');
     Route::delete('/treasury/expenses/{expense}', [TreasuryController::class, 'destroyExpense'])->name('treasury.expenses.destroy');
 
-    Route::get('/treasury/reconciliation', [BankReconciliationController::class, 'index'])->name('treasury.reconciliation.index');
-    Route::post('/treasury/reconciliation/import', [BankReconciliationController::class, 'storeImport'])->name('treasury.reconciliation.import');
-    Route::get('/treasury/reconciliation/{import}', [BankReconciliationController::class, 'show'])->name('treasury.reconciliation.show');
-    Route::post('/treasury/reconciliation/{import}/lines/{line}/match', [BankReconciliationController::class, 'match'])->name('treasury.reconciliation.match');
-    Route::delete('/treasury/reconciliation/{import}/matches/{reconciliation}', [BankReconciliationController::class, 'unmatch'])->name('treasury.reconciliation.unmatch');
+    Route::get('/treasury/bank', [BankController::class, 'index'])->name('treasury.bank.index');
+    Route::post('/treasury/bank/banks', [BankController::class, 'storeBank'])->name('treasury.bank.banks.store');
+    Route::put('/treasury/bank/banks/{bank}', [BankController::class, 'updateBank'])->name('treasury.bank.banks.update');
+    Route::delete('/treasury/bank/banks/{bank}', [BankController::class, 'destroyBank'])->name('treasury.bank.banks.destroy');
+    Route::post('/treasury/bank/accounts', [BankController::class, 'storeAccount'])->name('treasury.bank.accounts.store');
+    Route::put('/treasury/bank/accounts/{account}', [BankController::class, 'updateAccount'])->name('treasury.bank.accounts.update');
+    Route::delete('/treasury/bank/accounts/{account}', [BankController::class, 'destroyAccount'])->name('treasury.bank.accounts.destroy');
+    Route::put('/treasury/bank/billing-account', [BankController::class, 'updateBillingAccount'])->name('treasury.bank.billing-account.update');
+    Route::post('/treasury/bank/import', [BankController::class, 'storeImport'])->name('treasury.bank.import');
+    Route::get('/treasury/bank/imports/{import}', [BankController::class, 'show'])->name('treasury.bank.imports.show');
+    Route::delete('/treasury/bank/imports/{import}', [BankController::class, 'destroyImport'])->name('treasury.bank.imports.destroy');
+    Route::post('/treasury/bank/imports/{import}/lines/{line}/match', [BankController::class, 'match'])->name('treasury.bank.imports.match');
+    Route::delete('/treasury/bank/imports/{import}/matches/{reconciliation}', [BankController::class, 'unmatch'])->name('treasury.bank.imports.unmatch');
+
+    Route::redirect('/treasury/reconciliation', '/treasury/bank')->name('treasury.reconciliation.index');
+    Route::get('/treasury/reconciliation/{import}', fn (BankStatementImport $import) => redirect()->route('treasury.bank.imports.show', $import));
 
     Route::get('/company/', [CompanyController::class, 'show'])->name('company.show');
     Route::get('/company/edit', [CompanyController::class, 'edit'])->name('company.edit');

@@ -23,8 +23,8 @@
 
 .treasury-histogram__month {
     display: grid;
-    grid-template-rows: 1fr auto;
-    gap: var(--spacing-2);
+    grid-template-rows: 1fr auto auto;
+    gap: var(--spacing-1);
     min-width: 0;
 }
 
@@ -72,6 +72,23 @@
     font-size: 0.75rem;
     text-align: center;
     text-transform: capitalize;
+}
+
+.treasury-histogram__balance {
+    font-size: 0.6875rem;
+    font-weight: 600;
+    line-height: 1.2;
+    text-align: center;
+    color: var(--brand-primary);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.treasury-histogram__balance--empty {
+    font-weight: 400;
+    color: var(--text-subtle);
 }
 
 .treasury-histogram__legend {
@@ -458,12 +475,404 @@ main form.treasury-balance-form--inline .btn {
     margin: 0;
 }
 
+.bank-dialog {
+    width: min(100%, 28rem);
+    padding: var(--spacing-4);
+    border: var(--border-standard);
+    border-radius: var(--rounded-xl);
+    background: var(--surface-container-lowest);
+    color: var(--text-body);
+    box-shadow: var(--shadow-lg);
+}
+
+.bank-dialog::backdrop {
+    background: var(--modal-backdrop, rgba(0, 0, 0, 0.45));
+}
+
+.bank-dialog .modal-title {
+    margin: 0 0 var(--spacing-3);
+}
+
+.bank-cards-section {
+    margin-bottom: var(--spacing-4);
+}
+
+.bank-cards-grid {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: var(--spacing-3);
+    overflow-x: auto;
+    padding-bottom: var(--spacing-1);
+}
+
+.bank-card-wrap {
+    flex: 0 0 auto;
+    width: 11.5rem;
+    display: grid;
+    grid-template-rows: 1fr auto;
+    border: var(--border-standard);
+    border-radius: var(--rounded-xl);
+    background: var(--surface-container-lowest);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.bank-card-wrap:hover {
+    border-color: var(--brand-accent);
+    box-shadow: var(--shadow-md);
+}
+
+.bank-card-wrap--selected {
+    border-color: var(--brand-primary);
+    box-shadow: var(--shadow-md);
+    background: var(--surface-container-low);
+}
+
+.bank-card__body {
+    display: grid;
+    gap: var(--spacing-1);
+    padding: var(--spacing-4);
+    padding-bottom: var(--spacing-2);
+    color: inherit;
+    text-decoration: none;
+}
+
+.bank-card__actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: var(--spacing-1);
+    padding: 0 var(--spacing-2) var(--spacing-2);
+    position: relative;
+    z-index: 1;
+}
+
+.bank-card__actions form {
+    display: inline;
+    margin: 0;
+}
+
+.bank-card-wrap--add {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 5.5rem;
+}
+
+.bank-card-wrap--add .icon--add {
+    margin: 0;
+}
+
+.bank-card__name {
+    color: var(--text-heading);
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.bank-card__meta {
+    color: var(--text-secondary);
+    font-size: 0.8125rem;
+}
+
+.bank-card__badge {
+    display: inline-block;
+    align-self: start;
+    padding: 0.125rem 0.5rem;
+    border-radius: var(--rounded-md);
+    background: var(--chip-success-bg, var(--surface-container-high));
+    color: var(--chip-success-text, var(--brand-primary));
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+}
+
+.bank-card__badge--inline {
+    margin-left: var(--spacing-1);
+}
+
+.bank-billing-form {
+    max-width: 32rem;
+}
+
+.bank-manage-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--spacing-2);
+    margin-top: var(--spacing-3);
+    padding-top: var(--spacing-3);
+    border-top: var(--border-standard);
+}
+
+
+.bank-account-cards-section {
+    margin-bottom: var(--spacing-4);
+}
+
+.bank-account-cards-grid {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: var(--spacing-3);
+    overflow-x: auto;
+    padding-bottom: var(--spacing-1);
+}
+
+.bank-account-card {
+    flex: 0 0 auto;
+    width: 14rem;
+    display: grid;
+    gap: var(--spacing-2);
+    padding: var(--spacing-4);
+    border: var(--border-standard);
+    border-radius: var(--rounded-xl);
+    background: var(--surface-container-lowest);
+    box-shadow: var(--shadow-sm);
+}
+
+.bank-account-card__head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--spacing-2);
+}
+
+.bank-account-card__titles {
+    display: grid;
+    gap: 0.125rem;
+    min-width: 0;
+    flex: 1;
+}
+
+.bank-account-card__name {
+    color: var(--text-heading);
+    font-size: 0.9375rem;
+    font-weight: 600;
+    line-height: 1.3;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.bank-account-card__number {
+    color: var(--text-secondary);
+    font-size: 0.8125rem;
+    font-variant-numeric: tabular-nums;
+    line-height: 1.3;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.bank-account-card__delete {
+    flex-shrink: 0;
+    margin: 0;
+}
+
+.bank-account-card__opening {
+    display: grid;
+    gap: 0.125rem;
+    margin: 0;
+}
+
+.bank-account-card__opening-label {
+    color: var(--text-secondary);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.bank-account-card__opening-value {
+    color: var(--text-heading);
+    font-size: 0.8125rem;
+    font-variant-numeric: tabular-nums;
+}
+
+.bank-account-card__opening-value--empty {
+    color: var(--text-subtle);
+}
+
+.bank-account-card__meta {
+    color: var(--text-secondary);
+    font-size: 0.75rem;
+    line-height: 1.35;
+    word-break: break-word;
+}
+
+.bank-account-card__edit {
+    margin-top: 0;
+    padding-top: var(--spacing-2);
+    border-top: var(--border-standard);
+}
+
+.bank-setup {
+    display: grid;
+    gap: var(--spacing-4);
+}
+
+.bank-setup__form {
+    max-width: 36rem;
+}
+
 .bank-import-form {
     max-width: 32rem;
 }
 
+.bank-accounts-list {
+    display: grid;
+    gap: var(--spacing-3);
+}
+
+.bank-accounts-list__bank {
+    padding: var(--spacing-4);
+    border: var(--border-standard);
+    border-radius: var(--rounded-xl);
+    background: var(--surface-container-lowest);
+}
+
+.bank-accounts-list__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--spacing-2);
+    margin-bottom: var(--spacing-2);
+}
+
+.bank-accounts-list__header h4 {
+    margin: 0;
+}
+
+.bank-accounts-list__items {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: var(--spacing-2);
+}
+
+.bank-accounts-list__items li {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--spacing-2);
+}
+
+.bank-accounts-list__name {
+    font-weight: 600;
+}
+
+.bank-accounts-list__item {
+    flex-direction: column;
+    align-items: stretch;
+}
+
+.bank-accounts-list__summary {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-1);
+    align-items: center;
+}
+
+.bank-accounts-list__delete {
+    margin-left: auto;
+}
+
+.bank-rib-fields {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(6rem, 1fr));
+    gap: var(--spacing-2);
+}
+
+.bank-account-edit {
+    margin-top: var(--spacing-2);
+    padding-top: var(--spacing-2);
+    border-top: var(--border-standard);
+}
+
+.bank-account-edit summary {
+    cursor: pointer;
+    color: var(--brand-primary);
+    font-size: 0.8125rem;
+}
+
+.company-billing-preview {
+    margin-top: var(--spacing-3);
+    padding: var(--spacing-3);
+    border: var(--border-standard);
+    border-radius: var(--rounded-lg);
+    background: var(--surface-container-low);
+}
+
+.company-billing-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-2);
+    margin-top: var(--spacing-3);
+}
+
+.bank-import-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--spacing-2);
+}
+
+.bank-import-actions form {
+    display: inline;
+}
+
+.bank-reconciliation-meta__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--spacing-2);
+}
+
+.bank-reconciliation-meta__actions form {
+    display: inline;
+}
+
 .bank-reconciliation-meta {
     margin-bottom: var(--spacing-4);
+}
+
+.bank-reconciliation-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: var(--spacing-3);
+    margin-bottom: var(--spacing-3);
+    max-width: 24rem;
+}
+
+.bank-reconciliation-toolbar__count {
+    margin: 0;
+    align-self: center;
+}
+
+.bank-reconciliation-table__sortable {
+    white-space: nowrap;
+}
+
+.bank-reconciliation-table__sort-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    color: inherit;
+    font-weight: inherit;
+    text-decoration: none;
+}
+
+.bank-reconciliation-table__sort-link:hover,
+.bank-reconciliation-table__sort-link--active {
+    color: var(--brand-primary);
+}
+
+.bank-reconciliation-table__sort-indicator {
+    font-size: 0.75rem;
+    line-height: 1;
 }
 
 .bank-reconciliation-table .bank-line__label {
@@ -471,6 +880,14 @@ main form.treasury-balance-form--inline .btn {
     white-space: normal;
     font-weight: 500;
     text-align: left;
+}
+
+.bank-line__reconciliation-details {
+    margin: var(--spacing-1) 0 0;
+    padding-left: 1.1rem;
+    color: var(--text-secondary);
+    font-size: 0.8125rem;
+    list-style: disc;
 }
 
 .bank-line--reconciled {

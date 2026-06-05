@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BankAccount;
 use App\Models\Company;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -13,7 +14,7 @@ class CompanyController extends Controller
     public function show()
     {
         $company = Auth::user()->company;
-        $company->load('contactUser');
+        $company->load(['contactUser', 'billingBankAccount.bank']);
 
         return view('company.show', compact('company'));
     }
@@ -23,9 +24,15 @@ class CompanyController extends Controller
         $this->authorizeCompanyEditor();
 
         $company = Auth::user()->company;
+        $company->load('billingBankAccount.bank');
         $companyUsers = $this->companyUsersQuery()->get();
+        $bankAccounts = BankAccount::where('company_id', $company->id)
+            ->with('bank')
+            ->where('active', true)
+            ->orderBy('account_number')
+            ->get();
 
-        return view('company.edit', compact('company', 'companyUsers'));
+        return view('company.edit', compact('company', 'companyUsers', 'bankAccounts'));
     }
 
     public function update(Request $request)
@@ -45,17 +52,14 @@ class CompanyController extends Controller
                 'nullable',
                 Rule::exists('users', 'id')->where(fn ($query) => $query->where('company_id', $company->id)),
             ],
-            'bank_name' => ['nullable', 'string', 'max:255'],
-            'iban_name' => ['nullable', 'string', 'max:255'],
-            'bank' => ['nullable', 'string', 'max:20'],
-            'branch' => ['nullable', 'string', 'max:20'],
-            'account' => ['nullable', 'string', 'max:50'],
-            'key' => ['nullable', 'string', 'max:10'],
-            'iban' => ['nullable', 'string', 'max:50'],
-            'bic' => ['nullable', 'string', 'max:20'],
+            'billing_bank_account_id' => [
+                'nullable',
+                Rule::exists('bank_accounts', 'id')->where(fn ($query) => $query->where('company_id', $company->id)),
+            ],
         ]);
 
         $company->fill(collect($validated)->except('contact_user_id')->all());
+        $company->billing_bank_account_id = $validated['billing_bank_account_id'] ?? null;
 
         $contactUser = ! empty($validated['contact_user_id'])
             ? $this->companyUsersQuery()->find($validated['contact_user_id'])

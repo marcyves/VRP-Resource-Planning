@@ -68,35 +68,14 @@
         </article>
 
         <article class="company-show-card company-show-card--wide">
-            <h3>{{ __('messages.iban') }}</h3>
-            @if($company->bank_name)
-                <p class="form-hint">{{ __('messages.bank') }}: {{ $company->bank_name }}</p>
+            <h3>{{ __('messages.billing_bank_account') }}</h3>
+            <x-company-billing-details :account="$company->billingBankAccount" />
+            @if (Auth::user()->isAdmin() || Auth::user()->isEditor())
+                <p class="company-billing-actions">
+                    <a class="btn btn-secondary btn--compact" href="{{ route('company.edit') }}#billing_bank_account_id">{{ __('messages.edit') }}</a>
+                    <a class="btn btn-secondary btn--compact" href="{{ route('treasury.bank.index') }}">{{ __('messages.manage_bank_accounts') }}</a>
+                </p>
             @endif
-            @if($company->bank || $company->branch || $company->account || $company->key)
-                <table class="simple-table">
-                    <thead>
-                        <tr>
-                            <th>{{ __('messages.bank_code') }}</th>
-                            <th>{{ __('messages.branch_code') }}</th>
-                            <th>{{ __('messages.account_number') }}</th>
-                            <th>{{ __('messages.key') }}</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>{{ $company->bank ?: '—' }}</td>
-                            <td>{{ $company->branch ?: '—' }}</td>
-                            <td>{{ $company->account ?: '—' }}</td>
-                            <td>{{ $company->key ?: '—' }}</td>
-                        </tr>
-                    </tbody>
-                </table>
-            @endif
-            <ul>
-                <li>{{ __('messages.account_holder') }}: {{ $company->iban_name ?: __('messages.not_provided') }}</li>
-                <li>{{ __('messages.iban_code') }}: {{ $company->iban ?: __('messages.not_provided') }}</li>
-                <li>{{ __('messages.bic_code') }}: {{ $company->bic ?: __('messages.not_provided') }}</li>
-            </ul>
         </article>
     </section>
 </x-app-layout>

@@ -93,40 +93,39 @@
             </div>
 
             <div class="company-form-block">
-                <h3 class="company-form-block__title">{{ __('messages.iban') }}</h3>
+                <h3 class="company-form-block__title">{{ __('messages.billing_bank_account') }}</h3>
+                <p class="form-hint">{{ __('messages.billing_bank_account_help') }}</p>
 
-                <div class="school-form-input">
-                    <x-input-label for="bank_name" :value="__('messages.bank')" />
-                    <x-text-input type="text" name="bank_name" id="bank_name" value="{{ old('bank_name', $company->bank_name) }}" />
-                </div>
-                <div class="school-form-input">
-                    <x-input-label for="iban_name" :value="__('messages.account_holder')" />
-                    <x-text-input type="text" name="iban_name" id="iban_name" value="{{ old('iban_name', $company->iban_name) }}" />
-                </div>
-                <div class="school-form-input">
-                    <x-input-label for="bank" :value="__('messages.bank_code')" />
-                    <x-text-input type="text" name="bank" id="bank" value="{{ old('bank', $company->bank) }}" />
-                </div>
-                <div class="school-form-input">
-                    <x-input-label for="branch" :value="__('messages.branch_code')" />
-                    <x-text-input type="text" name="branch" id="branch" value="{{ old('branch', $company->branch) }}" />
-                </div>
-                <div class="school-form-input">
-                    <x-input-label for="account" :value="__('messages.account_number')" />
-                    <x-text-input type="text" name="account" id="account" value="{{ old('account', $company->account) }}" />
-                </div>
-                <div class="school-form-input">
-                    <x-input-label for="key" :value="__('messages.key')" />
-                    <x-text-input type="text" name="key" id="key" value="{{ old('key', $company->key) }}" />
-                </div>
-                <div class="school-form-input">
-                    <x-input-label for="iban" :value="__('messages.iban_code')" />
-                    <x-text-input type="text" name="iban" id="iban" value="{{ old('iban', $company->iban) }}" />
-                </div>
-                <div class="school-form-input">
-                    <x-input-label for="bic" :value="__('messages.bic_code')" />
-                    <x-text-input type="text" name="bic" id="bic" value="{{ old('bic', $company->bic) }}" />
-                </div>
+                @if ($bankAccounts->isEmpty())
+                    <p class="treasury-empty">{{ __('messages.billing_bank_account_empty') }}</p>
+                    <p>
+                        <a class="btn btn-secondary btn--compact" href="{{ route('treasury.bank.index') }}">{{ __('messages.manage_bank_accounts') }}</a>
+                    </p>
+                @else
+                    <div class="school-form-input">
+                        <x-input-label for="billing_bank_account_id" :value="__('messages.bank_select_account')" />
+                        <select name="billing_bank_account_id" id="billing_bank_account_id" class="form-input">
+                            <option value="">{{ __('messages.billing_bank_account_none_option') }}</option>
+                            @foreach ($bankAccounts->groupBy(fn ($a) => $a->bank->name) as $bankName => $accounts)
+                                <optgroup label="{{ $bankName }}">
+                                    @foreach ($accounts as $account)
+                                        <option value="{{ $account->id }}" @selected(old('billing_bank_account_id', $company->billing_bank_account_id) == $account->id)>
+                                            {{ $account->displayName() }}
+                                        </option>
+                                    @endforeach
+                                </optgroup>
+                            @endforeach
+                        </select>
+                    </div>
+                    <p>
+                        <a class="btn btn-secondary btn--compact" href="{{ route('treasury.bank.index') }}">{{ __('messages.manage_bank_accounts') }}</a>
+                    </p>
+                    @if ($company->billingBankAccount)
+                        <div class="company-billing-preview">
+                            <x-company-billing-details :account="$company->billingBankAccount" />
+                        </div>
+                    @endif
+                @endif
             </div>
 
             <div class="form-actions company-form-actions">

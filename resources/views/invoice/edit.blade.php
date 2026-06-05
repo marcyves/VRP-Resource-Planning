@@ -22,8 +22,8 @@
             </div>
 
             <div class="form-group">
-                <x-input-label for="amount">{{ __('messages.gain') }}</x-input-label>
-                <x-text-input type="text" name="amount" id="amount" value="{{ $invoice->amount }}" />
+                <x-input-label for="amount">{{ __('messages.amount') }} {{ __('messages.amount_ht') }}</x-input-label>
+                <x-text-input type="text" name="amount" id="amount" value="{{ $invoice->amountHt() }}" />
             </div>
 
             <div class="form-group">

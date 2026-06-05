@@ -109,7 +109,7 @@ class InvoiceController extends Controller
         $bill_number = $this->invoiceService->calculateNextInvoiceId($user);
         $invoice_id = $user->company->bill_prefix.$bill_number;
 
-        $company = $user->company;
+        $company = $user->company->load('billingBankAccount.bank');
 
         if ($cmd == 'detailed') {
             [$items, $total_amount] = Tools::getInvoiceDetails($school->id, $month, $year, $invoice_id, false);
@@ -164,6 +164,10 @@ class InvoiceController extends Controller
             $total_amount = $calculated_amount;
         }
 
+        $amountTtc = $request->filled('amount')
+            ? (float) $request->amount
+            : round($calculated_amount * 1.2, 2);
+
         try {
             // 1. Logique de création de l'enregistrement en base de données
             $invoice = Invoice::create([
@@ -172,7 +176,7 @@ class InvoiceController extends Controller
                 'bill_date' => Carbon::createFromFormat('d/m/Y', $bill_date)->format('Y-m-d'),
                 'company_id' => $company->id,
                 'school_id' => $request->school_id,
-                'amount' => $request->amount ?? $total_amount,
+                'amount' => $amountTtc,
                 'electronic_invoice_status' => ElectronicInvoiceStatus::Ready,
                 'electronic_status_at' => Carbon::now(),
             ]);
@@ -254,7 +258,7 @@ class InvoiceController extends Controller
 
         try {
             $invoice->description = $request->description;
-            $invoice->amount = $request->amount;
+            $invoice->amount = round((float) $request->amount * 1.2, 2);
             $invoice->created_at = $request->created_at;
             $invoice->paid_at = $request->paid_at;
 

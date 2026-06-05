@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use App\Enums\ElectronicInvoiceStatus;
+use App\Http\Utility\Tools;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -77,6 +79,85 @@ class Invoice extends Model
     {
         return $this->electronic_invoice_status?->label()
             ?? ElectronicInvoiceStatus::Draft->label();
+    }
+
+    /** @var array<string, float|null> */
+    protected static array $planningTotalHtCache = [];
+
+    /** Montant TTC (affichage, rapprochement bancaire, PDF). */
+    public function amountTtc(): float
+    {
+        $amount = (float) $this->amount;
+
+        if ($this->amountStoredAsHt()) {
+            return round($amount * 1.2, 2);
+        }
+
+        return $amount;
+    }
+
+    public function amountHt(): float
+    {
+        $amount = (float) $this->amount;
+
+        if ($this->amountStoredAsHt()) {
+            return $amount;
+        }
+
+        return round($amount / 1.2, 2);
+    }
+
+    /**
+     * Certaines factures ont été enregistrées en HT (fallback planning, édition « gain »).
+     */
+    public function amountStoredAsHt(): bool
+    {
+        $amount = round((float) $this->amount, 2);
+        if ($amount <= 0) {
+            return false;
+        }
+
+        $planningHt = $this->resolvePlanningTotalHt();
+        if ($planningHt !== null && abs($amount - $planningHt) < 0.02) {
+            return true;
+        }
+
+        return false;
+    }
+
+    protected function resolvePlanningTotalHt(): ?float
+    {
+        if (! $this->school_id || ! $this->bill_date) {
+            return null;
+        }
+
+        $key = (string) $this->id;
+        if (array_key_exists($key, self::$planningTotalHtCache)) {
+            return self::$planningTotalHtCache[$key];
+        }
+
+        $this->loadMissing('school.company');
+        if (! $this->school) {
+            self::$planningTotalHtCache[$key] = null;
+
+            return null;
+        }
+
+        $date = Carbon::parse($this->bill_date);
+        $invoiceName = ($this->school->company->bill_prefix ?? '').$this->id;
+
+        [, $ht] = Tools::getInvoiceDetails(
+            $this->school_id,
+            $date->month,
+            $date->year,
+            $invoiceName,
+            false
+        );
+
+        $ht = round((float) $ht, 2);
+        self::$planningTotalHtCache[$key] = $ht > 0 ? $ht : null;
+
+        return self::$planningTotalHtCache[$key];
     }
 
     public static function getAmount($year)

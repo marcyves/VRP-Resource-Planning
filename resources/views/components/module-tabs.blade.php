@@ -20,6 +20,7 @@
             str_contains($href, '#treasury-summary') => 'chart',
             str_contains($href, '#expense-reports') => 'folder',
             str_contains($href, '#standalone-expenses') => 'wallet',
+            str_contains($href, '/treasury/bank') || str_contains($href, 'reconciliation') => 'banknote',
             str_contains($href, 'expenses/create') => 'plus',
             str_contains($href, 'invoice/create') => 'plus',
             str_contains($href, 'invoice') => 'receipt',

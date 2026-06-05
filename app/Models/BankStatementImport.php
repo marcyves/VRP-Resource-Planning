@@ -10,6 +10,7 @@ class BankStatementImport extends Model
 {
     protected $fillable = [
         'company_id',
+        'bank_account_id',
         'user_id',
         'file_name',
         'account_number',
@@ -31,6 +32,11 @@ class BankStatementImport extends Model
         return $this->belongsTo(Company::class);
     }
 
+    public function bankAccount(): BelongsTo
+    {
+        return $this->belongsTo(BankAccount::class);
+    }
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
@@ -43,6 +49,6 @@ class BankStatementImport extends Model
 
     public function reconciledCount(): int
     {
-        return $this->lines()->whereHas('reconciliation')->count();
+        return $this->lines()->fullyReconciled()->count();
     }
 }

@@ -5,7 +5,7 @@
             return '—';
         }
         if ($item instanceof \App\Models\Invoice) {
-            return __('messages.bank_match_invoice', ['id' => $item->id, 'amount' => number_format((float) $item->amount, 2, ',', ' ')]);
+            return __('messages.bank_match_invoice', ['id' => $item->id, 'amount' => number_format($item->amountTtc(), 2, ',', ' ')]);
         }
         if ($item instanceof \App\Models\Expense) {
             return __('messages.bank_match_expense', ['label' => $item->label, 'amount' => number_format((float) $item->amount, 2, ',', ' ')]);
@@ -100,7 +100,7 @@
                                                     <optgroup label="{{ __('messages.invoices') }}">
                                                         @foreach ($candidates['invoices'] as $invoice)
                                                             <option value="invoice:{{ $invoice->id }}">
-                                                                {{ $invoice->id }} — @money($invoice->amount) ({{ $invoice->bill_date ? \Carbon\Carbon::parse($invoice->bill_date)->format('d/m/Y') : '—' }})
+                                                                {{ $invoice->id }} — @money($invoice->amountTtc()) {{ __('messages.amount_ttc') }} ({{ $invoice->bill_date ? \Carbon\Carbon::parse($invoice->bill_date)->format('d/m/Y') : '—' }})
                                                             </option>
                                                         @endforeach
                                                     </optgroup>

@@ -33,33 +33,8 @@
                 </article>
 
                 <article class="company-show-card">
-                    <h3>{{ __('messages.iban') }}</h3>
-                    @if ($company->bank_name)
-                        <p class="form-hint">{{ __('messages.bank') }}: {{ $company->bank_name }}</p>
-                    @endif
-                    <table class="simple-table">
-                        <thead>
-                            <tr>
-                                <th>{{ __('messages.bank_code') }}</th>
-                                <th>{{ __('messages.branch_code') }}</th>
-                                <th>{{ __('messages.account_number') }}</th>
-                                <th>{{ __('messages.key') }}</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>{{ $company->bank ?: '—' }}</td>
-                                <td>{{ $company->branch ?: '—' }}</td>
-                                <td>{{ $company->account ?: '—' }}</td>
-                                <td>{{ $company->key ?: '—' }}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <ul>
-                        <li>{{ __('messages.account_holder') }}: {{ $company->iban_name }}</li>
-                        <li>{{ __('messages.iban_code') }}: {{ $company->iban }}</li>
-                        <li>{{ __('messages.bic_code') }}: {{ $company->bic }}</li>
-                    </ul>
+                    <h3>{{ __('messages.billing_bank_account') }}</h3>
+                    <x-company-billing-details :account="$company->billingBankAccount" />
                 </article>
 
                 <article class="company-show-card">

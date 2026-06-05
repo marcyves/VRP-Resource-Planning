@@ -218,7 +218,7 @@ return array (
   'error_unauthorized' => 'Unauthorized',
   'treasury' => 'Treasury',
   'invoices_ttc' => 'Bills incl. tax',
-  'paid_invoices_ttc' => 'Paid bills incl. tax',
+  'paid_invoices_ttc' => 'Collected bills incl. tax',
   'expense_reports' => 'Expense reports',
   'standalone_expenses' => 'Standalone expenses',
   'expenses' => 'Expenses',
