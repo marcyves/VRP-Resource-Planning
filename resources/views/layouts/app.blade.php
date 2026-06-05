@@ -17,6 +17,10 @@
                 : (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
             document.documentElement.dataset.theme = theme;
             document.documentElement.style.colorScheme = theme;
+
+            var sidebarKey = 'vrp-sidebar-compact';
+            var sidebarStored = localStorage.getItem(sidebarKey);
+            document.documentElement.dataset.sidebarCompact = sidebarStored === 'false' ? 'false' : 'true';
         })();
     </script>
 

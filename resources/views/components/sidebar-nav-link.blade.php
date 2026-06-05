@@ -6,7 +6,7 @@ $classes = ($active ?? false)
     : 'sidebar-link';
 @endphp
 
-<a {{ $attributes->merge(['class' => $classes]) }}>
+<a {{ $attributes->merge(['class' => $classes, 'title' => $slot, 'aria-label' => $slot]) }}>
     <span class="sidebar-link__icon" aria-hidden="true">
         <x-module-tab-icon :name="$icon" />
     </span>

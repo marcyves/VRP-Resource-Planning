@@ -415,6 +415,8 @@ return [
     'reference_data' => 'Référentiel',
     'module_navigation' => 'Navigation du module',
     'nav_menu' => 'Menu principal',
+    'sidebar_expand' => 'Développer le menu',
+    'sidebar_collapse' => 'Réduire le menu',
     'theme_toggle' => 'Basculer le mode sombre',
     'by_date' => 'Par date',
     'summary' => 'Synthèse',

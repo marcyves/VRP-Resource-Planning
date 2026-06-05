@@ -1,8 +1,14 @@
 /* App shell — EduProf-inspired layout */
 
 :root {
-    --sidebar-width: 16.25rem;
+    --sidebar-width-expanded: 16.25rem;
+    --sidebar-width-compact: 4.5rem;
+    --sidebar-width: var(--sidebar-width-expanded);
     --topbar-height: 4rem;
+}
+
+html[data-sidebar-compact="true"] {
+    --sidebar-width: var(--sidebar-width-compact);
 }
 
 .app-shell {
@@ -44,6 +50,7 @@
     padding: 1.5rem 0;
     background: var(--nav-bg);
     border-right: 1px solid var(--nav-border);
+    transition: width 0.2s ease;
 }
 
 .app-sidebar__brand {
@@ -213,12 +220,58 @@
     text-align: left;
 }
 
+/* Sidebar compact — icônes seules */
+html[data-sidebar-compact="true"] .app-sidebar__brand {
+    justify-content: center;
+    padding-inline: 0.5rem;
+}
+
+html[data-sidebar-compact="true"] .app-sidebar__brand-text,
+html[data-sidebar-compact="true"] .sidebar-link__label {
+    display: none;
+}
+
+html[data-sidebar-compact="true"] .app-sidebar__nav,
+html[data-sidebar-compact="true"] .app-sidebar__footer {
+    padding-inline: 0.5rem;
+}
+
+html[data-sidebar-compact="true"] .sidebar-link {
+    justify-content: center;
+    gap: 0;
+    padding-inline: 0.5rem;
+}
+
+html[data-sidebar-compact="true"] .sidebar-link--button {
+    text-align: center;
+}
+
+.sidebar-compact-toggle__icon--expand,
+.sidebar-compact-toggle__label--expand {
+    display: none;
+}
+
+html[data-sidebar-compact="true"] .sidebar-compact-toggle__icon--collapse,
+html[data-sidebar-compact="true"] .sidebar-compact-toggle__label--collapse {
+    display: none;
+}
+
+html[data-sidebar-compact="true"] .sidebar-compact-toggle__icon--expand,
+html[data-sidebar-compact="true"] .sidebar-compact-toggle__label--expand {
+    display: inline-flex;
+}
+
+html[data-sidebar-compact="true"] .sidebar-compact-toggle__label--expand {
+    display: none;
+}
+
 .app-canvas {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
     margin-left: var(--sidebar-width);
     min-width: 0;
+    transition: margin-left 0.2s ease;
 }
 
 .app-topbar {
@@ -375,11 +428,58 @@
     border-radius: 0;
 }
 
+@media (min-width: 1024px) {
+    html[data-sidebar-compact="true"] .sidebar-link[title]:hover::after {
+        content: attr(title);
+        position: absolute;
+        left: calc(100% + 0.5rem);
+        z-index: 60;
+        padding: 0.35rem 0.65rem;
+        border-radius: var(--rounded-md);
+        background: var(--text-heading);
+        color: var(--surface-page);
+        font-size: 0.75rem;
+        font-weight: 500;
+        line-height: 1.25;
+        white-space: nowrap;
+        pointer-events: none;
+        box-shadow: var(--shadow-lg);
+    }
+
+    html[data-sidebar-compact="true"] .sidebar-link {
+        position: relative;
+    }
+}
+
 @media (max-width: 1023px) {
     .app-sidebar {
+        width: var(--sidebar-width-expanded);
         transform: translateX(-100%);
         transition: transform 0.2s ease;
         box-shadow: var(--shadow-lg);
+    }
+
+    html[data-sidebar-compact="true"] .app-sidebar__brand-text {
+        display: flex;
+    }
+
+    html[data-sidebar-compact="true"] .sidebar-link__label {
+        display: inline;
+    }
+
+    html[data-sidebar-compact="true"] .app-sidebar__brand {
+        justify-content: flex-start;
+        padding-inline: 1.25rem;
+    }
+
+    html[data-sidebar-compact="true"] .sidebar-link {
+        justify-content: flex-start;
+        gap: 0.75rem;
+        padding-inline: 0.875rem;
+    }
+
+    .sidebar-compact-toggle {
+        display: none;
     }
 
     .sidebar-toggle-input:checked ~ .sidebar-backdrop {

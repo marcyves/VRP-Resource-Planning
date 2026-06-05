@@ -399,6 +399,8 @@ return [
     'reference_data' => 'Reference data',
     'module_navigation' => 'Module navigation',
     'nav_menu' => 'Main menu',
+    'sidebar_expand' => 'Expand menu',
+    'sidebar_collapse' => 'Collapse menu',
     'theme_toggle' => 'Toggle dark mode',
     'by_date' => 'By date',
     'summary' => 'Summary',

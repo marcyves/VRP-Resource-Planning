@@ -52,9 +52,34 @@
     </nav>
 
     <div class="app-sidebar__footer">
+        <button
+            type="button"
+            id="sidebar-compact-toggle"
+            class="sidebar-link sidebar-link--button sidebar-compact-toggle"
+            aria-pressed="true"
+            data-label-expand="{{ __('messages.sidebar_expand') }}"
+            data-label-collapse="{{ __('messages.sidebar_collapse') }}"
+            aria-label="{{ __('messages.sidebar_expand') }}"
+            title="{{ __('messages.sidebar_expand') }}"
+        >
+            <span class="sidebar-link__icon sidebar-compact-toggle__icon sidebar-compact-toggle__icon--expand" aria-hidden="true">
+                <x-module-tab-icon name="panel-left-open" />
+            </span>
+            <span class="sidebar-link__icon sidebar-compact-toggle__icon sidebar-compact-toggle__icon--collapse" aria-hidden="true">
+                <x-module-tab-icon name="panel-left-close" />
+            </span>
+            <span class="sidebar-link__label sidebar-compact-toggle__label sidebar-compact-toggle__label--expand">{{ __('messages.sidebar_expand') }}</span>
+            <span class="sidebar-link__label sidebar-compact-toggle__label sidebar-compact-toggle__label--collapse">{{ __('messages.sidebar_collapse') }}</span>
+        </button>
+
         <form method="POST" action="{{ route('logout') }}">
             @csrf
-            <button type="submit" class="sidebar-link sidebar-link--button">
+            <button
+                type="submit"
+                class="sidebar-link sidebar-link--button"
+                title="{{ __('messages.logout') }}"
+                aria-label="{{ __('messages.logout') }}"
+            >
                 <span class="sidebar-link__icon" aria-hidden="true">
                     <x-module-tab-icon name="logout" />
                 </span>

@@ -1,5 +1,6 @@
 import './bootstrap';
 import './theme';
+import './sidebar';
 
 import Alpine from 'alpinejs';
 import { createDeleteStore } from './delete-store';
