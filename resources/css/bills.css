@@ -3,6 +3,81 @@
     gap: var(--spacing-4);
 }
 
+.invoice-list-header h3 {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-heading);
+}
+
+.invoice-list-filters {
+    display: grid;
+    gap: var(--spacing-3);
+    margin-bottom: var(--spacing-4);
+    padding: var(--spacing-4);
+    border: 1px solid #ffffff80;
+    border-radius: var(--rounded-xl);
+    background: var(--surface-container-lowest);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    box-shadow: var(--shadow-sm);
+}
+
+.invoice-list-filters__fields {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+    gap: var(--spacing-3);
+}
+
+.invoice-list-filters__field {
+    display: grid;
+    gap: 0.35rem;
+    margin: 0;
+}
+
+.invoice-list-filters__label {
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+}
+
+.invoice-list-filters__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-2);
+}
+
+.invoice-table__sortable {
+    white-space: nowrap;
+}
+
+.invoice-table__sort-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    color: inherit;
+    font-weight: inherit;
+    text-decoration: none;
+}
+
+.invoice-table__sort-link:hover,
+.invoice-table__sort-link--active {
+    color: var(--brand-primary);
+}
+
+.invoice-table__sort-indicator {
+    font-size: 0.75rem;
+    line-height: 1;
+}
+
+.invoice-table__empty {
+    padding: var(--spacing-6);
+    text-align: center;
+    color: var(--text-secondary);
+}
+
 .bills td {
    padding: 0;
    white-space: nowrap;

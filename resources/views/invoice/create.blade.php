@@ -3,7 +3,7 @@
         <h2>{{ __('messages.invoice_create') }}</h2>
     </x-slot>
 
-    <x-invoice-module-tabs active="create" />
+    <x-treasury-module-tabs active="invoice_create" />
 
     @if (Auth::user()->getMode() == 'Edit')
     <section class="bills-container">
@@ -111,7 +111,7 @@
             </div>
 
             <div class="form-actions">
-                <a class="btn btn-secondary" href="{{ ($fromSchoolBilling ?? false) ? route('school.show', $school).'#billing' : route('invoice.index') }}">{{ __('messages.cancel') }}</a>
+                <a class="btn btn-secondary" href="{{ ($fromSchoolBilling ?? false) ? route('school.show', $school).'#billing' : route('treasury.invoices.index') }}">{{ __('messages.cancel') }}</a>
                 <x-button-primary>{{ __('messages.bill_create') }}</x-button-primary>
             </div>
         </form>

@@ -9,6 +9,7 @@ use App\Models\Expense;
 use App\Models\ExpenseReport;
 use App\Models\Invoice;
 use App\Models\TreasuryBalance;
+use App\Services\InvoiceDashboardService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -16,12 +17,13 @@ use TCPDF;
 
 class TreasuryController extends Controller
 {
-    public function index()
+    public function index(InvoiceDashboardService $invoiceDashboardService)
     {
         $user = Auth::user();
         $companyId = $user->company_id;
         $current_year = session('current_year', now()->format('Y'));
         $year = $current_year === 'all' ? now()->year : (int) $current_year;
+        $dashboard = $invoiceDashboardService->build($user, $year);
 
         $invoices = Invoice::where('company_id', $companyId)
             ->whereYear('bill_date', $year)
@@ -53,10 +55,6 @@ class TreasuryController extends Controller
             ->where('status', 'paid')
             ->sum(fn ($report) => $report->expenses->sum('amount'));
         $standaloneTotal = $standaloneExpenses->sum('amount');
-        $allExpenses = Expense::where('company_id', $companyId)
-            ->whereYear('expense_date', $year)
-            ->get();
-        $plannedAmounts = $user->getPlannedAmountPerMonth($year);
         $company = Company::with('billingBankAccount')->findOrFail($companyId);
         $billingBankAccount = $company->billingBankAccount;
         $treasuryBalance = TreasuryBalance::firstOrCreate(
@@ -72,7 +70,6 @@ class TreasuryController extends Controller
         $openingAmount = $billingBankAccount
             ? (float) $billingBankAccount->opening_amount
             : (float) $treasuryBalance->opening_amount;
-        $monthlyChartData = $this->monthlyTreasuryChartData($year, $invoices, $allExpenses, $plannedAmounts, $billingBankAccount, $treasuryBalance, $companyId);
         $closingBalance = $openingAmount
             + $invoicePaidTotal
             - $submittedExpenseReportTotal
@@ -82,6 +79,8 @@ class TreasuryController extends Controller
 
         return view('treasury.index', compact(
             'year',
+            'current_year',
+            'dashboard',
             'invoiceTotal',
             'invoicePaidTotal',
             'reports',
@@ -92,7 +91,64 @@ class TreasuryController extends Controller
             'paidExpenseReportTotal',
             'standaloneTotal',
             'closingBalance',
-            'monthlyChartData'
+        ));
+    }
+
+    public function invoices(Request $request)
+    {
+        $user = Auth::user();
+        $current_year = session('current_year', now()->format('Y'));
+        $sort = $request->input('sort', 'id');
+        $direction = $request->input('direction', 'desc') === 'asc' ? 'asc' : 'desc';
+
+        if (! in_array($sort, ['id', 'description', 'school'], true)) {
+            $sort = 'id';
+        }
+
+        $query = Invoice::query()
+            ->select(['invoices.*', 'schools.name as school'])
+            ->join('schools', 'schools.id', '=', 'invoices.school_id')
+            ->where('invoices.company_id', $user->company_id);
+
+        if ($current_year !== 'all') {
+            $query->whereYear('invoices.bill_date', (int) $current_year);
+        }
+
+        if ($request->filled('q')) {
+            $query->where('invoices.description', 'like', '%'.$request->string('q').'%');
+        }
+
+        if ($request->filled('school_id')) {
+            $query->where('invoices.school_id', (int) $request->input('school_id'));
+        }
+
+        match ($request->input('payment')) {
+            'paid' => $query->whereNotNull('invoices.paid_at'),
+            'unpaid' => $query->whereNull('invoices.paid_at'),
+            default => null,
+        };
+
+        match ($sort) {
+            'description' => $query->orderBy('invoices.description', $direction),
+            'school' => $query->orderBy('schools.name', $direction)->orderBy('invoices.id'),
+            default => $query->orderBy('invoices.id', $direction),
+        };
+
+        $bills = $query->get();
+        $schools = $user->getSchools();
+        $filters = array_filter([
+            'q' => $request->input('q'),
+            'school_id' => $request->input('school_id'),
+            'payment' => $request->input('payment'),
+        ], fn ($value) => filled($value));
+
+        return view('treasury.invoices', compact(
+            'bills',
+            'schools',
+            'current_year',
+            'sort',
+            'direction',
+            'filters',
         ));
     }
 
@@ -194,7 +250,7 @@ class TreasuryController extends Controller
 
         return response($pdf->Output($filename, 'S'), 200, [
             'Content-Type' => 'application/pdf',
-            'Content-Disposition' => 'attachment; filename="' . $filename . '"',
+            'Content-Disposition' => 'attachment; filename="'.$filename.'"',
         ]);
     }
 
@@ -268,7 +324,7 @@ class TreasuryController extends Controller
         $reportId = null;
 
         if ($request->boolean('include_in_expense_report') || $request->filled('expense_report_id')) {
-            $report = $request->filled('expense_report_id') && !$request->boolean('is_recurring')
+            $report = $request->filled('expense_report_id') && ! $request->boolean('is_recurring')
                 ? ExpenseReport::findOrFail($validated['expense_report_id'])
                 : ExpenseReport::firstOrCreate([
                     'company_id' => Auth::user()->company_id,
@@ -325,7 +381,7 @@ class TreasuryController extends Controller
 
     private function ensureExpenseIsEditable(Expense $expense): void
     {
-        if (!$expense->expense_report_id) {
+        if (! $expense->expense_report_id) {
             return;
         }
 
@@ -531,7 +587,7 @@ class TreasuryController extends Controller
         $pdf->SetXY(12, $y + 10);
         $pdf->Cell(78, 5, $company->name, 0, 1);
         $pdf->SetFont('helvetica', '', 9);
-        foreach (array_filter([$company->address, trim($company->zip . ' ' . $company->city), $company->country, $company->email]) as $line) {
+        foreach (array_filter([$company->address, trim($company->zip.' '.$company->city), $company->country, $company->email]) as $line) {
             $pdf->SetX(12);
             $pdf->Cell(78, 4.5, $line, 0, 1);
         }
@@ -542,12 +598,12 @@ class TreasuryController extends Controller
         $pdf->Rect(105, $y + 7, 90, 34, 'D');
         $pdf->SetFont('helvetica', '', 9);
         $pdf->SetXY(107, $y + 10);
-        $pdf->Cell(86, 5, __('messages.beneficiary') . ': ' . $beneficiary, 0, 1);
+        $pdf->Cell(86, 5, __('messages.beneficiary').': '.$beneficiary, 0, 1);
         $pdf->SetX(107);
-        $pdf->Cell(86, 5, __('messages.status') . ': ' . __('messages.expense_report_status_' . $expenseReport->status), 0, 1);
+        $pdf->Cell(86, 5, __('messages.status').': '.__('messages.expense_report_status_'.$expenseReport->status), 0, 1);
         if ($expenseReport->reimbursed_at) {
             $pdf->SetX(107);
-            $pdf->Cell(86, 5, __('messages.payment_date') . ': ' . Carbon::parse($expenseReport->reimbursed_at)->format('d/m/Y'), 0, 1);
+            $pdf->Cell(86, 5, __('messages.payment_date').': '.Carbon::parse($expenseReport->reimbursed_at)->format('d/m/Y'), 0, 1);
         }
 
         $tableY = $y + 52;
@@ -575,7 +631,7 @@ class TreasuryController extends Controller
             $pdf->Cell(32, 6, $expense->category, 1);
             $pdf->Cell(24, 6, $expense->vendor, 1);
             $pdf->Cell(17, 6, $this->formatPdfMoney($ht), 1, 0, 'R');
-            $pdf->Cell(17, 6, number_format($taxRate, 2, ',', ' ') . '%', 1, 0, 'R');
+            $pdf->Cell(17, 6, number_format($taxRate, 2, ',', ' ').'%', 1, 0, 'R');
             $pdf->Cell(18, 6, $this->formatPdfMoney($expense->amount), 1, 1, 'R');
         }
 
@@ -590,7 +646,7 @@ class TreasuryController extends Controller
 
     private function formatPdfMoney(float|int|string|null $amount): string
     {
-        return number_format((float) $amount, 2, ',', ' ') . ' €';
+        return number_format((float) $amount, 2, ',', ' ').' €';
     }
 
     private function expenseTaxRate(Expense $expense): float

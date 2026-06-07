@@ -3,64 +3,24 @@
         <h2>{{ __('messages.treasury') }} {{ $year }}</h2>
     </x-slot>
 
-    <x-treasury-module-tabs />
+    <x-treasury-module-tabs active="summary" />
 
-    <x-kpi-grid :items="[
-        ['icon' => 'receipt', 'label' => __('messages.invoices_ttc'), 'value' => number_format($invoiceTotal, 2, ',', ' ') . ' €', 'variant' => 'accent'],
-        ['icon' => 'wallet', 'label' => __('messages.closing_balance'), 'value' => number_format($closingBalance, 2, ',', ' ') . ' €', 'variant' => 'total'],
-        ['icon' => 'chart', 'label' => __('messages.paid_invoices_ttc'), 'value' => number_format($invoicePaidTotal, 2, ',', ' ') . ' €', 'variant' => 'success'],
-    ]" />
+    <x-invoice-dashboard
+        :dashboard="$dashboard"
+        :show-year-note="$current_year === 'all'"
+    />
 
-    <section id="treasury-summary">
-        <header class="treasury-section-header">
-            <h3>{{ __('messages.monthly_treasury_histogram') }}</h3>
-        </header>
-        <div class="treasury-histogram" aria-label="{{ __('messages.monthly_treasury_histogram') }}">
-            <div class="treasury-histogram__plot">
-                @foreach($monthlyChartData as $month)
-                    <div class="treasury-histogram__month">
-                        <div class="treasury-histogram__bars">
-                            <span class="treasury-histogram__bar treasury-histogram__bar--issued" style="height: {{ $month['issued_height'] }}%;" title="{{ __('messages.invoices_ttc') }}: @money($month['issued'])"></span>
-                            <span class="treasury-histogram__bar treasury-histogram__bar--paid" style="height: {{ $month['paid_height'] }}%;" title="{{ __('messages.paid_invoices_ttc') }}: @money($month['paid'])"></span>
-                            <span class="treasury-histogram__bar treasury-histogram__bar--spent" style="height: {{ $month['spent_height'] }}%;" title="{{ __('messages.expenses') }}: @money($month['spent'])"></span>
-                            <span class="treasury-histogram__bar treasury-histogram__bar--planned" style="height: {{ $month['planned_height'] }}%;" title="{{ __('messages.planned_amounts') }}: @money($month['planned'])"></span>
-                            @if ($month['bank'] !== null)
-                                <span class="treasury-histogram__bar treasury-histogram__bar--bank" style="height: {{ $month['bank_height'] }}%;" title="{{ __('messages.bank_balance') }}: @money($month['bank'])"></span>
-                            @endif
-                        </div>
-                        <span class="treasury-histogram__label">{{ $month['label'] }}</span>
-                        <span @class([
-                            'treasury-histogram__balance',
-                            'money' => $month['bank'] !== null,
-                            'treasury-histogram__balance--empty' => $month['bank'] === null,
-                        ])>
-                            @if ($month['bank'] !== null)
-                                @money($month['bank'])
-                            @else
-                                —
-                            @endif
-                        </span>
-                    </div>
-                @endforeach
-            </div>
-            <div class="treasury-histogram__legend">
-                <span><i class="treasury-histogram__swatch treasury-histogram__swatch--issued"></i>{{ __('messages.invoices_ttc') }}</span>
-                <span><i class="treasury-histogram__swatch treasury-histogram__swatch--paid"></i>{{ __('messages.paid_invoices_ttc') }}</span>
-                <span><i class="treasury-histogram__swatch treasury-histogram__swatch--spent"></i>{{ __('messages.expenses') }}</span>
-                <span><i class="treasury-histogram__swatch treasury-histogram__swatch--planned"></i>{{ __('messages.planned_amounts') }}</span>
-                <span><i class="treasury-histogram__swatch treasury-histogram__swatch--bank"></i>{{ __('messages.bank_balance') }}</span>
-            </div>
-        </div>
-    </section>
-
-    <section>
+    <section id="treasury-balance">
         <div class="treasury-summary-grid">
             <article class="treasury-summary-card--wide">
+                <header class="treasury-section-header">
+                    <h3>{{ __('messages.balance_closing') }}</h3>
+                </header>
                 <table class="treasury-summary-table">
                     <tbody>
                         <tr>
                             <th>{{ __('messages.paid_invoices_ttc') }}</th>
-                            <td class="money">@money($invoicePaidTotal)</td>
+                            <td class="money value-income">@money($invoicePaidTotal)</td>
                         </tr>
                         <tr class="treasury-summary-table__group">
                             <th>{{ __('messages.expense_reports') }}</th>
@@ -84,7 +44,7 @@
                         </tr>
                         <tr class="treasury-summary-table__total">
                             <th>{{ __('messages.balance_closing') }}</th>
-                            <td class="money">@money($closingBalance)</td>
+                            <td class="money value-total">@money($closingBalance)</td>
                         </tr>
                     </tbody>
                 </table>

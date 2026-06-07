@@ -34,7 +34,7 @@ class InvoiceController extends Controller
         session()->forget('school');
         session()->forget('school_id');
 
-        return redirect()->route('invoice.index');
+        return redirect()->route('treasury.invoices.index');
     }
 
     public function selectSchool(Request $request)
@@ -60,24 +60,15 @@ class InvoiceController extends Controller
             return redirect()->to($redirect);
         }
 
-        return redirect()->route('invoice.index');
+        return redirect()->route('treasury.invoices.index');
     }
 
     /**
-     * Display a listing of the resource.
+     * @deprecated Redirects to treasury invoices list.
      */
     public function index()
     {
-        $user = Auth::user();
-        $current_year = session('current_year', now()->format('Y'));
-        $bills = $user->getInvoices($current_year);
-
-        $invoice_id_number = $this->invoiceService->calculateNextInvoiceId($user);
-        $invoice_id = $user->company->bill_prefix.$invoice_id_number;
-        $company = $user->company;
-        $schools = $user->getSchools();
-
-        return view('invoice.index', compact('bills', 'invoice_id', 'company', 'schools', 'current_year'));
+        return redirect()->route('treasury.invoices.index', request()->query());
     }
 
     /**
@@ -90,7 +81,7 @@ class InvoiceController extends Controller
         if (! $school_id) {
             session()->flash('warning', __('messages.invoice_create_requires_school'));
 
-            return redirect()->route('invoice.index');
+            return redirect()->route('treasury.invoices.index');
         }
 
         $school = Auth::user()->getSchools()->firstWhere('id', (int) $school_id);
@@ -199,7 +190,7 @@ class InvoiceController extends Controller
                 return redirect()->route('school.show', $school)->withFragment('billing');
             }
 
-            return redirect(route('invoice.index'));
+            return redirect(route('treasury.invoices.index'));
         } catch (\Exception $e) {
             dd($e);
             session()->flash('danger', __('messages.invoice_save_error'));
@@ -234,7 +225,7 @@ class InvoiceController extends Controller
         if ($invoice->paid_at) {
             session()->flash('danger', __('messages.invoice_paid_locked'));
 
-            return redirect()->route('invoice.index');
+            return redirect()->route('treasury.invoices.index');
         }
 
         return view('invoice.edit', compact('invoice'));
@@ -248,7 +239,7 @@ class InvoiceController extends Controller
         if ($invoice->paid_at) {
             session()->flash('danger', __('messages.invoice_paid_locked'));
 
-            return redirect()->route('invoice.index');
+            return redirect()->route('treasury.invoices.index');
         }
 
         $validated = $request->validate([
@@ -266,7 +257,7 @@ class InvoiceController extends Controller
 
             session()->flash('success', __('messages.invoice_updated_success', ['id' => $request->id]));
 
-            return redirect(route('invoice.index'));
+            return redirect(route('treasury.invoices.index'));
         } catch (\Exception $e) {
             dd($e);
 

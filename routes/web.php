@@ -114,6 +114,7 @@ Route::middleware(['auth', SetTerminologyLocale::class])->group(function () {
     Route::resource('/invoice', InvoiceController::class);
     Route::resource('/documents', DocumentController::class);
 
+    Route::get('/treasury/invoices', [TreasuryController::class, 'invoices'])->name('treasury.invoices.index');
     Route::get('/treasury', [TreasuryController::class, 'index'])->name('treasury.index');
     Route::get('/treasury/reports/{expenseReport}', [TreasuryController::class, 'showReport'])->name('treasury.reports.show');
     Route::post('/treasury/reports/{expenseReport}/validate', [TreasuryController::class, 'validateReport'])->name('treasury.reports.validate');

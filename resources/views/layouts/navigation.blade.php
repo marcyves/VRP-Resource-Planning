@@ -27,17 +27,9 @@
         </x-sidebar-nav-link>
 
         <x-sidebar-nav-link
-            icon="receipt"
-            :href="route('invoice.index')"
-            :active="request()->routeIs('invoice.*')"
-        >
-            {{ __('messages.invoices') }}
-        </x-sidebar-nav-link>
-
-        <x-sidebar-nav-link
             icon="wallet"
             :href="route('treasury.index')"
-            :active="request()->routeIs('treasury.*')"
+            :active="request()->routeIs('treasury.*', 'invoice.*')"
         >
             {{ __('messages.treasury') }}
         </x-sidebar-nav-link>

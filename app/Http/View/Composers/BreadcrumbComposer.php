@@ -22,7 +22,7 @@ class BreadcrumbComposer
             return;
         }
 
-        $isInvoice = request()->routeIs('invoice.*');
+        $isInvoice = request()->routeIs('invoice.*', 'treasury.invoices.*');
         $isPlanning = request()->routeIs('planning.*');
         $currentYear = session('current_year', now()->format('Y'));
         $currentSemester = session('current_semester', 'all');

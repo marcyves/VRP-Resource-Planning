@@ -3,7 +3,7 @@
         <h2>{{ __('messages.invoice_edit') }}</h2>
     </x-slot>
 
-    <x-invoice-module-tabs active="list" />
+    <x-treasury-module-tabs active="invoices" />
 
     @if(Auth::user()->getMode() == "Edit")
     <section>
@@ -37,7 +37,7 @@
             </div>
 
             <div class="form-actions">
-                <a class="btn btn-secondary" href="{{ route('invoice.index') }}">{{ __('messages.cancel') }}</a>
+                <a class="btn btn-secondary" href="{{ route('treasury.invoices.index') }}">{{ __('messages.cancel') }}</a>
                 <x-button-primary>{{ __('messages.update') }}</x-button-primary>
             </div>
         </form>
