@@ -26,11 +26,11 @@
             <li>
                 <x-school-header :school_name="$school->name" :school_id="$school->id" />
                 <dl class="school-stats">
-                    <div class="school-stat">
+                    <div class="school-stat school-stat--invoiced">
                         <dt class="school-stat__label">{{ __('messages.invoiced_amount_ttc') }}</dt>
                         <dd class="school-stat__value">@money($amount)</dd>
                     </div>
-                    <div class="school-stat">
+                    <div class="school-stat school-stat--unbilled">
                         <dt class="school-stat__label">{{ __('messages.unbilled') }}</dt>
                         <dd class="school-stat__value">
                             <span>@money($unbilledAmount) HT</span>
@@ -46,11 +46,11 @@
 
     <section>
         <dl class="school-stats-totals">
-            <div class="school-stat">
+            <div class="school-stat school-stat--invoiced">
                 <dt class="school-stat__label">{{ __('messages.invoiced_amount_ttc') }}</dt>
                 <dd class="school-stat__value">@money($total_amount)</dd>
             </div>
-            <div class="school-stat">
+            <div class="school-stat school-stat--unbilled">
                 <dt class="school-stat__label">{{ __('messages.unbilled') }}</dt>
                 <dd class="school-stat__value">
                     <span>@money($total_unbilled_amount) HT</span>

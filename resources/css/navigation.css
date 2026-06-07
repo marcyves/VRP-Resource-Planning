@@ -82,7 +82,9 @@
     padding: 0.25rem;
     border-radius: var(--rounded-lg);
     background: var(--tabs-track-bg);
-    border: 1px solid var(--nav-border);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid #ffffff59;
 }
 
 .module-tab {
@@ -124,7 +126,7 @@
 
 .module-tab:hover {
     color: var(--text-heading);
-    background: #ffffffbf;
+    background: #ffffff99;
 }
 
 .module-tab:focus-visible {

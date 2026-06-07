@@ -10,9 +10,9 @@
     @endphp
 
     <x-kpi-grid :items="[
-        ['icon' => 'wallet', 'label' => __('messages.total_gain'), 'value' => number_format($total, 2, ',', ' ') . ' €'],
+        ['icon' => 'wallet', 'label' => __('messages.total_gain'), 'value' => number_format($total, 2, ',', ' ') . ' €', 'variant' => 'accent'],
         ['icon' => 'receipt', 'label' => __('messages.total_payed'), 'value' => number_format($total_payed, 2, ',', ' ') . ' €', 'variant' => 'success'],
-        ['icon' => 'chart', 'label' => __('messages.total_balance'), 'value' => number_format($total - $total_payed, 2, ',', ' ') . ' €'],
+        ['icon' => 'chart', 'label' => __('messages.total_balance'), 'value' => number_format($total - $total_payed, 2, ',', ' ') . ' €', 'variant' => 'warning'],
     ]" />
 
     <div class="data-table">

@@ -6,6 +6,9 @@
             'kpi-card',
             'kpi-card--accent' => ($item['variant'] ?? 'accent') === 'accent',
             'kpi-card--success' => ($item['variant'] ?? '') === 'success',
+            'kpi-card--warning' => ($item['variant'] ?? '') === 'warning',
+            'kpi-card--info' => ($item['variant'] ?? '') === 'info',
+            'kpi-card--total' => ($item['variant'] ?? '') === 'total',
         ])>
             @if (! empty($item['icon']))
                 <span class="kpi-card__icon" aria-hidden="true">

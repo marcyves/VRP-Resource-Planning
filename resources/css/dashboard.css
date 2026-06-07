@@ -12,9 +12,11 @@
     align-items: flex-start;
     gap: var(--spacing-3);
     padding: var(--spacing-4);
-    border: var(--border-standard);
+    border: 1px solid #ffffff80;
     border-radius: var(--rounded-xl);
     background: var(--surface-container-lowest);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
     box-shadow: var(--shadow-sm);
 }
 
@@ -66,11 +68,31 @@
 .kpi-card--accent {
     --kpi-icon-bg: var(--surface-accent-soft);
     --kpi-icon-color: var(--brand-accent);
+    --kpi-value-color: var(--value-money);
 }
 
 .kpi-card--success {
     --kpi-icon-bg: var(--chip-success-bg);
     --kpi-icon-color: var(--chip-success-text);
+    --kpi-value-color: var(--value-income);
+}
+
+.kpi-card--warning {
+    --kpi-icon-bg: var(--chip-warning-bg);
+    --kpi-icon-color: var(--chip-warning-text);
+    --kpi-value-color: var(--value-pending);
+}
+
+.kpi-card--info {
+    --kpi-icon-bg: var(--chip-info-bg);
+    --kpi-icon-color: var(--chip-info-text);
+    --kpi-value-color: var(--value-hours);
+}
+
+.kpi-card--total {
+    --kpi-icon-bg: #1a33581a;
+    --kpi-icon-color: var(--value-total);
+    --kpi-value-color: var(--value-total);
 }
 
 .dashboard-container .school-card {

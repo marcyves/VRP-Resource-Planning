@@ -1,0 +1,92 @@
+/* Semantic value colors — amounts, totals, metrics */
+
+.money {
+    color: var(--value-money);
+    font-variant-numeric: tabular-nums;
+}
+
+.value-income,
+.kpi-card--success .kpi-card__value,
+.school-stat--invoiced .school-stat__value {
+    color: var(--value-income);
+}
+
+.value-pending,
+.kpi-card--warning .kpi-card__value,
+.school-stat--unbilled .school-stat__value {
+    color: var(--value-pending);
+}
+
+.value-hours,
+.kpi-card--info .kpi-card__value {
+    color: var(--value-hours);
+}
+
+.value-total,
+.kpi-card--total .kpi-card__value,
+.treasury-summary-table__total .money,
+.billing-school-footer__totals .money,
+.total-line .money {
+    color: var(--value-total);
+    font-weight: 700;
+}
+
+.kpi-card__value {
+    color: var(--kpi-value-color, var(--value-money));
+}
+
+.kpi-card--accent {
+    --kpi-value-color: var(--value-money);
+}
+
+.group-card-stat__value,
+.program-stats-grid strong {
+    color: var(--value-count);
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+}
+
+.program-stats-grid article:nth-child(3) strong,
+.program-stats-grid article:nth-child(4) strong {
+    color: var(--value-hours);
+}
+
+.treasury-histogram__balance.money {
+    color: var(--value-total);
+    font-size: 0.6875rem;
+}
+
+.treasury-histogram__balance--empty {
+    color: var(--text-subtle);
+    font-weight: 500;
+}
+
+.bank-account-card__opening-value:not(.bank-account-card__opening-value--empty) {
+    color: var(--value-income);
+}
+
+.planning-duration__value {
+    color: var(--value-hours);
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+}
+
+.planning-duration--invalid .planning-duration__value {
+    color: var(--value-expense);
+}
+
+.planning-total {
+    color: var(--value-total);
+    font-weight: 700;
+}
+
+.chart-legend__amount,
+.school-invoices-histogram__amount {
+    color: var(--value-money);
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+}
+
+.school-stats-totals .school-stat__value {
+    font-size: 1.25rem;
+}

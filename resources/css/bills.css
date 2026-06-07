@@ -30,9 +30,11 @@
 .billing-school-box {
    margin: 0 0 var(--spacing-6);
    padding: var(--spacing-4);
-   border: var(--border-standard);
+   border: 1px solid #ffffff73;
    border-radius: var(--rounded-xl);
    background: var(--surface-container-lowest);
+   backdrop-filter: blur(8px);
+   -webkit-backdrop-filter: blur(8px);
    box-shadow: var(--shadow-sm);
 }
 

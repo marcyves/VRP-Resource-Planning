@@ -4,8 +4,10 @@
 
 main > section {
     background: var(--surface-container-lowest);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     border-radius: var(--rounded-xl);
-    border: var(--border-standard);
+    border: 1px solid #ffffff73;
     box-shadow: var(--shadow-sm);
 }
 
@@ -281,15 +283,9 @@ body:has(> .maintenance-title) {
     flex-direction: column;
     align-items: center;
     min-height: 100vh;
-    background: linear-gradient(
-        -45deg,
-        #00236f,
-        #1e3a8a,
-        #4059aa,
-        #00236f
-    );
-    background-size: 400% 400%;
-    animation: AnimateBG 15s ease infinite;
+    background: var(--page-background);
+    background-size: var(--page-background-size);
+    animation: var(--page-background-animation);
     color: #ffffff;
 }
 

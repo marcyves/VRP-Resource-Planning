@@ -6,8 +6,8 @@
     <x-treasury-module-tabs />
 
     <x-kpi-grid :items="[
-        ['icon' => 'receipt', 'label' => __('messages.invoices_ttc'), 'value' => number_format($invoiceTotal, 2, ',', ' ') . ' €'],
-        ['icon' => 'wallet', 'label' => __('messages.closing_balance'), 'value' => number_format($closingBalance, 2, ',', ' ') . ' €'],
+        ['icon' => 'receipt', 'label' => __('messages.invoices_ttc'), 'value' => number_format($invoiceTotal, 2, ',', ' ') . ' €', 'variant' => 'accent'],
+        ['icon' => 'wallet', 'label' => __('messages.closing_balance'), 'value' => number_format($closingBalance, 2, ',', ' ') . ' €', 'variant' => 'total'],
         ['icon' => 'chart', 'label' => __('messages.paid_invoices_ttc'), 'value' => number_format($invoicePaidTotal, 2, ',', ' ') . ' €', 'variant' => 'success'],
     ]" />
 

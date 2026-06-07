@@ -10,7 +10,7 @@
     --brand-primary: #00236f;
     --brand-secondary: #1e3a8a;
     --brand-accent: #4059aa;
-    --brand-logo-bg: var(--brand-primary);
+    --brand-logo-bg: #243b62;
     --surface-accent-soft: #eef2ff;
 
     /* Semantic Feedback */
@@ -23,43 +23,59 @@
 
     /* Surfaces */
     --surface-page: #f4f6f9;
-    --surface-container-lowest: #ffffff;
-    --surface-container-low: #eef1f5;
-    --surface-container: #e2e8f0;
-    --surface-card: #ffffff;
-    --surface-nav: var(--brand-primary);
+    --page-background: linear-gradient(155deg, #1a2f4d 0%, #243b5e 42%, #2a4570 100%);
+    --page-background-size: 400% 400%;
+    --page-background-animation: AnimateBG 48s ease infinite;
+    --surface-container-lowest: #f8fafcf0;
+    --surface-container-low: #eef2f7;
+    --surface-container: #e4eaf2;
+    --surface-card: #f8fafcf5;
+    --surface-nav: #152238;
 
     /* Text */
-    --text-heading: var(--brand-primary);
-    --text-body: #191c1e;
-    --text-secondary: #505f76;
-    --text-muted: #444651;
-    --text-subtle: #757682;
+    --text-heading: #1a2f4d;
+    --text-body: #2c3440;
+    --text-secondary: #5a6578;
+    --text-muted: #4a5568;
+    --text-subtle: #6b7589;
+
+    /* Semantic values */
+    --value-money: #2563a8;
+    --value-income: #047857;
+    --value-pending: #b45309;
+    --value-expense: #b42318;
+    --value-hours: #4a6082;
+    --value-count: #3d5a8a;
+    --value-total: #1a3358;
 
     /* Borders & Shadows */
-    --border-subtle: #e2e8f0;
-    --border-standard: 1px solid #e2e8f0;
-    --shadow-sm: 0 1px 2px 0 #0f172a0a;
-    --shadow-md: 0 4px 12px -2px #0f172a0f, 0 2px 4px -2px #0f172a0a;
-    --shadow-lg: 0 12px 24px -4px #0f172a14, 0 4px 8px -4px #0f172a0a;
+    --border-subtle: #d8e0ea;
+    --border-standard: 1px solid #d8e0ea;
+    --shadow-sm: 0 1px 3px 0 #0f172a0d;
+    --shadow-md: 0 4px 14px -3px #0f172a12, 0 2px 4px -2px #0f172a0a;
+    --shadow-lg: 0 12px 28px -6px #0f172a18, 0 4px 8px -4px #0f172a0d;
 
-    /* Shell — variante C moderne (neutres + accent bleu) */
-    --nav-bg: #f8f9fb;
-    --nav-bg-hover: #eef1f5;
-    --nav-border: #e2e8f0;
-    --header-bg: #ffffff;
-    --footer-bg: #ffffff;
-    --topbar-bg: #ffffff;
-    --tabs-track-bg: #eef1f5;
+    /* Shell — sidebar navy, header frosted */
+    --nav-bg: #152238;
+    --nav-bg-hover: #1c2d48;
+    --nav-border: #243552;
+    --sidebar-fg: #b4c2d6;
+    --sidebar-fg-muted: #8494ad;
+    --sidebar-fg-heading: #eef2f8;
+    --sidebar-accent: #8eb5f0;
+    --header-bg: #f4f7fbd9;
+    --footer-bg: #f4f7fbd9;
+    --topbar-bg: #f4f7fbd9;
+    --tabs-track-bg: #e8eef6cc;
     --chrome-bg: var(--nav-bg);
     --chrome-bg-hover: var(--nav-bg-hover);
     --chrome-border: var(--nav-border);
-    --backdrop-overlay: #191c1e66;
+    --backdrop-overlay: #0f172a80;
     --surface-input: #ffffff;
     --surface-input-border: var(--border-subtle);
-    --surface-table: #ffffffd9;
-    --surface-table-header: #ffffff99;
-    --surface-table-stripe: #6966b514;
+    --surface-table: #fafbfdf2;
+    --surface-table-header: #eef2f8f2;
+    --surface-table-stripe: #4059aa0a;
     --focus-ring: #538ce94c;
     --btn-primary-bg: var(--brand-primary);
     --btn-primary-fg: #ffffff;
@@ -71,10 +87,10 @@
     --btn-secondary-hover-fg: var(--text-heading);
     --btn-secondary-border: var(--border-subtle);
     --btn-secondary-hover-bg: var(--surface-container-low);
-    --btn-secondary-hover-border: #cbd5e1;
-    --sidebar-link-active-bg: #ffffff;
-    --sidebar-link-active-color: var(--brand-accent);
-    --sidebar-link-hover-text: var(--brand-primary);
+    --btn-secondary-hover-border: #c5ced9;
+    --sidebar-link-active-bg: #1e3354;
+    --sidebar-link-active-color: var(--sidebar-accent);
+    --sidebar-link-hover-text: #ffffff;
 
     /* Status chips */
     --chip-neutral-bg: #f1f5f9;
@@ -120,12 +136,12 @@
     --icon-action-img-filter: none;
 
     /* Extended surfaces & components */
-    --surface-glass-border: #ffffff4c;
-    --surface-muted: #eef2f98c;
-    --surface-highlight: #eef2f9;
-    --surface-row: #ffffffd9;
-    --surface-row-stripe: #6966b514;
-    --surface-hover-subtle: #ffffff40;
+    --surface-glass-border: #ffffff66;
+    --surface-muted: #eef2f8b3;
+    --surface-highlight: #eef2f8;
+    --surface-row: #fafbfde6;
+    --surface-row-stripe: #4059aa0a;
+    --surface-hover-subtle: #ffffff59;
 
     --modal-overlay: #6b7280bf;
     --modal-backdrop: #6b7280cc;
@@ -207,7 +223,9 @@ body {
     font-size: 0.875rem;
     line-height: 1.5;
     color: var(--text-body);
-    background: var(--surface-page);
+    background: var(--page-background);
+    background-size: var(--page-background-size);
+    animation: var(--page-background-animation);
 }
 
 main {

@@ -26,10 +26,10 @@
 
     @if ($gross_total_time > 0)
         <x-kpi-grid :items="[
-            ['icon' => 'clock', 'label' => __('messages.total_time'), 'value' => $gross_total_time . ' h'],
-            ['icon' => 'wallet', 'label' => __('messages.total_gain'), 'value' => number_format($gross_total_budget, 2, ',', ' ') . ' €'],
-            ['icon' => 'chart', 'label' => __('messages.hour_rate'), 'value' => number_format($hour_rate, 2, ',', ' ') . ' €/h'],
-            ['icon' => 'school', 'label' => __('messages.active_schools'), 'value' => (string) $active_schools, 'hint' => $current_year !== 'all' ? (string) $current_year : __('actions.select_all')],
+            ['icon' => 'clock', 'label' => __('messages.total_time'), 'value' => $gross_total_time . ' h', 'variant' => 'info'],
+            ['icon' => 'wallet', 'label' => __('messages.total_gain'), 'value' => number_format($gross_total_budget, 2, ',', ' ') . ' €', 'variant' => 'success'],
+            ['icon' => 'chart', 'label' => __('messages.hour_rate'), 'value' => number_format($hour_rate, 2, ',', ' ') . ' €/h', 'variant' => 'accent'],
+            ['icon' => 'school', 'label' => __('messages.active_schools'), 'value' => (string) $active_schools, 'hint' => $current_year !== 'all' ? (string) $current_year : __('actions.select_all'), 'variant' => 'total'],
         ]" />
     @endif
 

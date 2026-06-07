@@ -92,6 +92,7 @@ main section ul.resource-grid > li:has(.school-header) .school-stats {
     flex-wrap: wrap;
     align-items: baseline;
     gap: 0.35rem;
+    font-variant-numeric: tabular-nums;
 }
 
 .school-stat__sep {
