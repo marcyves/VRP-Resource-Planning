@@ -17,7 +17,6 @@ use App\Http\Controllers\BankController;
 use App\Http\Controllers\TreasuryController;
 use App\Models\BankStatementImport;
 use App\Http\Middleware\SetTerminologyLocale;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -31,15 +30,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    try {
-        DB::connection()->getPDO();
-
-        return redirect(route('login'));
-    } catch (\Exception $e) {
-        return view('maintenance');
-    }
-});
+Route::get('/', fn () => redirect()->route('login'));
 
 Route::get('/home', [SchoolController::class, 'index'])
     ->middleware(['auth', 'verified', SetTerminologyLocale::class])

@@ -277,7 +277,20 @@ nav.breadcrumb li {
 /* ── Guest layout ─────────────────────────────────────────── */
 
 body:has(> .maintenance-title) {
+    display: flex;
+    flex-direction: column;
     align-items: center;
+    min-height: 100vh;
+    background: linear-gradient(
+        -45deg,
+        #00236f,
+        #1e3a8a,
+        #4059aa,
+        #00236f
+    );
+    background-size: 400% 400%;
+    animation: AnimateBG 15s ease infinite;
+    color: #ffffff;
 }
 
 body:has(> .maintenance-title) a {
@@ -305,6 +318,9 @@ body:has(> .maintenance-title) > footer {
     margin-top: auto;
     max-width: none;
     width: 100%;
+    background: transparent;
+    border-top-color: #ffffff4c;
+    color: #ffffffb3;
 }
 
 body:has(> .maintenance-title) form > footer {

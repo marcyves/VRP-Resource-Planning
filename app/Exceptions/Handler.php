@@ -2,7 +2,9 @@
 
 namespace App\Exceptions;
 
+use App\Support\DatabaseAvailability;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Http\Request;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -26,5 +28,20 @@ class Handler extends ExceptionHandler
         $this->reportable(function (Throwable $e) {
             //
         });
+    }
+
+    public function render($request, Throwable $e)
+    {
+        if ($request instanceof Request && app(DatabaseAvailability::class)->isConnectionError($e)) {
+            if ($request->expectsJson()) {
+                return response()->json([
+                    'message' => __('messages.maintenance'),
+                ], 503);
+            }
+
+            return response()->view('maintenance', [], 503);
+        }
+
+        return parent::render($request, $e);
     }
 }
