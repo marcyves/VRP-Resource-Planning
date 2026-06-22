@@ -60,6 +60,10 @@ Centralisé dans `App\Http\Utility\Tools` :
 
 Utilisé par la préparation facturation **et** les stats « non facturé » de la liste écoles.
 
+## Lien avec la Trésorerie
+
+Les factures créées depuis la section facturation d'une école sont listées dans **Trésorerie**. Quand une ligne bancaire créditrice est rapprochée d'une facture, le rapprochement bancaire renseigne `Invoice::paid_at` avec la date de l'opération bancaire si le champ était encore vide.
+
 ## Bouton « Sauter aux sessions non facturées »
 
 - Recherche en arrière mois par mois la dernière période avec au moins une session sans facture
@@ -79,4 +83,5 @@ Utilisé par la préparation facturation **et** les stats « non facturé » de 
 ## Voir aussi
 
 - [V2 — navigation](v2-navigation-modules.md)
+- [V2 — trésorerie & rapprochement bancaire](v2-tresorerie-rapprochement-bancaire.md)
 - [Modèle de données](modele-donnees-formation.md)

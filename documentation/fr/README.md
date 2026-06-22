@@ -17,6 +17,7 @@ Fiches wiki : modèle métier, parcours utilisateur et **contexte terminologique
 | **[V2 — interface utilisateur](v2-interface-utilisateur.md)** | Vue d’ensemble de la refonte UI |
 | [V2 — navigation & modules](v2-navigation-modules.md) | Sidebar, accueil `/home`, onglets |
 | [V2 — facturation par école](v2-facturation-par-ecole.md) | Préparation facturation sur fiche école |
+| [V2 — trésorerie & rapprochement bancaire](v2-tresorerie-rapprochement-bancaire.md) | Imports bancaires, règles de rapprochement, KPIs trésorerie |
 | [V2 — design system CSS](v2-design-system-css.md) | Tokens, composants, build Vite |
 | [V2 — revue de code & refactor listes](v2-revue-code-refactoring-listes.md) | Revue globale, étapes 1–3 + i18n, pistes restantes |
 
