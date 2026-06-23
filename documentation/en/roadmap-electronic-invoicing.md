@@ -274,7 +274,7 @@ routes/web.php
 1. `ElectronicInvoicePlatform` contract + `Null` driver
 2. `ElectronicInvoicePayloadBuilder` + validator
 3. Webhook + `ElectronicInvoiceService`
-4. First PA adapter (sandbox) — **PA choice at implementation time**
+4. **`SuperPdpPlatform`** adapter (sandbox)
 5. Supplier invoice reception (minimal UI)
 6. Tests: payload builder, status mapping, webhook
 
@@ -291,16 +291,29 @@ routes/web.php
 - Sequential numbering (PA coordination)
 - Webhook monitoring / retry
 
-## PA candidates (non-exclusive)
+## PA chosen for POC
 
-Choice **deferred until wiring the adapter** — the spec above does not change.
+**Context:** single user, proof-of-concept phase — not yet a multi-tenant editor model.
 
-| PA | VRP fit | Watch points |
-|----|---------|--------------|
-| [SuperPDP](https://www.superpdp.tech/) | API-first, low per-invoice cost, French PA | Grey-label editor model by default |
-| [B2Brouter](https://www.b2brouter.net/fr/api-facturation-electronique/) | White-label editor, DGFiP docs, sandbox | Editor pricing on quote |
+**Choice: [SuperPDP](https://www.superpdp.tech/)** as the first adapter.
 
-Selection criteria: multi-tenant cost, white-label UX, sandbox quality, webhooks, Chorus / public sector if relevant.
+| POC criterion | SuperPDP |
+|---------------|----------|
+| Cost | Free account ≤ 1,000 invoices/month |
+| Integration | API-first, sandbox, webhooks |
+| Complexity | Low — no editor quote required |
+| Branding | Grey-label acceptable for POC (single account) |
+
+Architecture stays **agnostic** (`ElectronicInvoicePlatform`): B2Brouter remains an option if the product moves to multi-client white-label.
+
+**Next code step:** Phase 2 with `Null` + `SuperPdpPlatform` drivers, SuperPDP sandbox account, one pilot invoice.
+
+## PA reference
+
+| PA | Strengths | VRP status |
+|----|-----------|------------|
+| **[SuperPDP](https://www.superpdp.tech/)** | API-first, free POC tier, French PA | **POC — target adapter** |
+| [B2Brouter](https://www.b2brouter.net/fr/api-facturation-electronique/) | White-label editor, DGFiP docs | Future alternative (multi-client) |
 
 ## Out of VRP scope (delegated to PA)
 
@@ -320,9 +333,8 @@ Selection criteria: multi-tenant cost, white-label UX, sandbox quality, webhooks
 ## Immediate actions
 
 1. Complete **SIREN / SIRET** on existing records (user data).
-2. Run **one pilot invoice** in PA sandbox (SuperPDP or B2Brouter).
-3. Implement **Phase 2**: contract + builder + webhook + null driver.
-4. Pick the PA when coding the **first real adapter**.
+2. Open a **SuperPDP sandbox account** and send one pilot invoice.
+3. Implement **Phase 2**: contract + builder + webhook + `SuperPdpPlatform`.
 
 ## Existing code
 

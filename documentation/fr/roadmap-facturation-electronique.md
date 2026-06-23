@@ -285,7 +285,7 @@ Le suivi **payée** (`paid_at`) reste indépendant du statut e-facture.
 1. Contrat `ElectronicInvoicePlatform` + driver `Null`
 2. `ElectronicInvoicePayloadBuilder` + validateur
 3. Webhook + `ElectronicInvoiceService`
-4. Premier adaptateur PA (sandbox) — **choix PA au moment de l’implémentation**
+4. Adaptateur **`SuperPdpPlatform`** (sandbox)
 5. Réception factures fournisseurs (affichage minimal)
 6. Tests : payload builder, mapping statuts, webhook
 
@@ -302,16 +302,29 @@ Le suivi **payée** (`paid_at`) reste indépendant du statut e-facture.
 - Numérotation chronologique (coordination PA)
 - Monitoring webhooks / retry
 
-## PA candidates (non exclusives)
+## PA retenue pour le POC
 
-Choix **reporté au branchement de l’adaptateur** — la spec ci-dessus ne change pas.
+**Contexte :** un seul utilisateur, phase de preuve de concept — pas encore de modèle multi-tenant éditeur.
 
-| PA | Atouts pour VRP | Points de vigilance |
-|----|-----------------|---------------------|
-| [SuperPDP](https://www.superpdp.tech/) | API-first, tarif bas à la facture, PA française | Marque grise éditeur par défaut |
-| [B2Brouter](https://www.b2brouter.net/fr/api-facturation-electronique/) | Marque blanche éditeur, doc DGFiP, sandbox | Tarif éditeur sur devis |
+**Choix : [SuperPDP](https://www.superpdp.tech/)** comme premier adaptateur.
 
-Critères de sélection : coût multi-tenant, UX marque blanche, qualité sandbox, webhooks, support Chorus / secteur public si clients écoles publiques.
+| Critère POC | SuperPDP |
+|-------------|----------|
+| Coût | Compte gratuit ≤ 1 000 factures/mois |
+| Intégration | API-first, sandbox, webhooks |
+| Complexité | Faible — pas de devis éditeur |
+| Marque | Marque grise acceptable en POC (un seul compte) |
+
+L’architecture reste **agnostique** (`ElectronicInvoicePlatform`) : B2Brouter reste une alternative si le produit évolue vers du multi-client marque blanche.
+
+**Prochaine étape code :** Phase 2 avec driver `Null` + `SuperPdpPlatform`, compte sandbox SuperPDP, une facture pilote.
+
+## PA candidates (référence)
+
+| PA | Atouts | Statut VRP |
+|----|--------|------------|
+| **[SuperPDP](https://www.superpdp.tech/)** | API-first, gratuit POC, PA française | **POC — adaptateur cible** |
+| [B2Brouter](https://www.b2brouter.net/fr/api-facturation-electronique/) | Marque blanche éditeur, doc DGFiP | Alternative future (multi-client) |
 
 ## Hors périmètre VRP (délégué à la PA)
 
@@ -331,9 +344,8 @@ Critères de sélection : coût multi-tenant, UX marque blanche, qualité sandbo
 ## Actions immédiates
 
 1. Finaliser les **SIREN / SIRET** sur les fiches existantes (données utilisateur).
-2. Tester **une facture pilote** en sandbox PA (SuperPDP ou B2Brouter).
-3. Implémenter **Phase 2** : contrat + builder + webhook + driver null.
-4. Choisir la PA au moment de coder le **premier adaptateur réel**.
+2. Ouvrir un **compte sandbox SuperPDP** et envoyer une facture pilote.
+3. Implémenter **Phase 2** : contrat + builder + webhook + `SuperPdpPlatform`.
 
 ## Code existant
 

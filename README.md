@@ -180,7 +180,7 @@ Une démo peut être accessible (ex. **vrp.xdm-consulting.fr**) ; les identifian
 
 **Déjà en place :** PDF, statuts e-facture (`draft` → `ready` → `transmitted` → `accepted` / `rejected`), SIREN/SIRET sur société et clients.
 
-**À venir :** couche PA **agnostique** (contrat + payload canonique + webhooks), puis adaptateur SuperPDP, B2Brouter ou autre PA au branchement.
+**POC :** adaptateur **[SuperPDP](https://www.superpdp.tech/)** (compte gratuit, API sandbox). Architecture PA agnostique conservée pour une évolution future.
 
 Documentation complète (spec d’intégration, phases, structure de code) :
 
