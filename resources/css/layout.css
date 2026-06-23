@@ -229,6 +229,7 @@ nav.breadcrumb .breadcrumb__select:focus {
 /* Icon action buttons (edit / delete / add / payed / invoice-manual): neutral frame, no legacy color filters */
 .icon.icon--edit,
 .icon.icon--delete,
+.icon.icon--duplicate,
 .icon.icon--add,
 .icon.icon--payed,
 .icon.icon--payment-restore,
@@ -251,6 +252,7 @@ nav.breadcrumb .breadcrumb__select:focus {
 }
 
 .icon.icon--edit:hover,
+.icon.icon--duplicate:hover,
 .icon.icon--add:hover,
 .icon.icon--payed:hover,
 .icon.icon--payment-restore:hover,
@@ -288,6 +290,7 @@ nav.breadcrumb .breadcrumb__select:focus {
 
 .icon.icon--edit img,
 .icon.icon--delete img,
+.icon.icon--duplicate img,
 .icon.icon--add img,
 .icon.icon--payed img,
 .icon.icon--invoice-manual img {

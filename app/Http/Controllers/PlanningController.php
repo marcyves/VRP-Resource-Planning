@@ -406,6 +406,75 @@ class PlanningController extends Controller
     }
 
     /**
+     * Duplicate a session to tomorrow, next week, or a custom date.
+     */
+    public function duplicate(Request $request, string $id)
+    {
+        $validated = $request->validate([
+            'offset' => 'required|in:tomorrow,next_week,custom',
+            'date' => 'required_if:offset,custom|nullable|date',
+        ]);
+
+        try {
+            $source = Planning::findOrFail($id);
+
+            if ($source->invoice_id) {
+                session()->flash('danger', __('messages.session_locked_by_invoice'));
+
+                return redirect()->back();
+            }
+
+            $begin = Carbon::parse($source->begin);
+            $end = Carbon::parse($source->end);
+
+            $newBegin = match ($validated['offset']) {
+                'tomorrow' => $begin->copy()->addDay(),
+                'next_week' => $begin->copy()->addWeek(),
+                'custom' => Carbon::parse($validated['date'])->setTimeFromTimeString($begin->format('H:i:s')),
+            };
+
+            $newEnd = match ($validated['offset']) {
+                'tomorrow' => $end->copy()->addDay(),
+                'next_week' => $end->copy()->addWeek(),
+                'custom' => $newBegin->copy()->addMinutes($begin->diffInMinutes($end)),
+            };
+
+            $collision = Planning::where('group_id', $source->group_id)
+                ->where('begin', '<', $newEnd)
+                ->where('end', '>', $newBegin)
+                ->exists();
+
+            if ($collision) {
+                session()->flash('danger', __('messages.planning_session_duplicate_collision'));
+
+                return redirect()->back();
+            }
+
+            Planning::create([
+                'begin' => $newBegin->format('Y-m-d H:i:s'),
+                'end' => $newEnd->format('Y-m-d H:i:s'),
+                'location' => $source->location,
+                'group_id' => $source->group_id,
+                'course_id' => $source->course_id,
+                'billable_rate' => $source->billable_rate,
+            ]);
+
+            session(['current_year' => $newBegin->year]);
+            session(['current_month' => $newBegin->month]);
+
+            session()->flash('success', __('messages.planning_session_duplicated_success', [
+                'date' => $newBegin->format('d/m/Y H:i'),
+            ]));
+        } catch (\Exception $e) {
+            session()->flash('danger', __('messages.planning_session_duplicate_error'));
+
+            return redirect()->back();
+        }
+
+        return redirect()->route('planning.index');
+    }
+
+    /**
      * Remove the specified resource from storage.
      */
     public function destroy(string $id)

@@ -300,8 +300,9 @@ main form.planning-create-toolbar .planning-create-toolbar__control:focus {
 
 .planning-entry {
     display: flex;
-    flex-direction: row;
-    gap: 0.25rem;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.3rem;
     margin: 0.25rem 0;
     padding: 0.35rem 0.45rem;
     border-left: 3px solid var(--brand-accent);
@@ -312,7 +313,6 @@ main form.planning-create-toolbar .planning-create-toolbar__control:focus {
 }
 
 .planning-text {
-    flex: 1;
     min-width: 0;
     padding-left: 0;
     font-size: 0.6875rem;
@@ -338,6 +338,107 @@ main form.planning-create-toolbar .planning-create-toolbar__control:focus {
 
 .planning-tools {
     display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.25rem;
+}
+
+.planning-quick-actions {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.2rem;
+}
+
+.planning-quick-actions form {
+    margin: 0;
+}
+
+.planning-native-dialog {
+    width: min(28rem, calc(100vw - 2rem));
+    padding: 0;
+    border: var(--border-standard);
+    border-radius: var(--rounded-md);
+    background: var(--modal-content-bg);
+    color: var(--text-body);
+    box-shadow: var(--shadow-lg);
+}
+
+.planning-native-dialog::backdrop {
+    background-color: var(--modal-backdrop);
+}
+
+.planning-native-dialog .profile-modal-form {
+    padding: 1.25rem;
+}
+
+.planning-native-dialog .form-actions {
+    margin-top: 1rem;
+}
+
+.planning-quick-action {
+    display: block;
+    min-width: 2.1rem;
+    min-height: 1.65rem;
+    padding: 0.25rem 0.35rem;
+    border: 1px solid var(--icon-action-border);
+    border-radius: var(--rounded-sm);
+    background: transparent;
+    color: var(--text-secondary);
+    font-size: 0.6875rem;
+    font-weight: 700;
+    line-height: 1.2;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.planning-quick-action:hover {
+    background: var(--icon-action-hover-bg);
+    border-color: var(--icon-action-hover-border);
+    color: var(--text-heading);
+}
+
+.planning-duplicate-actions--inline {
+    display: flex;
     flex-direction: column;
-    flex-shrink: 0;
+    gap: 0.5rem;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border-standard);
+}
+
+.planning-duplicate-actions__buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.planning-duplicate-actions__buttons form {
+    margin: 0;
+}
+
+/* Month grid: keep toolbar layout from Phase 3, not legacy calendar.css */
+#calWrap .planning-entry {
+    width: 100%;
+    flex-direction: column;
+    align-items: stretch;
+}
+
+#calWrap .planning-tools {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-end;
+    position: static;
+    top: auto;
+    right: auto;
+    z-index: auto;
+}
+
+#calWrap .planning-text--link {
+    display: block;
 }

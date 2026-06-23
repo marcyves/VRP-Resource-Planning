@@ -42,6 +42,9 @@
     $initialDurationLabel = $formatDuration(
         \Carbon\Carbon::parse($planning->begin)->diffInMinutes(\Carbon\Carbon::parse($planning->end))
     );
+
+    $duplicateLabel = \Carbon\Carbon::parse($planning->begin)->format('d/m/Y H:i');
+    $duplicateDefaultDate = \Carbon\Carbon::parse($planning->begin)->addDay()->format('Y-m-d');
     @endphp
 
     <section>
@@ -185,10 +188,21 @@
 
             </fieldset>
 
+            @if (! $session_locked)
+            <x-planning-duplicate-actions
+                variant="inline"
+                :planning-id="$planning->id"
+                :event-label="$duplicateLabel"
+                :default-date="$duplicateDefaultDate"
+            />
+            @endif
+
             <div class="form-actions">
                 <a class="btn btn-secondary" href="{{ route('planning.index') }}">{{ __('messages.cancel') }}</a>
                 <x-button-primary :disabled="$session_locked">{{ __('messages.plan') }}</x-button-primary>
             </div>
         </form>
     </section>
+
+    <x-planning-duplicate-modal />
 </x-app-layout>

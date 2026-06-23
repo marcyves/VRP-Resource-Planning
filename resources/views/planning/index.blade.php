@@ -70,13 +70,6 @@
         </div>
     </section>
 
-    <x-confirm-delete-modal
-        name="confirm-planning-delete"
-        store="planningDelete"
-        entity="session"
-        :hints="[
-            ['field' => 'date', 'label' => __('messages.date')],
-            ['field' => 'label', 'plain' => true],
-        ]"
-    />
+    <x-planning-delete-dialog />
+    <x-planning-duplicate-dialog />
 </x-app-layout>
