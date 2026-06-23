@@ -19,8 +19,9 @@ Wiki-style guides: data model, user workflows, and **terminology profiles** (tra
 | [V2 — billing per school](v2-billing-per-school.md) | Billing preparation on school detail |
 | [V2 — CSS design system](v2-design-system-css.md) | Tokens, components, Vite build |
 | [V2 — code review & list refactor](v2-code-review-list-refactoring.md) | Global review, steps 1–3 + i18n, remaining items |
+| [Roadmap — PWA & offline](roadmap-pwa-offline.md) | Mobile app / offline — deferred idea |
 
 ## See also
 
-- [Repository README](../../README.md)
+- [Repository README](../../README.md) — e-invoicing & PWA roadmaps
 - [Bilingual index](../README.md)

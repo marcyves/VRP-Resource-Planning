@@ -22,6 +22,7 @@ Application web de **planification**, **budgétisation** et **suivi facturation*
 - [Qualité & tests](#qualité--tests)
 - [Démo](#démo)
 - [Roadmap — facturation électronique](#roadmap--facturation-électronique)
+- [Roadmap — PWA & mode hors ligne](#roadmap--pwa--mode-hors-ligne)
 - [Contribution](#contribution)
 - [Licence](#licence)
 - [Contact](#contact)
@@ -246,6 +247,23 @@ Planning / billing → Préparation facture → PDF (visualisation)
 4. Migrer les données légales (SIREN, TVA) avant septembre 2026.
 
 > Le seul PDF généré par VRP ne suffit pas, à lui seul, pour la conformité B2B du nouveau modèle ; la PDP (ou un outil certifié qui s’y connecte) reste le pivot de la transition.
+
+---
+
+## Roadmap — PWA & mode hors ligne
+
+Idée retenue pour plus tard : permettre à l’utilisateur de **consulter l’agenda** (puis éventuellement **saisir des séances**) **sans connexion**, avec synchronisation au retour du réseau — via une **PWA** installable sur mobile, plutôt qu’une app native.
+
+**Non planifié à court terme** (API + stockage local + gestion des conflits). Aujourd’hui : site en ligne uniquement ; l’import calendrier `.ics` reste le seul flux externe → VRP.
+
+| Phase | Objectif |
+|-------|----------|
+| 0 | Shell PWA (manifest, icônes, installation) |
+| 1 | Agenda consultable offline (**MVP**) |
+| 2 | Saisie offline + file de synchro |
+| 3 | Facturation, trésorerie, documents → en ligne seulement |
+
+Documentation détaillée : [documentation/fr/roadmap-pwa-offline.md](documentation/fr/roadmap-pwa-offline.md) · [documentation/en/roadmap-pwa-offline.md](documentation/en/roadmap-pwa-offline.md)
 
 ---
 
