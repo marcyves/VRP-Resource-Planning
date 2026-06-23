@@ -90,6 +90,7 @@ Route::middleware(['auth', SetTerminologyLocale::class])->group(function () {
     Route::get('/planning/create', [PlanningController::class, 'create'])->name('planning.create');
     Route::post('/planning/create', [PlanningController::class, 'startCreate'])->name('planning.create.start');
     Route::post('/planning/store', [PlanningController::class, 'store'])->name('planning.store');
+    Route::post('/planning/{id}/duplicate', [PlanningController::class, 'duplicate'])->name('planning.duplicate')->whereNumber('id');
     Route::get('/planning/{id}', [PlanningController::class, 'edit'])->name('planning.edit')->whereNumber('id');
     Route::put('/planning/{id}', [PlanningController::class, 'update'])->name('planning.update')->whereNumber('id');
     Route::delete('/planning/{id}', [PlanningController::class, 'destroy'])->name('planning.delete')->whereNumber('id');

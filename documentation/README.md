@@ -24,6 +24,8 @@ Wiki-style guides from product design and implementation work (data model, workf
 | V2 — Treasury & bank reconciliation | [v2-tresorerie-rapprochement-bancaire.md](fr/v2-tresorerie-rapprochement-bancaire.md) | [v2-treasury-bank-reconciliation.md](en/v2-treasury-bank-reconciliation.md) |
 | V2 — CSS design system | [v2-design-system-css.md](fr/v2-design-system-css.md) | [v2-design-system-css.md](en/v2-design-system-css.md) |
 | V2 — Code review & list refactor | [v2-revue-code-refactoring-listes.md](fr/v2-revue-code-refactoring-listes.md) | [v2-code-review-list-refactoring.md](en/v2-code-review-list-refactoring.md) |
+| **Roadmap — e-invoicing** | [roadmap-facturation-electronique.md](fr/roadmap-facturation-electronique.md) | [roadmap-electronic-invoicing.md](en/roadmap-electronic-invoicing.md) |
+| Roadmap — PWA & offline | [roadmap-pwa-offline.md](fr/roadmap-pwa-offline.md) | [roadmap-pwa-offline.md](en/roadmap-pwa-offline.md) |
 
 ## Repository
 

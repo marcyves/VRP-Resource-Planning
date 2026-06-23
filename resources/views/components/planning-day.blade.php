@@ -42,6 +42,7 @@
     $eventLabel = \Carbon\Carbon::parse($event->begin)->format('H:i') . ': ' . $event->short_name . ' (' . $event->group_short_name . ')';
     $eventDate = \Carbon\Carbon::parse($event->begin)->format('d/m/Y');
     $canEdit = Auth::user()->getMode() == 'Edit' && ! $event->invoice_id;
+    $duplicateDefaultDate = \Carbon\Carbon::parse($event->begin)->addDay()->format('Y-m-d');
     @endphp
     <div class="planning-entry{{ $canEdit ? ' planning-entry--editable' : '' }}">
         @if ($canEdit)
@@ -50,37 +51,66 @@
                 class="planning-text planning-text--link"
                 aria-label="{{ __('messages.edit') }} — {{ $eventLabel }}"
             >
+                <div class="planning-event-info">
+                    {{ \Carbon\Carbon::parse($event->begin)->format('H:i') }}: {{ $event->short_name }} ({{ $event->group_short_name }})
+                </div>
+                <div class="planning-event-gain">
+                    {{ \Carbon\Carbon::parse($event->end)->format('H:i') }}: {{ number_format($event->session_length * $event->rate, 2) }} €
+                </div>
+            </a>
+            <div class="planning-tools" role="toolbar" aria-label="{{ __('messages.actions') }}">
+                <div class="planning-quick-actions" role="group" aria-label="{{ __('messages.duplicate') }}">
+                    <form action="{{ route('planning.duplicate', $event->id) }}" method="post">
+                        @csrf
+                        <input type="hidden" name="offset" value="tomorrow">
+                        <button type="submit" class="planning-quick-action" title="{{ __('messages.planning_duplicate_tomorrow') }}">
+                            +1j
+                        </button>
+                    </form>
+                    <form action="{{ route('planning.duplicate', $event->id) }}" method="post">
+                        @csrf
+                        <input type="hidden" name="offset" value="next_week">
+                        <button type="submit" class="planning-quick-action" title="{{ __('messages.planning_duplicate_next_week') }}">
+                            +1s
+                        </button>
+                    </form>
+                    <button
+                        type="button"
+                        class="planning-quick-action"
+                        title="{{ __('messages.planning_duplicate_custom_date') }}"
+                        data-planning-duplicate-open
+                        data-duplicate-url="{{ route('planning.duplicate', $event->id) }}"
+                        data-duplicate-date="{{ $duplicateDefaultDate }}"
+                    >
+                        …
+                    </button>
+                </div>
+                <button
+                    type="button"
+                    class="icon icon--delete"
+                    aria-label="{{ __('messages.delete') }}"
+                    data-planning-delete
+                    data-delete-url="{{ route('planning.delete', $event->id) }}"
+                    data-delete-label="{{ e($eventLabel) }}"
+                    data-delete-date="{{ e($eventDate) }}"
+                >
+                    <img src="{{ asset('icons/trash.svg') }}" alt="" width="18" height="18" decoding="async">
+                </button>
+            </div>
         @else
             <div class="planning-text">
-        @endif
-            <div class="planning-event-info">
-                {{ \Carbon\Carbon::parse($event->begin)->format('H:i') }}: {{ $event->short_name }} ({{ $event->group_short_name }})
+                <div class="planning-event-info">
+                    {{ \Carbon\Carbon::parse($event->begin)->format('H:i') }}: {{ $event->short_name }} ({{ $event->group_short_name }})
+                </div>
+                <div class="planning-event-gain">
+                    {{ \Carbon\Carbon::parse($event->end)->format('H:i') }}: {{ number_format($event->session_length * $event->rate, 2) }} €
+                </div>
+                @if($event->invoice_id)
+                <div class="planning-entry-locked" title="{{ __('messages.session_locked_by_invoice') }}">
+                    {{ $event->invoice_id }}
+                </div>
+                @endif
             </div>
-            <div class="planning-event-gain">
-                {{ \Carbon\Carbon::parse($event->end)->format('H:i') }}: {{ number_format($event->session_length * $event->rate, 2) }} €
-            </div>
-            @if($event->invoice_id)
-            <div class="planning-entry-locked" title="{{ __('messages.session_locked_by_invoice') }}">
-                {{ $event->invoice_id }}
-            </div>
-            @endif
-        @if ($canEdit)
-            </a>
-        @else
-            </div>
-        @endif
-        @if ($canEdit)
-        <div class="planning-tools">
-            <button
-                type="button"
-                class="icon icon--delete"
-                aria-label="{{ __('messages.delete') }}"
-                x-data=""
-                x-on:click.prevent="$store.planningDelete.request(@js(route('planning.delete', $event->id)), @js($eventLabel), @js($eventDate))"
-            >
-                <img src="{{ asset('icons/trash.svg') }}" alt="" width="18" height="18" decoding="async">
-            </button>
-        </div>
         @endif
     </div>
     @php

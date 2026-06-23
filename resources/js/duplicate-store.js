@@ -1,4 +1,4 @@
-export function createDeleteStore(modalName, fields) {
+export function createDuplicateStore(modalName, fields) {
     const store = {
         url: '',
         request(url, ...values) {

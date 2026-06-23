@@ -22,6 +22,7 @@ Application web de **planification**, **budgétisation** et **suivi facturation*
 - [Qualité & tests](#qualité--tests)
 - [Démo](#démo)
 - [Roadmap — facturation électronique](#roadmap--facturation-électronique)
+- [Roadmap — PWA & mode hors ligne](#roadmap--pwa--mode-hors-ligne)
 - [Contribution](#contribution)
 - [Licence](#licence)
 - [Contact](#contact)
@@ -146,7 +147,7 @@ Fichiers de traduction sous `resources/lang/` (français, anglais, italien).
 
 Variable d’environnement optionnelle : `TERMINOLOGY_PROFILE=education` (défaut pour les invités / sans entreprise). Voir `.env.example`.
 
-Documentation détaillée (fiches wiki, FR/EN) : [documentation/](documentation/README.md) — [fr/](documentation/fr/README.md) · [en/](documentation/en/README.md).
+Documentation détaillée (fiches wiki, FR/EN) : [documentation/](documentation/README.md) — [fr/](documentation/fr/README.md) · [en/](documentation/en/README.md)
 
 **V2 interface :** [fr/v2-interface-utilisateur.md](documentation/fr/v2-interface-utilisateur.md) · [en/v2-user-interface.md](documentation/en/v2-user-interface.md).
 
@@ -172,82 +173,38 @@ Une démo peut être accessible (ex. **vrp.xdm-consulting.fr**) ; les identifian
 
 ## Roadmap — facturation électronique
 
-La réforme de la **facturation électronique B2B** en France impose des factures **structurées** (pas seulement un PDF) et leur circulation via une **plateforme de dématérialisation partenaire (PDP)** ou, pour le secteur public, **Chorus Pro**.
+**Priorité actuelle.** VRP prépare les factures (planning, PDF, identifiants légaux) ; une **Plateforme agréée (PA)** externe gère émission structurée, routage et archivage.
 
-Aujourd’hui, VRP couvre la **préparation métier** et l’**émission PDF** (TCPDF). La conformité au nouveau modèle passera par une couche e-facture et, en pratique, par une **PDP** pour l’émission, la réception et l’archivage probant.
+| Échéance | Qui |
+|----------|-----|
+| Réception e-factures | **1ᵉʳ sept. 2026** — assujettis TVA |
+| Émission | **1ᵉʳ sept. 2026** (GE/ETI) · **2027** (PME/TPE) |
 
-### Échéances réglementaires (indicatives)
+**Déjà en place :** PDF, statuts e-facture (`draft` → `ready` → `transmitted` → `accepted` / `rejected`), SIREN/SIRET sur société et clients.
 
-| Obligation | Date |
-|------------|------|
-| Réception des factures électroniques (toutes entreprises assujetties à la TVA) | **1ᵉʳ septembre 2026** |
-| Émission — grandes entreprises et ETI | **1ᵉʳ septembre 2026** |
-| Émission — PME, TPE, micro-entreprises | **1ᵉʳ septembre 2027** |
+**À venir :** couche PA **agnostique** (contrat + payload canonique + webhooks), puis adaptateur SuperPDP, B2Brouter ou autre PA au branchement.
 
-### État actuel dans l’application
+Documentation complète (spec d’intégration, phases, structure de code) :
 
-- Génération et stockage de **factures PDF** (`InvoiceService`, `InvoiceGenerator`)
-- Lien **planning ↔ facture** (préparation facturation, rattachement des sessions)
-- Données facture : identifiant, date, montant, école, suivi du paiement
-- Identifiants légaux (TVA, SIREN) encore **codés en dur** dans le générateur PDF — à externaliser vers les fiches entreprise / client
-- Pas encore : SIREN/SIRET en base, formats structurés (Factur-X, UBL, CII), intégration PDP, statuts de cycle de vie e-facture
+- [documentation/fr/roadmap-facturation-electronique.md](documentation/fr/roadmap-facturation-electronique.md)
+- [documentation/en/roadmap-electronic-invoicing.md](documentation/en/roadmap-electronic-invoicing.md)
 
-### Options d’architecture cible
+---
 
-| Option | Rôle de VRP | PDP |
-|--------|-------------|-----|
-| **A** (recommandée pour TPE/PME) | Préparation métier + PDF lisible | Émission, transmission, archivage légal |
-| **B** | Génération Factur-X / UBL + envoi API | Réception des flux et conformité |
-| **C** | Suivi uniquement (numéro, montant, statut) | Facturation complète hors VRP |
+## Roadmap — PWA & mode hors ligne
 
-Schéma cible (option A ou B) :
+Idée retenue pour plus tard : permettre à l’utilisateur de **consulter l’agenda** (puis éventuellement **saisir des séances**) **sans connexion**, avec synchronisation au retour du réseau — via une **PWA** installable sur mobile, plutôt qu’une app native.
 
-```
-Planning / billing → Préparation facture → PDF (visualisation)
-                              ↓
-                    Factur-X ou API PDP → Archivage légal
-                              ↓
-                    Statuts (déposée, acceptée, rejetée) → VRP
-```
+**Non planifié à court terme** (API + stockage local + gestion des conflits). Aujourd’hui : site en ligne uniquement ; l’import calendrier `.ics` reste le seul flux externe → VRP.
 
-### Phases de développement prévues
+| Phase | Objectif |
+|-------|----------|
+| 0 | Shell PWA (manifest, icônes, installation) |
+| 1 | Agenda consultable offline (**MVP**) |
+| 2 | Saisie offline + file de synchro |
+| 3 | Facturation, trésorerie, documents → en ligne seulement |
 
-**Phase 1 — Fondations (sans rupture)** ✅ *en place*  
-- Porter TVA, SIREN, SIRET dans `companies` et les clients (`schools` pour le B2B)  
-- Retirer les valeurs légales en dur du générateur PDF  
-- Statut e-facture sur `invoices` (brouillon → prête → transmise → acceptée / rejetée)  
-- Écran **Mon entreprise → Identifiants légaux** pour renseigner l’émetteur
-
-**Phase 2 — Réception (échéance 2026)**  
-- Connexion PDP en réception (webhooks ou polling)  
-- Affichage des statuts légaux dans l’écran factures, en complément du suivi « payée »
-
-**Phase 3 — Émission (échéance 2027)**  
-- Export **Factur-X** (PDF + XML CII) ou UBL à partir des lignes de facture existantes  
-- Envoi vers la PDP après création de facture  
-- Archivage probant principalement côté PDP
-
-**Phase 4 — Qualité**  
-- Jeux de tests (TVA 20 %, avoirs, numérotation)  
-- Alignement de la numérotation sur les exigences d’inaltérabilité et de suite chronologique (souvent gérées par la PDP en production)
-
-### Données à prévoir
-
-| Zone | Champs types |
-|------|----------------|
-| Émetteur (`companies`) | SIREN, SIRET siège, TVA intracommunautaire, adresse légale |
-| Client (`schools`) | SIREN/SIRET si B2B, adresse, TVA le cas échéant |
-| Facture | Numéro unique, date d’émission, lignes HT / TVA / TTC, conditions de paiement |
-| Cycle de vie | Statut e-facture, identifiant PDP, horodatage, motif de rejet |
-
-### Actions immédiates (hors code)
-
-1. Qualifier le profil entreprise (TVA, taille, clients publics vs privés).  
-2. Choisir une **PDP** et tester une facture pilote.  
-3. Distinguer les clients : **Chorus Pro** (public), **PDP B2B** (privé avec SIREN), hors périmètre structuré (particuliers).  
-4. Migrer les données légales (SIREN, TVA) avant septembre 2026.
-
-> Le seul PDF généré par VRP ne suffit pas, à lui seul, pour la conformité B2B du nouveau modèle ; la PDP (ou un outil certifié qui s’y connecte) reste le pivot de la transition.
+Documentation détaillée : [documentation/fr/roadmap-pwa-offline.md](documentation/fr/roadmap-pwa-offline.md) · [documentation/en/roadmap-pwa-offline.md](documentation/en/roadmap-pwa-offline.md)
 
 ---
 
