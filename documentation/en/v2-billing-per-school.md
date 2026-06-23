@@ -60,6 +60,10 @@ Centralized in `App\Http\Utility\Tools`:
 
 Used by billing preparation **and** school list « unbilled » stats.
 
+## Link with Treasury
+
+Invoices created from the school billing section are listed under **Treasury**. When a credit bank statement line is matched to an invoice, bank reconciliation sets `Invoice::paid_at` to the bank operation date if it was still empty.
+
 ## « Jump to unbilled sessions » button
 
 - Searches backwards month by month for the latest period with at least one session without an invoice
@@ -79,4 +83,5 @@ Used by billing preparation **and** school list « unbilled » stats.
 ## See also
 
 - [V2 — navigation](v2-navigation-modules.md)
+- [V2 — treasury & bank reconciliation](v2-treasury-bank-reconciliation.md)
 - [Training data model](training-data-model.md)

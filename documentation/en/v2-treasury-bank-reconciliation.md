@@ -1,117 +1,118 @@
-# V2 — Treasury and bank reconciliation
+# V2 - Treasury and bank reconciliation
 
 **FR:** [v2-tresorerie-rapprochement-bancaire.md](../fr/v2-tresorerie-rapprochement-bancaire.md)
 
 ## Intent
 
-Treasury is the operational hub for invoicing, cash visibility and expenses. In v2, invoice listing and billing KPIs moved into the **Treasury** module, while bank management adds account setup, statement import and manual reconciliation against invoices or expenses.
+The **Treasury** module groups global financial tracking in one place:
 
-## User workflow
+- issued and paid invoices;
+- invoice creation from the current school context;
+- bank accounts and statement imports;
+- invoice, expense, and expense report reconciliation;
+- expense reports and standalone expenses.
 
-| Step | Screen | Purpose |
-|------|--------|---------|
-| 1 | `/treasury` | Review the yearly invoice dashboard, closing balance and expense sections |
-| 2 | `/treasury/invoices` | Search, filter and sort invoices by description, school/client and payment status |
-| 3 | `/treasury/bank` | Create banks, add accounts, define opening balances and choose the billing bank account |
-| 4 | `/treasury/bank` | Import a bank statement for one account (`.xlsx`) |
-| 5 | `/treasury/bank/imports/{import}` | Review lines, filter reconciled/unreconciled operations and match lines |
+The bank flow is designed to connect real bank operations to VRP records without changing the billing preparation workflow on each school detail page.
 
-Mutations in the bank screens are shown only in **Edit** mode. Authenticated users can still view the module and imported lines.
+## Main entry points
 
-## Module architecture
+| Screen | Route | Controller / view |
+|--------|-------|-------------------|
+| Treasury summary | `/treasury` | `TreasuryController@index`, `resources/views/treasury/index.blade.php` |
+| Invoice list | `/treasury/invoices` | `TreasuryController@invoices`, `resources/views/treasury/invoices.blade.php` |
+| Bank accounts and imports | `/treasury/bank` | `BankController@index`, `resources/views/treasury/bank/index.blade.php` |
+| Imported statement details | `/treasury/bank/imports/{import}` | `BankController@show`, `resources/views/treasury/bank/show.blade.php` |
 
-| Area | Main codepaths | Notes |
-|------|----------------|-------|
-| Treasury summary | `TreasuryController::index`, `resources/views/treasury/index.blade.php` | Uses `InvoiceDashboardService` for invoice KPIs and chart data |
-| Invoice list | `TreasuryController::invoices`, `resources/views/treasury/invoices.blade.php`, `components/table-invoices.blade.php` | `/invoice` resource routes still create/edit invoices; the list tab is `/treasury/invoices` |
-| Bank/account management | `BankController::index`, `storeBank`, `storeAccount`, `updateBillingAccount` | Banks and account numbers are unique per company/bank |
-| Statement import | `BankReconciliationService::import`, `CaBankStatementParser`, `XlsxSheetReader` | Import writes `bank_statement_imports` and `bank_statement_lines` in a transaction |
-| Reconciliation | `BankReconciliationService::match*`, `BankStatementLine::isReconciled()` | Reconciles by summing `matched_amount` with a `0.02` tolerance |
-| Balance KPIs | `BankBalanceService`, `InvoiceDashboardService` | Uses the active billing account when configured; otherwise falls back to treasury opening balance plus deduplicated imported lines |
+Legacy `/treasury/reconciliation*` URLs redirect to the bank screens.
 
-## Routes
+## Bank import workflow
 
-| Route | Action |
-|-------|--------|
-| `GET /treasury` | Treasury dashboard and expense sections |
-| `GET /treasury/invoices` | Invoice list with filters |
-| `GET /treasury/bank` | Bank cards, accounts, imports |
-| `POST /treasury/bank/banks` | Create a bank |
-| `POST /treasury/bank/accounts` | Create a bank account |
-| `PUT /treasury/bank/billing-account` | Choose the company's billing bank account |
-| `POST /treasury/bank/import` | Import a statement file |
-| `GET /treasury/bank/imports/{import}` | Review imported lines |
-| `POST /treasury/bank/imports/{import}/lines/{line}/match` | Reconcile a line |
-| `DELETE /treasury/bank/imports/{import}/matches/{reconciliation}` | Remove reconciliation for a line |
+1. Create a bank, then a bank account under that bank.
+2. Optionally mark one account as the company's **billing bank account**.
+3. Import a statement file from `/treasury/bank`.
+4. Review parsed lines on the import detail screen.
+5. Match each unreconciled line to a suggested invoice, invoice group, expense, or expense report.
 
-Legacy `/treasury/reconciliation` routes redirect to the bank screens.
+### Import constraints
 
-## Statement import format
+| Constraint | Detail |
+|------------|--------|
+| File type | `.xlsx` only (`statement_file`, max 10 MB) |
+| Parser | `App\Services\BankStatement\CaBankStatementParser` |
+| Expected columns | Date, label, debit in euros, credit in euros |
+| Scope | Every bank, account, import, line, and reconciliation is scoped by `company_id` |
 
-The current parser is specific to the bank export handled by `CaBankStatementParser`:
-
-- File type: `.xlsx`, maximum upload size `10240` KB.
-- The first worksheet is read directly from the XLSX ZIP/XML structure; no spreadsheet engine is used.
-- A header row is required with `Date`, `Libellé`/`Libelle` and `Débit euros`/`Debit euros`.
-- Columns are interpreted as:
-  - `A`: operation date (`dd/mm/yyyy` or Excel serial date)
-  - `B`: label
-  - `C`: debit amount
-  - `D`: credit amount
-- Metadata is detected before the header when present: account number, account label, period start/end and statement balance.
-- Empty rows, rows without a label, rows without an amount, and rows with an unreadable date are ignored.
-
-If no header or no operations are found, the import fails with a user-facing error message.
+The parser stores a `BankStatementImport` and one `BankStatementLine` per operation. Credit amounts are positive; debit amounts are negative.
 
 ## Matching rules
 
-| Bank line | Candidate types | Side effect when matched |
-|-----------|-----------------|--------------------------|
-| Credit (`amount > 0`) | Unreconciled invoices, or groups of invoices for the same school/client | Sets `Invoice::paid_at` to the bank operation date when empty |
-| Debit (`amount < 0`) | Standalone expenses and validated/paid expense reports | Sets `Expense::payment_date`, or marks `ExpenseReport` as paid |
+`App\Services\BankStatement\BankReconciliationService` creates polymorphic `BankReconciliation` rows.
 
-Candidate suggestions first prefer records within a 45-day window and within `0.02` of the bank amount. If strict matches are unavailable, the UI falls back to broader unreconciled candidates sorted by amount proximity.
+| Bank line | Match target | Rules |
+|-----------|--------------|-------|
+| Credit | One invoice | Invoice must belong to the same company and not already have a bank reconciliation |
+| Credit | Invoice group | At least two invoices, same school, total incl. VAT within EUR 0.02 of the bank line |
+| Debit | Expense | Expense must belong to the same company and not already have a bank reconciliation |
+| Debit | Expense report | Suggested reports belong to the same company, are not already reconciled, and have status `validated` or `paid` |
 
-Grouped invoice reconciliation is allowed only when:
+Auto-suggestions prefer amount matches within **EUR 0.02** and dates within **45 days**. If no strict suggestion exists, the screen can still show unmatched records, so operators should verify amount, date, and label before confirming a match.
 
-- at least two invoices are selected;
-- all invoices belong to the same school/client;
-- the sum of their `amountTtc()` values matches the credit line within `0.02`;
-- none of the invoices is already reconciled.
+A bank line is considered fully reconciled when the sum of its `matched_amount` values is within **EUR 0.02** of the absolute line amount (`BankStatementLine::isReconciled()`).
 
-## Balance calculations
+## Side effects
 
-There are two related balance concepts:
+Matching is not just a link operation:
 
-| Display | Source |
-|---------|--------|
-| Invoice dashboard bank balance | `BankBalanceService::totalAt()` at each month end |
-| Treasury closing balance | Opening amount + paid invoices - submitted/validated/paid expense reports - standalone expenses |
+- matching an invoice sets `Invoice::paid_at` to the bank operation date if it was empty;
+- matching a standalone expense sets `Expense::payment_date` to the bank operation date if it was empty;
+- matching an expense report sets `status = paid`, `reimbursed_at` to the bank operation date, and fills `submitted_at` if needed.
 
-For dashboard bank balances, duplicate imported lines are deduplicated by account, date, label, debit and credit before summing. If a company has an active billing bank account, only that account is used; without one, all company statement lines are considered from the treasury opening date.
+Unmatching deletes the reconciliation rows for the statement line. It does **not** automatically revert `paid_at`, `payment_date`, or expense report status fields.
 
-## Operational notes and pitfalls
+## Treasury balances and KPIs
 
-- Select the billing bank account before relying on dashboard bank-balance KPIs or invoice PDF bank details.
-- Import one statement against the matching account. The parser can update the account number/label from file metadata.
-- Deleting a bank account deletes its imports, lines and reconciliations, and clears companies that used it as billing account.
-- Deleting an import cascades to its lines and reconciliations.
-- Unmatching deletes the reconciliation records for the line; it does not currently revert `paid_at`, `payment_date` or expense report status side effects.
-- Invoice amounts may be stored as HT for some legacy records; reconciliation uses `Invoice::amountTtc()` to compare against bank credits.
+`InvoiceDashboardService` builds monthly invoice KPIs for the summary screen:
+
+- issued invoices by `bill_date`;
+- paid invoices by `paid_at`;
+- planned unbilled work from school billing planning;
+- latest bank balance from `BankBalanceService`.
+
+`BankBalanceService` uses the active billing bank account when one is configured. Otherwise it falls back to the yearly `TreasuryBalance` opening amount and deduplicated company statement lines.
+
+Statement-line deduplication uses account, operation date, label, debit, and credit. The row index is not part of the balance deduplication key.
+
+## Operational checklist
+
+- Configure bank account opening date and opening amount before relying on balance KPIs.
+- Select the billing bank account when only one account should drive invoice dashboard bank balances.
+- Reconcile invoice groups only when the payment covers multiple invoices from the same school.
+- Treat unmatch as a link removal only; adjust payment fields manually if the previous match marked a record paid incorrectly.
+
+## Troubleshooting
+
+| Symptom | Check |
+|---------|-------|
+| Import rejected | File is `.xlsx`, has recognizable Date / label / debit / credit columns, and contains operation rows |
+| Bank import not visible | The import and selected bank account belong to the authenticated user's company |
+| Line remains unreconciled | Sum of matched amounts differs from the absolute bank amount by more than EUR 0.02 |
+| Invoice absent from suggestions | It may already have a bank reconciliation or belong to another company |
+| Expense report absent from suggestions | Suggestions only include reports that are `validated` or `paid` and not already reconciled |
 
 ## Key files
 
 | File | Role |
 |------|------|
-| `app/Http/Controllers/TreasuryController.php` | Treasury dashboard, invoice list, expenses and expense reports |
-| `app/Http/Controllers/BankController.php` | Bank/account CRUD, import screens, match/unmatch actions |
-| `app/Services/InvoiceDashboardService.php` | Monthly invoice, planning and bank KPIs |
-| `app/Services/BankBalanceService.php` | Billing-account context and deduplicated bank balances |
-| `app/Services/BankStatement/BankReconciliationService.php` | Import, candidate search, reconciliation side effects |
-| `app/Services/BankStatement/CaBankStatementParser.php` | Current XLSX statement parser |
-| `app/Models/Bank*.php`, `BankStatement*.php`, `BankReconciliation.php` | Treasury bank domain models |
+| `routes/web.php` | Treasury, bank import, match, and legacy redirect routes |
+| `app/Http/Controllers/BankController.php` | Bank/account CRUD, statement import, filtering, match/unmatch actions |
+| `app/Services/BankStatement/CaBankStatementParser.php` | XLSX statement parsing |
+| `app/Services/BankStatement/BankReconciliationService.php` | Candidate lookup, matching rules, side effects |
+| `app/Services/BankBalanceService.php` | Balance resolution and statement-line deduplication |
+| `app/Services/InvoiceDashboardService.php` | Monthly invoice, planned work, and bank KPI data |
+| `app/Models/BankReconciliation.php` | Polymorphic link to invoices, expenses, and expense reports |
+| `resources/views/components/treasury-module-tabs.blade.php` | Treasury tab navigation |
 
 ## See also
 
-- [V2 — navigation](v2-navigation-modules.md)
-- [V2 — billing per school](v2-billing-per-school.md)
+- [V2 - navigation and modules](v2-navigation-modules.md)
+- [V2 - billing per school](v2-billing-per-school.md)

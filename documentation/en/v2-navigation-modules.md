@@ -6,18 +6,17 @@
 
 | Element | Files | Role |
 |---------|-------|------|
-| Sidebar | `resources/views/layouts/navigation.blade.php`, `resources/css/navigation.css`, `shell.css` | Main menu, logo, sign out |
+| Sidebar | `resources/views/layouts/navigation.blade.php`, `resources/js/sidebar.js`, `resources/css/navigation.css`, `shell.css` | Main menu, compact mode, logo, sign out |
 | Topbar | `resources/views/layouts/topbar.blade.php` | Page title, breadcrumbs, Edit/Browse toggle, theme |
 | Layout | `resources/views/layouts/app.blade.php` | Sidebar + content grid |
 
 ### Sidebar menu (order)
 
 1. **Scheduling** → `planning.index` (+ admin calendar under `calendar.*`)
-2. **Invoices** → `invoice.index`
-3. **Treasury** → `treasury.index`
-4. **Workload plan** → `home` (schools / programs / groups module)
+2. **Treasury** → `treasury.index` (also active for `invoice.*`)
+3. **Workload plan** → `home` (schools / programs / groups module)
 
-The **logo** and 4th item both go to **`/home`** (school list).
+The **logo** and 3rd item both go to **`/home`** (school list). The sidebar starts in compact mode unless `vrp-sidebar-compact` is set to `false` in `localStorage`.
 
 ## Home page
 
@@ -41,8 +40,7 @@ Components under `resources/views/components/`:
 |-----------|--------|------|
 | `workload-module-tabs` | Schools / workload | Workload plan · Schools · Programs · Groups |
 | `scheduling-module-tabs` | Scheduling | Planning · Calendar |
-| `invoice-module-tabs` | Invoices | (invoice screens) |
-| `treasury-module-tabs` | Treasury | Treasury · profile |
+| `treasury-module-tabs` | Treasury | Summary · Invoices · Create invoice · Bank · Expense reports · Standalone expenses · Create expense |
 | `settings-module-tabs` | Settings | Company · profile |
 
 Generic `module-tabs` + `module-tab-icon` handle rendering.
@@ -59,8 +57,11 @@ Generic `module-tabs` + `module-tab-icon` handle rendering.
 - `routes/web.php` — `home`, `dashboard`, business resources
 - `app/Providers/RouteServiceProvider.php` — `HOME`
 - `resources/views/components/workload-module-tabs.blade.php`
+- `resources/views/components/treasury-module-tabs.blade.php`
+- `resources/js/sidebar.js` — compact sidebar persistence
 
 ## See also
 
 - [V2 — overview](v2-user-interface.md)
 - [V2 — billing per school](v2-billing-per-school.md)
+- [V2 — treasury & bank reconciliation](v2-treasury-bank-reconciliation.md)

@@ -24,6 +24,7 @@ This is a **presentation and navigation** refactor: data model, business routes 
 |-------|--------|
 | Navigation, home, modules | [v2-navigation-modules.md](v2-navigation-modules.md) |
 | Billing per school | [v2-billing-per-school.md](v2-billing-per-school.md) |
+| Treasury and bank reconciliation | [v2-treasury-bank-reconciliation.md](v2-treasury-bank-reconciliation.md) |
 | CSS design system | [v2-design-system-css.md](v2-design-system-css.md) |
 | Code review & list refactor | [v2-code-review-list-refactoring.md](v2-code-review-list-refactoring.md) |
 
@@ -34,7 +35,7 @@ This is a **presentation and navigation** refactor: data model, business routes 
 3. Open a **school** → courses, address, invoices, documents, **billing preparation**
 4. Browse by month or **jump to unbilled sessions** (backwards in time)
 5. **Scheduling** (sidebar) to create / edit sessions
-6. **Invoices** and **Treasury** for global financial tracking
+6. **Treasury** (sidebar) for invoices, bank reconciliation, expenses, and global financial tracking
 
 ## Compatibility
 

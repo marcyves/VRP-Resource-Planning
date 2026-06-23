@@ -1,117 +1,118 @@
-# V2 — Trésorerie et rapprochement bancaire
+# V2 - Trésorerie et rapprochement bancaire
 
 **EN:** [v2-treasury-bank-reconciliation.md](../en/v2-treasury-bank-reconciliation.md)
 
 ## Intention
 
-La trésorerie devient le point d'entrée opérationnel pour les factures, la visibilité de caisse et les dépenses. En v2, la liste des factures et les KPI de facturation sont dans le module **Trésorerie**, tandis que la banque ajoute la configuration des comptes, l'import de relevés et le rapprochement manuel avec factures ou dépenses.
+Le module **Trésorerie** regroupe le suivi financier global :
 
-## Parcours utilisateur
+- factures émises et payées ;
+- création de facture depuis le contexte école courant ;
+- banques, comptes bancaires et imports de relevés ;
+- rapprochement des factures, dépenses et notes de frais ;
+- notes de frais et dépenses autonomes.
 
-| Étape | Écran | Rôle |
-|-------|-------|------|
-| 1 | `/treasury` | Consulter le dashboard annuel, le solde de clôture et les sections dépenses |
-| 2 | `/treasury/invoices` | Rechercher, filtrer et trier les factures par description, école/client et statut de paiement |
-| 3 | `/treasury/bank` | Créer les banques, ajouter les comptes, saisir les soldes d'ouverture et choisir le compte de facturation |
-| 4 | `/treasury/bank` | Importer un relevé bancaire pour un compte (`.xlsx`) |
-| 5 | `/treasury/bank/imports/{import}` | Vérifier les lignes, filtrer rapproché/non rapproché et effectuer les rapprochements |
+Le parcours bancaire relie les opérations réelles aux enregistrements VRP sans modifier la préparation de facturation située sur chaque fiche école.
 
-Les mutations sur les écrans banque ne sont affichées qu'en mode **Edit**. Les utilisateurs authentifiés peuvent tout de même consulter le module et les lignes importées.
+## Entrées principales
 
-## Architecture du module
+| Écran | Route | Contrôleur / vue |
+|-------|-------|------------------|
+| Synthèse trésorerie | `/treasury` | `TreasuryController@index`, `resources/views/treasury/index.blade.php` |
+| Liste factures | `/treasury/invoices` | `TreasuryController@invoices`, `resources/views/treasury/invoices.blade.php` |
+| Banques, comptes et imports | `/treasury/bank` | `BankController@index`, `resources/views/treasury/bank/index.blade.php` |
+| Détail d'un relevé importé | `/treasury/bank/imports/{import}` | `BankController@show`, `resources/views/treasury/bank/show.blade.php` |
 
-| Zone | Code principal | Notes |
-|------|----------------|-------|
-| Synthèse trésorerie | `TreasuryController::index`, `resources/views/treasury/index.blade.php` | Utilise `InvoiceDashboardService` pour les KPI factures et les données de graphique |
-| Liste factures | `TreasuryController::invoices`, `resources/views/treasury/invoices.blade.php`, `components/table-invoices.blade.php` | Les routes ressource `/invoice` créent/éditent toujours les factures ; l'onglet liste est `/treasury/invoices` |
-| Gestion banque/compte | `BankController::index`, `storeBank`, `storeAccount`, `updateBillingAccount` | Les banques et numéros de compte sont uniques par entreprise/banque |
-| Import relevé | `BankReconciliationService::import`, `CaBankStatementParser`, `XlsxSheetReader` | L'import écrit `bank_statement_imports` et `bank_statement_lines` dans une transaction |
-| Rapprochement | `BankReconciliationService::match*`, `BankStatementLine::isReconciled()` | Une ligne est rapprochée quand la somme des `matched_amount` correspond avec une tolérance de `0.02` |
-| KPI soldes | `BankBalanceService`, `InvoiceDashboardService` | Utilise le compte de facturation actif s'il est configuré ; sinon revient au solde d'ouverture trésorerie + lignes importées dédupliquées |
+Les anciennes URLs `/treasury/reconciliation*` redirigent vers les écrans banque.
 
-## Routes
+## Parcours d'import bancaire
 
-| Route | Action |
-|-------|--------|
-| `GET /treasury` | Dashboard trésorerie et sections dépenses |
-| `GET /treasury/invoices` | Liste factures avec filtres |
-| `GET /treasury/bank` | Cartes banques, comptes, imports |
-| `POST /treasury/bank/banks` | Créer une banque |
-| `POST /treasury/bank/accounts` | Créer un compte bancaire |
-| `PUT /treasury/bank/billing-account` | Choisir le compte bancaire de facturation de l'entreprise |
-| `POST /treasury/bank/import` | Importer un relevé |
-| `GET /treasury/bank/imports/{import}` | Consulter les lignes importées |
-| `POST /treasury/bank/imports/{import}/lines/{line}/match` | Rapprocher une ligne |
-| `DELETE /treasury/bank/imports/{import}/matches/{reconciliation}` | Supprimer le rapprochement d'une ligne |
+1. Créer une banque, puis un compte bancaire rattaché.
+2. Marquer éventuellement un compte comme **compte bancaire de facturation** de l'entreprise.
+3. Importer un relevé depuis `/treasury/bank`.
+4. Vérifier les lignes analysées sur le détail d'import.
+5. Rapprocher chaque ligne non lettrée avec une facture, un groupe de factures, une dépense ou une note de frais suggérée.
 
-Les anciennes routes `/treasury/reconciliation` redirigent vers les écrans banque.
+### Contraintes d'import
 
-## Format d'import relevé
+| Contrainte | Détail |
+|------------|--------|
+| Type fichier | `.xlsx` uniquement (`statement_file`, max 10 Mo) |
+| Parser | `App\Services\BankStatement\CaBankStatementParser` |
+| Colonnes attendues | Date, libellé, débit euros, crédit euros |
+| Périmètre | Chaque banque, compte, import, ligne et rapprochement est filtré par `company_id` |
 
-Le parseur actuel est spécifique à l'export bancaire géré par `CaBankStatementParser` :
-
-- Type de fichier : `.xlsx`, taille maximale `10240` Ko.
-- La première feuille est lue directement depuis la structure ZIP/XML du XLSX ; aucun moteur tableur n'est utilisé.
-- Une ligne d'en-tête est obligatoire avec `Date`, `Libellé`/`Libelle` et `Débit euros`/`Debit euros`.
-- Les colonnes sont interprétées ainsi :
-  - `A` : date d'opération (`jj/mm/aaaa` ou date série Excel)
-  - `B` : libellé
-  - `C` : débit
-  - `D` : crédit
-- Les métadonnées sont détectées avant l'en-tête si elles existent : numéro de compte, libellé de compte, période et solde de relevé.
-- Les lignes vides, sans libellé, sans montant ou avec date illisible sont ignorées.
-
-Si aucun en-tête ou aucune opération n'est trouvé, l'import échoue avec un message utilisateur.
+Le parser crée un `BankStatementImport` et une `BankStatementLine` par opération. Les crédits sont positifs ; les débits sont négatifs.
 
 ## Règles de rapprochement
 
-| Ligne bancaire | Candidats | Effet de bord au rapprochement |
-|----------------|-----------|--------------------------------|
-| Crédit (`amount > 0`) | Factures non rapprochées, ou groupes de factures d'une même école/client | Renseigne `Invoice::paid_at` avec la date d'opération si vide |
-| Débit (`amount < 0`) | Dépenses isolées et notes de frais validées/payées | Renseigne `Expense::payment_date`, ou marque la note de frais comme payée |
+`App\Services\BankStatement\BankReconciliationService` crée des lignes polymorphes `BankReconciliation`.
 
-Les suggestions cherchent d'abord les enregistrements dans une fenêtre de 45 jours et à `0.02` près du montant bancaire. Si aucun candidat strict n'existe, l'interface propose plus largement les éléments non rapprochés, triés par proximité de montant.
+| Ligne bancaire | Cible | Règles |
+|----------------|-------|--------|
+| Crédit | Une facture | Facture de la même entreprise, sans rapprochement bancaire existant |
+| Crédit | Groupe de factures | Au moins deux factures, même école, total TTC à 0,02 EUR près de la ligne bancaire |
+| Débit | Dépense | Dépense de la même entreprise, sans rapprochement bancaire existant |
+| Débit | Note de frais | Les notes suggérées appartiennent à la même entreprise, sans rapprochement existant, avec statut `validated` ou `paid` |
 
-Le rapprochement groupé de factures est autorisé uniquement si :
+Les suggestions automatiques privilégient les montants à **0,02 EUR** près et les dates dans une fenêtre de **45 jours**. Si aucune suggestion stricte n'existe, l'écran peut afficher d'autres enregistrements non rapprochés : il faut donc vérifier montant, date et libellé avant validation.
 
-- au moins deux factures sont sélectionnées ;
-- toutes les factures appartiennent à la même école/client ;
-- la somme de leurs `amountTtc()` correspond au crédit bancaire à `0.02` près ;
-- aucune facture n'est déjà rapprochée.
+Une ligne bancaire est considérée comme totalement rapprochée quand la somme des `matched_amount` est à **0,02 EUR** près du montant absolu de la ligne (`BankStatementLine::isReconciled()`).
 
-## Calculs de solde
+## Effets de bord
 
-Deux notions de solde coexistent :
+Le rapprochement ne crée pas seulement un lien :
 
-| Affichage | Source |
-|-----------|--------|
-| Solde bancaire du dashboard factures | `BankBalanceService::totalAt()` à chaque fin de mois |
-| Solde de clôture trésorerie | Solde d'ouverture + factures payées - notes soumises/validées/payées - dépenses isolées |
+- une facture rapprochée reçoit `Invoice::paid_at` à la date de l'opération bancaire si le champ était vide ;
+- une dépense autonome reçoit `Expense::payment_date` à la date de l'opération bancaire si le champ était vide ;
+- une note de frais rapprochée passe en `status = paid`, reçoit `reimbursed_at` à la date bancaire et complète `submitted_at` si nécessaire.
 
-Pour les soldes bancaires du dashboard, les lignes importées dupliquées sont dédupliquées par compte, date, libellé, débit et crédit avant sommation. Si l'entreprise a un compte bancaire de facturation actif, seul ce compte est utilisé ; sans compte sélectionné, toutes les lignes de l'entreprise sont prises en compte depuis la date d'ouverture trésorerie.
+Le dérapprochement supprime les lignes de rapprochement de la ligne bancaire. Il ne remet **pas** automatiquement à zéro `paid_at`, `payment_date` ni le statut de note de frais.
 
-## Notes opérationnelles et pièges
+## Soldes et KPIs de trésorerie
 
-- Sélectionner le compte bancaire de facturation avant de s'appuyer sur les KPI de solde bancaire ou sur les coordonnées bancaires des PDF de facture.
-- Importer chaque relevé sur le compte correspondant. Le parseur peut mettre à jour le numéro/libellé du compte à partir des métadonnées du fichier.
-- Supprimer un compte bancaire supprime ses imports, lignes et rapprochements, et vide le compte de facturation des entreprises qui l'utilisaient.
-- Supprimer un import supprime par cascade ses lignes et rapprochements.
-- Supprimer un rapprochement efface les enregistrements de rapprochement de la ligne ; cela ne remet pas actuellement à zéro `paid_at`, `payment_date` ou le statut de note de frais.
-- Certaines anciennes factures peuvent stocker un montant HT ; le rapprochement utilise `Invoice::amountTtc()` pour comparer aux crédits bancaires.
+`InvoiceDashboardService` construit les KPIs mensuels de l'écran synthèse :
+
+- factures émises par `bill_date` ;
+- factures payées par `paid_at` ;
+- travail planifié non facturé depuis la préparation facturation des écoles ;
+- dernier solde bancaire via `BankBalanceService`.
+
+`BankBalanceService` utilise le compte bancaire de facturation actif quand il est configuré. Sinon, il revient au solde d'ouverture annuel `TreasuryBalance` et aux lignes bancaires dédupliquées de l'entreprise.
+
+La déduplication des lignes de relevé utilise le compte, la date d'opération, le libellé, le débit et le crédit. L'index de ligne n'entre pas dans la clé de déduplication du solde.
+
+## Checklist opérationnelle
+
+- Renseigner la date et le montant d'ouverture du compte avant de s'appuyer sur les KPIs de solde.
+- Sélectionner le compte bancaire de facturation lorsqu'un seul compte doit alimenter les soldes du tableau de bord factures.
+- Utiliser le rapprochement multi-factures seulement quand le paiement couvre plusieurs factures d'une même école.
+- Traiter le dérapprochement comme une suppression de lien : corriger manuellement les champs de paiement si un mauvais rapprochement avait marqué un enregistrement comme payé.
+
+## Dépannage
+
+| Symptôme | Vérification |
+|----------|--------------|
+| Import refusé | Le fichier est `.xlsx`, contient les colonnes Date / libellé / débit / crédit et des lignes d'opération |
+| Import bancaire invisible | L'import et le compte sélectionné appartiennent à l'entreprise de l'utilisateur connecté |
+| Ligne encore non rapprochée | La somme rapprochée diffère du montant absolu de plus de 0,02 EUR |
+| Facture absente des suggestions | Elle peut déjà avoir un rapprochement bancaire ou appartenir à une autre entreprise |
+| Note de frais absente des suggestions | Les suggestions incluent seulement les notes `validated` ou `paid`, non rapprochées |
 
 ## Fichiers clés
 
 | Fichier | Rôle |
 |---------|------|
-| `app/Http/Controllers/TreasuryController.php` | Dashboard trésorerie, liste factures, dépenses et notes de frais |
-| `app/Http/Controllers/BankController.php` | CRUD banque/compte, écrans import, actions rapprocher/dérapprocher |
-| `app/Services/InvoiceDashboardService.php` | KPI mensuels factures, planning et banque |
-| `app/Services/BankBalanceService.php` | Contexte compte de facturation et soldes bancaires dédupliqués |
-| `app/Services/BankStatement/BankReconciliationService.php` | Import, recherche de candidats, effets de bord du rapprochement |
-| `app/Services/BankStatement/CaBankStatementParser.php` | Parseur XLSX actuel |
-| `app/Models/Bank*.php`, `BankStatement*.php`, `BankReconciliation.php` | Modèles du domaine banque/trésorerie |
+| `routes/web.php` | Routes trésorerie, import bancaire, match/unmatch et redirections legacy |
+| `app/Http/Controllers/BankController.php` | CRUD banque/compte, import de relevé, filtrage, match/unmatch |
+| `app/Services/BankStatement/CaBankStatementParser.php` | Analyse des relevés XLSX |
+| `app/Services/BankStatement/BankReconciliationService.php` | Suggestions, règles de rapprochement, effets de bord |
+| `app/Services/BankBalanceService.php` | Résolution des soldes et déduplication des lignes |
+| `app/Services/InvoiceDashboardService.php` | Données mensuelles factures, planifié et banque |
+| `app/Models/BankReconciliation.php` | Lien polymorphe vers factures, dépenses et notes de frais |
+| `resources/views/components/treasury-module-tabs.blade.php` | Onglets du module trésorerie |
 
 ## Voir aussi
 
-- [V2 — navigation](v2-navigation-modules.md)
-- [V2 — facturation par école](v2-facturation-par-ecole.md)
+- [V2 - navigation et modules](v2-navigation-modules.md)
+- [V2 - facturation par école](v2-facturation-par-ecole.md)

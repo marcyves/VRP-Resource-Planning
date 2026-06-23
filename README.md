@@ -36,6 +36,7 @@ Application web de **planification**, **budgétisation** et **suivi facturation*
 - **Préparation facturation** sur la fiche de chaque école (sessions, assignation, création facture)
 - **Liste écoles** avec montants facturés et non facturés
 - **Factures** (PDF, suivi paiement) et **trésorerie**
+- **Rapprochement bancaire** (imports XLSX, rapprochements factures / dépenses)
 - **Documents** rattachés à une école
 - **Import calendrier** (mapping, gestion des évènements)
 - Authentification, rôles utilisateur liés à l’entreprise (mode lecture / édition)
