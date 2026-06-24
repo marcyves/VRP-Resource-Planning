@@ -24,6 +24,7 @@ Cette refonte est **purement présentationnelle et navigationnelle** : le modèl
 |-------|--------|
 | Navigation, accueil, modules | [v2-navigation-modules.md](v2-navigation-modules.md) |
 | Facturation par école | [v2-facturation-par-ecole.md](v2-facturation-par-ecole.md) |
+| Trésorerie et rapprochement bancaire | [v2-tresorerie-rapprochement-bancaire.md](v2-tresorerie-rapprochement-bancaire.md) |
 | Design system CSS | [v2-design-system-css.md](v2-design-system-css.md) |
 | Revue de code & refactor listes | [v2-revue-code-refactoring-listes.md](v2-revue-code-refactoring-listes.md) |
 
@@ -34,7 +35,7 @@ Cette refonte est **purement présentationnelle et navigationnelle** : le modèl
 3. Ouvrir une **école** → cours, adresse, factures, documents, **préparation facturation**
 4. Naviguer mois par mois ou **sauter aux sessions non facturées** (retour arrière)
 5. **Agenda** (menu latéral) pour saisir / modifier les sessions
-6. **Factures** et **Trésorerie** pour le suivi financier global
+6. **Trésorerie** (menu latéral) pour les factures, le rapprochement bancaire, les dépenses et le suivi financier global
 
 ## Compatibilité
 

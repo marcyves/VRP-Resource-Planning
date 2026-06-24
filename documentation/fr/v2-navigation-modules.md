@@ -6,18 +6,17 @@
 
 | Élément | Fichiers | Rôle |
 |---------|----------|------|
-| Sidebar | `resources/views/layouts/navigation.blade.php`, `resources/css/navigation.css`, `shell.css` | Menu principal, logo, déconnexion |
+| Sidebar | `resources/views/layouts/navigation.blade.php`, `resources/js/sidebar.js`, `resources/css/navigation.css`, `shell.css` | Menu principal, mode compact, logo, déconnexion |
 | Topbar | `resources/views/layouts/topbar.blade.php` | Titre de page, fil d’Ariane, bascule Edit/Browse, thème |
 | Layout | `resources/views/layouts/app.blade.php` | Grille sidebar + contenu |
 
 ### Menu latéral (ordre)
 
 1. **Agenda** → `planning.index` (+ calendrier admin sous `calendar.*`)
-2. **Factures** → `invoice.index`
-3. **Trésorerie** → `treasury.index`
-4. **Plan de charge** → `home` (module écoles / programmes / groupes)
+2. **Trésorerie** → `treasury.index` (actif aussi pour `invoice.*`)
+3. **Plan de charge** → `home` (module écoles / programmes / groupes)
 
-Le **logo** et le 4ᵉ item mènent à **`/home`** (liste des écoles).
+Le **logo** et le 3ᵉ item mènent à **`/home`** (liste des écoles). La sidebar démarre en mode compact sauf si `vrp-sidebar-compact` vaut `false` dans `localStorage`.
 
 ## Page d’accueil
 
@@ -41,8 +40,7 @@ Composants sous `resources/views/components/` :
 |-----------|--------|---------|
 | `workload-module-tabs` | Écoles / charge | Plan de charge · Écoles · Programmes · Groupes |
 | `scheduling-module-tabs` | Agenda | Planning · Calendrier |
-| `invoice-module-tabs` | Factures | (selon écrans facture) |
-| `treasury-module-tabs` | Trésorerie | Trésorerie · profil |
+| `treasury-module-tabs` | Trésorerie | Synthèse · Factures · Créer facture · Banque · Notes de frais · Dépenses autonomes · Créer dépense |
 | `settings-module-tabs` | Paramètres | Entreprise · profil |
 
 Le composant générique `module-tabs` + `module-tab-icon` centralise le rendu.
@@ -59,8 +57,11 @@ Le composant générique `module-tabs` + `module-tab-icon` centralise le rendu.
 - `routes/web.php` — routes `home`, `dashboard`, ressources métier
 - `app/Providers/RouteServiceProvider.php` — `HOME`
 - `resources/views/components/workload-module-tabs.blade.php`
+- `resources/views/components/treasury-module-tabs.blade.php`
+- `resources/js/sidebar.js` — persistance de la sidebar compacte
 
 ## Voir aussi
 
 - [V2 — vue d’ensemble](v2-interface-utilisateur.md)
 - [V2 — facturation par école](v2-facturation-par-ecole.md)
+- [V2 — trésorerie & rapprochement bancaire](v2-tresorerie-rapprochement-bancaire.md)
