@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Enums\ElectronicInvoiceStatus;
+use App\Exceptions\ElectronicInvoiceException;
 use App\Http\Utility\Tools;
 use App\Models\Invoice;
 use App\Models\Planning;
 use App\Models\School;
+use App\Services\ElectronicInvoicing\ElectronicInvoiceService;
 use App\Services\InvoiceService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -284,6 +286,38 @@ class InvoiceController extends Controller
             session()->flash('danger', __('messages.invoice_payment_error', ['message' => $e->getMessage()]));
 
             return redirect()->back();
+        }
+    }
+
+    public function submitElectronic(Invoice $invoice, ElectronicInvoiceService $electronicInvoiceService)
+    {
+        $this->authorizeInvoice($invoice);
+
+        try {
+            $electronicInvoiceService->submit($invoice);
+
+            session()->flash('success', __('messages.electronic_invoice_submit_success', [
+                'id' => Auth::user()->company->bill_prefix.$invoice->id,
+            ]));
+        } catch (ElectronicInvoiceException $e) {
+            session()->flash('danger', $e->getMessage());
+
+            if ($e->errors !== []) {
+                session()->flash('warning', implode(' · ', $e->errors));
+            }
+        } catch (\Throwable $e) {
+            session()->flash('danger', __('messages.electronic_invoice_submit_error', [
+                'message' => $e->getMessage(),
+            ]));
+        }
+
+        return redirect()->back();
+    }
+
+    private function authorizeInvoice(Invoice $invoice): void
+    {
+        if ($invoice->company_id !== Auth::user()->company_id) {
+            abort(403);
         }
     }
 

@@ -33,6 +33,10 @@
                     <x-input-label for="vat_number">{{ __('messages.vat_number') }}</x-input-label>
                     <x-text-input type="text" name="vat_number" id="vat_number" value="{{ old('vat_number', $school->vat_number) }}" />
                 </div>
+                <div class="form-group">
+                    <x-input-label for="electronic_address">Adresse électronique (PEPPOL 0225)</x-input-label>
+                    <x-text-input type="text" name="electronic_address" id="electronic_address" placeholder="315143296_12712" value="{{ old('electronic_address', $school->electronic_address) }}" />
+                </div>
             </fieldset>
 
             <div class="school-form-input">

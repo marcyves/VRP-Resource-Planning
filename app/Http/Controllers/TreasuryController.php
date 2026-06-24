@@ -9,6 +9,7 @@ use App\Models\Expense;
 use App\Models\ExpenseReport;
 use App\Models\Invoice;
 use App\Models\TreasuryBalance;
+use App\Services\ElectronicInvoicing\ElectronicInvoiceService;
 use App\Services\InvoiceDashboardService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -94,7 +95,7 @@ class TreasuryController extends Controller
         ));
     }
 
-    public function invoices(Request $request)
+    public function invoices(Request $request, ElectronicInvoiceService $electronicInvoiceService)
     {
         $user = Auth::user();
         $current_year = session('current_year', now()->format('Y'));
@@ -142,6 +143,8 @@ class TreasuryController extends Controller
             'payment' => $request->input('payment'),
         ], fn ($value) => filled($value));
 
+        $electronicInvoicingEnabled = $electronicInvoiceService->platformConfigured();
+
         return view('treasury.invoices', compact(
             'bills',
             'schools',
@@ -149,6 +152,7 @@ class TreasuryController extends Controller
             'sort',
             'direction',
             'filters',
+            'electronicInvoicingEnabled',
         ));
     }
 

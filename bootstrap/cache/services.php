@@ -50,7 +50,8 @@
     46 => 'App\\Providers\\AppServiceProvider',
     47 => 'App\\Providers\\AuthServiceProvider',
     48 => 'App\\Providers\\EventServiceProvider',
-    49 => 'App\\Providers\\RouteServiceProvider',
+    49 => 'App\\Providers\\ElectronicInvoicingServiceProvider',
+    50 => 'App\\Providers\\RouteServiceProvider',
   ),
   'eager' => 
   array (
@@ -86,7 +87,8 @@
     29 => 'App\\Providers\\AppServiceProvider',
     30 => 'App\\Providers\\AuthServiceProvider',
     31 => 'App\\Providers\\EventServiceProvider',
-    32 => 'App\\Providers\\RouteServiceProvider',
+    32 => 'App\\Providers\\ElectronicInvoicingServiceProvider',
+    33 => 'App\\Providers\\RouteServiceProvider',
   ),
   'deferred' => 
   array (

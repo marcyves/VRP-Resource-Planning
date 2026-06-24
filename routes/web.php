@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BillingController;
+use App\Http\Controllers\ElectronicInvoiceWebhookController;
 use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\CalendarFileController;
 use App\Http\Controllers\CompanyController;
@@ -39,6 +40,9 @@ Route::get('/home', [SchoolController::class, 'index'])
 Route::get('/dashboard', function () {
     return redirect()->route('home');
 })->middleware(['auth', 'verified', SetTerminologyLocale::class])->name('dashboard');
+
+Route::post('/webhooks/e-invoice/{platform}', ElectronicInvoiceWebhookController::class)
+    ->name('webhooks.e-invoice');
 
 Route::middleware(['auth', SetTerminologyLocale::class])->group(function () {
     //    Route::get('/calendar/import/{calendar_id}', [CalendarController::class, 'readICSFile'])->name('ics.read');
@@ -112,6 +116,8 @@ Route::middleware(['auth', SetTerminologyLocale::class])->group(function () {
     Route::get('/invoice/schools', [InvoiceController::class, 'schools'])->name('invoice.schools');
     Route::post('/invoice/context/school', [InvoiceController::class, 'selectSchool'])->name('invoice.selectSchool');
     Route::get('/invoice/payed/{invoice_id}', [InvoiceController::class, 'payed'])->name('invoice.payed');
+    Route::post('/invoice/{invoice}/submit-electronic', [InvoiceController::class, 'submitElectronic'])
+        ->name('invoice.submitElectronic');
     Route::resource('/invoice', InvoiceController::class);
     Route::resource('/documents', DocumentController::class);
 

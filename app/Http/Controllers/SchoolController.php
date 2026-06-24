@@ -102,6 +102,7 @@ class SchoolController extends Controller
                 'siren' => $request->siren,
                 'siret' => $request->siret,
                 'vat_number' => $request->vat_number,
+                'electronic_address' => $request->electronic_address,
                 'address' => $request->address,
                 'address2' => $request->address2,
                 'city' => $request->city,
@@ -205,6 +206,7 @@ class SchoolController extends Controller
             'siren' => ['nullable', 'digits:9'],
             'siret' => ['nullable', 'digits:14'],
             'vat_number' => ['nullable', 'string', 'max:20'],
+            'electronic_address' => ['nullable', 'string', 'max:100'],
         ]);
 
         try {
@@ -214,6 +216,7 @@ class SchoolController extends Controller
             $school->siren = $request->siren;
             $school->siret = $request->siret;
             $school->vat_number = $request->vat_number;
+            $school->electronic_address = $request->electronic_address;
             $school->address = $request->address;
             $school->address2 = $request->address2;
             $school->city = $request->city;

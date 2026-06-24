@@ -238,6 +238,7 @@ nav.breadcrumb .breadcrumb__select:focus {
 .icon.icon--pdf-download,
 .icon.icon--pdf-view,
 .icon.icon--invoice-manual,
+.icon.icon--e-invoice,
 .icon.icon--archive {
     box-sizing: border-box;
     width: 2rem;
@@ -261,6 +262,7 @@ nav.breadcrumb .breadcrumb__select:focus {
 .icon.icon--pdf-download:hover,
 .icon.icon--pdf-view:hover,
 .icon.icon--invoice-manual:hover,
+.icon.icon--e-invoice:hover,
 .icon.icon--archive:hover {
     background: var(--icon-action-hover-bg);
     border-color: var(--icon-action-hover-border);
@@ -283,6 +285,7 @@ nav.breadcrumb .breadcrumb__select:focus {
 .icon.icon--pdf-download:focus-visible,
 .icon.icon--pdf-view:focus-visible,
 .icon.icon--invoice-manual:focus-visible,
+.icon.icon--e-invoice:focus-visible,
 .icon.icon--archive:focus-visible {
     outline: 2px solid var(--brand-secondary);
     outline-offset: 2px;
@@ -325,6 +328,13 @@ nav.breadcrumb .breadcrumb__select:focus {
     background: transparent;
     border-color: var(--icon-action-border);
     box-shadow: none;
+}
+
+.icon.icon--e-invoice {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--icon-action-fg);
 }
 
 /* Animations / Transitions Utilities */

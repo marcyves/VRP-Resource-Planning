@@ -282,12 +282,12 @@ Le suivi **payée** (`paid_at`) reste indépendant du statut e-facture.
 
 ### Phase 2 — Couche PA + réception (cible : sept. 2026)
 
-1. Contrat `ElectronicInvoicePlatform` + driver `Null`
-2. `ElectronicInvoicePayloadBuilder` + validateur
-3. Webhook + `ElectronicInvoiceService`
-4. Adaptateur **`SuperPdpPlatform`** (sandbox)
+1. Contrat `ElectronicInvoicePlatform` + driver `Null` ✅
+2. Adaptateur **`SuperPdpPlatform`** (envoi PDF) ✅ *POC*
+3. Bouton **Émettre e-facture** + validations ✅ *POC*
+4. Webhook statuts SuperPDP — stub en place, à brancher côté SuperPDP
 5. Réception factures fournisseurs (affichage minimal)
-6. Tests : payload builder, mapping statuts, webhook
+6. Tests automatisés + payload EN16931 natif (au-delà du PDF)
 
 ### Phase 3 — Émission (cible : sept. 2027 PME)
 
@@ -341,11 +341,76 @@ L’architecture reste **agnostique** (`ElectronicInvoicePlatform`) : B2Brouter 
 | Secteur public | Chorus Pro (via PA connectée) |
 | Particulier / sans SIREN | Hors obligation structurée B2B — PDF VRP seul |
 
+## Configuration SuperPDP (POC)
+
+### 1. Compte SuperPDP
+
+Créer un compte sur [superpdp.tech](https://www.superpdp.tech/) et compléter l’entreprise (KYC / annuaire côté SuperPDP).
+
+### 2. Token API VRP
+
+Dans le `.env` local (application **confidentielle** — credentials côté serveur) :
+
+```env
+E_INVOICE_PLATFORM=superpdp
+SUPERPDP_CLIENT_ID=votre_client_id
+SUPERPDP_CLIENT_SECRET=votre_client_secret
+SUPERPDP_BASE_URL=https://api.superpdp.tech
+```
+
+VRP échange automatiquement `client_id` + `client_secret` contre un **token OAuth** (`POST /oauth2/token`, flux `client_credentials`) et le met en cache.
+
+Alternative : `SUPERPDP_ACCESS_TOKEN=` si vous avez déjà un bearer token.
+
+Vérifier la connexion :
+
+```bash
+php artisan superpdp:test
+```
+
+Format sandbox recommandé chez SuperPDP : **Factur-X** (profil AFNOR / EN 16931).
+
+Optionnel pour les webhooks de statut :
+
+```env
+SUPERPDP_WEBHOOK_SECRET=...
+```
+
+URL webhook à configurer chez SuperPDP :  
+`https://votre-domaine/webhooks/e-invoice/superpdp`
+
+### 3. Données VRP
+
+| Fiche | Champs requis |
+|-------|----------------|
+| **Mon entreprise** | SIREN, adresse, ville, CP |
+| **Client (école)** | SIREN ou SIRET, adresse complète |
+
+VRP envoie désormais un **XML CII EN 16931** (pas le PDF TCPDF). SuperPDP attend du structuré ; le PDF seul provoque l’erreur « factur-x.xml ».
+
+### 4. Émission depuis VRP
+
+1. Créer une facture (statut **Prête** automatique).
+2. Trésorerie → Factures : bouton **e** sur les factures prêtes.
+3. VRP envoie le **CII XML** à SuperPDP ; statut → **Transmise** + référence PA.
+
+Le **PDF VRP** reste disponible pour consultation ; l’e-facture utilise le CII généré par `ElectronicInvoiceCiiBuilder`.
+
+### 5. Implémentation code (Phase 2 POC)
+
+| Composant | Fichier |
+|-----------|---------|
+| Contrat PA | `app/Contracts/ElectronicInvoicePlatform.php` |
+| Adaptateur SuperPDP | `app/Platforms/SuperPdp/` |
+| Orchestration | `app/Services/ElectronicInvoicing/ElectronicInvoiceService.php` |
+| Route émission | `POST /invoice/{invoice}/submit-electronic` |
+| Webhook | `POST /webhooks/e-invoice/superpdp` |
+
 ## Actions immédiates
 
-1. Finaliser les **SIREN / SIRET** sur les fiches existantes (données utilisateur).
-2. Ouvrir un **compte sandbox SuperPDP** et envoyer une facture pilote.
-3. Implémenter **Phase 2** : contrat + builder + webhook + `SuperPdpPlatform`.
+1. Finaliser les **SIREN / SIRET** sur les fiches clients (écoles).
+2. Ajouter **`SUPERPDP_ACCESS_TOKEN`** dans `.env` (voir [Configuration SuperPDP](#configuration-superpdp-poc)).
+3. Tester **une facture pilote** depuis Trésorerie → Factures (bouton **e**).
 
 ## Code existant
 

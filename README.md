@@ -180,7 +180,7 @@ Une démo peut être accessible (ex. **vrp.xdm-consulting.fr**) ; les identifian
 
 **Déjà en place :** PDF, statuts e-facture (`draft` → `ready` → `transmitted` → `accepted` / `rejected`), SIREN/SIRET sur société et clients.
 
-**POC :** adaptateur **[SuperPDP](https://www.superpdp.tech/)** (compte gratuit, API sandbox). Architecture PA agnostique conservée pour une évolution future.
+**POC :** adaptateur **[SuperPDP](https://www.superpdp.tech/)** implémenté (envoi PDF). Configurer `E_INVOICE_PLATFORM=superpdp` et `SUPERPDP_ACCESS_TOKEN` dans `.env`. Voir [documentation/fr/roadmap-facturation-electronique.md](documentation/fr/roadmap-facturation-electronique.md#configuration-superpdp-poc).
 
 Documentation complète (spec d’intégration, phases, structure de code) :
 

@@ -3,6 +3,7 @@
     'sort' => 'id',
     'direction' => 'desc',
     'filters' => [],
+    'electronicInvoicingEnabled' => false,
 ])
 
 @php
@@ -97,6 +98,14 @@
                                 <img src="{{ asset('icons/trash.svg') }}" alt="" width="18" height="18" decoding="async">
                             </button>
                         @else
+                            @if ($electronicInvoicingEnabled && $bill->electronic_invoice_status?->value === 'ready')
+                                <form class="inline-form" action="{{ route('invoice.submitElectronic', $bill->id) }}" method="post">
+                                    @csrf
+                                    <button type="submit" class="icon icon--e-invoice" title="{{ __('messages.electronic_invoice_submit') }}" aria-label="{{ __('messages.electronic_invoice_submit') }}">
+                                        <span aria-hidden="true">e</span>
+                                    </button>
+                                </form>
+                            @endif
                             <form class="inline-form" action="{{ route('invoice.edit', $bill->id) }}" method="get">
                                 <x-button-edit />
                             </form>

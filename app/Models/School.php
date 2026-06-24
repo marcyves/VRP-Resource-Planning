@@ -24,6 +24,7 @@ class School extends Model
         'siren',
         'siret',
         'vat_number',
+        'electronic_address',
         'company_id',
         'address',
         'address2',
