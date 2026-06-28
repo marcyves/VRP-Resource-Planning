@@ -13,6 +13,8 @@ class BreadcrumbComposer
         if (! Auth::check() || Auth::user()->isSuperAdmin() || request()->routeIs(
             'login',
             'register',
+            'welcome',
+            'account-request.*',
             'password.*',
             'verification.*',
             'password.confirm',

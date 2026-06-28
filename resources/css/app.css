@@ -33,6 +33,7 @@
 @import url("histogram.css");
 @import url("tw-compat.css");
 @import url("login.css");
+@import url("marketing.css");
 
 [x-cloak] {
     display: none !important;

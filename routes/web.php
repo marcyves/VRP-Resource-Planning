@@ -31,7 +31,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', fn () => redirect()->route('login'));
+Route::get('/', [\App\Http\Controllers\WelcomeController::class, 'index'])->name('welcome');
+
+Route::middleware('guest')->group(function () {
+    Route::get('/demande-acces', [\App\Http\Controllers\AccountRequestController::class, 'create'])
+        ->name('account-request.create');
+    Route::post('/demande-acces', [\App\Http\Controllers\AccountRequestController::class, 'store'])
+        ->middleware('throttle:5,1')
+        ->name('account-request.store');
+});
 
 Route::get('/home', [SchoolController::class, 'index'])
     ->middleware(['auth', 'verified', 'tenant', SetTerminologyLocale::class])

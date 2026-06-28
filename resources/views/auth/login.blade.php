@@ -1,45 +1,60 @@
-<x-guest-layout>
+<x-guest-layout :title="__('messages.login')">
     <x-auth-session-status :status="session('status')" />
 
-    <form method="POST" action="{{ route('login') }}" class="login-form">
-        @csrf
-
-        <header class="login-card-header">
-            <h2>{{ __('messages.login') }}</h2>
-            <img class="login-card-logo" src="{{ asset('images/VRP-login.jpg') }}" alt="" width="320">
+    <article class="marketing-auth-card">
+        <header class="marketing-auth-card__header">
+            <h1>{{ __('messages.login') }}</h1>
+            <p>{{ __('messages.landing_login_lead') }}</p>
         </header>
 
-        <div class="login-field">
-            <x-text-input id="email"
-                type="email"
-                name="email"
-                :placeholder="__('messages.email')"
-                :value="old('email')" required autofocus autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" />
-        </div>
+        <form method="POST" action="{{ route('login') }}" class="marketing-auth-form">
+            @csrf
 
-        <div class="login-field">
-            <x-text-input id="password"
-                type="password"
-                name="password"
-                :placeholder="__('messages.password')"
-                required autocomplete="current-password" />
-            <x-input-error :messages="$errors->get('password')" />
-        </div>
+            <div class="form-group">
+                <x-input-label for="email" :value="__('messages.email')" />
+                <x-text-input
+                    id="email"
+                    type="email"
+                    name="email"
+                    :value="old('email')"
+                    required
+                    autofocus
+                    autocomplete="username"
+                />
+                <x-input-error :messages="$errors->get('email')" />
+            </div>
 
-        <label for="remember_me" class="login-remember">
-            <input id="remember_me" type="checkbox" name="remember">
-            <span>{{ __('messages.remember_me') }}</span>
-        </label>
+            <div class="form-group">
+                <x-input-label for="password" :value="__('messages.password')" />
+                <x-text-input
+                    id="password"
+                    type="password"
+                    name="password"
+                    required
+                    autocomplete="current-password"
+                />
+                <x-input-error :messages="$errors->get('password')" />
+            </div>
 
-        @if (Route::has('password.request'))
-        <p class="login-forgot">
-            <a href="{{ route('password.request') }}">{{ __('messages.forgot_password') }}</a>
+            <label for="remember_me" class="marketing-auth-form__remember">
+                <input id="remember_me" type="checkbox" name="remember">
+                <span>{{ __('messages.remember_me') }}</span>
+            </label>
+
+            @if (Route::has('password.request'))
+                <p class="marketing-auth-form__meta">
+                    <a href="{{ route('password.request') }}">{{ __('messages.forgot_password') }}</a>
+                </p>
+            @endif
+
+            <footer class="marketing-auth-form__actions">
+                <x-button-primary>{{ __('messages.login') }}</x-button-primary>
+            </footer>
+        </form>
+
+        <p class="marketing-auth-card__footer">
+            {{ __('messages.landing_no_account') }}
+            <a href="{{ route('account-request.create') }}">{{ __('messages.landing_request_access') }}</a>
         </p>
-        @endif
-
-        <footer class="login-actions">
-            <x-button-primary>{{ __('messages.login') }}</x-button-primary>
-        </footer>
-    </form>
+    </article>
 </x-guest-layout>
