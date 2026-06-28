@@ -30,6 +30,17 @@ class TerminologyLocaleTest extends TestCase
         $this->assertSame('fr_consulting', TerminologyLocale::resolve($company));
     }
 
+    public function test_medical_profile_uses_medical_locale(): void
+    {
+        config(['app.locale' => 'fr']);
+
+        $company = new Company([
+            'terminology_profile' => Company::PROFILE_MEDICAL,
+        ]);
+
+        $this->assertSame('fr_medical', TerminologyLocale::resolve($company));
+    }
+
     public function test_legacy_en_proj_normalizes_to_en_consulting(): void
     {
         config(['app.locale' => 'en_proj']);

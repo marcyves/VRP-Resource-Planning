@@ -7,9 +7,36 @@ use App\Models\School;
 use App\Models\Program;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 
 class CourseController extends Controller
 {
+    private function companySchool(string $schoolId): School
+    {
+        return School::query()
+            ->where('company_id', Auth::user()->company_id)
+            ->findOrFail($schoolId);
+    }
+
+    private function companyCourse(string $courseId): Course
+    {
+        return Course::query()
+            ->whereHas('school', fn ($q) => $q->where('company_id', Auth::user()->company_id))
+            ->findOrFail($courseId);
+    }
+
+    private function programRules(): array
+    {
+        return [
+            'program_id' => [
+                'required',
+                Rule::exists('programs', 'id')->where(
+                    fn ($query) => $query->where('company_id', Auth::user()->company_id)
+                ),
+            ],
+        ];
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -23,8 +50,8 @@ class CourseController extends Controller
      */
     public function create(String $school_id)
     {
-        $school = School::find($school_id);
-        $programs = Program::all()->sortBy('name');
+        $school = $this->companySchool($school_id);
+        $programs = Program::forCurrentCompany()->orderBy('name')->get();
 
         return view('course.create', compact('school', 'programs'));
     }
@@ -34,43 +61,42 @@ class CourseController extends Controller
      */
     public function store(Request $request, String $school_id)
     {
-        $validated = $request->validate([
+        $school = $this->companySchool($school_id);
+
+        $validated = $request->validate(array_merge([
             'name' => 'required|max:80',
             'short_name' => 'required|min:3',
             'sessions' => 'required|min:0',
             'session_length' => 'required|min:0',
             'year' => 'required',
             'semester' => 'required',
-            'rate' => 'required|min:0'
-        ]);
-        
-        try{
-            $user_id = Auth::user()->id;
-            $rate = str_replace(",", ".", $request->rate);
+            'rate' => 'required|min:0',
+        ], $this->programRules()));
+
+        try {
+            $rate = str_replace(',', '.', $request->rate);
             $course = Course::create([
                 'name' => $request->name,
                 'short_name' => $request->short_name,
-                'school_id' => $school_id,
-                    'program_id' => $request->program_id,
-                    'sessions' => $request->sessions,
-                    'session_length' => $request->session_length,
-                    'year' => $request->year,
-                    'semester' => $request->semester,
-                    'rate' => $rate,
-                        ]);
+                'school_id' => $school->id,
+                'program_id' => $request->program_id,
+                'sessions' => $request->sessions,
+                'session_length' => $request->session_length,
+                'year' => $request->year,
+                'semester' => $request->semester,
+                'rate' => $rate,
+            ]);
 
             session()->flash('success', __('messages.course_saved_success', ['name' => $request->name]));
             session()->put('course', $request->name);
             session()->put('course_id', $course->id);
 
             return redirect(route('dashboard'));
-        }
-        catch (\Exception $e) {
-            // dd($e);
+        } catch (\Exception $e) {
             session()->flash('danger', __('messages.course_save_error'));
 
             return redirect()->back();
-        }               
+        }
     }
 
     /**
@@ -78,12 +104,13 @@ class CourseController extends Controller
      */
     public function show(String $course_id)
     {
+        $this->companyCourse($course_id);
         $course = Course::getCourseDetails($course_id);
         $school = School::find($course->school_id);
 
         session()->put('course', $course->name);
         session()->put('course_id', $course->id);
-        
+
         session()->put('school_id', $course->school_id);
         session()->put('school', $school->name);
 
@@ -101,11 +128,13 @@ class CourseController extends Controller
      */
     public function edit(String $course_id)
     {
+        $this->companyCourse($course_id);
         $course = Course::getCourseDetails($course_id);
         session()->put('course', $course->name);
         session()->put('course_id', $course->id);
 
-        $programs = Program::all()->sortBy('name');
+        $programs = Program::forCurrentCompany()->orderBy('name')->get();
+
         return view('course.edit', compact('course', 'programs'));
     }
 
@@ -114,20 +143,18 @@ class CourseController extends Controller
      */
     public function update(Request $request, String $course_id)
     {
-
-        $validated = $request->validate([
+        $validated = $request->validate(array_merge([
             'name' => 'required|max:80',
             'short_name' => 'required|min:3',
             'sessions' => 'required|numeric|min:0',
             'session_length' => 'required|numeric|min:0',
             'year' => 'required',
             'semester' => 'required',
-            'rate' => 'required|min:0'
-        ]);
+            'rate' => 'required|min:0',
+        ], $this->programRules()));
 
-        
-        try{
-            $course = Course::findOrFail($course_id);
+        try {
+            $course = $this->companyCourse($course_id);
             $course->name = $request->name;
             $course->short_name = $request->short_name;
             $course->sessions = $request->sessions;
@@ -144,12 +171,12 @@ class CourseController extends Controller
             session()->put('course_id', $course->id);
 
             return redirect(route('dashboard'));
-        }
-        catch (\Exception $e) {
+        } catch (\Exception $e) {
             session()->flash('danger', __('messages.course_save_error'));
             session()->flash('danger', $e->getMessage());
+
             return redirect()->back();
-        }               
+        }
     }
 
     /**
@@ -157,17 +184,17 @@ class CourseController extends Controller
      */
     public function destroy(String $course_id)
     {
-        try{
-            $course = Course::findOrFail($course_id);
+        try {
+            $course = $this->companyCourse($course_id);
             session()->forget('course');
             session()->forget('course_id');
             $course->delete();
+
             return redirect(route('dashboard'));
-        }
-        catch (\Exception $e) {
+        } catch (\Exception $e) {
             session()->flash('danger', __('messages.course_delete_error'));
-            //session()->flash('danger', $e->getMessage());
+
             return redirect()->back();
-        }                   
+        }
     }
 }

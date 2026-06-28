@@ -19,6 +19,7 @@ class ProgramFactory extends Factory
         return [
             'name' => 'Program: '.rand(1, 10),
             'short_description' => fake()->optional(0.6)->lexify('P-????'),
+            'company_id' => \App\Models\Company::factory(),
         ];
     }
 }

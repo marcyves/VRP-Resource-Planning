@@ -34,17 +34,27 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', fn () => redirect()->route('login'));
 
 Route::get('/home', [SchoolController::class, 'index'])
-    ->middleware(['auth', 'verified', SetTerminologyLocale::class])
+    ->middleware(['auth', 'verified', 'tenant', SetTerminologyLocale::class])
     ->name('home');
 
 Route::get('/dashboard', function () {
     return redirect()->route('home');
-})->middleware(['auth', 'verified', SetTerminologyLocale::class])->name('dashboard');
+})->middleware(['auth', 'verified', 'tenant', SetTerminologyLocale::class])->name('dashboard');
+
+Route::middleware(['auth', 'superadmin'])->prefix('super-admin')->name('super-admin.')->group(function () {
+    Route::get('/companies', [\App\Http\Controllers\SuperAdmin\CompanyController::class, 'index'])->name('companies.index');
+    Route::get('/companies/create', [\App\Http\Controllers\SuperAdmin\CompanyController::class, 'create'])->name('companies.create');
+    Route::post('/companies', [\App\Http\Controllers\SuperAdmin\CompanyController::class, 'store'])->name('companies.store');
+    Route::get('/companies/{company}', [\App\Http\Controllers\SuperAdmin\CompanyController::class, 'show'])->name('companies.show');
+    Route::patch('/companies/{company}', [\App\Http\Controllers\SuperAdmin\CompanyController::class, 'update'])->name('companies.update');
+    Route::delete('/companies/{company}', [\App\Http\Controllers\SuperAdmin\CompanyController::class, 'destroy'])->name('companies.destroy');
+    Route::post('/companies/{company}/users', [\App\Http\Controllers\SuperAdmin\CompanyUserController::class, 'store'])->name('companies.users.store');
+});
 
 Route::post('/webhooks/e-invoice/{platform}', ElectronicInvoiceWebhookController::class)
     ->name('webhooks.e-invoice');
 
-Route::middleware(['auth', SetTerminologyLocale::class])->group(function () {
+Route::middleware(['auth', 'tenant', SetTerminologyLocale::class])->group(function () {
     //    Route::get('/calendar/import/{calendar_id}', [CalendarController::class, 'readICSFile'])->name('ics.read');
     Route::prefix('admin/calendars')->middleware(['auth'])->group(function () {
         Route::get('/', [CalendarFileController::class, 'index'])->name('calendar.index');

@@ -16,8 +16,12 @@ class CompanyFactory extends Factory
      */
     public function definition(): array
     {
+        $prefix = strtoupper(fake()->unique()->lexify('???'));
+
         return [
-            //
+            'name' => fake()->company(),
+            'bill_prefix' => $prefix,
+            'terminology_profile' => \App\Models\Company::PROFILE_EDUCATION,
         ];
     }
 }

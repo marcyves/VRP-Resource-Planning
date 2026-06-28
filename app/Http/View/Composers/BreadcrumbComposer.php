@@ -10,12 +10,13 @@ class BreadcrumbComposer
 {
     public function compose(View $view): void
     {
-        if (! Auth::check() || request()->routeIs(
+        if (! Auth::check() || Auth::user()->isSuperAdmin() || request()->routeIs(
             'login',
             'register',
             'password.*',
             'verification.*',
             'password.confirm',
+            'super-admin.*',
         )) {
             $view->with('breadcrumbUsesSelectors', false);
 

@@ -64,6 +64,11 @@ class Course extends Model
             $query->where('groups.active', $active);
         }
 
+        $companyId = $this->school?->company_id ?? Auth::user()?->company_id;
+        if ($companyId) {
+            $query->where('groups.company_id', $companyId);
+        }
+
         return $query->get();
     }
 

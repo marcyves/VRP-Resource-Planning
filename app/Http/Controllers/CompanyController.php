@@ -42,7 +42,7 @@ class CompanyController extends Controller
         $company = Auth::user()->company;
 
         $validated = $request->validate([
-            'terminology_profile' => ['required', Rule::in([Company::PROFILE_EDUCATION, Company::PROFILE_CONSULTING])],
+            'terminology_profile' => ['required', Rule::in(Company::terminologyProfileValues())],
             'siren' => ['nullable', 'digits:9'],
             'siret' => ['nullable', 'digits:14'],
             'vat_number' => ['nullable', 'string', 'max:20'],

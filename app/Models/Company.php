@@ -17,6 +17,8 @@ class Company extends Model
 
     public const PROFILE_CONSULTING = 'consulting';
 
+    public const PROFILE_MEDICAL = 'medical';
+
     public $fillable = [
         'name',
         'terminology_profile',
@@ -112,5 +114,24 @@ class Company extends Model
         $this->email = $user->email;
         $this->phone = $user->phone;
         $this->website = $user->website;
+    }
+
+    /**
+     * @return list<string>
+     */
+    public static function terminologyProfileValues(): array
+    {
+        return config('terminology.profiles', [
+            self::PROFILE_EDUCATION,
+            self::PROFILE_CONSULTING,
+            self::PROFILE_MEDICAL,
+        ]);
+    }
+
+    public function terminologyProfileLabel(): string
+    {
+        $profile = $this->terminology_profile ?? self::PROFILE_EDUCATION;
+
+        return __("messages.terminology_profile_{$profile}");
     }
 }

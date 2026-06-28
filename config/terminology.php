@@ -17,6 +17,7 @@ return [
     'profiles' => [
         'education',
         'consulting',
+        'medical',
     ],
 
     /*
@@ -28,5 +29,7 @@ return [
     'base_locales' => ['fr', 'en', 'it'],
 
     'fallback_consulting_locale' => 'en_consulting',
+
+    'fallback_medical_locale' => 'fr_medical',
 
 ];

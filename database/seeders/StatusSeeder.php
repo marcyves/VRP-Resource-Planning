@@ -22,5 +22,8 @@ class StatusSeeder extends Seeder
         Status::factory()->create([
             'name' => 'rédacteur',
         ]);
+        Status::factory()->create([
+            'name' => 'super admin',
+        ]);
     }
 }

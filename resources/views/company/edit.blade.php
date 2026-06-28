@@ -15,14 +15,9 @@
                 <p class="form-hint">{{ __('messages.terminology_profile_hint') }}</p>
                 <div class="school-form-input">
                     <x-input-label for="terminology_profile" :value="__('messages.terminology_profile')" />
-                    <select name="terminology_profile" id="terminology_profile" class="form-input">
-                        <option value="education" @selected(old('terminology_profile', $company->terminology_profile ?? 'education') === 'education')>
-                            {{ __('messages.terminology_profile_education') }}
-                        </option>
-                        <option value="consulting" @selected(old('terminology_profile', $company->terminology_profile ?? 'education') === 'consulting')>
-                            {{ __('messages.terminology_profile_consulting') }}
-                        </option>
-                    </select>
+                    <x-terminology-profile-select
+                        :selected="old('terminology_profile', $company->terminology_profile ?? 'education')"
+                    />
                     <x-input-error :messages="$errors->get('terminology_profile')" />
                 </div>
             </div>

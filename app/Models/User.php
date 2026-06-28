@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Http\Utility\Tools;
+use App\Models\Status;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -297,16 +298,12 @@ class User extends Authenticatable
 
     public function isSuperAdmin()
     {
-        if ($this->status_id == 4) {
-            return true;
-        }
-
-        return false;
+        return $this->status_id == Status::superAdminId();
     }
 
     public function isAdmin()
     {
-        if ($this->status_id == 1 or $this->status_id == 4) {
+        if ($this->isSuperAdmin() || $this->status_id == Status::ADMIN) {
             return true;
         }
 
@@ -315,7 +312,7 @@ class User extends Authenticatable
 
     public function isEditor()
     {
-        if ($this->status_id == 2) {
+        if ($this->status_id == Status::EDITOR) {
             return true;
         }
 
@@ -324,7 +321,7 @@ class User extends Authenticatable
 
     public function isAuthor(string $id)
     {
-        if ($this->status_id == 2 && $id == $this->id) {
+        if ($this->status_id == Status::EDITOR && $id == $this->id) {
             return true;
         }
 
@@ -333,10 +330,17 @@ class User extends Authenticatable
 
     public function isReader()
     {
-        if ($this->status_id == 3) {
+        if ($this->status_id == Status::READER) {
             return true;
         }
 
         return false;
+    }
+
+    public function homePath(): string
+    {
+        return $this->isSuperAdmin()
+            ? route('super-admin.companies.index', absolute: false)
+            : route('home', absolute: false);
     }
 }

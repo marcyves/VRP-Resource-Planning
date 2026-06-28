@@ -4,20 +4,31 @@
 
 <aside class="app-sidebar" aria-label="{{ __('messages.nav_menu') }}">
     <div class="app-sidebar__brand">
-        <a href="{{ route('home') }}" class="app-sidebar__brand-logo" aria-label="{{ config('app.name') }}">
+        <a href="{{ Auth::user()->isSuperAdmin() ? route('super-admin.companies.index') : route('home') }}" class="app-sidebar__brand-logo" aria-label="{{ config('app.name') }}">
             <span class="app-sidebar__logo">
                 <x-application-logo />
             </span>
         </a>
         <div class="app-sidebar__brand-text">
-            <a href="{{ route('home') }}" class="app-sidebar__app-name">{{ config('app.name') }}</a>
-            @if (Auth::user()->company)
+            <a href="{{ Auth::user()->isSuperAdmin() ? route('super-admin.companies.index') : route('home') }}" class="app-sidebar__app-name">{{ config('app.name') }}</a>
+            @if (Auth::user()->isSuperAdmin())
+                <span class="app-sidebar__app-tag">{{ __('messages.super_admin_platform') }}</span>
+            @elseif (Auth::user()->company)
                 <a href="{{ route('company.show') }}" class="app-sidebar__app-tag">{{ Auth::user()->company->name }}</a>
             @endif
         </div>
     </div>
 
     <nav class="app-sidebar__nav">
+        @if (Auth::user()->isSuperAdmin())
+            <x-sidebar-nav-link
+                icon="grid"
+                :href="route('super-admin.companies.index')"
+                :active="request()->routeIs('super-admin.*')"
+            >
+                {{ __('messages.super_admin_companies') }}
+            </x-sidebar-nav-link>
+        @else
         <x-sidebar-nav-link
             icon="calendar-range"
             :href="route('planning.index')"
@@ -41,6 +52,7 @@
         >
             {{ __('messages.workload_plan') }}
         </x-sidebar-nav-link>
+        @endif
     </nav>
 
     <div class="app-sidebar__footer">

@@ -8,15 +8,25 @@
 |----------|--------|------|
 | `APP_LOCALE` | `fr` | Langue de base (`fr`, `en`, `it`) |
 | `TERMINOLOGY_PROFILE` | `education` | Profil pour invités / sans entreprise |
+| `VRP_ALLOW_REGISTRATION` | `false` | Inscription publique `/register` |
 
 Exemple `.env.example` :
 
 ```env
 APP_LOCALE=fr
 TERMINOLOGY_PROFILE=consulting
+VRP_ALLOW_REGISTRATION=false
 ```
 
 > Connecté : `companies.terminology_profile` **prime** sur `TERMINOLOGY_PROFILE`.
+
+## Super administrateur plateforme
+
+1. `php artisan migrate`
+2. `php artisan vrp:create-super-admin admin@example.com "Super Admin"`
+3. Connexion → `/super-admin/companies` — création entreprise + administrateur
+
+Le super admin n'a pas d'entreprise rattachée ; les utilisateurs métier ont un `company_id` obligatoire.
 
 ## Fiche entreprise (UI)
 

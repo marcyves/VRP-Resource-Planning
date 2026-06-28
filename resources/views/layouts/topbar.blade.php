@@ -27,6 +27,7 @@
                 </span>
             </button>
 
+            @unless (Auth::user()->isSuperAdmin())
             <div class="toggle-system">
                 <span class="toggle-label">{{ Auth::user()->getMode() }}</span>
                 <label class="toggle-container edit" for="edit-toggle">
@@ -52,6 +53,7 @@
                     @endisset
                 </select>
             </form>
+            @endunless
 
             <a href="{{ route('profile.edit') }}" class="app-topbar__profile" title="{{ Auth::user()->name }}">
                 <span class="app-topbar__profile-icon" aria-hidden="true">
@@ -62,5 +64,7 @@
         </div>
     </div>
 
-    @include('layouts.breadcrumbs')
+    @unless (Auth::user()->isSuperAdmin())
+        @include('layouts.breadcrumbs')
+    @endunless
 </header>

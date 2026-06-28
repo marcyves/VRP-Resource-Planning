@@ -20,9 +20,7 @@
             <p class="company-show-card__lead">{{ $company->name }}</p>
             <p class="form-hint">
                 {{ __('messages.terminology_profile') }}:
-                {{ ($company->terminology_profile ?? 'education') === 'consulting'
-                    ? __('messages.terminology_profile_consulting')
-                    : __('messages.terminology_profile_education') }}
+                {{ $company->terminologyProfileLabel() }}
             </p>
             <ul>
                 <li>{{ $company->address }}</li>

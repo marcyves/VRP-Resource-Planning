@@ -11,8 +11,8 @@ La phase 1 permet de basculer les **libellés** de l’application selon le prof
 ### Profil entreprise
 
 - Colonne : `companies.terminology_profile`
-- Valeurs : `education` (défaut) | `consulting`
-- Constantes : `Company::PROFILE_EDUCATION`, `Company::PROFILE_CONSULTING`
+- Valeurs : `education` (défaut) | `consulting` | `medical`
+- Constantes : `Company::PROFILE_EDUCATION`, `Company::PROFILE_CONSULTING`, `Company::PROFILE_MEDICAL`
 - UI : **Mon entreprise → Modifier** (liste « Contexte métier »)
 
 ### Résolution de locale
@@ -22,10 +22,11 @@ Classe : `App\Support\TerminologyLocale`
 ```text
 APP_LOCALE (fr | en | it)
         +
-terminology_profile (education | consulting)
+terminology_profile (education | consulting | medical)
         ↓
 education  → fr, en, it
 consulting → fr_consulting, en_consulting, it_consulting
+medical    → fr_medical, en_medical, it_medical
 ```
 
 ### Middleware

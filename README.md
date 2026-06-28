@@ -139,11 +139,26 @@ Penser à régénérer le cache des routes si besoin : `php artisan route:cache`
 
 ---
 
+## Super administrateur plateforme
+
+VRP est **multi-tenant** : chaque entreprise cliente a ses utilisateurs et ses données. Un compte **super admin** (sans `company_id`) gère le provisionnement des entreprises depuis `/super-admin/companies`.
+
+| Étape | Commande / action |
+|-------|---------------------|
+| **Migration** | `php artisan migrate` (statut `super admin`, `company_id` nullable) |
+| **Créer le super admin** | `php artisan vrp:create-super-admin vous@example.com "Votre Nom"` |
+| **Connexion** | `/login` → redirection vers la liste des entreprises |
+| **Créer un client** | **Créer une entreprise** : nom, préfixe facture, profil terminologique, compte admin |
+
+L’inscription publique `/register` est **désactivée par défaut** (`VRP_ALLOW_REGISTRATION=false`). Les comptes entreprise sont créés par le super admin ou par un admin existant dans l’UI VRP classique.
+
+---
+
 ## Internationalisation
 
 Fichiers de traduction sous `resources/lang/` (français, anglais, italien).
 
-**Contexte métier (formation vs clients/projets)** : chaque entreprise choisit un profil sur la fiche société (`education` ou `consulting`). Les libellés à l’écran passent alors par les locales `fr_consulting`, `en_consulting`, etc. (écoles → clients, programmes → projets, cours → phases). Les tables et routes (`school`, `course`, …) restent inchangées.
+**Contexte métier** : chaque entreprise choisit un profil sur la fiche société (`education`, `consulting` ou `medical`). Les libellés passent par les locales dédiées (`fr_consulting`, `fr_medical`, …). Les tables et routes (`school`, `course`, …) restent inchangées.
 
 Variable d’environnement optionnelle : `TERMINOLOGY_PROFILE=education` (défaut pour les invités / sans entreprise). Voir `.env.example`.
 
