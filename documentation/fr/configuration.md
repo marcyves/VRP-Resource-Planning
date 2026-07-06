@@ -54,3 +54,4 @@ Runbook détaillé : [Administration plateforme](administration-plateforme.md).
 - [Phase 1 — terminologie](phase-1-terminologie.md)
 - [Administration plateforme](administration-plateforme.md)
 - [Libellés consulting](libelles-consulting.md)
+- [Administration plateforme](administration-plateforme.md)

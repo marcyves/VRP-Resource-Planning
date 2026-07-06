@@ -52,3 +52,4 @@ The super admin has no company attached; tenant users require a `company_id`.
 - [Phase 1 — terminology](phase-1-terminology.md)
 - [Platform administration](platform-administration.md)
 - [Consulting labels](consulting-labels.md)
+- [Platform administration](platform-administration.md)

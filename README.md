@@ -65,6 +65,7 @@ La **v2** apporte une refonte de l’interface (2025–2026) : coque sidebar + t
 | Trésorerie & rapprochement bancaire | [v2-tresorerie-rapprochement-bancaire.md](documentation/fr/v2-tresorerie-rapprochement-bancaire.md) | [v2-treasury-bank-reconciliation.md](documentation/en/v2-treasury-bank-reconciliation.md) |
 | Administration plateforme | [administration-plateforme.md](documentation/fr/administration-plateforme.md) | [platform-administration.md](documentation/en/platform-administration.md) |
 | Design system CSS | [v2-design-system-css.md](documentation/fr/v2-design-system-css.md) | [v2-design-system-css.md](documentation/en/v2-design-system-css.md) |
+| Administration plateforme | [administration-plateforme.md](documentation/fr/administration-plateforme.md) | [platform-administration.md](documentation/en/platform-administration.md) |
 
 Index complet : [documentation/README.md](documentation/README.md).
 
