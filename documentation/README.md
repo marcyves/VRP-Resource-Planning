@@ -31,4 +31,4 @@ Wiki-style guides from product design and implementation work (data model, workf
 ## Repository
 
 - [Main README](../README.md) — install, stack, i18n
-- Code: `app/Support/TerminologyLocale.php`, `config/terminology.php`, `resources/lang/*_consulting/`
+- Code: `app/Support/TerminologyLocale.php`, `config/terminology.php`, `config/vrp.php`, `resources/lang/*_consulting/`
