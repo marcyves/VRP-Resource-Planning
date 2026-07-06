@@ -17,6 +17,7 @@ Wiki-style guides from product design and implementation work (data model, workf
 | Clients & projects context | [contexte-metier-clients-projets.md](fr/contexte-metier-clients-projets.md) | [business-context-clients-projects.md](en/business-context-clients-projects.md) |
 | Phase 1 — terminology | [phase-1-terminologie.md](fr/phase-1-terminologie.md) | [phase-1-terminology.md](en/phase-1-terminology.md) |
 | Configuration | [configuration.md](fr/configuration.md) | [configuration.md](en/configuration.md) |
+| Platform administration | [administration-plateforme.md](fr/administration-plateforme.md) | [platform-administration.md](en/platform-administration.md) |
 | Consulting labels | [libelles-consulting.md](fr/libelles-consulting.md) | [consulting-labels.md](en/consulting-labels.md) |
 | **V2 — UI overview** | [v2-interface-utilisateur.md](fr/v2-interface-utilisateur.md) | [v2-user-interface.md](en/v2-user-interface.md) |
 | V2 — Navigation & modules | [v2-navigation-modules.md](fr/v2-navigation-modules.md) | [v2-navigation-modules.md](en/v2-navigation-modules.md) |

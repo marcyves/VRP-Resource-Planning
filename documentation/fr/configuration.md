@@ -51,3 +51,4 @@ Le super admin n'a pas d'entreprise rattachée ; les utilisateurs métier ont un
 
 - [Phase 1 — terminologie](phase-1-terminologie.md)
 - [Libellés consulting](libelles-consulting.md)
+- [Administration plateforme](administration-plateforme.md)
