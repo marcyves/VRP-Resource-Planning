@@ -63,6 +63,7 @@ La **v2** apporte une refonte de l’interface (2025–2026) : coque sidebar + t
 | Navigation & modules | [v2-navigation-modules.md](documentation/fr/v2-navigation-modules.md) | [v2-navigation-modules.md](documentation/en/v2-navigation-modules.md) |
 | Facturation par école | [v2-facturation-par-ecole.md](documentation/fr/v2-facturation-par-ecole.md) | [v2-billing-per-school.md](documentation/en/v2-billing-per-school.md) |
 | Trésorerie & rapprochement bancaire | [v2-tresorerie-rapprochement-bancaire.md](documentation/fr/v2-tresorerie-rapprochement-bancaire.md) | [v2-treasury-bank-reconciliation.md](documentation/en/v2-treasury-bank-reconciliation.md) |
+| Administration plateforme | [administration-plateforme.md](documentation/fr/administration-plateforme.md) | [platform-administration.md](documentation/en/platform-administration.md) |
 | Design system CSS | [v2-design-system-css.md](documentation/fr/v2-design-system-css.md) | [v2-design-system-css.md](documentation/en/v2-design-system-css.md) |
 
 Index complet : [documentation/README.md](documentation/README.md).
@@ -151,6 +152,8 @@ VRP est **multi-tenant** : chaque entreprise cliente a ses utilisateurs et ses d
 | **Créer un client** | **Créer une entreprise** : nom, préfixe facture, profil terminologique, compte admin |
 
 L’inscription publique `/register` est **désactivée par défaut** (`VRP_ALLOW_REGISTRATION=false`). Les comptes entreprise sont créés par le super admin ou par un admin existant dans l’UI VRP classique.
+
+Runbook détaillé : [documentation/fr/administration-plateforme.md](documentation/fr/administration-plateforme.md) · [documentation/en/platform-administration.md](documentation/en/platform-administration.md).
 
 ---
 
