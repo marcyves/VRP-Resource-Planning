@@ -167,6 +167,10 @@ class User extends Authenticatable
             );
         }
 
+        foreach ($stats as $stat) {
+            $stat->unbilled_amount = round($stat->unbilled_amount * 1.2, 2);
+        }
+
         return collect($stats)->keyBy('id');
     }
 

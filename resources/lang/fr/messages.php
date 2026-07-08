@@ -296,6 +296,7 @@ return [
     'chart_type_histogram' => 'Histogramme',
     'unbilled' => 'Non facturé',
     'unbilled_amount_ht' => 'Non facturé HT',
+    'unbilled_amount_ttc' => 'Non facturé TTC',
     'unbilled_hours' => 'Heures non facturées',
     'jump_to_unbilled_sessions' => 'Sauter aux sessions non facturées',
     'total_time_worked' => 'Total heures travaillees',

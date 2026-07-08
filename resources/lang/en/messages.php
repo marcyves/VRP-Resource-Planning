@@ -279,6 +279,7 @@ return [
     'chart_type_histogram' => 'Histogram',
     'unbilled' => 'Unbilled',
     'unbilled_amount_ht' => 'Unbilled excl. VAT',
+    'unbilled_amount_ttc' => 'Unbilled incl. VAT',
     'unbilled_hours' => 'Unbilled hours',
     'jump_to_unbilled_sessions' => 'Jump to unbilled sessions',
     'total_payed' => 'Paid',

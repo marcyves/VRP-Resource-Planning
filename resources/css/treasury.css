@@ -54,7 +54,7 @@
 
 .treasury-histogram__bar--planned,
 .treasury-histogram__swatch--planned {
-    background: var(--brand-secondary);
+    background: var(--value-pending);
 }
 
 .treasury-histogram__bar--spent,

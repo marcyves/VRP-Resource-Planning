@@ -31,9 +31,9 @@
                         <dd class="school-stat__value">@money($amount)</dd>
                     </div>
                     <div class="school-stat school-stat--unbilled">
-                        <dt class="school-stat__label">{{ __('messages.unbilled') }}</dt>
+                        <dt class="school-stat__label">{{ __('messages.unbilled_amount_ttc') }}</dt>
                         <dd class="school-stat__value">
-                            <span>@money($unbilledAmount) HT</span>
+                            <span>@money($unbilledAmount)</span>
                             <span class="school-stat__sep" aria-hidden="true">·</span>
                             <span>{{ number_format($unbilledHours, 1, ',', ' ') }} h</span>
                         </dd>
@@ -51,9 +51,9 @@
                 <dd class="school-stat__value">@money($total_amount)</dd>
             </div>
             <div class="school-stat school-stat--unbilled">
-                <dt class="school-stat__label">{{ __('messages.unbilled') }}</dt>
+                <dt class="school-stat__label">{{ __('messages.unbilled_amount_ttc') }}</dt>
                 <dd class="school-stat__value">
-                    <span>@money($total_unbilled_amount) HT</span>
+                    <span>@money($total_unbilled_amount)</span>
                     <span class="school-stat__sep" aria-hidden="true">·</span>
                     <span>{{ number_format($total_unbilled_hours, 1, ',', ' ') }} h</span>
                 </dd>

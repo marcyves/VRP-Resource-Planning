@@ -50,3 +50,6 @@ _doc/
 /public/invoices
 /.design-inspiration
 /bootstrap/cache
+/.cursor
+.deploy-base-ref
+/scripts

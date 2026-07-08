@@ -164,7 +164,7 @@
                     <th scope="col"></th>
                     <th scope="col"></th>
                     <th scope="col">{{ __('messages.count_short') }}</th>
-                    <th scope="col">{{ __('messages.amount_ht') }}</th>
+                    <th scope="col">{{ __('messages.amount_ttc') }}</th>
                     <th scope="col"></th>
                 </tr>
             </thead>
@@ -185,7 +185,7 @@
                             @endif
                         </td>
                         <td class="invoice-monthly-table__count">{{ $month['planned_count'] }}</td>
-                        <td class="money value-pending">@money($month['planned_amount_ht'])</td>
+                        <td class="money value-pending">@money($month['planned_amount_ttc'])</td>
                         <td class="money value-total">
                             @if ($month['bank_balance'] !== null)
                                 @money($month['bank_balance'])
@@ -212,7 +212,7 @@
                         @endif
                     </td>
                     <td class="invoice-monthly-table__count">{{ $totals['planned_count'] }}</td>
-                    <td class="money value-pending">@money($totals['planned_amount_ht'])</td>
+                    <td class="money value-pending">@money($totals['planned_amount_ttc'])</td>
                     <td class="money value-total">
                         @if ($totals['bank_balance'] !== null)
                             @money($totals['bank_balance'])

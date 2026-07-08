@@ -188,20 +188,20 @@
 
             </fieldset>
 
-            @if (! $session_locked)
+            <div class="form-actions">
+                <a class="btn btn-secondary" href="{{ route('planning.index') }}">{{ __('messages.cancel') }}</a>
+                <x-button-primary :disabled="$session_locked">{{ __('messages.plan') }}</x-button-primary>
+            </div>
+        </form>
+
+        @if (! $session_locked)
             <x-planning-duplicate-actions
                 variant="inline"
                 :planning-id="$planning->id"
                 :event-label="$duplicateLabel"
                 :default-date="$duplicateDefaultDate"
             />
-            @endif
-
-            <div class="form-actions">
-                <a class="btn btn-secondary" href="{{ route('planning.index') }}">{{ __('messages.cancel') }}</a>
-                <x-button-primary :disabled="$session_locked">{{ __('messages.plan') }}</x-button-primary>
-            </div>
-        </form>
+        @endif
     </section>
 
     <x-planning-duplicate-modal />
