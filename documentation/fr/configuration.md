@@ -28,6 +28,8 @@ VRP_ALLOW_REGISTRATION=false
 
 Le super admin n'a pas d'entreprise rattachée ; les utilisateurs métier ont un `company_id` obligatoire.
 
+Runbook détaillé : [Administration plateforme](administration-plateforme.md).
+
 ## Fiche entreprise (UI)
 
 1. Admin ou éditeur
@@ -45,9 +47,11 @@ Le super admin n'a pas d'entreprise rattachée ; les utilisateurs métier ont un
 
 ## Fichiers
 
-- `config/terminology.php`, `config/app.php`, `.env.example`
+- `config/terminology.php`, `config/app.php`, `config/vrp.php`, `.env.example`
 
 ## Liens
 
 - [Phase 1 — terminologie](phase-1-terminologie.md)
+- [Administration plateforme](administration-plateforme.md)
 - [Libellés consulting](libelles-consulting.md)
+- [Administration plateforme](administration-plateforme.md)
