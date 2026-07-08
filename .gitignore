@@ -53,3 +53,4 @@ _doc/
 /.cursor
 .deploy-base-ref
 /scripts
+AGENTS.md
