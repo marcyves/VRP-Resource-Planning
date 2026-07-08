@@ -206,13 +206,17 @@ class InvoiceController extends Controller
      */
     public function show(string $bill)
     {
-        $user = Auth::user();
-        $company = $user->company;
+        $invoice = Invoice::query()
+            ->where('id', $bill)
+            ->where('company_id', Auth::user()->company_id)
+            ->firstOrFail();
 
-        $file_path = "invoices/{$company->bill_prefix}{$bill}.pdf";
-        if (Storage::exists($file_path)) {
+        try {
+            $file_path = $this->invoiceService->ensurePdfOnDisk($invoice);
+
             return Storage::download($file_path);
-        } else {
+        } catch (\Throwable $e) {
+            report($e);
             session()->flash('danger', __('messages.invoice_file_not_found'));
 
             return redirect()->back();

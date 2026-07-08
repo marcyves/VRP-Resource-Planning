@@ -2,14 +2,14 @@
 
 namespace App\Services;
 
-
 use App\Classes\InvoiceGenerator;
+use App\Http\Utility\Tools;
 use App\Models\Invoice;
 use App\Models\Planning;
 use App\Models\User;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class InvoiceService
 {
@@ -18,6 +18,7 @@ class InvoiceService
      */
     public function buildPdf(Invoice $invoice, $lines = null)
     {
+        $invoice->loadMissing('school.company', 'company');
         $school = $invoice->school;
         $company = $school->company;
 
@@ -28,18 +29,142 @@ class InvoiceService
         return $pdf;
     }
 
+    public function pdfPath(Invoice $invoice): string
+    {
+        $invoice->loadMissing('company');
+
+        return "invoices/{$invoice->company->bill_prefix}{$invoice->id}.pdf";
+    }
+
+    /**
+     * Retourne le chemin du PDF, en le regénérant depuis la BDD si absent.
+     */
+    public function ensurePdfOnDisk(Invoice $invoice): string
+    {
+        $path = $this->pdfPath($invoice);
+
+        if (Storage::exists($path)) {
+            return $path;
+        }
+
+        return $this->saveToDisk($invoice, $this->resolveLines($invoice));
+    }
+
+    /**
+     * Reconstruit les lignes PDF à partir du planning lié ou des données facture.
+     *
+     * @return array<int, array<int, mixed>>
+     */
+    public function resolveLines(Invoice $invoice): array
+    {
+        $invoice->loadMissing('school.company', 'company');
+        $invoiceName = $invoice->company->bill_prefix.$invoice->id;
+
+        $lines = $this->buildLinesFromLinkedPlanning($invoice, $invoiceName);
+        if ($lines !== []) {
+            return $lines;
+        }
+
+        if ($invoice->bill_date) {
+            $date = Carbon::parse($invoice->bill_date);
+            [$items] = Tools::getInvoiceDetails(
+                $invoice->school_id,
+                (int) $date->month,
+                (int) $date->year,
+                $invoiceName,
+                false
+            );
+            if ($items !== []) {
+                return $items;
+            }
+        }
+
+        return [
+            [$invoice->description, '', '', '', '', 'T'],
+            ['Montant forfaitaire', '20%', $invoice->amountHt(), 1, 1, 'N'],
+        ];
+    }
+
     /**
      * Enregistre le PDF sur le disque
      */
     public function saveToDisk(Invoice $invoice, $lines = null)
     {
+        $invoice->loadMissing('company');
         $pdf = $this->buildPdf($invoice, $lines);
         $content = $pdf->Output('', 'S'); // 'S' retourne le flux binaire
 
-        $path = "invoices/{$invoice->company->bill_prefix}{$invoice->id}.pdf";
+        $path = $this->pdfPath($invoice);
         Storage::put($path, $content);
 
         return $path;
+    }
+
+    /**
+     * @return array<int, array<int, mixed>>
+     */
+    private function buildLinesFromLinkedPlanning(Invoice $invoice, string $invoiceName): array
+    {
+        $planningList = Planning::select([
+            'plannings.begin',
+            'plannings.end',
+            'plannings.billable_rate',
+            'courses.name as course_name',
+            'groups.name as group_name',
+            'courses.rate as rate',
+        ])
+            ->rightJoin('groups', 'plannings.group_id', '=', 'groups.id')
+            ->rightJoin('courses', 'plannings.course_id', '=', 'courses.id')
+            ->where('courses.school_id', $invoice->school_id)
+            ->where('plannings.invoice_id', $invoiceName)
+            ->orderBy('courses.name')
+            ->orderBy('plannings.begin')
+            ->get();
+
+        if ($planningList->isEmpty()) {
+            return [];
+        }
+
+        $items = [];
+        $itemsTotal = [];
+        $courseName = '';
+        $groupName = '';
+        $courseHours = 0;
+        $firstCourse = true;
+        $rate = 0.0;
+
+        foreach ($planningList as $row) {
+            if ($courseName !== $row->course_name) {
+                if (! $firstCourse) {
+                    array_unshift($items, [$courseName, '20%', $rate, $courseHours, '', 'T']);
+                    $itemsTotal = array_merge($itemsTotal, $items);
+                    $items = [];
+                    $courseHours = 0;
+                }
+                $firstCourse = false;
+                $courseName = $row->course_name;
+                $rate = (float) $row->rate;
+                $groupName = '';
+            }
+
+            if ($groupName !== $row->group_name) {
+                $groupName = $row->group_name;
+                $items[] = [__('messages.invoice_line_group', ['name' => $groupName]), '', '', '', '', 'S'];
+            }
+
+            $duration = Tools::sessionDurationHours($row->begin, $row->end);
+            $billableRate = Tools::billableMultiplier((float) $row->billable_rate, $rate);
+            $duration *= $billableRate;
+            $courseHours += $duration;
+            $items[] = [
+                ' - '.date('d/m/Y H:i', strtotime($row->begin)).' - '.date('H:i', strtotime($row->end)),
+                '', '', $duration, $billableRate, 'N',
+            ];
+        }
+
+        array_unshift($items, [$courseName, '20%', $rate, $courseHours, '', 'T']);
+
+        return array_merge($itemsTotal, $items);
     }
 
     /**
