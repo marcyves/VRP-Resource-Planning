@@ -64,6 +64,17 @@ Utilisé par la préparation facturation **et** les stats « non facturé » de 
 
 Les factures créées depuis la section facturation d'une école sont listées dans **Trésorerie**. Quand une ligne bancaire créditrice est rapprochée d'une facture, le rapprochement bancaire renseigne `Invoice::paid_at` avec la date de l'opération bancaire si le champ était encore vide.
 
+### Création de facture et récupération du document
+
+L'action **Créer** de la section facturation école ouvre `InvoiceController@create` avec `cmd=detailed`, l'école, le mois, l'année et la date de facture sélectionnés. Les lignes d'aperçu viennent de `Tools::getInvoiceDetails()`. À l'enregistrement, `InvoiceController@store` :
+
+1. crée une `Invoice` pour l'entreprise et l'école courantes ;
+2. stocke le montant en TTC (`amount`), dérivé du total planning HT si nécessaire ;
+3. écrit le PDF via `InvoiceService::saveToDisk()` ;
+4. rattache les lignes de planning du mois au numéro complet (`préfixe facture entreprise + id facture`).
+
+Si le fichier PDF disparaît ensuite du stockage, l'ouverture de la facture le régénère avec `InvoiceService::ensurePdfOnDisk()`. Le service utilise d'abord les lignes de planning rattachées, puis les détails de planning du mois et de l'école de la facture, et produit enfin une ligne manuelle de secours à partir de la description et du montant HT.
+
 ## Bouton « Sauter aux sessions non facturées »
 
 - Recherche en arrière mois par mois la dernière période avec au moins une session sans facture
@@ -75,6 +86,8 @@ Les factures créées depuis la section facturation d'une école sont listées d
 | Fichier | Rôle |
 |---------|------|
 | `app/Http/Controllers/BillingController.php` | Navigation période, setBill, jump unbilled |
+| `app/Http/Controllers/InvoiceController.php` | Création, téléchargement et verrouillage des factures payées |
+| `app/Services/InvoiceService.php` | Création PDF, régénération fichier manquant, reconstruction des lignes planning |
 | `app/Http/Controllers/SchoolController.php` | Chargement données billing sur `show` |
 | `app/Models/School.php` | `getBillingPlanning()`, recherche non facturé |
 | `app/Models/User.php` | `getUnbilledStatsBySchool()` pour la liste |

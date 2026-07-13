@@ -25,6 +25,16 @@ Le parcours bancaire relie les opérations réelles aux enregistrements VRP sans
 
 Les anciennes URLs `/treasury/reconciliation*` redirigent vers les écrans banque.
 
+## Montants de facture et fichiers PDF
+
+Les factures stockent leur `amount` principal comme montant TTC dans les parcours actuels de création et d'édition. `Invoice::amountHt()` et `Invoice::amountTtc()` normalisent l'édition et le rapprochement bancaire, y compris pour d'anciennes factures planning dont le montant stocké peut correspondre au total HT.
+
+L'action PDF (`GET /invoice/{invoice}`) résiste aux fichiers manquants : `InvoiceController@show` appelle `InvoiceService::ensurePdfOnDisk()` avant de retourner `Storage::download()`. Si le fichier attendu (`invoices/{préfixe facture entreprise}{id facture}.pdf`) est absent, le service le reconstruit depuis la base :
+
+1. lignes de planning déjà rattachées au numéro de facture ;
+2. détails de planning du mois de `bill_date` et de l'école de la facture ;
+3. ligne manuelle de secours avec la description et le montant HT de la facture.
+
 ## Parcours d'import bancaire
 
 1. Créer une banque, puis un compte bancaire rattaché.
@@ -50,12 +60,12 @@ Le parser crée un `BankStatementImport` et une `BankStatementLine` par opérati
 
 | Ligne bancaire | Cible | Règles |
 |----------------|-------|--------|
-| Crédit | Une facture | Facture de la même entreprise, sans rapprochement bancaire existant |
+| Crédit | Une facture | Facture de la même entreprise, sans rapprochement bancaire existant, comparée au crédit via `Invoice::amountTtc()` |
 | Crédit | Groupe de factures | Au moins deux factures, même école, total TTC à 0,02 EUR près de la ligne bancaire |
 | Débit | Dépense | Dépense de la même entreprise, sans rapprochement bancaire existant |
 | Débit | Note de frais | Les notes suggérées appartiennent à la même entreprise, sans rapprochement existant, avec statut `validated` ou `paid` |
 
-Les suggestions automatiques privilégient les montants à **0,02 EUR** près et les dates dans une fenêtre de **45 jours**. Si aucune suggestion stricte n'existe, l'écran peut afficher d'autres enregistrements non rapprochés : il faut donc vérifier montant, date et libellé avant validation.
+Les suggestions automatiques privilégient les montants à **0,02 EUR** près et les dates dans une fenêtre de **45 jours**. Pour les crédits de facture, le montant comparé est TTC, même lorsqu'une ligne ancienne nécessite une normalisation HT/TTC. Si aucune suggestion stricte n'existe, l'écran peut afficher d'autres enregistrements non rapprochés : il faut donc vérifier montant, date et libellé avant validation.
 
 Une ligne bancaire est considérée comme totalement rapprochée quand la somme des `matched_amount` est à **0,02 EUR** près du montant absolu de la ligne (`BankStatementLine::isReconciled()`).
 
@@ -73,10 +83,12 @@ Le dérapprochement supprime les lignes de rapprochement de la ligne bancaire. I
 
 `InvoiceDashboardService` construit les KPIs mensuels de l'écran synthèse :
 
-- factures émises par `bill_date` ;
-- factures payées par `paid_at` ;
-- travail planifié non facturé depuis la préparation facturation des écoles ;
+- factures émises par `bill_date`, additionnées en TTC avec HT dérivé (`amount / 1.2`) ;
+- factures payées par `paid_at`, additionnées en TTC avec HT dérivé ;
+- travail planifié non facturé depuis la préparation facturation des écoles, calculé HT puis projeté en TTC pour le graphique ;
 - dernier solde bancaire via `BankBalanceService`.
+
+La carte de solde de clôture part du montant d'ouverture du compte bancaire de facturation actif lorsqu'il existe, sinon du `TreasuryBalance` annuel. Elle ajoute ensuite les factures payées TTC et soustrait les notes de frais soumises, validées et payées ainsi que les dépenses autonomes.
 
 `BankBalanceService` utilise le compte bancaire de facturation actif quand il est configuré. Sinon, il revient au solde d'ouverture annuel `TreasuryBalance` et aux lignes bancaires dédupliquées de l'entreprise.
 
@@ -107,6 +119,7 @@ La déduplication des lignes de relevé utilise le compte, la date d'opération,
 | `app/Http/Controllers/BankController.php` | CRUD banque/compte, import de relevé, filtrage, match/unmatch |
 | `app/Services/BankStatement/CaBankStatementParser.php` | Analyse des relevés XLSX |
 | `app/Services/BankStatement/BankReconciliationService.php` | Suggestions, règles de rapprochement, effets de bord |
+| `app/Services/InvoiceService.php` | Chemin PDF facture, régénération et reconstruction des lignes planning/manuelles |
 | `app/Services/BankBalanceService.php` | Résolution des soldes et déduplication des lignes |
 | `app/Services/InvoiceDashboardService.php` | Données mensuelles factures, planifié et banque |
 | `app/Models/BankReconciliation.php` | Lien polymorphe vers factures, dépenses et notes de frais |

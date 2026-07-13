@@ -64,6 +64,17 @@ Used by billing preparation **and** school list « unbilled » stats.
 
 Invoices created from the school billing section are listed under **Treasury**. When a credit bank statement line is matched to an invoice, bank reconciliation sets `Invoice::paid_at` to the bank operation date if it was still empty.
 
+### Invoice creation and document recovery
+
+The school billing **Create** action opens `InvoiceController@create` with `cmd=detailed`, the selected school, month, year, and billing date. The preview lines come from `Tools::getInvoiceDetails()`. On submit, `InvoiceController@store`:
+
+1. creates an `Invoice` for the current company and school;
+2. stores the amount as TTC (`amount`), deriving it from planning HT totals when needed;
+3. writes the PDF through `InvoiceService::saveToDisk()`;
+4. links the month's planning rows to the full invoice number (`company bill prefix + invoice id`).
+
+If the PDF file later disappears from storage, viewing the invoice regenerates it with `InvoiceService::ensurePdfOnDisk()`. The service first uses the linked planning rows, then falls back to the invoice month/school planning details, and finally emits a single manual line from the invoice description and HT amount.
+
 ## « Jump to unbilled sessions » button
 
 - Searches backwards month by month for the latest period with at least one session without an invoice
@@ -75,6 +86,8 @@ Invoices created from the school billing section are listed under **Treasury**. 
 | File | Role |
 |------|------|
 | `app/Http/Controllers/BillingController.php` | Period navigation, setBill, jump unbilled |
+| `app/Http/Controllers/InvoiceController.php` | Invoice creation, download, and paid lock behavior |
+| `app/Services/InvoiceService.php` | PDF creation, missing-file regeneration, planning line reconstruction |
 | `app/Http/Controllers/SchoolController.php` | Billing data on `show` |
 | `app/Models/School.php` | `getBillingPlanning()`, unbilled lookup |
 | `app/Models/User.php` | `getUnbilledStatsBySchool()` for the list |
