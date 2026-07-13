@@ -25,6 +25,16 @@ The bank flow is designed to connect real bank operations to VRP records without
 
 Legacy `/treasury/reconciliation*` URLs redirect to the bank screens.
 
+## Invoice amounts and PDF files
+
+Invoices store their primary `amount` as the TTC amount for current create and edit flows. `Invoice::amountHt()` and `Invoice::amountTtc()` normalize editing and bank matching, including older planning invoices whose stored amount may equal the HT planning total.
+
+The invoice PDF action (`GET /invoice/{invoice}`) is resilient to missing files: `InvoiceController@show` calls `InvoiceService::ensurePdfOnDisk()` before returning `Storage::download()`. If the expected file (`invoices/{company bill prefix}{invoice id}.pdf`) is absent, the service rebuilds it from the database:
+
+1. linked planning rows already attached to the invoice number;
+2. planning details for the invoice `bill_date` month and school;
+3. a fallback manual line using the invoice description and HT amount.
+
 ## Bank import workflow
 
 1. Create a bank, then a bank account under that bank.
@@ -50,12 +60,12 @@ The parser stores a `BankStatementImport` and one `BankStatementLine` per operat
 
 | Bank line | Match target | Rules |
 |-----------|--------------|-------|
-| Credit | One invoice | Invoice must belong to the same company and not already have a bank reconciliation |
-| Credit | Invoice group | At least two invoices, same school, total incl. VAT within EUR 0.02 of the bank line |
+| Credit | One invoice | Invoice must belong to the same company, not already have a bank reconciliation, and match the bank credit using `Invoice::amountTtc()` |
+| Credit | Invoice group | At least two invoices, same school, total TTC within EUR 0.02 of the bank line |
 | Debit | Expense | Expense must belong to the same company and not already have a bank reconciliation |
 | Debit | Expense report | Suggested reports belong to the same company, are not already reconciled, and have status `validated` or `paid` |
 
-Auto-suggestions prefer amount matches within **EUR 0.02** and dates within **45 days**. If no strict suggestion exists, the screen can still show unmatched records, so operators should verify amount, date, and label before confirming a match.
+Auto-suggestions prefer amount matches within **EUR 0.02** and dates within **45 days**. For invoice credits, the compared amount is TTC, even when a legacy row needs HT/TTC normalization. If no strict suggestion exists, the screen can still show unmatched records, so operators should verify amount, date, and label before confirming a match.
 
 A bank line is considered fully reconciled when the sum of its `matched_amount` values is within **EUR 0.02** of the absolute line amount (`BankStatementLine::isReconciled()`).
 
@@ -73,10 +83,12 @@ Unmatching deletes the reconciliation rows for the statement line. It does **not
 
 `InvoiceDashboardService` builds monthly invoice KPIs for the summary screen:
 
-- issued invoices by `bill_date`;
-- paid invoices by `paid_at`;
-- planned unbilled work from school billing planning;
+- issued invoices by `bill_date`, summed as TTC with derived HT (`amount / 1.2`);
+- paid invoices by `paid_at`, summed as TTC with derived HT;
+- planned unbilled work from school billing planning, calculated HT and projected as TTC for charting;
 - latest bank balance from `BankBalanceService`.
+
+The closing balance card starts from the active billing bank account opening amount when one exists, otherwise from the yearly `TreasuryBalance`. It then adds paid invoice TTC totals and subtracts submitted, validated, and paid expense reports plus standalone expenses.
 
 `BankBalanceService` uses the active billing bank account when one is configured. Otherwise it falls back to the yearly `TreasuryBalance` opening amount and deduplicated company statement lines.
 
@@ -107,6 +119,7 @@ Statement-line deduplication uses account, operation date, label, debit, and cre
 | `app/Http/Controllers/BankController.php` | Bank/account CRUD, statement import, filtering, match/unmatch actions |
 | `app/Services/BankStatement/CaBankStatementParser.php` | XLSX statement parsing |
 | `app/Services/BankStatement/BankReconciliationService.php` | Candidate lookup, matching rules, side effects |
+| `app/Services/InvoiceService.php` | Invoice PDF path resolution, regeneration, and planning/manual line reconstruction |
 | `app/Services/BankBalanceService.php` | Balance resolution and statement-line deduplication |
 | `app/Services/InvoiceDashboardService.php` | Monthly invoice, planned work, and bank KPI data |
 | `app/Models/BankReconciliation.php` | Polymorphic link to invoices, expenses, and expense reports |
