@@ -30,6 +30,29 @@
 | Browse all groups / archive | **Groups** (`/group`) |
 | See linked courses and sessions | Group detail (`/group/{id}`) |
 | Create group + session at once | Calendar → new session → “New group below” |
+| Duplicate a session | Planning day cell / edit → copy actions |
+
+## Planning session duplication
+
+Instructors can copy an existing session without re-entering course, group, location, or billable rate.
+
+| Offset | Target schedule |
+|--------|-----------------|
+| `tomorrow` | Same clock time, +1 day |
+| `next_week` | Same clock time, +1 week |
+| `custom` | Chosen date, original start time; duration preserved |
+
+**Constraints (from `PlanningController::duplicate`):**
+
+- Blocked when the source session has an `invoice_id` (same lock as delete).
+- Rejected when another session for the same `group_id` overlaps the new interval.
+- On success, session year/month are updated and the user returns to `planning.index`.
+
+| Piece | Path |
+|-------|------|
+| Route | `POST /planning/{id}/duplicate` (`planning.duplicate`) |
+| UI | `planning-duplicate-actions`, `planning-duplicate-dialog`, `planning-duplicate-modal` |
+| Alpine store | `resources/js/duplicate-store.js` |
 
 ## Technical alignment
 
@@ -44,3 +67,4 @@
 
 - [Training data model](training-data-model.md)
 - [School creation workflow](school-creation-workflow.md)
+- [V2 — billing per school](v2-billing-per-school.md)
