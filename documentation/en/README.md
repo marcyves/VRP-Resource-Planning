@@ -21,6 +21,7 @@ Wiki-style guides: data model, user workflows, and **terminology profiles** (tra
 | [V2 — treasury & bank reconciliation](v2-treasury-bank-reconciliation.md) | Invoice dashboard, bank accounts, imports and matching |
 | [V2 — CSS design system](v2-design-system-css.md) | Tokens, components, Vite build |
 | [V2 — code review & list refactor](v2-code-review-list-refactoring.md) | Global review, steps 1–3 + i18n, remaining items |
+| [Electronic invoicing (ops)](electronic-invoicing.md) | SuperPDP setup, submit flow, webhooks, pitfalls |
 | **[Roadmap — electronic invoicing](roadmap-electronic-invoicing.md)** | PA-agnostic spec, phases, code structure |
 | [Roadmap — PWA & offline](roadmap-pwa-offline.md) | Mobile app / offline — deferred idea |
 
