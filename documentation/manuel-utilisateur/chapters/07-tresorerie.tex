@@ -1,0 +1,77 @@
+\chapter{Trésorerie}
+\label{ch:tresorerie}
+
+Le module \textbf{Trésorerie} offre une vision globale de votre cash~: factures, soldes bancaires, rapprochement et dépenses.
+
+\section{Synthèse}
+
+\menu{Trésorerie} → \texttt{/treasury}. L'écran de synthèse combine~:
+
+\begin{itemize}[leftmargin=*]
+  \item un \textbf{histogramme} mensuel (émis, payé, planifié)~;
+  \item un \textbf{tableau} des montants TTC par mois~;
+  \item le \textbf{dernier solde bancaire} connu.
+\end{itemize}
+
+\screenshot[keepaspectratio]{06-treasury.png}{Synthèse trésorerie — histogramme et tableau mensuel}
+
+La barre \textbf{planifiée} utilise la couleur d'accent \emph{pending} (orange), alignée sur les montants non facturés des écoles. Les montants planifiés du tableau sont exprimés en \textbf{TTC}.
+
+\section{Onglets du module}
+
+\begin{description}[style=nextline, leftmargin=2.5cm]
+  \item[Factures] Liste filtrable, statut payé/impayé, accès PDF.
+  \item[Créer facture] Émission hors contexte école (cas ponctuels).
+  \item[Banque] Banques, comptes, imports de relevés \texttt{.xlsx}.
+  \item[Notes de frais] Saisie et validation des frais remboursables.
+  \item[Dépenses] Charges autonomes (hors notes de frais).
+\end{description}
+
+\section{Import bancaire}
+
+\begin{workflowstep}[Configurer la banque]
+  Créez une banque, puis un compte rattaché. Définissez éventuellement le \textbf{compte bancaire de facturation} de l'entreprise pour les KPIs de solde.
+\end{workflowstep}
+
+\begin{workflowstep}[Importer un relevé]
+  Téléversez un fichier Excel (\texttt{.xlsx}, max 10\,Mo) avec colonnes Date, libellé, débit euros, crédit euros. Vérifiez les lignes sur l'écran de détail d'import.
+\end{workflowstep}
+
+\section{Rapprochement}
+
+Pour chaque ligne non lettrée~:
+
+\begin{enumerate}[label=\textbf{\arabic*.}]
+  \item Consultez les \textbf{suggestions automatiques} (montant à 0{,}02\,€ près, fenêtre de 45 jours).
+  \item Rapprochez avec une \textbf{facture}, un \textbf{groupe de factures} (même école), une \textbf{dépense} ou une \textbf{note de frais}.
+  \item Validez~: la facture reçoit \texttt{paid\_at} à la date bancaire si vide.
+\end{enumerate}
+
+\begin{avertissement}
+  Le \textbf{dérapprochement} supprime le lien mais ne remet pas automatiquement à zéro les dates de paiement~; corrigez manuellement si nécessaire.
+\end{avertissement}
+
+\section{Checklist opérationnelle}
+
+\begin{itemize}[leftmargin=*]
+  \item Renseigner le solde d'ouverture du compte avant de s'appuyer sur les KPIs.
+  \item Utiliser le rapprochement multi-factures uniquement pour un paiement groupé d'une même école.
+  \item Vérifier montant, date et libellé avant de valider une suggestion large.
+\end{itemize}
+
+\section{Parcours complet rappel}
+
+\begin{center}
+\small
+\begin{tabular}{@{}cl@{}}
+  \toprule
+  & \textbf{Action} \\
+  \midrule
+  1 & Planifier les sessions (Agenda) \\
+  2 & Préparer la facturation (fiche école) \\
+  3 & Émettre le PDF facture \\
+  4 & Importer le relevé bancaire \\
+  5 & Rapprocher le crédit → facture payée \\
+  \bottomrule
+\end{tabular}
+\end{center}

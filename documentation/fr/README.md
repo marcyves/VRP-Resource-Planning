@@ -21,6 +21,8 @@ Fiches wiki : modèle métier, parcours utilisateur et **contexte terminologique
 | [V2 — trésorerie & rapprochement bancaire](v2-tresorerie-rapprochement-bancaire.md) | Dashboard factures, comptes bancaires, imports et rapprochement |
 | [V2 — design system CSS](v2-design-system-css.md) | Tokens, composants, build Vite |
 | [V2 — revue de code & refactor listes](v2-revue-code-refactoring-listes.md) | Revue globale, étapes 1–3 + i18n, pistes restantes |
+| **[Manuel utilisateur PDF](../manuel-utilisateur/README.md)** | Guide LaTeX — parcours nouvel utilisateur, captures d'écran |
+| **[Prise en main médical PDF](../manuel-prise-en-main-medical/README.md)** | Guide court LaTeX — profil `medical` uniquement |
 | **[Roadmap — facturation électronique](roadmap-facturation-electronique.md)** | Spec PA agnostique, phases, structure de code |
 | [Roadmap — PWA & mode hors ligne](roadmap-pwa-offline.md) | App mobile / offline — idée reportée |
 

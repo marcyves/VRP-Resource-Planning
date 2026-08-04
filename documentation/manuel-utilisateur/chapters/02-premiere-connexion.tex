@@ -1,0 +1,54 @@
+\chapter{Première connexion}
+\label{ch:connexion}
+
+Ce chapitre couvre l'accès à l'application \emph{avant} la première session de travail~: page d'accueil publique, demande de compte et authentification.
+
+\section{Page d'accueil publique}
+
+L'URL racine (\texttt{/}) affiche la \textbf{landing page} de VRP Plan. Elle présente les modules principaux et les appels à l'action «~Se connecter~» et «~Demander un compte~».
+
+\screenshot[keepaspectratio]{01-landing.png}{Page d'accueil publique — mode sombre avec bascule de thème dans l'en-tête}
+
+\begin{workflowstep}[Étape 1 — Découvrir l'offre]
+  Parcourez les cartes fonctionnalités (Planning, Charge de travail, Facturation, Trésorerie, Contextes métier, Multi-entreprises). Cliquez sur \menu{Se connecter} si vous disposez déjà d'identifiants.
+\end{workflowstep}
+
+Le thème clair ou sombre peut être basculé à tout moment via l'icône soleil/lune dans l'en-tête. Votre préférence est mémorisée dans le navigateur.
+
+\section{Demander un compte}
+
+Si votre entreprise n'est pas encore enregistrée, utilisez le formulaire \menu{Demander un compte} (\texttt{/demande-acces}).
+
+\screenshot[keepaspectratio]{03-demande-acces.png}{Formulaire de demande d'accès — choix du contexte métier}
+
+\begin{workflowstep}[Étape 2 — Soumettre une demande]
+  Renseignez le nom de l'entreprise, le contact, l'e-mail et, si possible, un téléphone. Sélectionnez le \textbf{contexte métier souhaité} (formation, conseil ou médical). Validez avec \menu{Envoyer la demande}.
+\end{workflowstep}
+
+Un e-mail est adressé à l'équipe éditrice (adresse configurée côté serveur). Après validation, vous recevez les identifiants du compte \textbf{administrateur} de votre espace.
+
+\begin{astuce}
+  Le contexte métier peut être modifié ultérieurement par l'administrateur dans \menu{Paramètres → Entreprise}.
+\end{astuce}
+
+\section{Se connecter}
+
+La page de connexion (\texttt{/login}) est distincte de la landing. Elle propose e-mail, mot de passe, case «~Se souvenir de moi~» et lien de réinitialisation.
+
+\screenshot[keepaspectratio]{02-login.png}{Écran de connexion}
+
+\begin{workflowstep}[Étape 3 — Authentification]
+  Saisissez l'e-mail et le mot de passe fournis par votre administrateur. Cliquez sur \menu{Se connecter}. Après authentification, vous êtes redirigé vers \texttt{/home}.
+\end{workflowstep}
+
+\begin{avertissement}
+  En cas d'échec répété, vérifiez que votre compte est actif et que l'e-mail est correct. Utilisez \menu{Mot de passe oublié ?} pour recevoir un lien de réinitialisation.
+\end{avertissement}
+
+\section{Après la connexion}
+
+La constante \texttt{HOME} de l'application pointe vers \texttt{/home}. L'ancienne route \texttt{/dashboard} redirige vers la même page. Vous y retrouvez la \textbf{liste des écoles} et les indicateurs de facturation de l'année en cours.
+
+\screenshot[keepaspectratio]{04-home.png}{Plan de charge — liste des écoles et indicateurs TTC}
+
+Le chapitre~\ref{ch:interface} détaille la navigation à partir de cet écran.

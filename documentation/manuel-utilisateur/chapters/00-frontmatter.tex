@@ -1,0 +1,62 @@
+\begin{titlepage}
+  \centering
+  \vspace*{2cm}
+  {\Large\textsf{\manualeditor}\par}
+  \vspace{1.5cm}
+  {\fontsize{42}{48}\selectfont\bfseries\color{vrpdark}\manueltitle\par}
+  \vspace{0.8cm}
+  {\LARGE\manualsubtitle\par}
+  \vspace{2cm}
+  \begin{tikzpicture}
+    \fill[vrpblue, rounded corners=6pt] (0,0) rectangle (10,0.35);
+    \node[white, font=\small\bfseries] at (5,0.175) {Planning · Charge de travail · Facturation · Trésorerie};
+  \end{tikzpicture}
+  \vfill
+  {\large\manualversion\par}
+  \vspace{0.5cm}
+  {\small Solution éditée par XDM Consulting\par}
+\end{titlepage}
+
+\chapter*{Préface}
+\addcontentsline{toc}{chapter}{Préface}
+
+\textbf{VRP Plan} centralise la gestion d'activité professionnelle~: planning des interventions, organisation de la charge de travail, préparation de la facturation et pilotage de la trésorerie. L'application s'adapte à trois contextes métier~--- formation, conseil et médical~--- en ajustant les libellés (écoles/clients/structures, cours/projets/prestations, etc.).
+
+Ce manuel suit le \textbf{parcours d'un nouvel utilisateur}, de la demande de compte jusqu'au rapprochement bancaire. Il décrit l'interface \textbf{v2}~: navigation latérale, page d'accueil «~plan de charge~», facturation sur la fiche de chaque établissement, et module Trésorerie unifié.
+
+\begin{astuce}[Public visé]
+  Administrateurs et utilisateurs d'une entreprise déjà provisionnée. Les super-administrateurs disposent d'écrans supplémentaires (gestion multi-entreprises) non couverts ici.
+\end{astuce}
+
+\chapter*{Comment lire ce guide}
+\addcontentsline{toc}{chapter}{Comment lire ce guide}
+
+\begin{itemize}[leftmargin=*]
+  \item Les encadrés \textbf{Étape} décrivent une action concrète dans l'ordre recommandé.
+  \item Les captures d'écran illustrent les écrans clés~; régénérez-les localement avec le script fourni (voir annexe~\ref{ch:annexes-captures}).
+  \item Les montants affichés sur la liste des écoles et dans la trésorerie sont exprimés en \textbf{TTC} lorsqu'il s'agit de montants planifiés ou non facturés.
+\end{itemize}
+
+Le schéma ci-dessous résume le parcours type~:
+
+\begin{center}
+\begin{tikzpicture}[
+  node distance=0.9cm and 1.2cm,
+  every node/.style={font=\small},
+  flowstep/.style={draw=vrpblue, fill=vrpbg, rounded corners=3pt, minimum width=2.6cm, minimum height=0.9cm, align=center}
+]
+  \node[flowstep] (a) {Demande\\de compte};
+  \node[flowstep, right=of a] (b) {Connexion};
+  \node[flowstep, right=of b] (c) {Plan de\\charge};
+  \node[flowstep, below=of c] (d) {Mise en place\\données};
+  \node[flowstep, left=of d] (e) {Agenda};
+  \node[flowstep, left=of e] (f) {Facturation\\par école};
+  \node[flowstep, below=of f] (g) {Trésorerie};
+  \draw[->, vrpblue, thick] (a) -- (b);
+  \draw[->, vrpblue, thick] (b) -- (c);
+  \draw[->, vrpblue, thick] (c) -- (d);
+  \draw[->, vrpblue, thick] (d) -- (e);
+  \draw[->, vrpblue, thick] (e) -- (f);
+  \draw[->, vrpblue, thick] (f) -- (g);
+\end{tikzpicture}
+\end{center}

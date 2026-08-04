@@ -1,0 +1,78 @@
+\chapter{Facturation par école}
+\label{ch:facturation}
+
+Depuis la v2, la \textbf{préparation de facturation} est \textbf{contextualisée par école}. Vous travaillez mois par mois sur les sessions d'un seul établissement à la fois.
+
+\section{Accès}
+
+\begin{workflowstep}[Ouvrir la facturation]
+  \texttt{/home} → cliquez sur une école → descendez à la section \textbf{Facturation} ou utilisez l'ancre \texttt{\#billing} dans l'URL.
+\end{workflowstep}
+
+\screenshot[keepaspectratio]{09-school-billing.png}{Section facturation sur la fiche école — navigation mensuelle}
+
+\section{Éléments de l'écran}
+
+\begin{table}[htbp]
+  \centering
+  \caption{Blocs de la section facturation}
+  \begin{tabular}{@{}lp{8.5cm}@{}}
+    \toprule
+    \textbf{Bloc} & \textbf{Rôle} \\
+    \midrule
+    Sélecteur de période & Mois précédent/suivant, liste des mois \\
+    Bascule \menu{Par date} & Regroupement chronologique ou par cours \\
+    Tableau des sessions & Groupe, horaire, heures, n° facture \\
+    Totaux & Heures et montants HT/TTC par cours et par école \\
+    Actions (Édition) & Rattacher une facture existante, créer une facture \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\section{Navigation mensuelle}
+
+Les variables de session \texttt{billing\_year} et \texttt{current\_month} pilotent l'affichage. L'année de facturation est distincte de l'année académique (\texttt{current\_year}).
+
+\begin{workflowstep}[Changer de mois]
+  Utilisez les flèches ou la liste déroulante des mois. Les totaux et sessions se mettent à jour instantanément.
+\end{workflowstep}
+
+\section{Saut aux sessions non facturées}
+
+Le bouton \menu{Sauter aux sessions non facturées} recherche en arrière le dernier mois comportant au moins une session sans facture.
+
+\begin{itemize}[leftmargin=*]
+  \item Utile pour rattraper une facturation en retard.
+  \item \textbf{Désactivé} s'il n'existe aucun mois antérieur non facturé.
+\end{itemize}
+
+\section{Créer ou rattacher une facture}
+
+En mode \textbf{Édition}~:
+
+\begin{enumerate}[label=\textbf{\arabic*.}]
+  \item Sélectionnez les sessions du mois à inclure (selon la vue par cours ou par date).
+  \item \textbf{Rattacher} une facture déjà émise via \menu{Assigner une facture}.
+  \item Ou \textbf{créer} une nouvelle facture~: numéro, date, montants HT/TTC, PDF généré.
+\end{enumerate}
+
+Les factures créées apparaissent ensuite dans \menu{Trésorerie → Factures}.
+
+\section{Indicateurs sur la liste des écoles}
+
+Sur \texttt{/home}, chaque ligne affiche~:
+
+\begin{itemize}[leftmargin=*]
+  \item \textbf{Facturé TTC}~: somme des factures de l'année courante.
+  \item \textbf{Non facturé TTC}~: sessions sans \texttt{invoice\_id}, montant majoré de TVA (×\,1{,}2).
+\end{itemize}
+
+Ces chiffres utilisent les mêmes formules que la section facturation (\texttt{Tools::planningGain}, durée réelle de session).
+
+\section{Anciennes URLs}
+
+Les routes \texttt{/billing*} redirigent vers \texttt{school.show\#billing} si une école est en session, sinon vers la liste des écoles.
+
+\begin{astuce}
+  Marquez une facture comme payée via le \textbf{rapprochement bancaire} (chapitre~\ref{ch:tresorerie}) plutôt que manuellement, pour conserver la cohérence date de paiement / opération bancaire.
+\end{astuce}

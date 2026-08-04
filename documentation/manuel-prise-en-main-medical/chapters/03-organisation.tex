@@ -1,0 +1,56 @@
+% !TEX root = ../prise-en-main-medical-vrp.tex
+\section{Organiser votre activité}
+\label{sec:organisation}
+
+\subsection{Ordre recommandé}
+
+Configurez vos données dans cet ordre — une seule fois, puis des ajustements ponctuels~:
+
+\begin{enumerate}[label=\textbf{\arabic*.}, leftmargin=*]
+  \item \textbf{Prestations} — types d'actes ou protocoles (\emph{consultation}, \emph{soins à domicile}, \emph{bilan}, etc.).
+  \item \textbf{Structure} — lieu ou organisme de facturation (cabinet, clinique, domicile patient, centre partenaire).
+  \item \textbf{Séances} — actes rattachés à une \structure{} et une \prestation{} (tarif, durée type).
+  \item \textbf{Patients} — un \patient{} par parcours de soin / bénéficiaire, lié aux \seance{}s concernées.
+\end{enumerate}
+
+\subsection{Créer une prestation}
+
+\begin{workflowstep}[Prestations]
+  \menu{Pilotage d'activité} → onglet \menu{Prestations} (\texttt{/program}). \menu{Ajouter une prestation}. Nommez l'acte de façon claire pour vos rapports.
+\end{workflowstep}
+
+\screenshot[keepaspectratio]{03-prestations.png}{Catalogue des prestations}
+
+\subsection{Créer une structure}
+
+\begin{workflowstep}[Structure]
+  Onglet \menu{Structures} ou bouton depuis l'accueil. Renseignez nom, adresse de facturation, taux horaire ou forfait par défaut, identifiants légaux si facturation directe.
+\end{workflowstep}
+
+Chaque \structure{} concentre~: \seance{}s, documents, factures et la \textbf{préparation de facturation} mensuelle.
+
+\subsection{Créer une séance (catalogue)}
+
+\begin{workflowstep}[Séance]
+  Depuis la fiche \structure{} → \menu{Ajouter une séance}. Liez la \prestation{}, définissez libellé et tarification.
+\end{workflowstep}
+
+\subsection{Créer un patient}
+
+\begin{workflowstep}[Patient]
+  Onglet \menu{Patients} (\texttt{/group}). \menu{Nouveau patient}. Un \patient{} distinct par parcours évite les confusions en facturation.
+\end{workflowstep}
+
+\screenshot[keepaspectratio]{04-patients.png}{Liste des patients}
+
+\begin{astuce}
+  L'import calendrier (onglet \menu{Calendrier} de l'agenda) mémorise les correspondances par \structure{}~: utile si vous synchronisez un agenda externe.
+\end{astuce}
+
+\subsection{Exemple minimal}
+
+\begin{itemize}[leftmargin=*]
+  \item \structure{} «~Cabinet Dr Martin~»
+  \item \prestation{} «~Consultation~» → \seance{} «~Consultation standard~» → \patient{} «~Dupont~»
+  \item \prestation{} «~Soins infirmiers~» → \seance{} «~Pansement~» → \patient{} «~Bernard~»
+\end{itemize}

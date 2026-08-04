@@ -1,0 +1,90 @@
+\chapter{Mise en place des données}
+\label{ch:mise-en-place}
+
+Avant de planifier des sessions et de facturer, structurez votre espace selon l'ordre recommandé. Ce chapitre décrit le parcours \textbf{nouvel utilisateur} pour un contexte formation.
+
+\section{Vue d'ensemble}
+
+\begin{center}
+\begin{tikzpicture}[
+  node distance=0.7cm,
+  every node/.style={font=\small, align=center},
+  block/.style={draw=vrpblue, fill=vrpbg, rounded corners=3pt, minimum width=3.2cm, minimum height=0.85cm}
+]
+  \node[block] (p) {1. Programmes};
+  \node[block, below=of p] (s) {2. École};
+  \node[block, below=of s] (c) {3. Cours};
+  \node[block, below=of c] (g) {4. Groupes};
+  \draw[->, thick, vrpblue] (p) -- (s);
+  \draw[->, thick, vrpblue] (s) -- (c);
+  \draw[->, thick, vrpblue] (g) -- (c);
+\end{tikzpicture}
+\end{center}
+
+Les \textbf{programmes} sont globaux à l'entreprise. Chaque \textbf{école} regroupe des \textbf{cours} rattachés à un programme. Chaque cours accueille un ou plusieurs \textbf{groupes} de participants.
+
+\section{Étape 1 — Créer les programmes}
+
+\begin{workflowstep}[Programmes]
+  Menu \menu{Plan de charge} → onglet \menu{Programmes} (\texttt{/program}). Créez une entrée par filière ou offre (ex.~«~Licence Pro~», «~Master Data~»).
+\end{workflowstep}
+
+\screenshot[keepaspectratio]{07-programs.png}{Liste et création de programmes}
+
+\section{Étape 2 — Créer une école}
+
+\begin{workflowstep}[École]
+  Onglet \menu{Écoles} ou bouton d'ajout depuis \texttt{/home}. Renseignez le nom, l'adresse de facturation, le taux horaire par défaut et les contacts.
+\end{workflowstep}
+
+Exemple cible~: \emph{1 école}, \emph{3 programmes}, \emph{2 cours par programme}, \emph{1 groupe par cours} → 6 groupes au total.
+
+\section{Étape 3 — Créer les cours}
+
+\begin{workflowstep}[Cours]
+  Depuis la fiche école, ajoutez un cours (\texttt{/course/\{school\_id\}/create}). Associez-le à un programme, définissez le libellé, le volume horaire et le tarif si différent du défaut école.
+\end{workflowstep}
+
+\section{Étape 4 — Créer les groupes}
+
+\begin{workflowstep}[Groupes]
+  Onglet \menu{Groupes} (\texttt{/group}) ou création depuis le cours. Un groupe \textbf{distinct par cours} est recommandé pour un suivi clair des participants.
+\end{workflowstep}
+
+\screenshot[keepaspectratio]{08-groups.png}{Gestion des groupes et liaisons cours}
+
+\begin{astuce}[Liaison explicite]
+  Pour rattacher un groupe existant à un autre cours, utilisez la fonction \texttt{group.link}. Ne réutilisez pas le même groupe sur plusieurs cours sauf lien volontaire.
+\end{astuce}
+
+\section{Exemple complet}
+
+\begin{table}[htbp]
+  \centering
+  \caption{Arborescence type}
+  \begin{tabular}{@{}ll@{}}
+    \toprule
+  \textbf{Niveau} & \textbf{Exemple} \\
+    \midrule
+    École & Mon établissement \\
+    Programme A & Cours A-1 → Groupe G-A1 \\
+                & Cours A-2 → Groupe G-A2 \\
+    Programme B & Cours B-1 → Groupe G-B1 \\
+                & Cours B-2 → Groupe G-B2 \\
+    Programme C & Cours C-1 → Groupe G-C1 \\
+                & Cours C-2 → Groupe G-C2 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\section{Documents et adresses}
+
+Sur la fiche école, vous pouvez~:
+
+\begin{itemize}[leftmargin=*]
+  \item joindre des documents (conventions, bons de commande)~;
+  \item maintenir plusieurs adresses (facturation, lieu d'intervention)~;
+  \item consulter l'historique des factures émises.
+\end{itemize}
+
+Une fois cette structure en place, passez à la planification (chapitre~\ref{ch:agenda}).

@@ -1,0 +1,60 @@
+% !TEX root = ../prise-en-main-medical-vrp.tex
+\section{Contexte médical}
+\label{sec:contexte}
+
+\subsection{À qui s'adresse ce profil~?}
+
+Le profil \texttt{medical} convient aux \textbf{professionnels libéraux}, \textbf{cabinets}, \textbf{centres de soin} ou \textbf{prestataires de services de santé} qui planifient des interventions, facturent par structure d'accueil et suivent leur trésorerie.
+
+\subsection{Correspondance des termes}
+
+\begin{table}[htbp]
+  \centering
+  \caption{Libellés affichés en mode médical}
+  \begin{tabular}{@{}lll@{}}
+    \toprule
+    \textbf{Concept}  & \textbf{Médical} \\
+    \midrule
+    Établissement         & \structure{} \\
+    Offre / protocole  & \prestation{} \\
+    Unité d'acte          & \seance{} \\
+    Bénéficiaire         & \patient{} \\
+    Trimestre          & \textbf{période} \\
+  \end{tabular}
+\end{table}
+
+\subsection{Ce que VRP Plan fait pour vous}
+
+\begin{itemize}[leftmargin=*]
+  \item \textbf{Pilotage d'activité} — vue synthétique par \structure{} (montants facturés et à facturer en TTC).
+  \item \textbf{Agenda} — saisie des \seance{}s (créneaux d'intervention) par \structure{} et \patient{}.
+  \item \textbf{Facturation} — préparation sur la fiche de chaque \structure{} (section \texttt{\#billing}).
+  \item \textbf{Trésorerie} — factures, relevés bancaires, rapprochement des encaissements.
+\end{itemize}
+
+\begin{avertissement}
+  La facturation électronique (PA externe) et la réception de factures fournisseurs suivent la roadmap produit — voir la documentation technique du dépôt.
+\end{avertissement}
+
+\subsection{Parcours en un coup d'œil}
+
+\begin{center}
+\begin{tikzpicture}[
+  node distance=0.55cm and 0.9cm,
+  every node/.style={font=\footnotesize, align=center},
+  flowstep/.style={draw=vrpblue, fill=vrpbg, rounded corners=2pt,
+    minimum width=2.1cm, minimum height=0.75cm}
+]
+  \node[flowstep] (p) {Prestations};
+  \node[flowstep, right=of p] (s) {Structure};
+  \node[flowstep, right=of s] (c) {Séances};
+  \node[flowstep, right=of c] (d) {Patients};
+  \node[flowstep, below=1cm of d] (e) {Agenda};
+  \node[flowstep, left=of e] (f) {Facturation};
+  \node[flowstep, below=1cm of e] (g) {Trésorerie};
+  \draw[->, thick, vrpblue] (p)--(s)--(c)--(d);
+  \draw[->, thick, vrpblue] (d)--(e);
+  \draw[->, thick, vrpblue] (e)--(f);
+  \draw[->, thick, vrpblue] (e)--(g);
+\end{tikzpicture}
+\end{center}

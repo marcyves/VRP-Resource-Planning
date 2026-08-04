@@ -1,0 +1,40 @@
+% !TEX root = ../prise-en-main-medical-vrp.tex
+
+\section{Votre journée type}
+\label{sec:quotidien}
+
+\subsection{Planifier une intervention}
+
+\begin{workflowstep}[Agenda]
+  \menu{Agenda} → sélectionnez \structure{}, \seance{} et \patient{}. Mode \textbf{Édition} → date, horaires → \menu{Planifier}.
+\end{workflowstep}
+
+\screenshot[keepaspectratio]{05-agenda.png}{Agenda — sélection structure, séance, patient}
+
+Chaque créneau planifié alimente le montant \textbf{non facturé TTC} visible sur la liste des \structure{}s.
+
+\subsection{Préparer la facturation}
+
+La facturation se fait \textbf{sur la fiche \structure{}}, pas dans l'agenda.
+
+\begin{workflowstep}[Facturation mensuelle]
+  Accueil → cliquez sur la \structure{} → section \textbf{Facturation} (\texttt{\#billing}). Naviguez mois par mois. Vérifiez les \seance{}s et \patient{}s. Créez ou rattachez une facture (mode Édition).
+\end{workflowstep}
+
+\screenshot[keepaspectratio]{06-facturation-structure.png}{Préparation facturation sur la fiche structure}
+
+Bouton utile~: \menu{Sauter aux sessions non facturées} pour retrouver le dernier mois en attente.
+
+\subsection{Suivre les encaissements}
+
+\begin{workflowstep}[Trésorerie]
+  \menu{Trésorerie} → synthèse mensuelle (émis, payé, planifié). Importez un relevé \texttt{.xlsx} (onglet \menu{Banque}) et rapprochez les crédits avec vos factures.
+\end{workflowstep}
+
+\screenshot[keepaspectratio]{07-tresorerie.png}{Synthèse trésorerie}
+
+Un rapprochement bancaire renseigne automatiquement la date de paiement de la facture si elle était vide.
+
+\subsection{Documents}
+
+Joignez conventions, ordonnances scannées ou bons de commande sur la fiche \structure{} (\menu{Documents}) pour centraliser le dossier administratif.

@@ -1,0 +1,62 @@
+\chapter{Agenda et planning}
+\label{ch:agenda}
+
+Le module \textbf{Agenda} sert à saisir, modifier et visualiser les \textbf{sessions} d'intervention. En v2, la préparation de facturation n'y figure plus~: elle est sur la fiche école (chapitre~\ref{ch:facturation}).
+
+\section{Accès}
+
+\menu{Agenda} dans la barre latérale → \texttt{/planning}. Deux onglets~: \menu{Planning} et \menu{Calendrier}.
+
+\screenshot[keepaspectratio]{05-planning.png}{Vue planning — sélection école et cours, calendrier mensuel}
+
+\section{Sélection du contexte}
+
+Avant de planifier, choisissez~:
+
+\begin{enumerate}[label=\textbf{\arabic*.}]
+  \item L'\textbf{école} (établissement client).
+  \item Le \textbf{cours} concerné (liste filtrée).
+  \item Le \textbf{groupe} si plusieurs groupes sont liés au cours.
+\end{enumerate}
+
+Ces choix sont mémorisés en session pour accélérer les saisies successives.
+
+\section{Planifier une session}
+
+\begin{workflowstep}[Nouvelle session]
+  En mode \textbf{Édition}, ouvrez le formulaire de planification. Indiquez la date, les horaires de début et fin, et éventuellement un commentaire. Validez avec \menu{Planifier}.
+\end{workflowstep}
+
+\begin{avertissement}[Formulaire]
+  Le bouton \menu{Planifier} doit appartenir au même formulaire que les champs date/heure. En cas de dysfonctionnement, vérifiez qu'aucun formulaire imbriqué ne capture la soumission.
+\end{avertissement}
+
+La durée facturable est calculée automatiquement à partir des horaires réels. Un multiplicateur corrige les imports calendrier erronés (\texttt{billableMultiplier}).
+
+\section{Navigation temporelle}
+
+\begin{itemize}[leftmargin=*]
+  \item Flèches \menu{Mois précédent} / \menu{Mois suivant}.
+  \item Clic sur une session existante pour l'éditer ou la dupliquer.
+  \item Bloc de duplication (après le formulaire principal) pour recopier une session sur d'autres dates.
+\end{itemize}
+
+\section{Import calendrier (administrateur)}
+
+L'onglet \menu{Calendrier} permet d'importer des fichiers ICS~:
+
+\begin{workflowstep}[Import ICS]
+  Téléversez un fichier, associez-le à une source, puis lancez l'import ou la réimportation. Les événements deviennent des sessions candidates à valider dans le planning.
+\end{workflowstep}
+
+\section{Lien avec la facturation}
+
+Chaque session planifiée alimente~:
+
+\begin{itemize}[leftmargin=*]
+  \item le montant \textbf{non facturé TTC} sur la liste des écoles~;
+  \item la section \texttt{\#billing} de la fiche école pour le mois concerné~;
+  \item l'histogramme \textbf{planifié} de la trésorerie.
+\end{itemize}
+
+La facturation elle-même se prépare depuis la fiche école, pas depuis l'agenda.

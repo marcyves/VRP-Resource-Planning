@@ -1,0 +1,12 @@
+*.aux
+*.log
+*.out
+*.toc
+*.lof
+*.lot
+*.bcf
+*.run.xml
+*.fls
+*.fdb_latexmk
+node_modules/
+package-lock.json
