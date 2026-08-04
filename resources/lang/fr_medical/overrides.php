@@ -84,4 +84,13 @@ return [
     'terminology_profile_medical' => 'Médical & prestations (structures, prestations, séances, patients)',
     'terminology_profile_hint' => 'Adapte les libellés de l\'application sans modifier vos données.',
     'workload_plan' => 'Pilotage d\'activité',
+    'nav_referential' => 'Référentiel',
+    'billing_needs_school_hint' => 'Ouvrez une structure pour préparer la facturation des séances planifiées.',
+    'workload_plan_annual_link' => 'Vue pilotage d\'activité annuelle',
+    'planning_billing_title' => 'Facturer les interventions du mois',
+    'planning_billing_intro' => 'Structures avec des séances sur la période affichée — priorisez celles encore non facturées.',
+    'planning_billing_sessions' => 'séances',
+    'planning_billing_unbilled' => 'non facturées',
+    'planning_billing_unbilled_amount' => 'à facturer',
+    'planning_billing_all_invoiced' => 'déjà facturées',
 ];

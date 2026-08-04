@@ -55,6 +55,9 @@
     <section id="expense-reports">
         <header class="treasury-section-header">
             <h3>{{ __('messages.expense_reports') }}</h3>
+            @if(Auth::user()->getMode() == "Edit")
+                <a class="btn btn-primary" href="{{ route('treasury.expenses.create') }}">{{ __('messages.expense_create') }}</a>
+            @endif
         </header>
 
         @if($reports->isEmpty())

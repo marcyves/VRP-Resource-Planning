@@ -33,6 +33,10 @@ class AppServiceProvider extends ServiceProvider
 
         Carbon::setLocale(app()->getLocale());
 
+        Blade::directive('schoolMsg', function ($expression) {
+            return "<?php echo \\App\\Support\\SchoolContext::msg(view()->shared('schoolContextSchool'), {$expression}); ?>";
+        });
+
         Blade::directive('money', function ($value) {
             return "<?php echo number_format($value, 2); ?>€";
         });

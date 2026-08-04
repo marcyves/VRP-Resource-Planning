@@ -3,8 +3,6 @@
         <h2>{{ __('messages.course_details') }}: {{ $course->name }}</h2>
     </x-slot>
 
-    <x-workload-module-tabs />
-
     <section class="course-details-section">
         <header class="header-actions">
             @if (Auth::user()->getMode() == 'Edit')

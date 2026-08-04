@@ -80,6 +80,7 @@ class SchoolController extends Controller
 
         session()->put('school', $school->name);
         session()->put('school_id', $school->id);
+        session()->put('last_school_id', $school->id);
 
         return view('school.add', compact('school'));
     }
@@ -118,6 +119,7 @@ class SchoolController extends Controller
             session()->flash('success', __('messages.school_saved_success', ['name' => $school->name]));
             session()->put('school', $school->name);
             session()->put('school_id', $school->id);
+        session()->put('last_school_id', $school->id);
 
             return redirect(route('school.index'));
         } catch (\Exception $e) {
@@ -148,6 +150,9 @@ class SchoolController extends Controller
 
         session()->put('school', $school->name);
         session()->put('school_id', $school->id);
+        session()->put('last_school_id', $school->id);
+
+        view()->share('schoolContextSchool', $school);
 
         $invoices = $school->getInvoices($year);
         $documents = $school->getDocuments();
@@ -192,6 +197,9 @@ class SchoolController extends Controller
         $school = School::findOrFail($school_id);
         session()->put('school', $school->name);
         session()->put('school_id', $school->id);
+        session()->put('last_school_id', $school->id);
+
+        view()->share('schoolContextSchool', $school);
 
         return view('school.edit', compact('school'));
     }
@@ -203,6 +211,7 @@ class SchoolController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|max:80',
+            'context' => ['nullable', 'in:'.implode(',', \App\Support\SchoolContext::values())],
             'siren' => ['nullable', 'digits:9'],
             'siret' => ['nullable', 'digits:14'],
             'vat_number' => ['nullable', 'string', 'max:20'],
@@ -213,6 +222,7 @@ class SchoolController extends Controller
             $school = School::findOrFail($school_id);
             $school->name = $request->name;
             $school->code = $request->code;
+            $school->context = $request->input('context', \App\Support\SchoolContext::EDUCATION);
             $school->siren = $request->siren;
             $school->siret = $request->siret;
             $school->vat_number = $request->vat_number;
@@ -229,6 +239,7 @@ class SchoolController extends Controller
             $school->description = $request->description;
 
             session()->put('school_id', $school_id);
+            session()->put('last_school_id', $school_id);
 
             session()->put('school', $school->name);
 

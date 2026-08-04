@@ -17,9 +17,11 @@
 
     <x-kpi-grid :items="[
         ['icon' => 'clock', 'label' => __('messages.time_worked'), 'value' => $monthly_hours . ' ' . __('messages.hours'), 'variant' => 'info'],
-        ['icon' => 'wallet', 'label' => __('messages.monthly_gain'), 'value' => number_format($monthly_gain, 2, ',', ' ') . ' € HT', 'variant' => 'success'],
-        ['icon' => 'chart', 'label' => __('messages.hour_rate'), 'value' => ($monthly_hours == 0 ? '0' : number_format($monthly_gain / $monthly_hours, 2, ',', ' ')) . ' €/h', 'variant' => 'accent'],
+        ['icon' => 'wallet', 'label' => __('messages.monthly_gain'), 'value' => number_format($monthly_gain * 1.2, 2, ',', ' ') . ' € TTC', 'variant' => 'success'],
+        ['icon' => 'chart', 'label' => __('messages.hour_rate'), 'value' => ($monthly_hours == 0 ? '0' : number_format(($monthly_gain * 1.2) / $monthly_hours, 2, ',', ' ')) . ' €/h TTC', 'variant' => 'accent'],
     ]" />
+
+    <x-planning-billing-panel :schools="$billingSchools" :month="$current_month" :year="$current_year" />
 
     <section class="planning-calendar-container">
         <!-- (A) PERIOD SELECTOR & CONTROLS -->

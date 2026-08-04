@@ -26,6 +26,7 @@ class School extends Model
         'vat_number',
         'electronic_address',
         'company_id',
+        'context',
         'address',
         'address2',
         'city',
@@ -37,6 +38,18 @@ class School extends Model
         'logo',
         'description',
     ];
+
+    public function isMentoring(): bool
+    {
+        return $this->context === \App\Support\SchoolContext::MENTORING;
+    }
+
+    public function contextLabel(): string
+    {
+        $context = $this->context ?: \App\Support\SchoolContext::EDUCATION;
+
+        return __("messages.school_context_{$context}");
+    }
 
     public function users(): BelongsToMany
     {

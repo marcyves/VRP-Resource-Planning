@@ -3,7 +3,7 @@
         <h2>{{ __('messages.expense_report_detail') }} @monthName($expenseReport->month) {{ $expenseReport->year }}</h2>
     </x-slot>
 
-    <x-treasury-module-tabs active="expense_reports" />
+    <x-treasury-module-tabs active="expenses" />
 
     <section>
         @php

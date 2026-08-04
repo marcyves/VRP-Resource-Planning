@@ -1,9 +1,12 @@
 <x-app-layout>
-<x-slot name="header">
-        <h2>{{ __('messages.school_details') }}</h2>
+    <x-slot name="header">
+        <h2>
+            {{ __('messages.school_details') }}
+            @if ($school->isMentoring())
+                <span class="status-chip">{{ __('messages.school_context_mentoring') }}</span>
+            @endif
+        </h2>
     </x-slot>
-
-    <x-workload-module-tabs />
 
     <div class="school-details-grid">
         <section>

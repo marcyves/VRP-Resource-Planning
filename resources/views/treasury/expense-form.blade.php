@@ -3,7 +3,7 @@
         <h2>{{ $expense->exists ? __('messages.expense_edit') : __('messages.expense_create') }}</h2>
     </x-slot>
 
-    <x-treasury-module-tabs active="expense_create" />
+    <x-treasury-module-tabs active="expenses" />
 
     <section>
         @php

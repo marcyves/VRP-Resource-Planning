@@ -3,8 +3,6 @@
         <h2>{{ __('messages.course_update') }}</h2>
     </x-slot>
 
-    <x-workload-module-tabs />
-
     <section>
         @isset($course)
         <form action="{{route('course.update', $course->id)}}" method="post" class="group-form nice-form">

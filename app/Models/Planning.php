@@ -44,6 +44,7 @@ class Planning extends Model
 
         return Planning::select([
             'plannings.id as id',
+            'schools.id as school_id',
             'schools.name as school_name',
             'begin',
             'end',
@@ -52,6 +53,7 @@ class Planning extends Model
             'courses.short_name as short_name',
             'rate',
             'session_length',
+            'billable_rate',
             'invoice_id',
             'groups.name as group_name',
             'groups.short_name as group_short_name'

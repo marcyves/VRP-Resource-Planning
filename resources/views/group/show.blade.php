@@ -3,7 +3,7 @@
         <h2>{{ $group->name }}</h2>
     </x-slot>
 
-    <x-workload-module-tabs />
+    <x-referential-module-tabs />
 
     @php
         $sessionCount = $occurences->count();

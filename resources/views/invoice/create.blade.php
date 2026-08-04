@@ -3,7 +3,7 @@
         <h2>{{ __('messages.invoice_create') }}</h2>
     </x-slot>
 
-    <x-treasury-module-tabs active="invoice_create" />
+    <x-treasury-module-tabs active="invoices" />
 
     @if (Auth::user()->getMode() == 'Edit')
     <section class="bills-container">

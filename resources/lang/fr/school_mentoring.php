@@ -1,0 +1,25 @@
+<?php
+
+return [
+    'program' => 'Parcours',
+    'programs' => 'Parcours',
+    'course' => 'Projet',
+    'course_list' => 'Projets',
+    'courses' => 'Projets',
+    'add_course' => 'Ajouter un projet',
+    'edit_course' => 'Modifier le projet',
+    'course_create' => 'Création d\'un projet',
+    'course_details' => 'Détails du projet',
+    'course_update' => 'Modification du projet',
+    'group' => 'Étudiant',
+    'groups' => 'Étudiants',
+    'groups_list' => 'Étudiants',
+    'group_create' => 'Nouvel étudiant',
+    'group_edit' => 'Modifier l\'étudiant',
+    'course_table_th_program' => 'Parc.',
+    'course_table_th_groups' => 'Étud.',
+    'school_context' => 'Mode de l\'école',
+    'school_context_education' => 'Formation (programme / cours / groupe)',
+    'school_context_mentoring' => 'Mentoring (parcours / projet / étudiant)',
+    'school_context_hint' => 'N’affecte que la fiche de cette école. Les écrans globaux (agenda, liste, trésorerie) restent inchangés.',
+];

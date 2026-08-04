@@ -3,8 +3,6 @@
         <h2>{{ __('messages.school_edit') }}</h2>
     </x-slot>
 
-    <x-workload-module-tabs />
-
     <section>
         <form action="{{ route('school.update', $school->id) }}" method="post" class="school-create-form nice-form">
             @csrf
@@ -17,6 +15,19 @@
             <div class="school-form-input">
                 <x-input-label for="code">{{ __('messages.code') }}</x-input-label>
                 <x-text-input type="text" name="code" id="code" value="{{ old('code', $school->code) }}" />
+            </div>
+
+            <div class="school-form-input">
+                <x-input-label for="context">{{ __('messages.school_context') }}</x-input-label>
+                <select name="context" id="context" class="form-input">
+                    @foreach (\App\Support\SchoolContext::values() as $context)
+                        <option value="{{ $context }}" @selected(old('context', $school->context ?? 'education') === $context)>
+                            {{ __('messages.school_context_'.$context) }}
+                        </option>
+                    @endforeach
+                </select>
+                <p class="form-hint">{{ __('messages.school_context_hint') }}</p>
+                <x-input-error :messages="$errors->get('context')" />
             </div>
 
             <fieldset class="school-form-fieldset">

@@ -3,8 +3,6 @@
         <h2>{{ __('messages.course_create') }} {{$school->name}}</h2>
     </x-slot>
 
-    <x-workload-module-tabs />
-
     <section>
         <form action="{{route('course.store', $school->id)}}" method="post" class="group-form nice-form">
             @csrf

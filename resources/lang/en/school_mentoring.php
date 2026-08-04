@@ -1,0 +1,25 @@
+<?php
+
+return [
+    'program' => 'Pathway',
+    'programs' => 'Pathways',
+    'course' => 'Project',
+    'course_list' => 'Projects',
+    'courses' => 'Projects',
+    'add_course' => 'Add a project',
+    'edit_course' => 'Edit project',
+    'course_create' => 'Create a project',
+    'course_details' => 'Project details',
+    'course_update' => 'Edit project',
+    'group' => 'Student',
+    'groups' => 'Students',
+    'groups_list' => 'Students',
+    'group_create' => 'New student',
+    'group_edit' => 'Edit student',
+    'course_table_th_program' => 'Path.',
+    'course_table_th_groups' => 'Stud.',
+    'school_context' => 'School mode',
+    'school_context_education' => 'Training (program / course / group)',
+    'school_context_mentoring' => 'Mentoring (pathway / project / student)',
+    'school_context_hint' => 'Only affects this school’s detail page. Global screens (agenda, list, treasury) stay unchanged.',
+];

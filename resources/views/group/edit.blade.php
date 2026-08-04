@@ -3,7 +3,7 @@
         <h2>{{ __('messages.group_edit') }}</h2>
     </x-slot>
 
-    <x-workload-module-tabs />
+    <x-referential-module-tabs />
 
     @if(Auth::user()->getMode() == "Edit")
     <section>

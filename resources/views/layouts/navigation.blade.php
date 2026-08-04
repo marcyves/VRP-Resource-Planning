@@ -29,29 +29,45 @@
                 {{ __('messages.super_admin_companies') }}
             </x-sidebar-nav-link>
         @else
-        <x-sidebar-nav-link
-            icon="calendar-range"
-            :href="route('planning.index')"
-            :active="request()->routeIs('planning.*', 'calendar.*')"
-        >
-            {{ __('messages.planning') }}
-        </x-sidebar-nav-link>
+            <x-sidebar-nav-link
+                icon="calendar-range"
+                :href="route('planning.index')"
+                :active="request()->routeIs('planning.*', 'calendar.*')"
+            >
+                {{ __('messages.planning') }}
+            </x-sidebar-nav-link>
 
-        <x-sidebar-nav-link
-            icon="wallet"
-            :href="route('treasury.index')"
-            :active="request()->routeIs('treasury.*', 'invoice.*')"
-        >
-            {{ __('messages.treasury') }}
-        </x-sidebar-nav-link>
+            <x-sidebar-nav-link
+                icon="school"
+                :href="route('home')"
+                :active="request()->routeIs(
+                    'home',
+                    'dashboard',
+                    'school.dashboard',
+                    'school.index',
+                    'school.list',
+                    'school.show',
+                    'school.create',
+                    'school.edit',
+                    'school.add',
+                    'school.billing.*',
+                    'course.*'
+                )"
+            >
+                {{ __('messages.schools') }}
+            </x-sidebar-nav-link>
 
-        <x-sidebar-nav-link
-            icon="grid"
-            :href="route('home')"
-            :active="request()->routeIs('home', 'dashboard', 'school.dashboard', 'school.index', 'school.list', 'school.show', 'school.create', 'school.edit', 'school.add', 'program.*', 'course.*', 'group.*')"
-        >
-            {{ __('messages.workload_plan') }}
-        </x-sidebar-nav-link>
+            <x-sidebar-nav-link
+                icon="wallet"
+                :href="route('treasury.index')"
+                :active="request()->routeIs('treasury.*', 'invoice.*')"
+            >
+                {{ __('messages.treasury') }}
+            </x-sidebar-nav-link>
+
+            <div class="sidebar-nav-separator" role="separator" aria-hidden="true"></div>
+
+            <x-sidebar-nav-group :active="request()->routeIs('program.*', 'group.*')" />
         @endif
     </nav>
 
@@ -105,6 +121,18 @@
                 const toggle = document.getElementById('sidebar-toggle');
                 if (toggle) {
                     toggle.checked = false;
+                }
+            });
+        });
+
+        document.querySelectorAll('[data-sidebar-group]').forEach((group) => {
+            const toggle = group.querySelector('[data-sidebar-group-toggle]');
+            const panel = group.querySelector('[data-sidebar-group-panel]');
+            toggle?.addEventListener('click', () => {
+                const open = group.classList.toggle('sidebar-nav-group--open');
+                toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+                if (panel) {
+                    panel.hidden = !open;
                 }
             });
         });

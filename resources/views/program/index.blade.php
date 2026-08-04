@@ -5,7 +5,7 @@
         </h2>
     </x-slot>
 
-    <x-workload-module-tabs />
+    <x-referential-module-tabs />
 
     <section>
         <x-program-table :programs="$programs" />

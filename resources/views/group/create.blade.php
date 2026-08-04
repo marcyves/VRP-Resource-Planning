@@ -3,7 +3,7 @@
         <h2>{{ __('messages.group_create') }}</h2>
     </x-slot>
 
-    <x-workload-module-tabs />
+    <x-referential-module-tabs />
 
     @if($linkCourseId && $linkCourseName)
         <p class="form-hint form-hint--emphasis">{{ __('messages.group_will_link_session_course', ['name' => $linkCourseName]) }}</p>

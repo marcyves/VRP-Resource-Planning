@@ -34,6 +34,94 @@
     flex: 0 0 auto;
 }
 
+.planning-billing-panel {
+    margin: 0 0 var(--spacing-5);
+    padding: var(--spacing-4);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--rounded-xl);
+    background: var(--surface-container-lowest);
+}
+
+.planning-billing-panel__header {
+    margin-bottom: var(--spacing-3);
+}
+
+.planning-billing-panel__header h3 {
+    margin: 0 0 var(--spacing-1);
+    font-size: 1.05rem;
+    color: var(--text-heading);
+}
+
+.planning-billing-panel__header .form-hint {
+    margin: 0;
+}
+
+.planning-billing-panel__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: var(--spacing-2);
+}
+
+.planning-billing-card {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--spacing-3);
+    padding: var(--spacing-3) var(--spacing-4);
+    border-radius: var(--rounded-lg);
+    border: 1px solid var(--border-subtle);
+    background: var(--surface-container);
+}
+
+.planning-billing-card--unbilled {
+    border-color: color-mix(in srgb, var(--value-pending, #f59e0b) 45%, var(--border-subtle));
+    background: color-mix(in srgb, var(--value-pending, #f59e0b) 10%, var(--surface-container-lowest));
+}
+
+.planning-billing-card__main {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    min-width: 0;
+}
+
+.planning-billing-card__name {
+    color: var(--text-heading);
+}
+
+.planning-billing-card__amount {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--text-heading);
+    font-variant-numeric: tabular-nums;
+}
+
+.planning-billing-card__amount-note {
+    margin-left: 0.35rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--value-pending, #f59e0b);
+}
+
+.planning-billing-card__meta {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+}
+
+@media (max-width: 640px) {
+    .planning-billing-card {
+        align-items: stretch;
+    }
+
+    .planning-billing-card .btn {
+        width: 100%;
+        text-align: center;
+    }
+}
+
 @media (max-width: 639px) {
     .planning-toolbar {
         flex-direction: column;

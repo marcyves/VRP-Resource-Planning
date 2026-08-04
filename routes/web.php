@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BillingController;
+use App\Http\Controllers\BillingNavController;
 use App\Http\Controllers\ElectronicInvoiceWebhookController;
 use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\CalendarFileController;
@@ -63,6 +64,8 @@ Route::post('/webhooks/e-invoice/{platform}', ElectronicInvoiceWebhookController
     ->name('webhooks.e-invoice');
 
 Route::middleware(['auth', 'tenant', SetTerminologyLocale::class])->group(function () {
+    Route::get('/nav/billing', BillingNavController::class)->name('nav.billing');
+
     //    Route::get('/calendar/import/{calendar_id}', [CalendarController::class, 'readICSFile'])->name('ics.read');
     Route::prefix('admin/calendars')->middleware(['auth'])->group(function () {
         Route::get('/', [CalendarFileController::class, 'index'])->name('calendar.index');
