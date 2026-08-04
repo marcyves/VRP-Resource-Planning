@@ -1,8 +1,10 @@
 # VRP Resource Planning
 
-Application web de **planification**, **budgétisation** et **suivi facturation** pour formateurs, vacataires et petites structures : écoles, cours, groupes, agenda, factures PDF, documents par établissement, import calendrier.
+**Language:** **English** · [Français](README.fr.md)
 
-**Dépôt :** [github.com/marcyves/VRP-Resource-Planning](https://github.com/marcyves/VRP-Resource-Planning)
+Web app for **scheduling**, **budgeting**, and **invoice tracking** for trainers, freelancers, and small practices: schools/clients, courses, groups, calendar, PDF invoices, per-site documents, and calendar import.
+
+**Repository:** [github.com/marcyves/VRP-Resource-Planning](https://github.com/marcyves/VRP-Resource-Planning)
 
 [![Issues](https://img.shields.io/github/issues/marcyves/VRP-Resource-Planning?style=flat-square)](https://github.com/marcyves/VRP-Resource-Planning/issues)
 [![License: GPL-3.0](https://img.shields.io/badge/License-GPL%20v3-blue.svg?style=flat-square)](./LICENSE)
@@ -10,87 +12,89 @@ Application web de **planification**, **budgétisation** et **suivi facturation*
 
 ---
 
-## Sommaire
+## Contents
 
-- [Fonctionnalités](#fonctionnalités)
-- [V2 — interface utilisateur](#v2--interface-utilisateur)
-- [Stack technique](#stack-technique)
-- [Prérequis](#prérequis)
+- [Features](#features)
+- [V2 — user interface](#v2--user-interface)
+- [Tech stack](#tech-stack)
+- [Requirements](#requirements)
 - [Installation](#installation)
-- [Développement](#développement)
+- [Development](#development)
+- [Platform super admin](#platform-super-admin)
 - [Internationalisation](#internationalisation)
-- [Qualité & tests](#qualité--tests)
-- [Démo](#démo)
-- [Roadmap — facturation électronique](#roadmap--facturation-électronique)
-- [Roadmap — PWA & mode hors ligne](#roadmap--pwa--mode-hors-ligne)
-- [Contribution](#contribution)
+- [Quality & tests](#quality--tests)
+- [Demo](#demo)
+- [Roadmap — e-invoicing](#roadmap--e-invoicing)
+- [Roadmap — PWA & offline](#roadmap--pwa--offline)
+- [Contributing](#contributing)
 - [Licence](#licence)
 - [Contact](#contact)
 
 ---
 
-## Fonctionnalités
+## Features
 
-- Gestion des **écoles** et des **cours** (programmes, volumes, tarifs)
-- **Groupes** et vue **planning** / calendrier
-- **Préparation facturation** sur la fiche de chaque école (sessions, assignation, création facture)
-- **Liste écoles** avec montants facturés et non facturés
-- **Factures** (PDF, suivi paiement) et **trésorerie**
-- **Rapprochement bancaire** (imports XLSX, rapprochements factures / dépenses)
-- **Documents** rattachés à une école
-- **Import calendrier** (mapping, gestion des évènements)
-- Authentification, rôles utilisateur liés à l’entreprise (mode lecture / édition)
-
----
-
-## V2 — interface utilisateur
-
-La **v2** apporte une refonte de l’interface (2025–2026) : coque sidebar + topbar, design system CSS modulaire, composants Blade factorisés, mode sombre.
-
-| Changement | Détail |
-|------------|--------|
-| **Accueil** | `/home` — liste des écoles (facturé TTC, non facturé HT + heures) |
-| **Logo** | Retour à l’accueil (`home`) |
-| **Facturation** | Préparation déplacée du module Agenda vers **chaque fiche école** |
-| **Agenda** | Planning + calendrier uniquement |
-| **CSS** | Tokens `theme.css`, tableaux `.data-table`, formulaires `.nice-form` |
-
-**Documentation détaillée (fiches wiki) :**
-
-| Sujet | Français | English |
-|-------|----------|---------|
-| Vue d’ensemble v2 | [v2-interface-utilisateur.md](documentation/fr/v2-interface-utilisateur.md) | [v2-user-interface.md](documentation/en/v2-user-interface.md) |
-| Navigation & modules | [v2-navigation-modules.md](documentation/fr/v2-navigation-modules.md) | [v2-navigation-modules.md](documentation/en/v2-navigation-modules.md) |
-| Facturation par école | [v2-facturation-par-ecole.md](documentation/fr/v2-facturation-par-ecole.md) | [v2-billing-per-school.md](documentation/en/v2-billing-per-school.md) |
-| Trésorerie & rapprochement bancaire | [v2-tresorerie-rapprochement-bancaire.md](documentation/fr/v2-tresorerie-rapprochement-bancaire.md) | [v2-treasury-bank-reconciliation.md](documentation/en/v2-treasury-bank-reconciliation.md) |
-| Administration plateforme | [administration-plateforme.md](documentation/fr/administration-plateforme.md) | [platform-administration.md](documentation/en/platform-administration.md) |
-| Design system CSS | [v2-design-system-css.md](documentation/fr/v2-design-system-css.md) | [v2-design-system-css.md](documentation/en/v2-design-system-css.md) |
-| Administration plateforme | [administration-plateforme.md](documentation/fr/administration-plateforme.md) | [platform-administration.md](documentation/en/platform-administration.md) |
-
-Index complet : [documentation/README.md](documentation/README.md).
+- **Schools** (or clients / care structures) and **courses** (programmes, volumes, rates)
+- **Groups** and **planning** / calendar views
+- **Billing preparation** on each school record (sessions, assign or create invoice)
+- **School list** with billed and unbilled amounts
+- **Invoices** (PDF, payment tracking) and **treasury**
+- **Bank reconciliation** (XLSX imports, match invoices / expenses)
+- **Documents** attached to a school
+- **Calendar import** (mapping, event handling)
+- Authentication and company-scoped roles (browse / edit modes)
 
 ---
 
-## Stack technique
+## V2 — user interface
 
-| Couche        | Détail |
-|---------------|--------|
-| Backend       | **PHP 8.2+**, **Laravel 11** |
-| Frontend      | **Vite 4**, **Alpine.js**, CSS modulaire (`resources/css/`), **Blade** |
-| PDF           | **TCPDF** (factures) |
-| iCal          | **ics-parser** |
-| Qualité       | **Laravel Pint**, **PHPStan** (Larastan), **PHPUnit** |
+**v2** is a UI refresh (2025–2026): sidebar + topbar shell, modular CSS design system, factorised Blade components, dark mode.
 
-> Le dépôt n’embarque pas Tailwind en dépendance npm : l’UI repose sur des feuilles CSS dédiées et des composants Blade.
+| Change | Detail |
+|--------|--------|
+| **Home** | `/home` — school list (billed TTC, unbilled TTC + hours) |
+| **Logo** | Returns to home |
+| **Billing** | Preparation moved from Agenda into **each school page** (`#billing`) |
+| **Agenda** | Planning + calendar only |
+| **CSS** | Tokens in `theme.css`, `.data-table`, `.nice-form` |
+
+**Detailed docs (wiki sheets):**
+
+| Topic | English | Français |
+|-------|---------|----------|
+| V2 overview | [v2-user-interface.md](documentation/en/v2-user-interface.md) | [v2-interface-utilisateur.md](documentation/fr/v2-interface-utilisateur.md) |
+| Navigation & modules | [v2-navigation-modules.md](documentation/en/v2-navigation-modules.md) | [v2-navigation-modules.md](documentation/fr/v2-navigation-modules.md) |
+| Billing per school | [v2-billing-per-school.md](documentation/en/v2-billing-per-school.md) | [v2-facturation-par-ecole.md](documentation/fr/v2-facturation-par-ecole.md) |
+| Treasury & bank reconciliation | [v2-treasury-bank-reconciliation.md](documentation/en/v2-treasury-bank-reconciliation.md) | [v2-tresorerie-rapprochement-bancaire.md](documentation/fr/v2-tresorerie-rapprochement-bancaire.md) |
+| Platform administration | [platform-administration.md](documentation/en/platform-administration.md) | [administration-plateforme.md](documentation/fr/administration-plateforme.md) |
+| CSS design system | [v2-design-system-css.md](documentation/en/v2-design-system-css.md) | [v2-design-system-css.md](documentation/fr/v2-design-system-css.md) |
+
+Full index: [documentation/README.md](documentation/README.md).
+
+User manuals (LaTeX PDF): [user manual](documentation/manuel-utilisateur/README.md) · [medical quick start](documentation/manuel-prise-en-main-medical/README.md).
 
 ---
 
-## Prérequis
+## Tech stack
 
-- **PHP** 8.2 ou supérieur (extensions habituelles Laravel : `pdo`, `mbstring`, `openssl`, `tokenizer`, `xml`, etc.)
-- **Composer** 2.x  
-- **Node.js** + **npm** (pour Vite)  
-- **Base de données** : MySQL / MariaDB (ou SQLite pour un essai rapide, en adaptant `.env`)
+| Layer | Detail |
+|-------|--------|
+| Backend | **PHP 8.2+**, **Laravel 11** |
+| Frontend | **Vite 4**, **Alpine.js**, modular CSS (`resources/css/`), **Blade** |
+| PDF | **TCPDF** (invoices) |
+| iCal | **ics-parser** |
+| Quality | **Laravel Pint**, **PHPStan** (Larastan), **PHPUnit** |
+
+> Tailwind is not an npm dependency: the UI uses dedicated CSS sheets and Blade components.
+
+---
+
+## Requirements
+
+- **PHP** 8.2+ (usual Laravel extensions: `pdo`, `mbstring`, `openssl`, `tokenizer`, `xml`, …)
+- **Composer** 2.x
+- **Node.js** + **npm** (for Vite)
+- **Database**: MySQL / MariaDB (or SQLite for a quick try, with `.env` adjusted)
 
 ---
 
@@ -105,142 +109,142 @@ cp .env.example .env
 php artisan key:generate
 ```
 
-1. Éditer **`.env`** : `APP_URL`, connexion base (`DB_*` ou `DB_DATABASE` pour SQLite), mail si besoin.  
-2. Créer les tables :
+1. Edit **`.env`**: `APP_URL`, database (`DB_*` or SQLite `DB_DATABASE`), mail if needed.
+2. Create tables:
 
    ```bash
    php artisan migrate
    ```
 
-3. **Lien symbolique** du stockage (si vous servez des fichiers publics / documents) :
+3. **Storage symlink** (public files / documents):
 
    ```bash
    php artisan storage:link
    ```
 
-4. Assets front :
+4. Front-end assets:
 
    ```bash
    npm install
    npm run build
    ```
 
-En local, vous pouvez utiliser `npm run dev` en parallèle d’un serveur PHP (`php artisan serve` ou votre vhost).
+Locally you can run `npm run dev` alongside `php artisan serve` (or your vhost).
 
 ---
 
-## Développement
+## Development
 
-| Commande | Rôle |
-|----------|------|
-| `php artisan serve` | Serveur de développement Laravel |
-| `npm run dev` | Vite en mode watch (HMR) |
-| `npm run build` | Build de production des assets |
+| Command | Role |
+|---------|------|
+| `php artisan serve` | Laravel development server |
+| `npm run dev` | Vite watch (HMR) |
+| `npm run build` | Production asset build |
 
-Penser à régénérer le cache des routes si besoin : `php artisan route:cache` (production uniquement, en général).
+Route cache when needed: `php artisan route:cache` (typically production only).
 
 ---
 
-## Super administrateur plateforme
+## Platform super admin
 
-VRP est **multi-tenant** : chaque entreprise cliente a ses utilisateurs et ses données. Un compte **super admin** (sans `company_id`) gère le provisionnement des entreprises depuis `/super-admin/companies`.
+VRP is **multi-tenant**: each customer company has its own users and data. A **super admin** account (no `company_id`) provisions companies from `/super-admin/companies`.
 
-| Étape | Commande / action |
-|-------|---------------------|
-| **Migration** | `php artisan migrate` (statut `super admin`, `company_id` nullable) |
-| **Créer le super admin** | `php artisan vrp:create-super-admin vous@example.com "Votre Nom"` |
-| **Connexion** | `/login` → redirection vers la liste des entreprises |
-| **Créer un client** | **Créer une entreprise** : nom, préfixe facture, profil terminologique, compte admin |
+| Step | Command / action |
+|------|------------------|
+| **Migrate** | `php artisan migrate` (`super admin` status, nullable `company_id`) |
+| **Create super admin** | `php artisan vrp:create-super-admin you@example.com "Your Name"` |
+| **Sign in** | `/login` → company list |
+| **Create a tenant** | **Create company**: name, invoice prefix, terminology profile, admin account |
 
-L’inscription publique `/register` est **désactivée par défaut** (`VRP_ALLOW_REGISTRATION=false`). Les comptes entreprise sont créés par le super admin ou par un admin existant dans l’UI VRP classique.
+Public `/register` is **disabled by default** (`VRP_ALLOW_REGISTRATION=false`). Company accounts are created by the super admin or by an existing admin in the classic VRP UI.
 
-Runbook détaillé : [documentation/fr/administration-plateforme.md](documentation/fr/administration-plateforme.md) · [documentation/en/platform-administration.md](documentation/en/platform-administration.md).
+Runbook: [platform-administration.md](documentation/en/platform-administration.md) · [administration-plateforme.md](documentation/fr/administration-plateforme.md).
 
 ---
 
 ## Internationalisation
 
-Fichiers de traduction sous `resources/lang/` (français, anglais, italien).
+Translation files under `resources/lang/` (French, English, Italian).
 
-**Contexte métier** : chaque entreprise choisit un profil sur la fiche société (`education`, `consulting` ou `medical`). Les libellés passent par les locales dédiées (`fr_consulting`, `fr_medical`, …). Les tables et routes (`school`, `course`, …) restent inchangées.
+**Business context:** each company picks a profile on the company page (`education`, `consulting`, or `medical`). Labels use dedicated locales (`fr_consulting`, `fr_medical`, …). Tables and routes (`school`, `course`, …) stay the same.
 
-Variable d’environnement optionnelle : `TERMINOLOGY_PROFILE=education` (défaut pour les invités / sans entreprise). Voir `.env.example`.
+Optional env: `TERMINOLOGY_PROFILE=education` (default for guests / no company). See `.env.example`.
 
-Documentation détaillée (fiches wiki, FR/EN) : [documentation/](documentation/README.md) — [fr/](documentation/fr/README.md) · [en/](documentation/en/README.md)
+Wiki docs (FR/EN): [documentation/](documentation/README.md) — [en/](documentation/en/README.md) · [fr/](documentation/fr/README.md)
 
-**V2 interface :** [fr/v2-interface-utilisateur.md](documentation/fr/v2-interface-utilisateur.md) · [en/v2-user-interface.md](documentation/en/v2-user-interface.md).
+**V2 UI:** [en/v2-user-interface.md](documentation/en/v2-user-interface.md) · [fr/v2-interface-utilisateur.md](documentation/fr/v2-interface-utilisateur.md).
 
-Le paquet `joedixon/laravel-translation` est présent pour faciliter la gestion des chaînes.
+`joedixon/laravel-translation` is available to help manage strings.
 
 ---
 
-## Qualité & tests
+## Quality & tests
 
 ```bash
-./vendor/bin/pint          # formatage PHP (Laravel Pint)
-./vendor/bin/phpstan analyse   # analyse statique (selon config du projet)
-php artisan test           # PHPUnit
+./vendor/bin/pint              # PHP formatting (Laravel Pint)
+./vendor/bin/phpstan analyse   # static analysis (per project config)
+php artisan test               # PHPUnit
 ```
 
 ---
 
-## Démo
+## Demo
 
-Une démo peut être accessible (ex. **vrp.xdm-consulting.fr**) ; les identifiants de test ne doivent **pas** figurer en clair dans le dépôt — utilisez un canal privé ou des secrets d’environnement.
+A demo may be available (e.g. **vrp.xdm-consulting.fr**). Do **not** commit test credentials — use a private channel or environment secrets.
 
 ---
 
-## Roadmap — facturation électronique
+## Roadmap — e-invoicing
 
-**Priorité actuelle.** VRP prépare les factures (planning, PDF, identifiants légaux) ; une **Plateforme agréée (PA)** externe gère émission structurée, routage et archivage.
+**Current priority.** VRP prepares invoices (planning, PDF, legal IDs); an external **accredited platform (PA)** handles structured submission, routing, and archiving.
 
-| Échéance | Qui |
+| Deadline | Who |
 |----------|-----|
-| Réception e-factures | **1ᵉʳ sept. 2026** — assujettis TVA |
-| Émission | **1ᵉʳ sept. 2026** (GE/ETI) · **2027** (PME/TPE) |
+| Receive e-invoices | **1 Sep 2026** — VAT-liable entities |
+| Issue | **1 Sep 2026** (large/mid-size) · **2027** (SME) |
 
-**Déjà en place :** PDF, statuts e-facture (`draft` → `ready` → `transmitted` → `accepted` / `rejected`), SIREN/SIRET sur société et clients.
+**Already in place:** PDF, e-invoice statuses (`draft` → `ready` → `transmitted` → `accepted` / `rejected`), SIREN/SIRET on company and clients.
 
-**POC :** adaptateur **[SuperPDP](https://www.superpdp.tech/)** implémenté (envoi PDF). Configurer `E_INVOICE_PLATFORM=superpdp` et `SUPERPDP_ACCESS_TOKEN` dans `.env`. Voir [documentation/fr/roadmap-facturation-electronique.md](documentation/fr/roadmap-facturation-electronique.md#configuration-superpdp-poc).
+**POC:** **[SuperPDP](https://www.superpdp.tech/)** adapter (PDF send). Set `E_INVOICE_PLATFORM=superpdp` and `SUPERPDP_ACCESS_TOKEN` in `.env`. See [roadmap-electronic-invoicing.md](documentation/en/roadmap-electronic-invoicing.md).
 
-Documentation complète (spec d’intégration, phases, structure de code) :
+Full docs (integration spec, phases, code layout):
 
-- [documentation/fr/roadmap-facturation-electronique.md](documentation/fr/roadmap-facturation-electronique.md)
 - [documentation/en/roadmap-electronic-invoicing.md](documentation/en/roadmap-electronic-invoicing.md)
+- [documentation/fr/roadmap-facturation-electronique.md](documentation/fr/roadmap-facturation-electronique.md)
 
 ---
 
-## Roadmap — PWA & mode hors ligne
+## Roadmap — PWA & offline
 
-Idée retenue pour plus tard : permettre à l’utilisateur de **consulter l’agenda** (puis éventuellement **saisir des séances**) **sans connexion**, avec synchronisation au retour du réseau — via une **PWA** installable sur mobile, plutôt qu’une app native.
+Later idea: let users **browse the agenda** (then maybe **enter sessions**) **offline**, sync when back online — via an installable **PWA**, not a native app.
 
-**Non planifié à court terme** (API + stockage local + gestion des conflits). Aujourd’hui : site en ligne uniquement ; l’import calendrier `.ics` reste le seul flux externe → VRP.
+**Not short-term** (API + local storage + conflict handling). Today: online only; `.ics` calendar import is the only external → VRP flow.
 
-| Phase | Objectif |
-|-------|----------|
-| 0 | Shell PWA (manifest, icônes, installation) |
-| 1 | Agenda consultable offline (**MVP**) |
-| 2 | Saisie offline + file de synchro |
-| 3 | Facturation, trésorerie, documents → en ligne seulement |
+| Phase | Goal |
+|-------|------|
+| 0 | PWA shell (manifest, icons, install) |
+| 1 | Offline agenda browse (**MVP**) |
+| 2 | Offline entry + sync queue |
+| 3 | Billing, treasury, documents → online only |
 
-Documentation détaillée : [documentation/fr/roadmap-pwa-offline.md](documentation/fr/roadmap-pwa-offline.md) · [documentation/en/roadmap-pwa-offline.md](documentation/en/roadmap-pwa-offline.md)
+Docs: [roadmap-pwa-offline.md](documentation/en/roadmap-pwa-offline.md) · [fr](documentation/fr/roadmap-pwa-offline.md)
 
 ---
 
-## Contribution
+## Contributing
 
-Les suggestions et *pull requests* sont les bienvenues :
+Suggestions and pull requests are welcome:
 
-1. Forkez le dépôt  
-2. Créez une branche (`feature/...` ou `fix/...`)  
-3. Commits clairs, PR ciblée avec description courte  
-4. Vérifiez Pint / tests quand c’est pertinent  
+1. Fork the repo
+2. Create a branch (`feature/...` or `fix/...`)
+3. Clear commits, focused PR with a short description
+4. Run Pint / tests when relevant
 
 ---
 
 ## Licence
 
-Distribué sous **GNU GPLv3** — voir le fichier [`LICENSE`](./LICENSE).
+Distributed under **GNU GPLv3** — see [`LICENSE`](./LICENSE).
 
 ---
 
@@ -248,9 +252,9 @@ Distribué sous **GNU GPLv3** — voir le fichier [`LICENSE`](./LICENSE).
 
 **Marc Augier** — [@marcyves](https://github.com/marcyves) · [LinkedIn](https://linkedin.com/in/marcaugier)
 
-Si le projet vous est utile, vous pouvez soutenir le travail :  
+If this project helps you, you can support the work:
 [![Buy Me A Coffee](https://cdn.buymeacoffee.com/buttons/v2/default-blue.png)](https://www.buymeacoffee.com/marcyves)
 
 ---
 
-*README mis à jour pour refléter le dépôt **VRP-Resource-Planning**, la stack Laravel 11 / Vite, et la **v2 interface utilisateur**.*
+*README for **VRP-Resource-Planning** — Laravel 11 / Vite, **v2 UI**. French translation: [README.fr.md](README.fr.md).*
