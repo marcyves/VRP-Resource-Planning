@@ -46,6 +46,14 @@ class Group extends Model
     }
 
     /**
+     * Whether this group is already linked to a course other than $courseId.
+     */
+    public function isLinkedToOtherCourse(int $courseId): bool
+    {
+        return $this->courses()->where('courses.id', '!=', $courseId)->exists();
+    }
+
+    /**
      * @param  iterable<int>  $groupIds
      */
     public static function planningOccurrencesForIds(iterable $groupIds, int|string $year = 'all'): \Illuminate\Support\Collection

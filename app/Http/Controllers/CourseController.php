@@ -120,7 +120,18 @@ class CourseController extends Controller
         $allLinkedForPlanning = $groups->merge($inactive_linked_groups);
         $occurences = $allLinkedForPlanning->getGroupOccurences();
 
-        return view('course.show', compact('course', 'groups', 'inactive_linked_groups', 'available_groups', 'occurences'));
+        view()->share('schoolContextSchool', $school);
+        $allowMultiCourseGroups = \App\Support\SchoolContext::allowsMultiCourseLink($school);
+
+        return view('course.show', compact(
+            'course',
+            'groups',
+            'inactive_linked_groups',
+            'available_groups',
+            'occurences',
+            'school',
+            'allowMultiCourseGroups',
+        ));
     }
 
     /**

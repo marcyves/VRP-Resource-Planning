@@ -32,6 +32,15 @@ class SchoolContext
     }
 
     /**
+     * Mentoring schools allow a group/student on several courses/activities.
+     * Education schools: one group ↔ one course (UI + soft validation).
+     */
+    public static function allowsMultiCourseLink(?School $school): bool
+    {
+        return self::isMentoring($school);
+    }
+
+    /**
      * Translate a messages.* key, applying mentoring overlays when relevant.
      */
     public static function msg(?School $school, string $key, array $replace = []): string

@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2>{{ __('messages.course_details') }}: {{ $course->name }}</h2>
+        <h2>@schoolMsg('course_details'): {{ $course->name }}</h2>
     </x-slot>
 
     <section class="course-details-section">
@@ -15,7 +15,7 @@
         <div class="course-info-grid">
             <article>
                 <p>
-                    <span class="card-label">{{ __('messages.program') }}</span>
+                    <span class="card-label">@schoolMsg('program')</span>
                     <a href="{{ route('program.show', $course->program_id) }}">{{ $course->program_name }}</a>
                 </p>
                 <p>
@@ -50,15 +50,15 @@
 
     <section class="course-groups-section">
         <header>
-            <h2>{{ __('messages.groups') }}</h2>
+            <h2>@schoolMsg('groups')</h2>
             @if (Auth::user()->getMode() == 'Edit')
-            <a class="btn btn-secondary" href="{{ route('group.new', $course->id) }}">{{ __('messages.group_create') }}</a>
+            <a class="btn btn-secondary" href="{{ route('group.new', $course->id) }}">@schoolMsg('group_create')</a>
             @endif
         </header>
-        <p class="form-hint">{{ __('messages.groups_course_help') }}</p>
+        <p class="form-hint">@schoolMsg('groups_course_help')</p>
 
         @if ($groups->isEmpty())
-            <p class="program-empty" role="status">{{ __('messages.no_group') }}</p>
+            <p class="program-empty" role="status">@schoolMsg('no_group')</p>
         @else
             <x-course-groups-table :groups="$groups" :occurences="$occurences" :show-archive="true" />
         @endif
@@ -67,19 +67,19 @@
     @if ($inactive_linked_groups->isNotEmpty())
     <section class="course-groups-section course-groups-section--inactive">
         <header>
-            <h2>{{ __('messages.inactive_groups_on_course') }}</h2>
+            <h2>@schoolMsg('inactive_groups_on_course')</h2>
         </header>
-        <p class="form-hint">{{ __('messages.inactive_groups_on_course_help') }}</p>
+        <p class="form-hint">@schoolMsg('inactive_groups_on_course_help')</p>
         <x-course-groups-table :groups="$inactive_linked_groups" :occurences="$occurences" :show-archive="true" :archived="true" />
     </section>
     @endif
 
-    @if (Auth::user()->getMode() == 'Edit')
+    @if (Auth::user()->getMode() == 'Edit' && $allowMultiCourseGroups)
     <section class="course-available-groups">
         <header class="program-section-header">
-            <h2>{{ __('messages.groups_available') }}</h2>
+            <h2>@schoolMsg('groups_available')</h2>
         </header>
-        <p class="form-hint">{{ __('messages.groups_available_help') }}</p>
+        <p class="form-hint">@schoolMsg('groups_available_help')</p>
         <x-course-available-groups-table :groups="$available_groups" />
     </section>
     @endif

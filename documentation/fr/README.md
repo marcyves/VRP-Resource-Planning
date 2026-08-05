@@ -17,6 +17,7 @@ Fiches wiki : modèle métier, parcours utilisateur et **contexte terminologique
 | [Libellés mode consulting](libelles-consulting.md) | Correspondances et libellés spécifiques |
 | **[V2 — interface utilisateur](v2-interface-utilisateur.md)** | Vue d’ensemble de la refonte UI |
 | [V2 — navigation & modules](v2-navigation-modules.md) | Sidebar, accueil `/home`, onglets |
+| [V2 — mode école mentoring](v2-mode-ecole-mentoring.md) | Libellés formation vs mentoring par école |
 | [V2 — facturation par école](v2-facturation-par-ecole.md) | Préparation facturation sur fiche école |
 | [V2 — trésorerie & rapprochement bancaire](v2-tresorerie-rapprochement-bancaire.md) | Dashboard factures, comptes bancaires, imports et rapprochement |
 | [V2 — design system CSS](v2-design-system-css.md) | Tokens, composants, build Vite |

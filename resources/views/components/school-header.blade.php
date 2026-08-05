@@ -1,8 +1,15 @@
-@props(['school_id', 'school_name'])
-<div class="school-header card-content card-content--school">
-    <a href="{{ route('school.show', $school_id) }}" class="school-header__name">
-        {{ html_entity_decode($school_name) }}
-    </a>
+@props(['school_id', 'school_name', 'showName' => true])
+<div @class([
+    'school-header',
+    'card-content',
+    'card-content--school',
+    'school-header--tools-only' => ! $showName,
+])>
+    @if ($showName)
+        <a href="{{ route('school.show', $school_id) }}" class="school-header__name">
+            {{ html_entity_decode($school_name) }}
+        </a>
+    @endif
     @if (Auth::user()->getMode() == 'Edit')
         <div class="school-header__tools" role="toolbar" aria-label="{{ __('messages.actions') }}">
             <form action="{{ route('school.edit', $school_id) }}" method="get">

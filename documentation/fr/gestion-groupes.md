@@ -2,47 +2,49 @@
 
 **EN:** [group-management.md](../en/group-management.md)
 
-## Modèle simplifié
+## Modèle (BDD inchangée)
 
 | Concept | Rôle |
 |---------|------|
-| **Groupe** (`groups`) | Ressource de l’entreprise : nom, effectif, année. |
-| **Lien cours** (`group_course`) | Rattache un groupe à un ou plusieurs cours. |
-| **Actif** (`groups.active`) | Visible dans le planning et les listes de travail. |
-| **Archivé** (`active = false`) | Conservé pour l’historique ; masqué du planning et des sélections. |
+| **Groupe** (`groups`) | Ressource entreprise : nom, effectif, année. |
+| **Lien cours** (`group_course`) | Pivot : rattache un groupe à un ou plusieurs cours. |
+| **Actif** (`groups.active`) | Visible dans le planning. |
+| **Archivé** | Masqué du planning ; liens conservés. |
 
-Un groupe **n’appartient pas** à un seul cours : il appartient à l’entreprise et se **lie** aux cours via `group_course`.
+Le schéma reste N–N. **Les règles métier sont appliquées en UI + validation**, selon le mode de l’école :
 
-## Parcours recommandé (vacataire)
+| Mode école | Règle |
+|------------|--------|
+| **Formation** (`education`) | Un groupe ↔ **un seul** cours |
+| **Mentoring** (`mentoring`) | Un étudiant ↔ **plusieurs** activités |
 
-1. **Créer ou ouvrir un cours** (fiche cours).
-2. **Créer un groupe** depuis « Nouveau groupe » ou depuis la liste `/group` → le groupe est actif et **lié automatiquement au cours en session** (`course_id` / `course` dans la session), si vous avez ouvert une fiche cours avant.
-3. **Planifier** : seuls les groupes **actifs liés au cours** apparaissent dans l’agenda.
-4. **Réutiliser** un groupe sur un autre cours : section « Groupes disponibles » → lier (flèche).
-5. **Clôturer une année** : archiver le groupe (icône archive) — il disparaît du planning mais reste en base.
-6. **Retirer d’un cours seulement** : corbeille sur la fiche cours (supprime le lien, pas le groupe).
+## Parcours recommandé
+
+1. Ouvrir une **école**, puis un **cours** (ou activité).
+2. Sur la fiche cours : **Créer un groupe** / étudiant → lié automatiquement à ce cours.
+3. **Planifier** : seuls les groupes actifs liés au cours apparaissent.
+4. **Mentoring seulement** : section « Étudiants disponibles » pour rattacher un étudiant déjà créé à une autre activité.
+5. **Archiver** / **délier** depuis la fiche cours.
+
+**Référentiel → Groupes** : catalogue de consultation (actif / inactif). La **création** se fait depuis la fiche cours.
 
 ## Différence archive / délier
 
 | Action | Effet |
 |--------|--------|
-| **Archiver** | Global : plus visible nulle part pour le travail courant ; liens `group_course` conservés. |
-| **Délier du cours** | Retire uniquement le lien avec **ce** cours ; le groupe reste actif pour les autres cours. |
-| **Supprimer** | Efface le groupe (refusé s’il a des sessions planifiées). |
+| **Archiver** | Global : masqué du travail courant ; liens `group_course` conservés. |
+| **Délier du cours** | Retire le lien avec **ce** cours. |
+| **Supprimer** | Efface le groupe (refusé s’il a des sessions). |
 
-## Vues
+## Implémentation
 
-- **Fiche cours** : groupes actifs, puis archivés encore liés, puis pool « disponibles » (actifs non liés).
-- **Liste groupes** (`/group`) : catalogue actif + section « Groupes inactifs » paginée.
-
-## Implémentation (référence code)
-
-- `Course::getLinkedGroups(?bool $active)` — groupes liés, filtre actif optionnel.
-- `Course::getAvailableGroups()` — actifs non liés à ce cours.
-- `GroupController::store` — nouveaux groupes toujours `active = true` ; lien `group_course` si création depuis un cours.
-- `PlanningController` — sélection limitée aux groupes actifs liés au cours.
+- `CourseController@show` — hub groupes ; section « disponibles » si mentoring.
+- `GroupController::linkGroupToCourse` — refuse un 2ᵉ cours en formation.
+- `SchoolContext::allowsMultiCourseLink`
+- `group.index` — catalogue ; création via `group.new` depuis un cours.
 
 ## Liens
 
+- [Mode école mentoring](v2-mode-ecole-mentoring.md)
 - [Modèle de données](modele-donnees-formation.md)
-- [Parcours de création](parcours-creation-ecole.md)
+- [Navigation V2](v2-navigation-modules.md)

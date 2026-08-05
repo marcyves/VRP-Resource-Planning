@@ -38,14 +38,24 @@ class GroupController extends Controller
         return $sessionCourseId ? (int) $sessionCourseId : null;
     }
 
-    private function linkGroupToCourse(Group $group, int $courseId): void
+    private function linkGroupToCourse(Group $group, int $courseId): bool
     {
-        $this->companyCourse($courseId);
+        $course = $this->companyCourse($courseId);
+        $course->loadMissing('school');
+
+        if (! \App\Support\SchoolContext::allowsMultiCourseLink($course->school)
+            && $group->isLinkedToOtherCourse($courseId)) {
+            session()->flash('danger', __('messages.group_link_education_single'));
+
+            return false;
+        }
 
         GroupCourse::firstOrCreate([
             'group_id' => $group->id,
             'course_id' => $courseId,
         ]);
+
+        return true;
     }
 
     /**
@@ -95,9 +105,17 @@ class GroupController extends Controller
     public function create(String $course_id)
     {
         $linkCourseId = $this->resolveCourseIdForLink($course_id);
-        $linkCourseName = $linkCourseId
-            ? (session('course') ?? $this->companyCourse($linkCourseId)->name)
-            : null;
+        if ($linkCourseId === null) {
+            session()->flash('danger', __('messages.group_link_no_course'));
+
+            return redirect()->route('home');
+        }
+
+        $course = $this->companyCourse($linkCourseId);
+        $course->loadMissing('school');
+        view()->share('schoolContextSchool', $course->school);
+
+        $linkCourseName = session('course') ?? $course->name;
 
         return view('group.create', compact('course_id', 'linkCourseId', 'linkCourseName'));
     }
@@ -117,6 +135,12 @@ class GroupController extends Controller
         $year = $request->year ?? now()->format('Y');
         $linkCourseId = $this->resolveCourseIdForLink($course_id);
 
+        if ($linkCourseId === null) {
+            session()->flash('danger', __('messages.group_link_no_course'));
+
+            return redirect()->route('home');
+        }
+
         try{
             $group = Group::create([
                     'name' => $request->name,
@@ -129,11 +153,9 @@ class GroupController extends Controller
 
             session()->flash('success', __('messages.group_saved_success'));
 
-            if ($linkCourseId === null) {
-                return redirect(route('group.index'));
+            if (! $this->linkGroupToCourse($group, $linkCourseId)) {
+                return redirect()->route('course.show', $linkCourseId);
             }
-
-            $this->linkGroupToCourse($group, $linkCourseId);
 
             return redirect(route('course.show', $linkCourseId));
         }
@@ -158,13 +180,11 @@ class GroupController extends Controller
             return redirect()->back();
         }
 
-        $this->companyCourse((int) $course_id);
         $group = $this->companyGroup($group_id);
 
-        GroupCourse::firstOrCreate([
-            'course_id' => $course_id,
-            'group_id' => $group->id,
-        ]);
+        if (! $this->linkGroupToCourse($group, (int) $course_id)) {
+            return redirect()->back();
+        }
 
         session()->flash('success', __('messages.group_linked_success'));
 
@@ -213,8 +233,9 @@ class GroupController extends Controller
         $courses = $group->getCourses();
         $current_year = session('current_year', now()->format('Y'));
         $occurences = (new PlanningCollection([$group]))->getGroupOccurences($current_year);
+        $returnCourseId = session('course_id') ?: $courses->first()?->id;
 
-        return view('group.show', compact('courses', 'group', 'occurences'));
+        return view('group.show', compact('courses', 'group', 'occurences', 'returnCourseId'));
     }
 
     /**
@@ -224,7 +245,15 @@ class GroupController extends Controller
     {
         $group = $this->companyGroup($group_id);
         $linkedCourses = $group->getCourses();
-        $returnCourseId = session('course_id');
+        $returnCourseId = session('course_id') ?: $linkedCourses->first()?->id;
+
+        $contextSchool = null;
+        if ($returnCourseId) {
+            $contextCourse = $this->companyCourse((int) $returnCourseId);
+            $contextCourse->loadMissing('school');
+            $contextSchool = $contextCourse->school;
+            view()->share('schoolContextSchool', $contextSchool);
+        }
 
         return view('group.edit', compact('group', 'linkedCourses', 'returnCourseId'));
     }
@@ -254,7 +283,12 @@ class GroupController extends Controller
                 return redirect(route('course.show', $request->return_course_id));
             }
 
-            return redirect(route('group.show', $group_id));
+            $fallbackCourseId = $group->getCourses()->first()?->id;
+            if ($fallbackCourseId) {
+                return redirect(route('course.show', $fallbackCourseId));
+            }
+
+            return redirect()->route('home');
         }
         catch (\Exception $e) {
             // dd($e);

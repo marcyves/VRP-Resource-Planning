@@ -44,10 +44,11 @@ class PlanningController extends Controller
 
         session()->put('school', $school->name);
         session()->put('school_id', $school->id);
+        session()->put('last_school_id', $school->id);
         session()->forget('course');
         session()->forget('course_id');
 
-        return redirect()->to($this->planningContextRedirectUrl($request));
+        return redirect()->to($this->planningContextRedirectUrl($request, $school));
     }
 
     public function selectCourse(Request $request)
@@ -543,14 +544,45 @@ class PlanningController extends Controller
         session()->put('school_id', $school->id);
     }
 
-    private function planningContextRedirectUrl(Request $request): string
+    private function planningContextRedirectUrl(Request $request, ?School $school = null): string
     {
         $redirect = $request->input('redirect');
 
         if (is_string($redirect) && $redirect !== '' && str_starts_with($redirect, url('/'))) {
+            if ($school !== null) {
+                $rewritten = $this->rewriteSchoolScopedRedirect($redirect, $school);
+                if ($rewritten !== null) {
+                    return $rewritten;
+                }
+            }
+
             return $redirect;
         }
 
         return route('planning.index');
+    }
+
+    /**
+     * On school show/edit, changing the breadcrumb school must open that school
+     * (not bounce back to the previous school URL which re-binds session).
+     */
+    private function rewriteSchoolScopedRedirect(string $redirect, School $school): ?string
+    {
+        $path = parse_url($redirect, PHP_URL_PATH) ?? '';
+        $query = parse_url($redirect, PHP_URL_QUERY);
+
+        if (preg_match('#/school/\d+/edit/?$#', $path)) {
+            $url = route('school.edit', $school->id);
+
+            return $query ? "{$url}?{$query}" : $url;
+        }
+
+        if (preg_match('#/school/\d+/?$#', $path)) {
+            $url = route('school.show', $school);
+
+            return $query ? "{$url}?{$query}" : $url;
+        }
+
+        return null;
     }
 }

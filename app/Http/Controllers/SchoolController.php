@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Utility\Tools;
+use App\Models\Group;
 use App\Models\School;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -154,21 +155,49 @@ class SchoolController extends Controller
 
         view()->share('schoolContextSchool', $school);
 
-        $invoices = $school->getInvoices($year);
-        $documents = $school->getDocuments();
-        $bills = $invoices;
+        $panel = $request->query('panel', 'courses');
+        if ($request->query('focus') === 'billing') {
+            $panel = 'courses';
+        }
+        if ($panel === 'address') {
+            $panel = 'details';
+        }
+        if (! in_array($panel, ['courses', 'groups', 'details', 'documents'], true)) {
+            $panel = 'courses';
+        }
 
+        $invoices = collect();
+        $documents = collect();
+        $bills = collect();
+        $groups = collect();
+        $inactiveGroups = collect();
+        $occurences = collect();
         $billingData = null;
         $monthlyHours = 0;
         $monthlyGain = 0;
+        $hasPreviousUnbilled = false;
 
-        $planning = $school->getBillingPlanning($billingYear, $currentMonth);
-        if ($planning) {
-            [$schoolsBilling, $monthlyGain, $monthlyHours] = Tools::getBillingInformation($planning);
-            $billingData = reset($schoolsBilling) ?: null;
+        if ($panel === 'courses') {
+            $invoices = $school->getInvoices($year);
+            $bills = $invoices;
+
+            $planning = $school->getBillingPlanning($billingYear, $currentMonth);
+            if ($planning) {
+                [$schoolsBilling, $monthlyGain, $monthlyHours] = Tools::getBillingInformation($planning);
+                $billingData = reset($schoolsBilling) ?: null;
+            }
+
+            $hasPreviousUnbilled = $school->hasPreviousUnbilledPeriod($billingYear, $currentMonth);
+        } elseif ($panel === 'groups') {
+            $groups = $school->getLinkedGroups(true);
+            $inactiveGroups = $school->getLinkedGroups(false);
+            $occurences = Group::planningOccurrencesForIds(
+                $groups->pluck('id')->merge($inactiveGroups->pluck('id')),
+                $year
+            );
+        } elseif ($panel === 'documents') {
+            $documents = $school->getDocuments();
         }
-
-        $hasPreviousUnbilled = $school->hasPreviousUnbilledPeriod($billingYear, $currentMonth);
 
         return view('school.show', compact(
             'school',
@@ -186,6 +215,10 @@ class SchoolController extends Controller
             'bills',
             'billingByDate',
             'hasPreviousUnbilled',
+            'panel',
+            'groups',
+            'inactiveGroups',
+            'occurences',
         ));
     }
 
@@ -247,7 +280,7 @@ class SchoolController extends Controller
 
             session()->flash('success', __('messages.school_updated_success', ['name' => $request->name]));
 
-            return redirect(route('dashboard'));
+            return redirect()->to(route('school.show', $school).'?panel=details');
         } catch (\Exception $e) {
             // dd($e);
 

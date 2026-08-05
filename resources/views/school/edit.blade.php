@@ -45,7 +45,7 @@
                     <x-text-input type="text" name="vat_number" id="vat_number" value="{{ old('vat_number', $school->vat_number) }}" />
                 </div>
                 <div class="form-group">
-                    <x-input-label for="electronic_address">Adresse électronique (PEPPOL 0225)</x-input-label>
+                    <x-input-label for="electronic_address">{{ __('messages.electronic_address') }}</x-input-label>
                     <x-text-input type="text" name="electronic_address" id="electronic_address" placeholder="315143296_12712" value="{{ old('electronic_address', $school->electronic_address) }}" />
                 </div>
             </fieldset>
@@ -72,7 +72,7 @@
             </div>
 
             <div class="form-actions">
-                <a class="btn btn-secondary" href="{{ route('school.show', $school->id) }}">{{ __('messages.cancel') }}</a>
+                <a class="btn btn-secondary" href="{{ route('school.show', $school->id) }}?panel=details">{{ __('messages.cancel') }}</a>
                 <x-button-primary>{{ __('messages.update') }}</x-button-primary>
             </div>
         </form>

@@ -50,7 +50,7 @@
                     <table>
                         <thead>
                             <tr>
-                                <th>{{ __('messages.group') }}</th>
+                                <th>@schoolMsg('group')</th>
                                 <th>{{ __('messages.schedule') }}</th>
                                 <th>{{ __('messages.hours') }}</th>
                                 <th>{{ __('messages.bill') }}</th>

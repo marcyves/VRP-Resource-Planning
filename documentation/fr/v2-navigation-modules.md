@@ -18,6 +18,7 @@
 4. séparateur
 5. **Référentiel** (sous-menu) → Programmes · Groupes
 
+Catalogue **Groupes** conservé pour consultation ; **création** depuis la fiche cours (règles formation 1 cours / mentoring multi — [gestion des groupes](gestion-groupes.md)).
 Pas d’entrée sidebar **Facturation** : la préparation reste sur `school.show#billing` (raccourci `nav.billing` conservé pour usage interne).
 
 La sidebar démarre en mode compact sauf si `vrp-sidebar-compact` vaut `false` dans `localStorage`.
@@ -68,3 +69,4 @@ Les actions **Créer facture** / **Créer dépense** sont des boutons dans les p
 - [V2 — vue d’ensemble](v2-interface-utilisateur.md)
 - [V2 — facturation par école](v2-facturation-par-ecole.md)
 - [V2 — trésorerie & rapprochement bancaire](v2-tresorerie-rapprochement-bancaire.md)
+- [V2 — mode école mentoring](v2-mode-ecole-mentoring.md)

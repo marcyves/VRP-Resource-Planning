@@ -18,6 +18,7 @@
 4. separator
 5. **Referential** (submenu) → Programs · Groups
 
+**Groups** catalog kept for browsing; **create** from the course page (training = one course / mentoring = multi — [group management](group-management.md)).
 No top-level **Billing** sidebar item: preparation stays on `school.show#billing` (internal `nav.billing` shortcut kept).
 
 The sidebar starts in compact mode unless `vrp-sidebar-compact` is `false` in `localStorage`.
@@ -68,3 +69,4 @@ Post-login constant: `RouteServiceProvider::HOME = '/home'`.
 - [V2 — overview](v2-user-interface.md)
 - [V2 — billing per school](v2-billing-per-school.md)
 - [V2 — treasury & bank reconciliation](v2-treasury-bank-reconciliation.md)
+- [V2 — school mode mentoring](v2-school-mode-mentoring.md)
