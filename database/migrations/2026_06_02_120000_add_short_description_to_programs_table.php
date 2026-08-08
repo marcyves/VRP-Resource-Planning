@@ -8,6 +8,10 @@ return new class extends Migration
 {
     public function up(): void
     {
+        if (Schema::hasColumn('programs', 'short_description')) {
+            return;
+        }
+
         Schema::table('programs', function (Blueprint $table) {
             $table->string('short_description', 80)->nullable()->after('name');
         });
@@ -15,6 +19,10 @@ return new class extends Migration
 
     public function down(): void
     {
+        if (! Schema::hasColumn('programs', 'short_description')) {
+            return;
+        }
+
         Schema::table('programs', function (Blueprint $table) {
             $table->dropColumn('short_description');
         });
