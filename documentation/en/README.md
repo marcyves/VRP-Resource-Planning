@@ -17,11 +17,12 @@ Wiki-style guides: data model, user workflows, and **terminology profiles** (tra
 | [Consulting labels](consulting-labels.md) | Label mapping and consulting-specific strings |
 | **[V2 — user interface](v2-user-interface.md)** | UI refactor overview |
 | [V2 — navigation & modules](v2-navigation-modules.md) | Sidebar, `/home`, module tabs |
-| [V2 — school mode mentoring](v2-school-mode-mentoring.md) | Per-school education vs mentoring labels |
+| [V2 — school mode mentoring](v2-school-mode-mentoring.md) | Per-school education vs mentoring labels, detail panels, breadcrumb switch |
 | [V2 — billing per school](v2-billing-per-school.md) | Billing preparation on school detail |
 | [V2 — treasury & bank reconciliation](v2-treasury-bank-reconciliation.md) | Invoice dashboard, bank accounts, imports and matching |
 | [V2 — CSS design system](v2-design-system-css.md) | Tokens, components, Vite build |
 | [V2 — code review & list refactor](v2-code-review-list-refactoring.md) | Global review, steps 1–3 + i18n, remaining items |
+| [Electronic invoicing (ops)](electronic-invoicing.md) | SuperPDP setup, submit flow, webhooks, pitfalls |
 | **[Roadmap — electronic invoicing](roadmap-electronic-invoicing.md)** | PA-agnostic spec, phases, code structure |
 | [Roadmap — PWA & offline](roadmap-pwa-offline.md) | Mobile app / offline — deferred idea |
 

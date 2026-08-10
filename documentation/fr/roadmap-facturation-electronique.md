@@ -14,7 +14,9 @@ La réforme de la **facturation électronique B2B** en France impose des facture
 | Émission — GE et ETI | **1ᵉʳ septembre 2026** |
 | Émission — PME, TPE, micro-entreprises | **1ᵉʳ septembre 2027** |
 
-VRP couvre aujourd’hui la **préparation métier** et l’**émission PDF** (TCPDF). La conformité au nouveau modèle repose sur une **couche d’abstraction PA** + une **PA externe** pour émission, routage, e-reporting et archivage probant.
+VRP couvre la **préparation métier**, l’**émission PDF** (TCPDF) et un **POC SuperPDP** d’émission structurée (CII → Factur-X). Archivage probant, routage annuaire et e-reporting restent chez la PA externe.
+
+Configuration, parcours d’émission, webhooks et commandes artisan : **[facturation-electronique.md](facturation-electronique.md)**.
 
 ## État actuel dans l’application
 
@@ -25,9 +27,11 @@ VRP couvre aujourd’hui la **préparation métier** et l’**émission PDF** (T
 | SIREN / SIRET / TVA sur `companies` et `schools` | ✅ (champs + écrans) |
 | Statuts e-facture sur `invoices` | ✅ (`ElectronicInvoiceStatus`) |
 | Identifiants légaux dans le PDF (plus de valeurs en dur) | ✅ via fiches société / école |
-| Couche PA agnostique + connecteurs | ❌ |
+| Couche PA agnostique + drivers `Null` / `SuperPdp` | ✅ POC |
+| Émission structurée (CII → Factur-X via SuperPDP) | ✅ POC |
+| Bouton d’émission Trésorerie → Factures | ✅ si plateforme configurée |
+| Webhooks de statut | ✅ stub + vérif HMAC |
 | Réception fournisseurs via PA | ❌ |
-| Émission structurée vers PA | ❌ |
 
 Champs existants sur `invoices` :
 
@@ -264,11 +268,11 @@ routes/web.php                           # webhook
 
 | Phase | Écran | Action |
 |-------|-------|--------|
-| 1 | Liste factures | Colonne statut e-facture (existant) |
-| 2 | Détail / liste | Bouton **Émettre e-facture** si `ready` |
-| 2 | Détail | Afficher `pdp_reference`, motif rejet |
-| 2 | Trésorerie | Onglet **Factures reçues** (inbound PA) |
-| 3 | Mon entreprise | État onboarding PA (connecté / incomplet) |
+| 1 | Liste factures | Colonne statut e-facture ✅ |
+| 2 | Trésorerie → Factures | Bouton **Émettre e-facture** si `ready` et plateforme configurée ✅ |
+| 2 | Liste / pastille statut | `pdp_reference` / rejet via webhooks |
+| 2 | Trésorerie | Onglet **Factures reçues** (inbound PA) ❌ |
+| 3 | Mon entreprise | État onboarding PA (connecté / incomplet) ❌ |
 
 Le suivi **payée** (`paid_at`) reste indépendant du statut e-facture.
 
@@ -283,18 +287,19 @@ Le suivi **payée** (`paid_at`) reste indépendant du statut e-facture.
 ### Phase 2 — Couche PA + réception (cible : sept. 2026)
 
 1. Contrat `ElectronicInvoicePlatform` + driver `Null` ✅
-2. Adaptateur **`SuperPdpPlatform`** (envoi PDF) ✅ *POC*
-3. Bouton **Émettre e-facture** + validations ✅ *POC*
-4. Webhook statuts SuperPDP — stub en place, à brancher côté SuperPDP
-5. Réception factures fournisseurs (affichage minimal)
-6. Tests automatisés + payload EN16931 natif (au-delà du PDF)
+2. Builder CII + validateur ✅ (`ElectronicInvoiceCiiBuilder`)
+3. Webhook + `ElectronicInvoiceService` ✅
+4. Adaptateur **`SuperPdpPlatform`** (sandbox / production) ✅ *POC*
+5. Bouton **Émettre e-facture** + envoi outbound ✅ *POC*
+6. Réception factures fournisseurs (affichage minimal) ❌
+7. Couverture automatisée élargie (mapping statuts / webhook e2e)
 
-### Phase 3 — Émission (cible : sept. 2027 PME)
+### Phase 3 — Durcissement obligation PME (cible : sept. 2027)
 
-1. Bouton **Émettre e-facture** depuis VRP
-2. Onboarding entreprise par PA (annuaire)
-3. Envoi outbound + suivi cycle de vie
-4. Avoirs / rectificatives (extension `type: credit_note`)
+1. Onboarding entreprise par PA (annuaire)
+2. Suivi de cycle de vie complet (retry webhooks / ops)
+3. Avoirs / rectificatives (`type: credit_note`)
+4. TVA multi-taux au-delà du **20 %** fixe actuel du builder CII
 
 ### Phase 4 — Qualité
 
@@ -317,13 +322,13 @@ Le suivi **payée** (`paid_at`) reste indépendant du statut e-facture.
 
 L’architecture reste **agnostique** (`ElectronicInvoicePlatform`) : B2Brouter reste une alternative si le produit évolue vers du multi-client marque blanche.
 
-**Prochaine étape code :** Phase 2 avec driver `Null` + `SuperPdpPlatform`, compte sandbox SuperPDP, une facture pilote.
+**Prochaines étapes produit :** réception inbound, durcissement webhooks en production, compléter les données légales sur toutes les écoles clientes.
 
 ## PA candidates (référence)
 
 | PA | Atouts | Statut VRP |
 |----|--------|------------|
-| **[SuperPDP](https://www.superpdp.tech/)** | API-first, gratuit POC, PA française | **POC — adaptateur cible** |
+| **[SuperPDP](https://www.superpdp.tech/)** | API-first, gratuit POC, PA française | **POC — adaptateur implémenté** |
 | [B2Brouter](https://www.b2brouter.net/fr/api-facturation-electronique/) | Marque blanche éditeur, doc DGFiP | Alternative future (multi-client) |
 
 ## Hors périmètre VRP (délégué à la PA)
@@ -343,74 +348,21 @@ L’architecture reste **agnostique** (`ElectronicInvoicePlatform`) : B2Brouter 
 
 ## Configuration SuperPDP (POC)
 
-### 1. Compte SuperPDP
+Le détail opérationnel (`.env`, OAuth sandbox/production, commandes artisan, webhooks, validations, pièges) est dans **[facturation-electronique.md](facturation-electronique.md)**.
 
-Créer un compte sur [superpdp.tech](https://www.superpdp.tech/) et compléter l’entreprise (KYC / annuaire côté SuperPDP).
-
-### 2. Token API VRP
-
-Dans le `.env` local (application **confidentielle** — credentials côté serveur) :
-
-```env
-E_INVOICE_PLATFORM=superpdp
-SUPERPDP_CLIENT_ID=votre_client_id
-SUPERPDP_CLIENT_SECRET=votre_client_secret
-SUPERPDP_BASE_URL=https://api.superpdp.tech
-```
-
-VRP échange automatiquement `client_id` + `client_secret` contre un **token OAuth** (`POST /oauth2/token`, flux `client_credentials`) et le met en cache.
-
-Alternative : `SUPERPDP_ACCESS_TOKEN=` si vous avez déjà un bearer token.
-
-Vérifier la connexion :
-
-```bash
-php artisan superpdp:test
-```
-
-Format sandbox recommandé chez SuperPDP : **Factur-X** (profil AFNOR / EN 16931).
-
-Optionnel pour les webhooks de statut :
-
-```env
-SUPERPDP_WEBHOOK_SECRET=...
-```
-
-URL webhook à configurer chez SuperPDP :  
-`https://votre-domaine/webhooks/e-invoice/superpdp`
-
-### 3. Données VRP
-
-| Fiche | Champs requis |
-|-------|----------------|
-| **Mon entreprise** | SIREN, adresse, ville, CP |
-| **Client (école)** | SIREN ou SIRET, adresse complète |
-
-VRP envoie désormais un **XML CII EN 16931** (pas le PDF TCPDF). SuperPDP attend du structuré ; le PDF seul provoque l’erreur « factur-x.xml ».
-
-### 4. Émission depuis VRP
-
-1. Créer une facture (statut **Prête** automatique).
-2. Trésorerie → Factures : bouton **e** sur les factures prêtes.
-3. VRP envoie le **CII XML** à SuperPDP ; statut → **Transmise** + référence PA.
-
-Le **PDF VRP** reste disponible pour consultation ; l’e-facture utilise le CII généré par `ElectronicInvoiceCiiBuilder`.
-
-### 5. Implémentation code (Phase 2 POC)
-
-| Composant | Fichier |
-|-----------|---------|
-| Contrat PA | `app/Contracts/ElectronicInvoicePlatform.php` |
-| Adaptateur SuperPDP | `app/Platforms/SuperPdp/` |
-| Orchestration | `app/Services/ElectronicInvoicing/ElectronicInvoiceService.php` |
-| Route émission | `POST /invoice/{invoice}/submit-electronic` |
-| Webhook | `POST /webhooks/e-invoice/superpdp` |
+| Besoin | Action |
+|--------|--------|
+| Activer le POC | `E_INVOICE_PLATFORM=superpdp` + credentials OAuth |
+| Tester l’API | `php artisan superpdp:test` |
+| Émettre | Trésorerie → Factures (bouton e) ou `superpdp:send-test --invoice=` |
+| Webhook | `POST /webhooks/e-invoice/superpdp` + `SUPERPDP_WEBHOOK_SECRET` |
 
 ## Actions immédiates
 
-1. Finaliser les **SIREN / SIRET** sur les fiches clients (écoles).
-2. Ajouter **`SUPERPDP_ACCESS_TOKEN`** dans `.env` (voir [Configuration SuperPDP](#configuration-superpdp-poc)).
-3. Tester **une facture pilote** depuis Trésorerie → Factures (bouton **e**).
+1. Finaliser **SIREN / SIRET** (et adresses) sur société et écoles clientes.
+2. Configurer les credentials OAuth SuperPDP — voir [facturation-electronique.md](facturation-electronique.md).
+3. Tester **une facture pilote** depuis Trésorerie → Factures (bouton **e**) ou `php artisan superpdp:send-test --invoice={id}`.
+4. Enregistrer l’URL webhook et `SUPERPDP_WEBHOOK_SECRET` pour les retours de statut.
 
 ## Code existant
 
@@ -418,8 +370,10 @@ Le **PDF VRP** reste disponible pour consultation ; l’e-facture utilise le CII
 - `app/Models/Invoice.php`
 - `app/Services/InvoiceService.php`
 - `app/Classes/InvoiceGenerator.php`
+- `app/Services/ElectronicInvoicing/` · `app/Platforms/SuperPdp/` · `app/Contracts/ElectronicInvoicePlatform.php`
 
 ## Liens
 
-- [README — résumé roadmap](../../README.md#roadmap--facturation-électronique)
+- [Guide opérationnel — facturation électronique](facturation-electronique.md)
+- [README — résumé roadmap](../../README.md#roadmap--e-invoicing)
 - [Roadmap PWA & offline](roadmap-pwa-offline.md) — reportée, non prioritaire

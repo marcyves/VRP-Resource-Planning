@@ -14,7 +14,9 @@ French **B2B e-invoicing** reform requires **structured invoices** (not PDF alon
 | Issue — large companies and mid-caps | **1 September 2026** |
 | Issue — SMEs, micro-businesses | **1 September 2027** |
 
-VRP today covers **business preparation** and **PDF output** (TCPDF). Compliance relies on a **PA-agnostic abstraction layer** plus an **external PA** for issuance, routing, e-reporting, and legal archiving.
+VRP covers **business preparation**, **PDF output** (TCPDF), and a **SuperPDP POC** for structured submission (CII → Factur-X). Legal archiving, directory routing, and e-reporting remain with the external PA.
+
+Operational setup, submit flow, webhooks, and artisan commands: **[electronic-invoicing.md](electronic-invoicing.md)**.
 
 ## Current application state
 
@@ -25,9 +27,11 @@ VRP today covers **business preparation** and **PDF output** (TCPDF). Compliance
 | SIREN / SIRET / VAT on `companies` and `schools` | ✅ (fields + UI) |
 | E-invoice status on `invoices` | ✅ (`ElectronicInvoiceStatus`) |
 | Legal identifiers in PDF (no hard-coded values) | ✅ via company / school records |
-| PA-agnostic layer + connectors | ❌ |
+| PA-agnostic layer + `Null` / `SuperPdp` drivers | ✅ POC |
+| Structured submission (CII → Factur-X via SuperPDP) | ✅ POC |
+| Submit button on Treasury → Invoices | ✅ when platform configured |
+| Webhook status updates | ✅ stub + HMAC verify |
 | Supplier invoice reception via PA | ❌ |
-| Structured submission to PA | ❌ |
 
 Existing `invoices` fields:
 
@@ -253,11 +257,11 @@ routes/web.php
 
 | Phase | Screen | Action |
 |-------|--------|--------|
-| 1 | Invoice list | E-invoice status column (existing) |
-| 2 | Detail / list | **Issue e-invoice** button if `ready` |
-| 2 | Detail | Show `pdp_reference`, rejection reason |
-| 2 | Treasury | **Received invoices** tab (PA inbound) |
-| 3 | My company | PA onboarding state (connected / incomplete) |
+| 1 | Invoice list | E-invoice status column ✅ |
+| 2 | Treasury → Invoices | **Issue e-invoice** button if `ready` and platform configured ✅ |
+| 2 | List / status chip | `pdp_reference` / rejection via status updates (webhook) |
+| 2 | Treasury | **Received invoices** tab (PA inbound) ❌ |
+| 3 | My company | PA onboarding state (connected / incomplete) ❌ |
 
 **Paid** tracking (`paid_at`) stays independent of e-invoice status.
 
@@ -271,19 +275,20 @@ routes/web.php
 
 ### Phase 2 — PA layer + reception (target: Sep 2026)
 
-1. `ElectronicInvoicePlatform` contract + `Null` driver
-2. `ElectronicInvoicePayloadBuilder` + validator
-3. Webhook + `ElectronicInvoiceService`
-4. **`SuperPdpPlatform`** adapter (sandbox)
-5. Supplier invoice reception (minimal UI)
-6. Tests: payload builder, status mapping, webhook
+1. `ElectronicInvoicePlatform` contract + `Null` driver ✅
+2. CII builder + validator ✅ (`ElectronicInvoiceCiiBuilder`)
+3. Webhook + `ElectronicInvoiceService` ✅
+4. **`SuperPdpPlatform`** adapter (sandbox/production) ✅ POC
+5. **Issue e-invoice** button + outbound submit ✅ POC
+6. Supplier invoice reception (minimal UI) ❌
+7. Broader automated coverage (status mapping / webhook e2e)
 
-### Phase 3 — Issuance (target: Sep 2027 for SMEs)
+### Phase 3 — Hardening for SME obligation (target: Sep 2027)
 
-1. **Issue e-invoice** button from VRP
-2. Company onboarding with PA (directory)
-3. Outbound submit + lifecycle tracking
-4. Credit notes (`type: credit_note`)
+1. Company onboarding with PA (directory)
+2. Full lifecycle monitoring (webhook retry / ops)
+3. Credit notes (`type: credit_note`)
+4. Multi-rate VAT beyond the current fixed 20% in the CII builder
 
 ### Phase 4 — Quality
 
@@ -306,13 +311,13 @@ routes/web.php
 
 Architecture stays **agnostic** (`ElectronicInvoicePlatform`): B2Brouter remains an option if the product moves to multi-client white-label.
 
-**Next code step:** Phase 2 with `Null` + `SuperPdpPlatform` drivers, SuperPDP sandbox account, one pilot invoice.
+**Next product steps:** finish inbound reception, harden webhooks for production, and complete legal data on all client schools.
 
 ## PA reference
 
 | PA | Strengths | VRP status |
 |----|-----------|------------|
-| **[SuperPDP](https://www.superpdp.tech/)** | API-first, free POC tier, French PA | **POC — target adapter** |
+| **[SuperPDP](https://www.superpdp.tech/)** | API-first, free POC tier, French PA | **POC — implemented adapter** |
 | [B2Brouter](https://www.b2brouter.net/fr/api-facturation-electronique/) | White-label editor, DGFiP docs | Future alternative (multi-client) |
 
 ## Out of VRP scope (delegated to PA)
@@ -330,11 +335,23 @@ Architecture stays **agnostic** (`ElectronicInvoicePlatform`): B2Brouter remains
 | Public sector | Chorus Pro (via connected PA) |
 | Individual / no SIREN | Outside B2B structured obligation — VRP PDF only |
 
+## Configuration SuperPDP (POC)
+
+Operational detail (`.env`, sandbox/production OAuth, artisan commands, webhooks, validation, pitfalls) is in **[electronic-invoicing.md](electronic-invoicing.md)**.
+
+| Need | Action |
+|------|--------|
+| Enable POC | `E_INVOICE_PLATFORM=superpdp` + OAuth credentials |
+| Test API | `php artisan superpdp:test` |
+| Submit | Treasury → Invoices (e button) or `superpdp:send-test --invoice=` |
+| Webhook | `POST /webhooks/e-invoice/superpdp` + `SUPERPDP_WEBHOOK_SECRET` |
+
 ## Immediate actions
 
-1. Complete **SIREN / SIRET** on existing records (user data).
-2. Open a **SuperPDP sandbox account** and send one pilot invoice.
-3. Implement **Phase 2**: contract + builder + webhook + `SuperPdpPlatform`.
+1. Complete **SIREN / SIRET** (and addresses) on company and client schools.
+2. Configure SuperPDP OAuth credentials — see [electronic-invoicing.md](electronic-invoicing.md).
+3. Send a **pilot invoice** from Treasury → Invoices (e-invoice button) or `php artisan superpdp:send-test --invoice={id}`.
+4. Register the webhook URL and `SUPERPDP_WEBHOOK_SECRET` for status callbacks.
 
 ## Existing code
 
@@ -342,8 +359,10 @@ Architecture stays **agnostic** (`ElectronicInvoicePlatform`): B2Brouter remains
 - `app/Models/Invoice.php`
 - `app/Services/InvoiceService.php`
 - `app/Classes/InvoiceGenerator.php`
+- `app/Services/ElectronicInvoicing/` · `app/Platforms/SuperPdp/` · `app/Contracts/ElectronicInvoicePlatform.php`
 
 ## Links
 
-- [README — roadmap summary](../../README.md#roadmap--facturation-électronique)
+- [Operational guide — electronic invoicing](electronic-invoicing.md)
+- [README — roadmap summary](../../README.md#roadmap--e-invoicing)
 - [PWA & offline roadmap](roadmap-pwa-offline.md) — deferred, not priority

@@ -37,6 +37,12 @@ Post-login constant: `RouteServiceProvider::HOME = '/home'`.
 - **Invoiced incl. VAT** — sum of invoices for the current year
 - **Unbilled incl. VAT** — sessions without `invoice_id`
 
+### School detail entry
+
+From `/home`, open a school → tabbed `school.show` (`?panel=courses|groups|details|documents`). Billing preparation stays on the courses panel (`#billing` / `?focus=billing`). See [school mode mentoring](v2-school-mode-mentoring.md).
+
+Changing the breadcrumb school on show/edit rewrites the URL to that school (`PlanningController` / `InvoiceController` `selectSchool`).
+
 ## Module tabs
 
 | Component | Module | Tabs |

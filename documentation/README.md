@@ -21,10 +21,12 @@ Wiki-style guides from product design and implementation work (data model, workf
 | Consulting labels | [libelles-consulting.md](fr/libelles-consulting.md) | [consulting-labels.md](en/consulting-labels.md) |
 | **V2 — UI overview** | [v2-interface-utilisateur.md](fr/v2-interface-utilisateur.md) | [v2-user-interface.md](en/v2-user-interface.md) |
 | V2 — Navigation & modules | [v2-navigation-modules.md](fr/v2-navigation-modules.md) | [v2-navigation-modules.md](en/v2-navigation-modules.md) |
+| V2 — School mode mentoring | [v2-mode-ecole-mentoring.md](fr/v2-mode-ecole-mentoring.md) | [v2-school-mode-mentoring.md](en/v2-school-mode-mentoring.md) |
 | V2 — Billing per school | [v2-facturation-par-ecole.md](fr/v2-facturation-par-ecole.md) | [v2-billing-per-school.md](en/v2-billing-per-school.md) |
 | V2 — Treasury & bank reconciliation | [v2-tresorerie-rapprochement-bancaire.md](fr/v2-tresorerie-rapprochement-bancaire.md) | [v2-treasury-bank-reconciliation.md](en/v2-treasury-bank-reconciliation.md) |
 | V2 — CSS design system | [v2-design-system-css.md](fr/v2-design-system-css.md) | [v2-design-system-css.md](en/v2-design-system-css.md) |
 | V2 — Code review & list refactor | [v2-revue-code-refactoring-listes.md](fr/v2-revue-code-refactoring-listes.md) | [v2-code-review-list-refactoring.md](en/v2-code-review-list-refactoring.md) |
+| Electronic invoicing (ops) | [facturation-electronique.md](fr/facturation-electronique.md) | [electronic-invoicing.md](en/electronic-invoicing.md) |
 | **Roadmap — e-invoicing** | [roadmap-facturation-electronique.md](fr/roadmap-facturation-electronique.md) | [roadmap-electronic-invoicing.md](en/roadmap-electronic-invoicing.md) |
 | Roadmap — PWA & offline | [roadmap-pwa-offline.md](fr/roadmap-pwa-offline.md) | [roadmap-pwa-offline.md](en/roadmap-pwa-offline.md) |
 

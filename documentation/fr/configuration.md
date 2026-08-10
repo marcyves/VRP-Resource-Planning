@@ -9,6 +9,12 @@
 | `APP_LOCALE` | `fr` | Langue de base (`fr`, `en`, `it`) |
 | `TERMINOLOGY_PROFILE` | `education` | Profil pour invités / sans entreprise |
 | `VRP_ALLOW_REGISTRATION` | `false` | Inscription publique `/register` |
+| `E_INVOICE_PLATFORM` | _(absent)_ | `superpdp` active l’adaptateur SuperPDP ; sinon Null |
+| `SUPERPDP_ENV` | `production` | Choisit credentials OAuth production ou sandbox |
+| `SUPERPDP_CLIENT_ID` / `SUPERPDP_CLIENT_SECRET` | — | Application OAuth production |
+| `SUPERPDP_SANDBOX_CLIENT_ID` / `SUPERPDP_SANDBOX_CLIENT_SECRET` | — | Application OAuth sandbox |
+| `SUPERPDP_ACCESS_TOKEN` | — | Bearer optionnel (sans OAuth) |
+| `SUPERPDP_WEBHOOK_SECRET` | — | Secret HMAC pour `/webhooks/e-invoice/superpdp` |
 
 Exemple `.env.example` :
 
@@ -16,6 +22,7 @@ Exemple `.env.example` :
 APP_LOCALE=fr
 TERMINOLOGY_PROFILE=consulting
 VRP_ALLOW_REGISTRATION=false
+# E_INVOICE_PLATFORM=superpdp
 ```
 
 > Connecté : `companies.terminology_profile` **prime** sur `TERMINOLOGY_PROFILE`.
@@ -47,11 +54,11 @@ Runbook détaillé : [Administration plateforme](administration-plateforme.md).
 
 ## Fichiers
 
-- `config/terminology.php`, `config/app.php`, `config/vrp.php`, `.env.example`
+- `config/terminology.php`, `config/app.php`, `config/vrp.php`, `config/electronic-invoicing.php`, `.env.example`
 
 ## Liens
 
 - [Phase 1 — terminologie](phase-1-terminologie.md)
 - [Administration plateforme](administration-plateforme.md)
+- [Facturation électronique (ops)](facturation-electronique.md)
 - [Libellés consulting](libelles-consulting.md)
-- [Administration plateforme](administration-plateforme.md)

@@ -37,6 +37,12 @@ Constante post-login : `RouteServiceProvider::HOME = '/home'`.
 - **Facturé TTC** — somme des factures de l’année courante
 - **Non facturé TTC** — sessions sans `invoice_id` (TVA incluse à l’affichage)
 
+### Entrée fiche école
+
+Depuis `/home`, ouvrir une école → `school.show` à onglets (`?panel=courses|groups|details|documents`). La préparation facturation reste sur le panneau cours (`#billing` / `?focus=billing`). Voir [mode école mentoring](v2-mode-ecole-mentoring.md).
+
+Changer l’école du fil d’Ariane sur show/edit réécrit l’URL vers cette école (`PlanningController` / `InvoiceController` `selectSchool`).
+
 ## Onglets de module
 
 | Composant | Module | Onglets |
