@@ -118,6 +118,8 @@ class Tools
 
     public const WEEK_AGENDA_END_HOUR = 20;
 
+    public const VAT_MULTIPLIER = 1.2;
+
     /**
      * Hour labels for the week grid (8h … 20h).
      *
@@ -160,6 +162,44 @@ class Tools
             'height' => (($clampedEnd - $clampedStart) / $span) * 100,
             'visible' => true,
         ];
+    }
+
+    public static function parseDecimal(mixed $value): float
+    {
+        return (float) str_replace(',', '.', (string) $value);
+    }
+
+    public static function courseTotalHours(mixed $sessions, mixed $sessionLength): float
+    {
+        return round(self::parseDecimal($sessions) * self::parseDecimal($sessionLength), 2);
+    }
+
+    /**
+     * Hourly rate stored on courses is always HT.
+     *
+     * @param  'ht'|'ttc'|string  $basis
+     */
+    public static function hourlyRateHt(mixed $amount, string $basis = 'ttc'): float
+    {
+        $rate = self::parseDecimal($amount);
+
+        if ($basis !== 'ht') {
+            return round($rate / self::VAT_MULTIPLIER, 2);
+        }
+
+        return round($rate, 2);
+    }
+
+    public static function hourlyRateTtc(mixed $htAmount): float
+    {
+        return round(self::parseDecimal($htAmount) * self::VAT_MULTIPLIER, 2);
+    }
+
+    public static function defaultCourseSemester(?int $month = null): string
+    {
+        $month ??= (int) now()->month;
+
+        return $month <= 6 ? '1' : '2';
     }
 
     public static function getBillingYear(Request $request): int

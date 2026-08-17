@@ -39,6 +39,8 @@ Les **programmes** sont créés en premier (globaux à l’entreprise), puis l�
 | Cours | `course.store` | `CourseController@store` |
 | Groupe | `group.save` | `GroupController@store` |
 
+Le formulaire cours (`create` / `edit`) saisit le volume sur une ligne **« n sessions de n heures »** (durée totale calculée) et le **taux horaire** en TTC par défaut, ou HT via le radio. La base stocke toujours le taux **HT**.
+
 ## Règle « groupes distincts »
 
 Pour un groupe **par cours**, créer **6 groupes différents** (ne pas réutiliser le même `group_id` sur plusieurs cours sauf lien explicite via `group.link`).

@@ -48,3 +48,110 @@ main .course-info-grid > article:hover {
 .course-groups-section {
     margin-top: var(--spacing-8);
 }
+
+.course-volume-line {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem 1.5rem;
+}
+
+@media (min-width: 40rem) {
+    .course-volume-line {
+        flex-wrap: nowrap;
+    }
+}
+
+main form.group-form .course-volume-line .course-volume-line__input {
+    width: auto;
+    min-width: 4.25rem;
+    max-width: 5.5rem;
+    flex: 0 0 auto;
+    text-align: center;
+}
+
+main form.group-form .course-volume-line .course-volume-line__rate {
+    width: auto;
+    min-width: 7rem;
+    max-width: 10ch;
+    flex: 0 0 auto;
+    text-align: right;
+}
+
+.course-volume-line__text {
+    color: var(--text-body);
+    font-size: 0.9375rem;
+}
+
+.course-volume-total {
+    margin-top: var(--spacing-1);
+}
+
+.course-rate-basis {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--spacing-3);
+}
+
+.course-form-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 0.75rem 1.5rem;
+}
+
+@media (min-width: 40rem) {
+    .course-form-row {
+        flex-wrap: nowrap;
+    }
+}
+
+.course-form-row__cluster {
+    display: flex;
+    align-items: flex-end;
+    gap: 0.65rem;
+}
+
+.course-volume-line .course-form-row__cluster {
+    align-items: center;
+}
+
+.course-form-row__field {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-1);
+}
+
+.course-form-row__field--grow {
+    flex: 0 1 5.5rem;
+    min-width: 4.4rem;
+    max-width: 13.2rem;
+}
+
+main form.group-form .course-identity-line__short {
+    width: 16ch;
+    min-width: 7.8rem;
+    max-width: 16ch;
+}
+
+main form.group-form .course-identity-line__program {
+    width: 100%;
+}
+
+main form.group-form .course-form-row .course-period-line__year {
+    width: auto;
+    min-width: 6rem;
+    max-width: 8ch;
+    flex: 0 0 auto;
+}
+
+main form.group-form .course-form-row .course-period-line__semester {
+    width: auto;
+    min-width: 3.5rem;
+    max-width: 4ch;
+    flex: 0 0 auto;
+    text-align: center;
+}

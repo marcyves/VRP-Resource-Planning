@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Utility\Tools;
 use App\Models\Course;
 use App\Models\School;
 use App\Models\Program;
@@ -37,6 +38,34 @@ class CourseController extends Controller
         ];
     }
 
+    private function courseRules(): array
+    {
+        return array_merge([
+            'name' => 'required|max:80',
+            'short_name' => 'required|min:3',
+            'sessions' => 'required|numeric|min:0',
+            'session_length' => 'required|numeric|min:0',
+            'year' => 'required|max:8',
+            'semester' => 'required|max:4',
+            'rate' => 'required|numeric|min:0',
+            'rate_basis' => 'nullable|in:ht,ttc',
+        ], $this->programRules());
+    }
+
+    private function normalizeCourseDecimals(Request $request): void
+    {
+        foreach (['sessions', 'session_length', 'rate'] as $field) {
+            if ($request->filled($field)) {
+                $request->merge([$field => str_replace(',', '.', (string) $request->input($field))]);
+            }
+        }
+    }
+
+    private function courseRateHt(Request $request): float
+    {
+        return Tools::hourlyRateHt($request->rate, $request->input('rate_basis', 'ttc'));
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -63,18 +92,10 @@ class CourseController extends Controller
     {
         $school = $this->companySchool($school_id);
 
-        $validated = $request->validate(array_merge([
-            'name' => 'required|max:80',
-            'short_name' => 'required|min:3',
-            'sessions' => 'required|min:0',
-            'session_length' => 'required|min:0',
-            'year' => 'required',
-            'semester' => 'required',
-            'rate' => 'required|min:0',
-        ], $this->programRules()));
+        $this->normalizeCourseDecimals($request);
+        $request->validate($this->courseRules());
 
         try {
-            $rate = str_replace(',', '.', $request->rate);
             $course = Course::create([
                 'name' => $request->name,
                 'short_name' => $request->short_name,
@@ -84,7 +105,7 @@ class CourseController extends Controller
                 'session_length' => $request->session_length,
                 'year' => $request->year,
                 'semester' => $request->semester,
-                'rate' => $rate,
+                'rate' => $this->courseRateHt($request),
             ]);
 
             session()->flash('success', __('messages.course_saved_success', ['name' => $request->name]));
@@ -95,7 +116,7 @@ class CourseController extends Controller
         } catch (\Exception $e) {
             session()->flash('danger', __('messages.course_save_error'));
 
-            return redirect()->back();
+            return redirect()->back()->withInput();
         }
     }
 
@@ -154,15 +175,8 @@ class CourseController extends Controller
      */
     public function update(Request $request, String $course_id)
     {
-        $validated = $request->validate(array_merge([
-            'name' => 'required|max:80',
-            'short_name' => 'required|min:3',
-            'sessions' => 'required|numeric|min:0',
-            'session_length' => 'required|numeric|min:0',
-            'year' => 'required',
-            'semester' => 'required',
-            'rate' => 'required|min:0',
-        ], $this->programRules()));
+        $this->normalizeCourseDecimals($request);
+        $request->validate($this->courseRules());
 
         try {
             $course = $this->companyCourse($course_id);
@@ -172,7 +186,7 @@ class CourseController extends Controller
             $course->session_length = $request->session_length;
             $course->year = $request->year;
             $course->semester = $request->semester;
-            $course->rate = $request->rate;
+            $course->rate = $this->courseRateHt($request);
             $course->program_id = $request->program_id;
 
             $course->update();
@@ -186,7 +200,7 @@ class CourseController extends Controller
             session()->flash('danger', __('messages.course_save_error'));
             session()->flash('danger', $e->getMessage());
 
-            return redirect()->back();
+            return redirect()->back()->withInput();
         }
     }
 

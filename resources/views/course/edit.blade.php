@@ -14,46 +14,19 @@
                 <x-text-input type="text" name="name" id="name" value="{{old('name',$course->name)}}" />
             </div>
 
-            <div class="form-group">
-                <x-input-label for="short_name">{{ __('messages.short_name') }}</x-input-label>
-                <x-text-input type="text" name="short_name" id="short_name" value="{{old('short_name',$course->short_name)}}" />
-            </div>
+            <x-course-identity-fields
+                :programs="$programs"
+                :short-name="$course->short_name"
+                :program-id="$course->program_id"
+                :year="$course->year"
+                :semester="$course->semester"
+            />
 
-            <div class="form-group">
-                <x-input-label for="program_id">{{ __('messages.program') }}</x-input-label>
-                <select name="program_id" id="program_id" class="form-input">
-                    @foreach ($programs as $program)
-                    <option value="{{ $program->id }}" title="{{ $program->name }}" @selected($program->id == $course->program_id)>
-                        {{ $program->listLabel() }}
-                    </option>
-                    @endforeach
-                </select>
-            </div>
-
-            <div class="form-group">
-                <x-input-label for="sessions">{{ __('messages.sessions') }}</x-input-label>
-                <x-text-input type="text" name="sessions" id="sessions" value="{{old('sessions',$course->sessions)}}" />
-            </div>
-
-            <div class="form-group">
-                <x-input-label for="session_length">{{ __('messages.session_length') }}</x-input-label>
-                <x-text-input type="text" name="session_length" id="session_length" value="{{old('session_length',$course->session_length)}}" />
-            </div>
-
-            <div class="form-group">
-                <x-input-label for="rate">{{ __('messages.rate') }}</x-input-label>
-                <x-text-input type="text" name="rate" id="rate" value="{{old('rate',$course->rate)}}" />
-            </div>
-
-            <div class="form-group">
-                <x-input-label for="year">{{ __('messages.year') }}</x-input-label>
-                <x-text-input type="text" name="year" id="year" value="{{old('year',$course->year)}}" />
-            </div>
-
-            <div class="form-group">
-                <x-input-label for="semester">{{ __('messages.semester') }}</x-input-label>
-                <x-text-input type="text" name="semester" id="semester" value="{{old('semester',$course->semester)}}" />
-            </div>
+            <x-course-volume-fields
+                :sessions="$course->sessions"
+                :session-length="$course->session_length"
+                :rate="\App\Http\Utility\Tools::hourlyRateTtc($course->rate)"
+            />
 
             <div class="form-actions">
                 <a class="btn btn-secondary" href="{{ route('course.show', $course->id) }}">{{ __('messages.cancel') }}</a>

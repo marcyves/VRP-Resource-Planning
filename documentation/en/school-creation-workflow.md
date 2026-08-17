@@ -39,6 +39,8 @@ School "My institution"
 | Course | `course.store` | `CourseController@store` |
 | Group | `group.save` | `GroupController@store` |
 
+The course form (`create` / `edit`) captures volume on one line (**n sessions of n hours**, with a live total) and the **hourly rate** as TTC by default, or HT via the radio. The database always stores the HT rate.
+
 ## “Distinct groups” rule
 
 For **one group per course**, create **6 different groups** (do not reuse the same `group_id` on multiple courses unless linking explicitly via `group.link`).
