@@ -18,6 +18,7 @@ Wiki-style guides: data model, user workflows, and **terminology profiles** (tra
 | **[V2 — user interface](v2-user-interface.md)** | UI refactor overview |
 | [V2 — navigation & modules](v2-navigation-modules.md) | Sidebar, `/home`, module tabs |
 | [V2 — school mode mentoring](v2-school-mode-mentoring.md) | Per-school education vs mentoring labels |
+| [Production SFTP deploy](production-sftp-deploy.md) | IONOS deploy, protected files, config.php restore |
 | [V2 — billing per school](v2-billing-per-school.md) | Billing preparation on school detail |
 | [V2 — treasury & bank reconciliation](v2-treasury-bank-reconciliation.md) | Invoice dashboard, bank accounts, imports and matching |
 | [V2 — CSS design system](v2-design-system-css.md) | Tokens, components, Vite build |
