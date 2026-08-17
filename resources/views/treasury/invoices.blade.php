@@ -67,7 +67,7 @@
             :sort="$sort"
             :direction="$direction"
             :filters="$filters"
-            :electronic-invoicing-enabled="$electronicInvoicingEnabled"
+            :electronic-invoicing-enabled="$electronicInvoicingEnabled ?? false"
         />
     </section>
 </x-app-layout>

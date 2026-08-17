@@ -13,7 +13,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        // Ensure e-invoicing bindings even if bootstrap/cache/services.php is stale on FTP hosts.
+        $this->app->register(\App\Providers\ElectronicInvoicingServiceProvider::class);
     }
 
     /**
