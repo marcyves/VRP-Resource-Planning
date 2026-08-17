@@ -12,7 +12,7 @@
 
 ### Sidebar menu (order — company user)
 
-1. **Agenda** → `planning.index` (+ admin calendar under `calendar.*`) — **Invoice this month’s work** panel (schools with sessions, unbilled first)
+1. **Agenda** → `planning.index` (+ admin calendar under `calendar.*`) — **month** / **week** views · **Invoice this month’s work** panel (schools with sessions, unbilled first)
 2. **Schools** (terminology label) → `home`
 3. **Treasury** → `treasury.index`
 4. separator

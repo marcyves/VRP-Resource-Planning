@@ -1,11 +1,14 @@
 <x-app-layout>
-<x-slot name="header">
-        <h2>{{ __('messages.planning') }} @monthName($current_month) {{$current_year}}</h2>
+    <x-slot name="header">
+        <h2>{{ __('messages.planning') }} {{ $periodTitle }}</h2>
     </x-slot>
 
     <section class="planning-toolbar">
         <x-scheduling-module-tabs />
-        <x-period-selector :years="$years" :months="$months" :current_year="$current_year" :current_month="$current_month" route="planning" />
+        <div class="planning-toolbar__period">
+            <x-planning-view-toggle :view="$planningView" />
+            <x-period-selector :years="$years" :months="$months" :current_year="$current_year" :current_month="$current_month" route="planning" />
+        </div>
     </section>
 
     @if (Auth::user()->getMode() == 'Edit' && session('course_id'))
@@ -17,7 +20,7 @@
 
     <x-kpi-grid :items="[
         ['icon' => 'clock', 'label' => __('messages.time_worked'), 'value' => $monthly_hours . ' ' . __('messages.hours'), 'variant' => 'info'],
-        ['icon' => 'wallet', 'label' => __('messages.monthly_gain'), 'value' => number_format($monthly_gain * 1.2, 2, ',', ' ') . ' € TTC', 'variant' => 'success'],
+        ['icon' => 'wallet', 'label' => $planningView === 'week' ? __('messages.weekly_gain') : __('messages.monthly_gain'), 'value' => number_format($monthly_gain * 1.2, 2, ',', ' ') . ' € TTC', 'variant' => 'success'],
         ['icon' => 'chart', 'label' => __('messages.hour_rate'), 'value' => ($monthly_hours == 0 ? '0' : number_format(($monthly_gain * 1.2) / $monthly_hours, 2, ',', ' ')) . ' €/h TTC', 'variant' => 'accent'],
     ]" />
 
@@ -33,6 +36,13 @@
         @endphp
 
         <!-- (B) CALENDAR -->
+        @if ($planningView === 'week')
+            <x-planning-week-agenda
+                :days="$calendarDays"
+                :planning="$planning"
+                :current-month="$current_month"
+            />
+        @else
         <div id="calWrap">
             <div class="calHead">
                 @foreach ($weekdays as $weekday)
@@ -70,6 +80,7 @@
         @endwhile
         </div>
         </div>
+        @endif
     </section>
 
     <x-planning-delete-dialog />

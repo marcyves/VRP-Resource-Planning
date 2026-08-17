@@ -12,7 +12,7 @@
 
 ### Menu latéral (ordre — utilisateur entreprise)
 
-1. **Agenda** → `planning.index` (+ calendrier admin sous `calendar.*`) — panneau **Facturer les interventions du mois** (écoles avec sessions, priorisation non facturé)
+1. **Agenda** → `planning.index` (+ calendrier admin sous `calendar.*`) — vues **mois** / **semaine** · panneau **Facturer les interventions du mois** (écoles avec sessions, priorisation non facturé)
 2. **Écoles** (libellé terminologique) → `home`
 3. **Trésorerie** → `treasury.index`
 4. séparateur

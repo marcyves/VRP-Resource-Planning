@@ -83,48 +83,43 @@ class PlanningController extends Controller
         $current_year = Tools::getCurrentYear($request);
         $current_month = Tools::getCurrentMonth($request);
 
-        return $this->buildPlanning($current_semester, $current_month, $current_year);
+        return $this->buildPlanning($request, $current_semester, $current_month, $current_year);
     }
 
     public function previous(Request $request)
     {
-        $current_semester = Tools::getCurrentSemester($request);
-        $current_year = Tools::getCurrentYear($request);
-        $current_month = Tools::getCurrentMonth($request);
-
-        $current_month -= 1;
-        if ($current_month < 1) {
-            $current_month = 12;
-            $current_year -= 1;
-            session(['current_year' => $current_year]);
-        }
-        session(['current_month' => $current_month]);
-
-        return $this->buildPlanning($current_semester, $current_month, $current_year);
+        return $this->navigatePlanning($request, -1);
     }
 
     public function next(Request $request)
     {
+        return $this->navigatePlanning($request, 1);
+    }
 
+    private function navigatePlanning(Request $request, int $direction)
+    {
         $current_semester = Tools::getCurrentSemester($request);
         $current_year = Tools::getCurrentYear($request);
         $current_month = Tools::getCurrentMonth($request);
+        $planningView = Tools::getPlanningView($request);
+        $weekStart = Tools::getPlanningWeekStart($request, $current_year, $current_month);
+        $shifted = Tools::shiftPlanningPeriod($planningView, $weekStart, $current_year, $current_month, $direction);
 
-        $current_month += 1;
-        if ($current_month > 11) {
-            $current_month -= 12;
-            $current_year += 1;
-            session(['current_year' => $current_year]);
-        }
-        session(['current_month' => $current_month]);
+        session([
+            'planning_week_start' => $shifted['week_start']->toDateString(),
+            'current_year' => $shifted['year'],
+            'current_month' => $shifted['month'],
+        ]);
 
-        return $this->buildPlanning($current_semester, $current_month, $current_year);
+        return $this->buildPlanning($request, $current_semester, $shifted['month'], $shifted['year']);
     }
 
-    private function buildPlanning($current_semester, $current_month, $current_year)
+    private function buildPlanning(Request $request, $current_semester, $current_month, $current_year)
     {
 
         $current_day = now()->format('d');
+        $planningView = Tools::getPlanningView($request);
+        $weekStart = Tools::getPlanningWeekStart($request, (int) $current_year, (int) $current_month);
 
         $schools = Auth::user()->getSchools();
 
@@ -137,9 +132,18 @@ class PlanningController extends Controller
         } else {
             $years = $schools->getYears();
         }
-        // Collect Planning information for display
-        //$planning = $schools->getPlanning($current_year, $current_month);
-        $planning = Planning::getDetails($current_year, $current_month);
+
+        if ($planningView === 'week') {
+            $weekEndExclusive = $weekStart->copy()->addWeek();
+            $planning = Planning::getDetailsBetween(
+                $weekStart->format('Y-m-d H:i:s'),
+                $weekEndExclusive->format('Y-m-d H:i:s')
+            );
+            $calendarDays = collect(range(0, 6))->map(fn ($offset) => $weekStart->copy()->addDays($offset));
+        } else {
+            $planning = Planning::getDetails((string) $current_year, (string) $current_month);
+            $calendarDays = null;
+        }
 
         $monthly_gain = 0;
         $monthly_hours = 0;
@@ -186,6 +190,18 @@ class PlanningController extends Controller
         $weekdays->push($weekdays[0]);         // Week starts on Monday
         $weekdays->shift();
 
+        $locale = \App\Support\TerminologyLocale::normalizeBaseLocale(app()->getLocale());
+        if ($planningView === 'week') {
+            $weekEnd = $weekStart->copy()->addDays(6);
+            $start = $weekStart->copy()->locale($locale);
+            $end = $weekEnd->copy()->locale($locale);
+            $periodTitle = $start->isSameMonth($end)
+                ? $start->translatedFormat('j').'–'.$end->translatedFormat('j M Y')
+                : $start->translatedFormat('j M').' – '.$end->translatedFormat('j M Y');
+        } else {
+            $periodTitle = ucfirst(Carbon::create((int) $current_year, (int) $current_month, 1)->locale($locale)->translatedFormat('F')).' '.$current_year;
+        }
+
         return view('planning.index', compact(
             'planning',
             'years',
@@ -197,6 +213,9 @@ class PlanningController extends Controller
             'monthly_gain',
             'monthly_hours',
             'billingSchools',
+            'planningView',
+            'calendarDays',
+            'periodTitle',
         ));
     }
 

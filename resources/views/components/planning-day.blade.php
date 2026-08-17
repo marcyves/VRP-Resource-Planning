@@ -1,10 +1,11 @@
 @php
+    $outside = $outside ?? false;
     $monthPadded = str_pad((string) $month, 2, '0', STR_PAD_LEFT);
     $dayPadded = str_pad((string) $day, 2, '0', STR_PAD_LEFT);
     $isoDate = "{$year}-{$monthPadded}-{$dayPadded}";
 @endphp
 
-<div class="calCell calDay">
+<div class="calCell calDay{{ $outside ? ' calDay--outside' : '' }}">
     @if (Auth::user()->getMode() == 'Edit' && session('course_id'))
         <button
             type="submit"
@@ -36,7 +37,7 @@
     @php
     $begin_date = explode(" ", $event->begin)[0];
     $begin_day = explode("-", $begin_date)[2];
-    if ((int)$begin_day == $day){
+    if ($begin_date === $isoDate){
     $day_gain += $event->session_length * $event->rate;
     $day_hours += $event->session_length;
     $eventLabel = \Carbon\Carbon::parse($event->begin)->format('H:i') . ': ' . $event->short_name . ' (' . $event->group_short_name . ')';
