@@ -39,7 +39,23 @@ Les **programmes** sont créés en premier (globaux à l’entreprise), puis l�
 | Cours | `course.store` | `CourseController@store` |
 | Groupe | `group.save` | `GroupController@store` |
 
-Le formulaire cours (`create` / `edit`) saisit le volume sur une ligne **« n sessions de n heures »** (durée totale calculée) et le **taux horaire** en TTC par défaut, ou HT via le radio. La base stocke toujours le taux **HT**.
+Le formulaire cours (`create` / `edit`) tient sur deux lignes compactes :
+
+| Ligne | Composant | Champs |
+|-------|-----------|--------|
+| Identité | `course-identity-fields` | Sigle, programme, année, semestre |
+| Volume + tarif | `course-volume-fields` | **n sessions de n heures** (total live) et taux horaire |
+
+À la création : année = année calendaire courante ; semestre = `1` (janv.–juin) ou `2` (juil.–déc.) via `Tools::defaultCourseSemester()`.
+
+### Taux horaire (TTC à l’écran, HT en base)
+
+Le radio est **TTC** par défaut. `CourseController` stocke `courses.rate` en HT (`Tools::hourlyRateHt()`, coefficient TVA **1,2**). L’édition recharge le champ en TTC (`Tools::hourlyRateTtc($course->rate)`). Un `rate_basis` inconnu est traité comme TTC. Les virgules décimales sont normalisées en points avant validation.
+
+| Contrainte | Détail |
+|------------|--------|
+| Validation | `sessions`, `session_length`, `rate` numériques ≥ 0 ; `rate_basis` optionnel `ht`/`ttc` |
+| Après création ou mise à jour | Redirection vers `dashboard` (`/home`), avec `course` / `course_id` en session |
 
 ## Règle « groupes distincts »
 

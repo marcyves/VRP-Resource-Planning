@@ -39,7 +39,23 @@ School "My institution"
 | Course | `course.store` | `CourseController@store` |
 | Group | `group.save` | `GroupController@store` |
 
-The course form (`create` / `edit`) captures volume on one line (**n sessions of n hours**, with a live total) and the **hourly rate** as TTC by default, or HT via the radio. The database always stores the HT rate.
+The course form (`create` / `edit`) is a compact two-row layout:
+
+| Row | Component | Fields |
+|-----|-----------|--------|
+| Identity | `course-identity-fields` | Short name, program, year, semester |
+| Volume + rate | `course-volume-fields` | **n sessions of n hours** (live total) and hourly rate |
+
+Create defaults: calendar year = now; semester = `1` (Jan–Jun) or `2` (Jul–Dec) via `Tools::defaultCourseSemester()`.
+
+### Hourly rate (TTC in the form, HT in the database)
+
+The radio defaults to **TTC**. `CourseController` stores `courses.rate` as HT (`Tools::hourlyRateHt()`, VAT multiplier **1.2**). Edit reloads the field as TTC (`Tools::hourlyRateTtc($course->rate)`). Unknown `rate_basis` is treated as TTC. Commas in decimals are normalized to dots before validation.
+
+| Constraint | Detail |
+|------------|--------|
+| Validation | `sessions`, `session_length`, `rate` required numeric ≥ 0; `rate_basis` optional `ht`/`ttc` |
+| After create or update | Redirects to `dashboard` (`/home`), with `course` / `course_id` set in session |
 
 ## “Distinct groups” rule
 

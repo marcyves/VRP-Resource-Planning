@@ -67,6 +67,7 @@ Web app for **scheduling**, **budgeting**, and **invoice tracking** for trainers
 | Billing per school | [v2-billing-per-school.md](documentation/en/v2-billing-per-school.md) | [v2-facturation-par-ecole.md](documentation/fr/v2-facturation-par-ecole.md) |
 | Treasury & bank reconciliation | [v2-treasury-bank-reconciliation.md](documentation/en/v2-treasury-bank-reconciliation.md) | [v2-tresorerie-rapprochement-bancaire.md](documentation/fr/v2-tresorerie-rapprochement-bancaire.md) |
 | Platform administration | [platform-administration.md](documentation/en/platform-administration.md) | [administration-plateforme.md](documentation/fr/administration-plateforme.md) |
+| Electronic invoicing | [electronic-invoicing.md](documentation/en/electronic-invoicing.md) | [facturation-electronique.md](documentation/fr/facturation-electronique.md) |
 | CSS design system | [v2-design-system-css.md](documentation/en/v2-design-system-css.md) | [v2-design-system-css.md](documentation/fr/v2-design-system-css.md) |
 
 Full index: [documentation/README.md](documentation/README.md).
@@ -203,12 +204,13 @@ A demo may be available (e.g. **vrp.xdm-consulting.fr**). Do **not** commit test
 | Receive e-invoices | **1 Sep 2026** — VAT-liable entities |
 | Issue | **1 Sep 2026** (large/mid-size) · **2027** (SME) |
 
-**Already in place:** PDF, e-invoice statuses (`draft` → `ready` → `transmitted` → `accepted` / `rejected`), SIREN/SIRET on company and clients.
+**Already in place:** PDF, e-invoice statuses (`draft` → `ready` → `transmitted` → `accepted` / `rejected`), SIREN/SIRET on company and clients, SuperPDP POC (CII → Factur-X submit + HMAC webhooks). Inbound reception is not built yet.
 
-**POC:** **[SuperPDP](https://www.superpdp.tech/)** adapter (PDF send). Set `E_INVOICE_PLATFORM=superpdp` and `SUPERPDP_ACCESS_TOKEN` in `.env`. See [roadmap-electronic-invoicing.md](documentation/en/roadmap-electronic-invoicing.md).
+**POC:** **[SuperPDP](https://www.superpdp.tech/)** adapter. Set `E_INVOICE_PLATFORM=superpdp` and OAuth credentials (`SUPERPDP_CLIENT_ID` / `SUPERPDP_CLIENT_SECRET`, or `SUPERPDP_ACCESS_TOKEN`) in `.env`. Operational runbook: [electronic-invoicing.md](documentation/en/electronic-invoicing.md).
 
 Full docs (integration spec, phases, code layout):
 
+- [documentation/en/electronic-invoicing.md](documentation/en/electronic-invoicing.md) — setup, submit, webhooks
 - [documentation/en/roadmap-electronic-invoicing.md](documentation/en/roadmap-electronic-invoicing.md)
 - [documentation/fr/roadmap-facturation-electronique.md](documentation/fr/roadmap-facturation-electronique.md)
 

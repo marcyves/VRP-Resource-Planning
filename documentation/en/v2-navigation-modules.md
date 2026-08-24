@@ -49,6 +49,31 @@ Post-login constant: `RouteServiceProvider::HOME = '/home'`.
 **Create invoice** / **Create expense** are in-page buttons, not tabs.  
 `workload-module-tabs` is no longer used on the daily path (annual workload link from `/home`).
 
+## Agenda views (month / week)
+
+`PlanningController@index` persists the selected view in session (`planning_view`). Query `?view=month` or `?view=week`; unknown values fall back to **month**. Toggle: `resources/views/components/planning-view-toggle.blade.php`.
+
+| View | Period | Grid | Session match |
+|------|--------|------|---------------|
+| **Month** (default) | Calendar month (`Planning::getDetails`) | Classic 7-column month cells (`planning-day`) | Day-of-month in that month |
+| **Week** | Monday–Sunday (`Planning::getDetailsBetween`) | Timed grid 08:00–20:00 (`planning-week-agenda`) | Full ISO date of `begin` (not day number) |
+
+Prev / next (`planning.previous` / `planning.next`) call `Tools::shiftPlanningPeriod()`: **±1 week** in week view (month/year follow the Monday), **±1 month** in month view. Week start is stored in `planning_week_start`; changing the month selector resets it to the first Monday of that month (or today if the displayed month is current).
+
+KPI cards reuse the **visible period** (week or month). Amounts display TTC (`gain × 1.2`). Events outside 08:00–20:00 are clamped / hidden (`Tools::weekEventPosition()`). Days that belong to the adjacent month get `--outside` styling.
+
+### Session duplication
+
+From a day cell or week event (Edit mode): copy a session to **tomorrow**, **next week**, or a **custom date** without re-entering course, group, location, or rate.
+
+| Offset | Schedule |
+|--------|----------|
+| `tomorrow` | Same clock time, +1 day |
+| `next_week` | Same clock time, +1 week |
+| `custom` | Chosen date, original start time; duration preserved |
+
+Blocked when the source has an `invoice_id`. Rejected if another session for the same `group_id` overlaps. Route: `POST /planning/{id}/duplicate` (`PlanningController::duplicate`). UI: `planning-duplicate-actions`, `planning-duplicate-dialog`, `planning-duplicate-modal`, Alpine store `resources/js/duplicate-store.js`.
+
 ## Workload plan vs school list
 
 | Screen | Route | Purpose |
@@ -62,6 +87,7 @@ Post-login constant: `RouteServiceProvider::HOME = '/home'`.
 - `app/Http/Controllers/BillingNavController.php` — Billing shortcut
 - `resources/views/components/sidebar-nav-group.blade.php`
 - `resources/views/components/treasury-module-tabs.blade.php`
+- `resources/views/components/planning-view-toggle.blade.php` — month / week switch
 - `resources/js/sidebar.js` — compact sidebar persistence
 
 ## See also

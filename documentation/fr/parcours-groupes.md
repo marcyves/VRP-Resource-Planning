@@ -30,6 +30,29 @@
 | Voir tous les groupes / archiver | **Groupes** (`/group`) |
 | Voir cours liés et sessions | Fiche groupe (`/group/{id}`) |
 | Créer groupe + session en une fois | Agenda → nouvelle session → « Nouveau groupe ci-dessous » |
+| Dupliquer une session | Cellule jour / événement semaine / édition → actions copie |
+
+## Duplication de session planning
+
+On peut copier une session existante sans ressaisir cours, groupe, lieu ni tarif facturable.
+
+| Décalage | Horaire cible |
+|----------|---------------|
+| `tomorrow` | Même heure, +1 jour |
+| `next_week` | Même heure, +1 semaine |
+| `custom` | Date choisie, heure de début d’origine ; durée conservée |
+
+**Contraintes (`PlanningController::duplicate`) :**
+
+- Bloqué si la session source a un `invoice_id` (même verrou que la suppression).
+- Rejeté si une autre session du même `group_id` chevauche le nouvel intervalle.
+- Succès : année/mois de session mis à jour, retour sur `planning.index`.
+
+| Élément | Chemin |
+|---------|--------|
+| Route | `POST /planning/{id}/duplicate` (`planning.duplicate`) |
+| UI | `planning-duplicate-actions`, `planning-duplicate-dialog`, `planning-duplicate-modal` |
+| Store Alpine | `resources/js/duplicate-store.js` |
 
 ## Ce qui a été harmonisé (technique)
 
@@ -45,3 +68,4 @@
 - [Modèle de données formation](modele-donnees-formation.md)
 - [Parcours création école](parcours-creation-ecole.md)
 - [V2 — refactoring listes](v2-revue-code-refactoring-listes.md)
+- [V2 — navigation & modules](v2-navigation-modules.md)

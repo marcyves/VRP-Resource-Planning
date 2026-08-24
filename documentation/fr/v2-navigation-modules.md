@@ -49,6 +49,31 @@ Constante post-login : `RouteServiceProvider::HOME = '/home'`.
 Les actions **Créer facture** / **Créer dépense** sont des boutons dans les pages (plus des onglets).  
 `workload-module-tabs` n’est plus utilisé sur le chemin quotidien (lien « plan de charge annuelle » depuis `/home`).
 
+## Vues agenda (mois / semaine)
+
+`PlanningController@index` persiste la vue dans la session (`planning_view`). Query `?view=month` ou `?view=week` ; toute autre valeur retombe sur **mois**. Bascule : `resources/views/components/planning-view-toggle.blade.php`.
+
+| Vue | Période | Grille | Correspondance sessions |
+|-----|---------|--------|-------------------------|
+| **Mois** (défaut) | Mois calendaire (`Planning::getDetails`) | Cellules mois 7 colonnes (`planning-day`) | Jour du mois |
+| **Semaine** | Lundi–dimanche (`Planning::getDetailsBetween`) | Grille horaire 08:00–20:00 (`planning-week-agenda`) | Date ISO complète de `begin` (pas le numéro du jour) |
+
+Précédent / suivant (`planning.previous` / `planning.next`) appellent `Tools::shiftPlanningPeriod()` : **±1 semaine** en vue semaine (mois/année suivent le lundi), **±1 mois** en vue mois. Le début de semaine est stocké dans `planning_week_start` ; changer le sélecteur de mois le réinitialise au premier lundi du mois (ou aujourd’hui si le mois affiché est le mois courant).
+
+Les KPI portent sur la **période visible** (semaine ou mois). Les montants s’affichent en TTC (`gain × 1,2`). Les événements hors 08:00–20:00 sont clampés / masqués (`Tools::weekEventPosition()`). Les jours du mois adjacent ont le style `--outside`.
+
+### Duplication de session
+
+Depuis une cellule jour ou un événement semaine (mode Edit) : copier une session vers **demain**, **semaine prochaine** ou une **date libre**, sans ressaisir cours, groupe, lieu ni tarif.
+
+| Décalage | Horaire |
+|----------|---------|
+| `tomorrow` | Même heure, +1 jour |
+| `next_week` | Même heure, +1 semaine |
+| `custom` | Date choisie, heure de début d’origine ; durée conservée |
+
+Bloqué si la session source a un `invoice_id`. Rejeté si une autre session du même `group_id` chevauche. Route : `POST /planning/{id}/duplicate` (`PlanningController::duplicate`). UI : `planning-duplicate-actions`, `planning-duplicate-dialog`, `planning-duplicate-modal`, store Alpine `resources/js/duplicate-store.js`.
+
 ## Plan de charge vs liste écoles
 
 | Écran | Route | Usage |
@@ -62,6 +87,7 @@ Les actions **Créer facture** / **Créer dépense** sont des boutons dans les p
 - `app/Http/Controllers/BillingNavController.php` — raccourci Facturation
 - `resources/views/components/sidebar-nav-group.blade.php`
 - `resources/views/components/treasury-module-tabs.blade.php`
+- `resources/views/components/planning-view-toggle.blade.php` — bascule mois / semaine
 - `resources/js/sidebar.js` — persistance de la sidebar compacte
 
 ## Voir aussi

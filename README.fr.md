@@ -67,6 +67,7 @@ La **v2** apporte une refonte de l’interface (2025–2026) : coque sidebar + t
 | Facturation par école | [v2-facturation-par-ecole.md](documentation/fr/v2-facturation-par-ecole.md) | [v2-billing-per-school.md](documentation/en/v2-billing-per-school.md) |
 | Trésorerie & rapprochement bancaire | [v2-tresorerie-rapprochement-bancaire.md](documentation/fr/v2-tresorerie-rapprochement-bancaire.md) | [v2-treasury-bank-reconciliation.md](documentation/en/v2-treasury-bank-reconciliation.md) |
 | Administration plateforme | [administration-plateforme.md](documentation/fr/administration-plateforme.md) | [platform-administration.md](documentation/en/platform-administration.md) |
+| Facturation électronique | [facturation-electronique.md](documentation/fr/facturation-electronique.md) | [electronic-invoicing.md](documentation/en/electronic-invoicing.md) |
 | Design system CSS | [v2-design-system-css.md](documentation/fr/v2-design-system-css.md) | [v2-design-system-css.md](documentation/en/v2-design-system-css.md) |
 
 Index complet : [documentation/README.md](documentation/README.md).
@@ -203,12 +204,13 @@ Une démo peut être accessible (ex. **vrp.xdm-consulting.fr**) ; les identifian
 | Réception e-factures | **1ᵉʳ sept. 2026** — assujettis TVA |
 | Émission | **1ᵉʳ sept. 2026** (GE/ETI) · **2027** (PME/TPE) |
 
-**Déjà en place :** PDF, statuts e-facture (`draft` → `ready` → `transmitted` → `accepted` / `rejected`), SIREN/SIRET sur société et clients.
+**Déjà en place :** PDF, statuts e-facture (`draft` → `ready` → `transmitted` → `accepted` / `rejected`), SIREN/SIRET sur société et clients, POC SuperPDP (émission CII → Factur-X + webhooks HMAC). La réception inbound n’est pas encore construite.
 
-**POC :** adaptateur **[SuperPDP](https://www.superpdp.tech/)** implémenté (envoi PDF). Configurer `E_INVOICE_PLATFORM=superpdp` et `SUPERPDP_ACCESS_TOKEN` dans `.env`. Voir [documentation/fr/roadmap-facturation-electronique.md](documentation/fr/roadmap-facturation-electronique.md#configuration-superpdp-poc).
+**POC :** adaptateur **[SuperPDP](https://www.superpdp.tech/)**. Configurer `E_INVOICE_PLATFORM=superpdp` et les credentials OAuth (`SUPERPDP_CLIENT_ID` / `SUPERPDP_CLIENT_SECRET`, ou `SUPERPDP_ACCESS_TOKEN`) dans `.env`. Runbook : [facturation-electronique.md](documentation/fr/facturation-electronique.md).
 
 Documentation complète (spec d’intégration, phases, structure de code) :
 
+- [documentation/fr/facturation-electronique.md](documentation/fr/facturation-electronique.md) — setup, émission, webhooks
 - [documentation/fr/roadmap-facturation-electronique.md](documentation/fr/roadmap-facturation-electronique.md)
 - [documentation/en/roadmap-electronic-invoicing.md](documentation/en/roadmap-electronic-invoicing.md)
 

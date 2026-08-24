@@ -9,6 +9,12 @@
 | `APP_LOCALE` | `fr` | Base language (`fr`, `en`, `it`) |
 | `TERMINOLOGY_PROFILE` | `education` | Profile for guests / no company loaded |
 | `VRP_ALLOW_REGISTRATION` | `false` | Public self-registration at `/register` |
+| `E_INVOICE_PLATFORM` | *(unset)* | `superpdp` to bind SuperPDP; otherwise Null driver |
+| `SUPERPDP_ENV` | `production` | `sandbox` or `production` (selects OAuth credentials) |
+| `SUPERPDP_CLIENT_ID` / `SUPERPDP_CLIENT_SECRET` | — | Production OAuth (`client_credentials`) |
+| `SUPERPDP_SANDBOX_CLIENT_ID` / `SUPERPDP_SANDBOX_CLIENT_SECRET` | — | Sandbox OAuth when `SUPERPDP_ENV=sandbox` |
+| `SUPERPDP_ACCESS_TOKEN` | — | Optional bearer token (skips OAuth) |
+| `SUPERPDP_WEBHOOK_SECRET` | — | HMAC secret; missing secret → webhook **401** |
 
 Example `.env.example`:
 
@@ -16,7 +22,11 @@ Example `.env.example`:
 APP_LOCALE=fr
 TERMINOLOGY_PROFILE=consulting
 VRP_ALLOW_REGISTRATION=false
+# E_INVOICE_PLATFORM=superpdp
+# SUPERPDP_ENV=sandbox
 ```
+
+Electronic invoicing runbook: [electronic-invoicing.md](electronic-invoicing.md).
 
 > When signed in, `companies.terminology_profile` **overrides** `TERMINOLOGY_PROFILE`.
 
@@ -45,11 +55,11 @@ The super admin has no company attached; tenant users require a `company_id`.
 
 ## Files
 
-- `config/terminology.php`, `config/app.php`, `config/vrp.php`, `.env.example`
+- `config/terminology.php`, `config/app.php`, `config/vrp.php`, `config/electronic-invoicing.php`, `.env.example`
 
 ## Links
 
 - [Phase 1 — terminology](phase-1-terminology.md)
 - [Platform administration](platform-administration.md)
 - [Consulting labels](consulting-labels.md)
-- [Platform administration](platform-administration.md)
+- [Electronic invoicing](electronic-invoicing.md)
