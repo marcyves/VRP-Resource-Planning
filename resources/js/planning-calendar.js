@@ -59,9 +59,11 @@ function initPlanningCalendarActions() {
             event.preventDefault();
             event.stopPropagation();
 
-            duplicateForm.action = duplicateTrigger.getAttribute('data-duplicate-url') ?? '';
+            const duplicateUrl = duplicateTrigger.getAttribute('data-duplicate-url') ?? '';
+            duplicateForm.setAttribute('action', duplicateUrl);
             duplicateDateInput.value = duplicateTrigger.getAttribute('data-duplicate-date') ?? '';
             duplicateDialog.showModal();
+            duplicateDateInput.focus();
         }
     }, true);
 }

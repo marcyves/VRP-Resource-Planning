@@ -25,8 +25,9 @@
             </form>
             <x-button-secondary
                 type="button"
-                x-data=""
-                x-on:click.prevent="$store.planningDuplicate.request(@js($duplicateUrl), @js($eventLabel), @js($defaultDate))"
+                data-planning-duplicate-open
+                data-duplicate-url="{{ $duplicateUrl }}"
+                data-duplicate-date="{{ $defaultDate }}"
             >
                 {{ __('messages.planning_duplicate_custom_date') }}
             </x-button-secondary>
@@ -52,8 +53,9 @@
             type="button"
             class="planning-quick-action"
             title="{{ __('messages.planning_duplicate_custom_date') }}"
-            x-data=""
-            x-on:click.prevent="$store.planningDuplicate.request(@js($duplicateUrl), @js($eventLabel), @js($defaultDate))"
+            data-planning-duplicate-open
+            data-duplicate-url="{{ $duplicateUrl }}"
+            data-duplicate-date="{{ $defaultDate }}"
         >
             …
         </button>
