@@ -83,6 +83,10 @@ html[data-theme="dark"] body.marketing-page {
     object-fit: cover;
 }
 
+body.marketing-page--narrow .marketing-brand__logo {
+    display: none;
+}
+
 .marketing-brand__name {
     font-size: 1.05rem;
     letter-spacing: 0.01em;
