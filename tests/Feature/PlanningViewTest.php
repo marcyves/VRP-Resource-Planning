@@ -125,4 +125,35 @@ class PlanningViewTest extends TestCase
         $this->assertStringContainsString('SEP1', $html);
         $this->assertStringNotContainsString('AUG1', $html);
     }
+
+    public function test_month_view_shows_sessions_in_calendar_year_even_when_course_year_differs(): void
+    {
+        $user = User::factory()->create(['company_id' => 2]);
+        $school = School::factory()->create(['company_id' => 2]);
+        $program = Program::factory()->create(['company_id' => 2]);
+        $course = Course::factory()->create([
+            'school_id' => $school->id,
+            'program_id' => $program->id,
+            'year' => 2026,
+            'short_name' => 'C2026',
+        ]);
+        $group = Group::factory()->create(['company_id' => 2]);
+
+        Planning::create([
+            'begin' => '2027-01-15 10:00:00',
+            'end' => '2027-01-15 12:00:00',
+            'location' => 'na',
+            'group_id' => $group->id,
+            'course_id' => $course->id,
+        ]);
+
+        $this->actingAs($user)
+            ->withSession([
+                'current_year' => 2027,
+                'current_month' => 1,
+            ])
+            ->get(route('planning.index'))
+            ->assertOk()
+            ->assertSee('C2026', false);
+    }
 }

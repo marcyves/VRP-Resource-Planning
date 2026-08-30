@@ -193,7 +193,7 @@ class SchoolController extends Controller
             $inactiveGroups = $school->getLinkedGroups(false);
             $occurences = Group::planningOccurrencesForIds(
                 $groups->pluck('id')->merge($inactiveGroups->pluck('id')),
-                $year
+                'all'
             );
         } elseif ($panel === 'documents') {
             $documents = $school->getDocuments();

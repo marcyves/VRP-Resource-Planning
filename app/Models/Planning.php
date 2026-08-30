@@ -43,7 +43,6 @@ class Planning extends Model
         });
 
         return self::planningDetailsQuery($list)
-            ->where(['courses.year' => $year])
             ->where('begin', '>', $start_date)
             ->where('end', '<', $end_date)
             ->orderBy('begin', 'asc')

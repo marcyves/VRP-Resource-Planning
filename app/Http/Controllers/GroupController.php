@@ -87,7 +87,7 @@ class GroupController extends Controller
             ->unique()
             ->values();
 
-        $occurences = Group::planningOccurrencesForIds($groupIds, $current_year);
+        $occurences = Group::planningOccurrencesForIds($groupIds, 'all');
 
         return view('group.index', compact(
             'groups',
@@ -231,8 +231,7 @@ class GroupController extends Controller
         abort_unless($group->company_id === Auth::user()->company_id, 404);
 
         $courses = $group->getCourses();
-        $current_year = session('current_year', now()->format('Y'));
-        $occurences = (new PlanningCollection([$group]))->getGroupOccurences($current_year);
+        $occurences = (new PlanningCollection([$group]))->getGroupOccurences('all');
         $returnCourseId = session('course_id') ?: $courses->first()?->id;
 
         return view('group.show', compact('courses', 'group', 'occurences', 'returnCourseId'));
