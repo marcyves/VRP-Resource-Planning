@@ -106,6 +106,26 @@ class CourseFormTest extends TestCase
         $this->assertSame(200.0, (float) $course->fresh()->rate);
     }
 
+    public function test_store_and_edit_preserve_ttc_rate_after_round_trip(): void
+    {
+        [$user, $school, $program] = $this->makeUserAndSchool();
+
+        $this->actingAs($user)
+            ->post(route('course.store', $school->id), $this->coursePayload($program->id, [
+                'rate' => '33,33',
+                'rate_basis' => 'ttc',
+            ]))
+            ->assertRedirect(route('dashboard'));
+
+        $course = Course::query()->where('school_id', $school->id)->firstOrFail();
+        $this->assertSame(27.775, (float) $course->rate);
+
+        $this->actingAs($user)
+            ->get(route('course.edit', $course->id))
+            ->assertOk()
+            ->assertSee('value="33.33"', false);
+    }
+
     /**
      * @return array{0: User, 1: School, 2: Program}
      */

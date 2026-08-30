@@ -175,7 +175,7 @@ class Tools
     }
 
     /**
-     * Hourly rate stored on courses is always HT.
+     * Hourly rate stored on courses is always HT (4 decimals for VAT round-trip).
      *
      * @param  'ht'|'ttc'|string  $basis
      */
@@ -184,12 +184,17 @@ class Tools
         $rate = self::parseDecimal($amount);
 
         if ($basis !== 'ht') {
-            return round($rate / self::VAT_MULTIPLIER, 2);
+            $ttc = round($rate, 2);
+
+            return round($ttc / self::VAT_MULTIPLIER, 4);
         }
 
-        return round($rate, 2);
+        return round($rate, 4);
     }
 
+    /**
+     * Display TTC from stored HT — 2 decimals for UI and invoices.
+     */
     public static function hourlyRateTtc(mixed $htAmount): float
     {
         return round(self::parseDecimal($htAmount) * self::VAT_MULTIPLIER, 2);

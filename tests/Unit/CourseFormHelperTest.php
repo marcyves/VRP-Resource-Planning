@@ -21,6 +21,7 @@ class CourseFormHelperTest extends TestCase
     public function test_hourly_rate_ht_converts_ttc_by_vat(): void
     {
         $this->assertSame(100.0, Tools::hourlyRateHt(120, 'ttc'));
+        $this->assertSame(83.3333, Tools::hourlyRateHt(100, 'ttc'));
     }
 
     public function test_hourly_rate_ht_defaults_to_ttc(): void
@@ -32,6 +33,18 @@ class CourseFormHelperTest extends TestCase
     public function test_hourly_rate_ttc_from_stored_ht(): void
     {
         $this->assertSame(105.0, Tools::hourlyRateTtc(87.5));
+    }
+
+    public function test_hourly_rate_ttc_round_trips_after_ttc_input(): void
+    {
+        foreach ([33.33, 100.0, 120.0, 45.5, 87.5] as $ttc) {
+            $ht = Tools::hourlyRateHt($ttc, 'ttc');
+            $this->assertSame(
+                round($ttc, 2),
+                Tools::hourlyRateTtc($ht),
+                "TTC round-trip failed for {$ttc}"
+            );
+        }
     }
 
     public function test_default_course_semester_is_one_from_january_to_june(): void

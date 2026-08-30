@@ -42,7 +42,7 @@
             <article>
                 <p>
                     <span class="card-label">{{ __('messages.rate') }}</span>
-                    <span>@money($course->rate) € HT / @money($course->rate * 1.2) € TTC</span>
+                    <span>@money($course->rate) € HT / @money(\App\Http\Utility\Tools::hourlyRateTtc($course->rate)) € TTC</span>
                 </p>
             </article>
         </div>
