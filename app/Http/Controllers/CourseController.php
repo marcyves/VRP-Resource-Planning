@@ -195,7 +195,7 @@ class CourseController extends Controller
             session()->put('course', $course->name);
             session()->put('course_id', $course->id);
 
-            return redirect(route('dashboard'));
+            return redirect()->route('school.show', $course->school_id);
         } catch (\Exception $e) {
             session()->flash('danger', __('messages.course_save_error'));
             session()->flash('danger', $e->getMessage());

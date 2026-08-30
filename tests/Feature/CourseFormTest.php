@@ -101,7 +101,7 @@ class CourseFormTest extends TestCase
                 'rate' => '240',
                 'rate_basis' => 'ttc',
             ]))
-            ->assertRedirect(route('dashboard'));
+            ->assertRedirect(route('school.show', $school->id));
 
         $this->assertSame(200.0, (float) $course->fresh()->rate);
     }
