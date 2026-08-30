@@ -27,8 +27,6 @@ class BreadcrumbComposer
 
         $isInvoice = request()->routeIs('invoice.*', 'treasury.invoices.*');
         $isPlanning = request()->routeIs('planning.*');
-        $currentYear = session('current_year', now()->format('Y'));
-        $currentSemester = session('current_semester', 'all');
 
         $breadcrumbSchools = Auth::user()->getSchools();
         $breadcrumbCourses = collect();
@@ -41,13 +39,9 @@ class BreadcrumbComposer
                     ->first();
 
             if ($school) {
-                $breadcrumbCourses = $school->getCourses(
-                    $currentYear === 'all' ? 'all' : (string) $currentYear
-                );
-
-                if ($currentSemester !== 'all') {
-                    $breadcrumbCourses = $breadcrumbCourses->where('semester', $currentSemester)->values();
-                }
+                // List every course for the school — not session current_year, which tracks
+                // calendar navigation in the agenda and would hide e.g. a 2026 course in 2027.
+                $breadcrumbCourses = $school->getCourses('all');
             }
         }
 
