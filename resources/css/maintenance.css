@@ -42,7 +42,7 @@
   opacity: 0.9;
 }
 
-body:has(> .maintenance-notice) > .maintenance-logo {
+body:has(.maintenance-notice) .marketing-brand__logo {
   display: none;
 }
 
