@@ -28,6 +28,9 @@
                     name="date"
                     value="{{ $isoDate }}"
                     class="planning-date planning-date--create"
+                    data-planning-create
+                    data-create-hour="8"
+                    data-create-minutes="0"
                     aria-label="{{ __('messages.planning_create_on_day', ['date' => $isoDate]) }}"
                 >
                     {{ $date->day }}
@@ -64,7 +67,21 @@
         ])>
             <div class="week-agenda__slots">
                 @foreach ($slotHours as $hour)
-                    <div class="week-agenda__slot"></div>
+                    @if ($canCreate)
+                        <button
+                            type="submit"
+                            form="planning-create-form"
+                            name="date"
+                            value="{{ $isoDate }}"
+                            class="week-agenda__slot week-agenda__slot--create"
+                            data-planning-create
+                            data-create-hour="{{ $hour }}"
+                            data-create-minutes="0"
+                            aria-label="{{ __('messages.planning_create_on_slot', ['date' => $isoDate, 'hour' => $hour]) }}"
+                        ></button>
+                    @else
+                        <div class="week-agenda__slot"></div>
+                    @endif
                 @endforeach
             </div>
             <div class="week-agenda__events">

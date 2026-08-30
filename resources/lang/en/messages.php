@@ -546,6 +546,7 @@ return [
     'planning_duplicate_custom_date' => 'Custom date…',
     'duplicate' => 'Duplicate',
     'planning_create_on_day' => 'Create session on :date for the selected course',
+    'planning_create_on_slot' => 'Create session on :date at :hour:00 for the selected course',
     'planning_select_course_first' => 'Select a course in the breadcrumb first.',
     'delete_confirm_title' => 'Are you sure?',
     'delete_confirm_description_group' => 'This group will be permanently deleted.',

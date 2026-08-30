@@ -15,6 +15,8 @@
         <form id="planning-create-form" action="{{ route('planning.create.start') }}" method="post" class="hidden">
             @csrf
             <input type="hidden" name="course" value="{{ session('course_id') }}">
+            <input type="hidden" name="hour" value="8">
+            <input type="hidden" name="minutes" value="0">
         </form>
     @endif
 

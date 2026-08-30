@@ -562,6 +562,7 @@ return [
     'planning_duplicate_custom_date' => 'Autre date…',
     'duplicate' => 'Dupliquer',
     'planning_create_on_day' => 'Créer une session le :date pour le cours sélectionné',
+    'planning_create_on_slot' => 'Créer une session le :date à :hour h pour le cours sélectionné',
     'planning_select_course_first' => 'Sélectionnez d\'abord un cours dans le fil d\'Ariane.',
     'delete_confirm_title' => 'Êtes-vous certain ?',
     'delete_confirm_description_group' => 'Ce groupe sera définitivement supprimé.',

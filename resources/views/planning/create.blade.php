@@ -33,12 +33,12 @@
                     <div class="planning-time-fields">
                         <select id="begin-hour" name="hour" class="form-input">
                             @for ($h = 8; $h < 20; $h++)
-                                <option value="{{ $h }}" @selected((string) old('hour', '8') === (string) $h)>{{ $h }}</option>
+                                <option value="{{ $h }}" @selected((string) old('hour', (string) $hour) === (string) $h)>{{ $h }}</option>
                             @endfor
                         </select>
                         <select name="minutes" class="form-input" aria-label="{{ __('messages.begin') }}">
                             @for ($m = 0; $m < 60; $m += 5)
-                                <option value="{{ $m }}" @selected((string) old('minutes', '0') === (string) $m)>{{ str_pad((string) $m, 2, '0', STR_PAD_LEFT) }}</option>
+                                <option value="{{ $m }}" @selected((string) old('minutes', (string) $minutes) === (string) $m)>{{ str_pad((string) $m, 2, '0', STR_PAD_LEFT) }}</option>
                             @endfor
                         </select>
                     </div>

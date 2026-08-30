@@ -227,6 +227,8 @@ class PlanningController extends Controller
         $validated = $request->validate([
             'date' => 'required|date',
             'course' => 'nullable|exists:courses,id',
+            'hour' => 'nullable|integer|min:8|max:19',
+            'minutes' => 'nullable|integer|min:0|max:59',
         ]);
 
         $courseId = $validated['course'] ?? session('course_id');
@@ -239,6 +241,8 @@ class PlanningController extends Controller
 
         $request->session()->put('planning_create_date', $validated['date']);
         $request->session()->put('planning_create_course_id', $courseId);
+        $request->session()->put('planning_create_hour', (int) ($validated['hour'] ?? 8));
+        $request->session()->put('planning_create_minutes', (int) ($validated['minutes'] ?? 0));
 
         return redirect()->route('planning.create');
     }
@@ -272,8 +276,10 @@ class PlanningController extends Controller
 
         $groups = $course->getLinkedGroups(true);
         $session_length = $course->session_length;
+        $hour = (int) $request->session()->get('planning_create_hour', 8);
+        $minutes = (int) $request->session()->get('planning_create_minutes', 0);
 
-        return view('planning.create', compact('date', 'groups', 'session_length', 'course'));
+        return view('planning.create', compact('date', 'groups', 'session_length', 'course', 'hour', 'minutes'));
     }
 
     /**

@@ -13,6 +13,9 @@
             name="date"
             value="{{ $isoDate }}"
             class="planning-date planning-date--create"
+            data-planning-create
+            data-create-hour="8"
+            data-create-minutes="0"
             aria-label="{{ __('messages.planning_create_on_day', ['date' => $isoDate]) }}"
         >
             {{ $day }}

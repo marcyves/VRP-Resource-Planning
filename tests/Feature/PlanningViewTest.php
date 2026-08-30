@@ -156,4 +156,51 @@ class PlanningViewTest extends TestCase
             ->assertOk()
             ->assertSee('C2026', false);
     }
+
+    public function test_week_view_offers_slot_create_buttons_when_course_selected(): void
+    {
+        $user = User::factory()->create(['company_id' => 2]);
+        $school = School::factory()->create(['company_id' => 2]);
+        $program = Program::factory()->create(['company_id' => 2]);
+        $course = Course::factory()->create([
+            'school_id' => $school->id,
+            'program_id' => $program->id,
+        ]);
+
+        $this->actingAs($user)
+            ->withSession([
+                'course_id' => $course->id,
+                'current_year' => 2026,
+                'current_month' => 8,
+                'planning_week_start' => '2026-08-17',
+            ])
+            ->get(route('planning.index', ['view' => 'week']))
+            ->assertOk()
+            ->assertSee('week-agenda__slot--create', false)
+            ->assertSee('data-create-hour="10"', false);
+    }
+
+    public function test_start_create_from_week_slot_presets_hour(): void
+    {
+        $user = User::factory()->create(['company_id' => 2]);
+        $school = School::factory()->create(['company_id' => 2]);
+        $program = Program::factory()->create(['company_id' => 2]);
+        $course = Course::factory()->create([
+            'school_id' => $school->id,
+            'program_id' => $program->id,
+        ]);
+
+        $this->actingAs($user)
+            ->withSession(['course_id' => $course->id])
+            ->post(route('planning.create.start'), [
+                'date' => '2026-08-18',
+                'hour' => 14,
+                'minutes' => 0,
+                'course' => $course->id,
+            ])
+            ->assertRedirect(route('planning.create'));
+
+        $this->assertSame(14, session('planning_create_hour'));
+        $this->assertSame(0, session('planning_create_minutes'));
+    }
 }

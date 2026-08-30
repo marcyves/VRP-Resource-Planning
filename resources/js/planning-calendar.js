@@ -19,6 +19,30 @@ function bindNativeDialog(dialog, closeSelector) {
     });
 }
 
+function initPlanningCreateForm() {
+    const form = document.getElementById('planning-create-form');
+    if (! form) {
+        return;
+    }
+
+    const hourInput = form.querySelector('[name="hour"]');
+    const minutesInput = form.querySelector('[name="minutes"]');
+
+    document.addEventListener('click', (event) => {
+        const trigger = event.target.closest('[data-planning-create]');
+        if (! trigger) {
+            return;
+        }
+
+        if (hourInput) {
+            hourInput.value = trigger.getAttribute('data-create-hour') ?? '8';
+        }
+        if (minutesInput) {
+            minutesInput.value = trigger.getAttribute('data-create-minutes') ?? '0';
+        }
+    }, true);
+}
+
 function initPlanningCalendarActions() {
     const deleteDialog = document.getElementById('planning-delete-dialog');
     const deleteForm = document.getElementById('planning-delete-dialog-form');
@@ -69,7 +93,11 @@ function initPlanningCalendarActions() {
 }
 
 if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initPlanningCalendarActions);
+    document.addEventListener('DOMContentLoaded', () => {
+        initPlanningCreateForm();
+        initPlanningCalendarActions();
+    });
 } else {
+    initPlanningCreateForm();
     initPlanningCalendarActions();
 }

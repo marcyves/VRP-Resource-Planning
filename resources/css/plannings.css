@@ -190,6 +190,26 @@
     border-top: 1px solid var(--border-subtle);
 }
 
+.week-agenda__slot--create {
+    display: block;
+    width: 100%;
+    min-height: 100%;
+    margin: 0;
+    padding: 0;
+    border: none;
+    border-top: 1px solid var(--border-subtle);
+    background: transparent;
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+}
+
+.week-agenda__slot--create:hover,
+.week-agenda__slot--create:focus-visible {
+    background: color-mix(in srgb, var(--brand-accent) 12%, transparent);
+    outline: none;
+}
+
+.week-agenda__slot--create:first-child,
 .week-agenda__slot:first-child {
     border-top: none;
 }
