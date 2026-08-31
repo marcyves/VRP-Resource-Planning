@@ -6,11 +6,13 @@ Web app for **scheduling**, **budgeting**, and **invoice tracking** for trainers
 
 **Repository:** [github.com/marcyves/VRP-Resource-Planning](https://github.com/marcyves/VRP-Resource-Planning)
 
-[![Issues](https://img.shields.io/github/issues/marcyves/VRP-Resource-Planning?style=flat-square)](https://github.com/marcyves/VRP-Resource-Planning/issues)
-[![License: GPL-3.0](https://img.shields.io/badge/License-GPL%20v3-blue.svg?style=flat-square)](./LICENSE)
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-Marc%20Augier-0A66C2?style=flat-square&logo=linkedin)](https://linkedin.com/in/marcaugier)
+![Issues](https://img.shields.io/github/issues/marcyves/VRP-Resource-Planning?style=flat-square)
+![License: GPL-3.0](https://img.shields.io/badge/License-GPL%20v3-blue.svg?style=flat-square)
+![LinkedIn](https://img.shields.io/badge/LinkedIn-Marc%20Augier-0A66C2?style=flat-square&logo=linkedin)
 
 ---
+
+
 
 ## Contents
 
@@ -32,6 +34,8 @@ Web app for **scheduling**, **budgeting**, and **invoice tracking** for trainers
 
 ---
 
+
+
 ## Features
 
 - **Schools** (or clients / care structures) and **courses** (programmes, volumes, rates)
@@ -46,28 +50,34 @@ Web app for **scheduling**, **budgeting**, and **invoice tracking** for trainers
 
 ---
 
+
+
 ## V2 — user interface
 
 **v2** is a UI refresh (2025–2026): sidebar + topbar shell, modular CSS design system, factorised Blade components, dark mode.
 
-| Change | Detail |
-|--------|--------|
-| **Home** | `/home` — school list (billed TTC, unbilled TTC + hours) |
-| **Logo** | Returns to home |
+
+| Change      | Detail                                                               |
+| ----------- | -------------------------------------------------------------------- |
+| **Home**    | `/home` — school list (billed TTC, unbilled TTC + hours)             |
+| **Logo**    | Returns to home                                                      |
 | **Billing** | Preparation moved from Agenda into **each school page** (`#billing`) |
-| **Agenda** | Planning + calendar only |
-| **CSS** | Tokens in `theme.css`, `.data-table`, `.nice-form` |
+| **Agenda**  | Planning + calendar only                                             |
+| **CSS**     | Tokens in `theme.css`, `.data-table`, `.nice-form`                   |
+
 
 **Detailed docs (wiki sheets):**
 
-| Topic | English | Français |
-|-------|---------|----------|
-| V2 overview | [v2-user-interface.md](documentation/en/v2-user-interface.md) | [v2-interface-utilisateur.md](documentation/fr/v2-interface-utilisateur.md) |
-| Navigation & modules | [v2-navigation-modules.md](documentation/en/v2-navigation-modules.md) | [v2-navigation-modules.md](documentation/fr/v2-navigation-modules.md) |
-| Billing per school | [v2-billing-per-school.md](documentation/en/v2-billing-per-school.md) | [v2-facturation-par-ecole.md](documentation/fr/v2-facturation-par-ecole.md) |
+
+| Topic                          | English                                                                                   | Français                                                                                            |
+| ------------------------------ | ----------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
+| V2 overview                    | [v2-user-interface.md](documentation/en/v2-user-interface.md)                             | [v2-interface-utilisateur.md](documentation/fr/v2-interface-utilisateur.md)                         |
+| Navigation & modules           | [v2-navigation-modules.md](documentation/en/v2-navigation-modules.md)                     | [v2-navigation-modules.md](documentation/fr/v2-navigation-modules.md)                               |
+| Billing per school             | [v2-billing-per-school.md](documentation/en/v2-billing-per-school.md)                     | [v2-facturation-par-ecole.md](documentation/fr/v2-facturation-par-ecole.md)                         |
 | Treasury & bank reconciliation | [v2-treasury-bank-reconciliation.md](documentation/en/v2-treasury-bank-reconciliation.md) | [v2-tresorerie-rapprochement-bancaire.md](documentation/fr/v2-tresorerie-rapprochement-bancaire.md) |
-| Platform administration | [platform-administration.md](documentation/en/platform-administration.md) | [administration-plateforme.md](documentation/fr/administration-plateforme.md) |
-| CSS design system | [v2-design-system-css.md](documentation/en/v2-design-system-css.md) | [v2-design-system-css.md](documentation/fr/v2-design-system-css.md) |
+| Platform administration        | [platform-administration.md](documentation/en/platform-administration.md)                 | [administration-plateforme.md](documentation/fr/administration-plateforme.md)                       |
+| CSS design system              | [v2-design-system-css.md](documentation/en/v2-design-system-css.md)                       | [v2-design-system-css.md](documentation/fr/v2-design-system-css.md)                                 |
+
 
 Full index: [documentation/README.md](documentation/README.md).
 
@@ -75,19 +85,25 @@ User manuals (LaTeX PDF): [user manual](documentation/manuel-utilisateur/README.
 
 ---
 
+
+
 ## Tech stack
 
-| Layer | Detail |
-|-------|--------|
-| Backend | **PHP 8.2+**, **Laravel 11** |
+
+| Layer    | Detail                                                               |
+| -------- | -------------------------------------------------------------------- |
+| Backend  | **PHP 8.2+**, **Laravel 11**                                         |
 | Frontend | **Vite 4**, **Alpine.js**, modular CSS (`resources/css/`), **Blade** |
-| PDF | **TCPDF** (invoices) |
-| iCal | **ics-parser** |
-| Quality | **Laravel Pint**, **PHPStan** (Larastan), **PHPUnit** |
+| PDF      | **TCPDF** (invoices)                                                 |
+| iCal     | **ics-parser**                                                       |
+| Quality  | **Laravel Pint**, **PHPStan** (Larastan), **PHPUnit**                |
+
 
 > Tailwind is not an npm dependency: the UI uses dedicated CSS sheets and Blade components.
 
 ---
+
+
 
 ## Requirements
 
@@ -97,6 +113,8 @@ User manuals (LaTeX PDF): [user manual](documentation/manuel-utilisateur/README.
 - **Database**: MySQL / MariaDB (or SQLite for a quick try, with `.env` adjusted)
 
 ---
+
+
 
 ## Installation
 
@@ -109,58 +127,63 @@ cp .env.example .env
 php artisan key:generate
 ```
 
-1. Edit **`.env`**: `APP_URL`, database (`DB_*` or SQLite `DB_DATABASE`), mail if needed.
+1. Edit `.env`: `APP_URL`, database (`DB_*` or SQLite `DB_DATABASE`), mail if needed.
 2. Create tables:
-
-   ```bash
+  ```bash
    php artisan migrate
-   ```
-
+  ```
 3. **Storage symlink** (public files / documents):
-
-   ```bash
+  ```bash
    php artisan storage:link
-   ```
-
+  ```
 4. Front-end assets:
-
-   ```bash
+  ```bash
    npm install
    npm run build
-   ```
+  ```
 
 Locally you can run `npm run dev` alongside `php artisan serve` (or your vhost).
 
 ---
 
+
+
 ## Development
 
-| Command | Role |
-|---------|------|
+
+| Command             | Role                       |
+| ------------------- | -------------------------- |
 | `php artisan serve` | Laravel development server |
-| `npm run dev` | Vite watch (HMR) |
-| `npm run build` | Production asset build |
+| `npm run dev`       | Vite watch (HMR)           |
+| `npm run build`     | Production asset build     |
+
 
 Route cache when needed: `php artisan route:cache` (typically production only).
 
 ---
 
+
+
 ## Platform super admin
 
 VRP is **multi-tenant**: each customer company has its own users and data. A **super admin** account (no `company_id`) provisions companies from `/super-admin/companies`.
 
-| Step | Command / action |
-|------|------------------|
-| **Migrate** | `php artisan migrate` (`super admin` status, nullable `company_id`) |
-| **Create super admin** | `php artisan vrp:create-super-admin you@example.com "Your Name"` |
-| **Sign in** | `/login` → company list |
-| **Create a tenant** | **Create company**: name, invoice prefix, terminology profile, admin account |
+
+| Step                   | Command / action                                                             |
+| ---------------------- | ---------------------------------------------------------------------------- |
+| **Migrate**            | `php artisan migrate` (`super admin` status, nullable `company_id`)          |
+| **Create super admin** | `php artisan vrp:create-super-admin you@example.com "Your Name"`             |
+| **Sign in**            | `/login` → company list                                                      |
+| **Create a tenant**    | **Create company**: name, invoice prefix, terminology profile, admin account |
+
 
 Public `/register` is **disabled by default** (`VRP_ALLOW_REGISTRATION=false`). Company accounts are created by the super admin or by an existing admin in the classic VRP UI.
 
 Runbook: [platform-administration.md](documentation/en/platform-administration.md) · [administration-plateforme.md](documentation/fr/administration-plateforme.md).
 
 ---
+
+
 
 ## Internationalisation
 
@@ -178,6 +201,8 @@ Wiki docs (FR/EN): [documentation/](documentation/README.md) — [en/](documenta
 
 ---
 
+
+
 ## Quality & tests
 
 ```bash
@@ -188,20 +213,28 @@ php artisan test               # PHPUnit
 
 ---
 
+
+
 ## Demo
 
-A demo may be available (e.g. **vrp.xdm-consulting.fr**). Do **not** commit test credentials — use a private channel or environment secrets.
+A demo is available at https://**vrp.xdm-consulting.fr**.
+
+Credential information is povided there.
 
 ---
+
+
 
 ## Roadmap — e-invoicing
 
 **Current priority.** VRP prepares invoices (planning, PDF, legal IDs); an external **accredited platform (PA)** handles structured submission, routing, and archiving.
 
-| Deadline | Who |
-|----------|-----|
-| Receive e-invoices | **1 Sep 2026** — VAT-liable entities |
-| Issue | **1 Sep 2026** (large/mid-size) · **2027** (SME) |
+
+| Deadline           | Who                                              |
+| ------------------ | ------------------------------------------------ |
+| Receive e-invoices | **1 Sep 2026** — VAT-liable entities             |
+| Issue              | **1 Sep 2026** (large/mid-size) · **2027** (SME) |
+
 
 **Already in place:** PDF, e-invoice statuses (`draft` → `ready` → `transmitted` → `accepted` / `rejected`), SIREN/SIRET on company and clients.
 
@@ -214,22 +247,28 @@ Full docs (integration spec, phases, code layout):
 
 ---
 
+
+
 ## Roadmap — PWA & offline
 
 Later idea: let users **browse the agenda** (then maybe **enter sessions**) **offline**, sync when back online — via an installable **PWA**, not a native app.
 
 **Not short-term** (API + local storage + conflict handling). Today: online only; `.ics` calendar import is the only external → VRP flow.
 
-| Phase | Goal |
-|-------|------|
-| 0 | PWA shell (manifest, icons, install) |
-| 1 | Offline agenda browse (**MVP**) |
-| 2 | Offline entry + sync queue |
-| 3 | Billing, treasury, documents → online only |
+
+| Phase | Goal                                       |
+| ----- | ------------------------------------------ |
+| 0     | PWA shell (manifest, icons, install)       |
+| 1     | Offline agenda browse (**MVP**)            |
+| 2     | Offline entry + sync queue                 |
+| 3     | Billing, treasury, documents → online only |
+
 
 Docs: [roadmap-pwa-offline.md](documentation/en/roadmap-pwa-offline.md) · [fr](documentation/fr/roadmap-pwa-offline.md)
 
 ---
+
+
 
 ## Contributing
 
@@ -242,18 +281,22 @@ Suggestions and pull requests are welcome:
 
 ---
 
+
+
 ## Licence
 
-Distributed under **GNU GPLv3** — see [`LICENSE`](./LICENSE).
+Distributed under **GNU GPLv3** — see `[LICENSE](./LICENSE)`.
 
 ---
+
+
 
 ## Contact
 
 **Marc Augier** — [@marcyves](https://github.com/marcyves) · [LinkedIn](https://linkedin.com/in/marcaugier)
 
 If this project helps you, you can support the work:
-[![Buy Me A Coffee](https://cdn.buymeacoffee.com/buttons/v2/default-blue.png)](https://www.buymeacoffee.com/marcyves)
+![Buy Me A Coffee](https://cdn.buymeacoffee.com/buttons/v2/default-blue.png)
 
 ---
 
