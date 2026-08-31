@@ -97,4 +97,5 @@ Si le fichier PDF disparaît ensuite du stockage, l'ouverture de la facture le r
 
 - [V2 — navigation](v2-navigation-modules.md)
 - [V2 — trésorerie & rapprochement bancaire](v2-tresorerie-rapprochement-bancaire.md)
+- [Facturation électronique](facturation-electronique.md)
 - [Modèle de données](modele-donnees-formation.md)

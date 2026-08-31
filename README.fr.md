@@ -236,7 +236,9 @@ Les informations de connexion sont disponibles en ligne.
 
 **Déjà en place :** PDF, statuts e-facture (`draft` → `ready` → `transmitted` → `accepted` / `rejected`), SIREN/SIRET sur société et clients.
 
-**POC :** adaptateur **[SuperPDP](https://www.superpdp.tech/)** implémenté (envoi PDF). Configurer `E_INVOICE_PLATFORM=superpdp` et `SUPERPDP_ACCESS_TOKEN` dans `.env`. Voir [documentation/fr/roadmap-facturation-electronique.md](documentation/fr/roadmap-facturation-electronique.md#configuration-superpdp-poc).
+**POC :** adaptateur **[SuperPDP](https://www.superpdp.tech/)** — **CII → Factur-X** structuré (pas le PDF TCPDF). Configurer `E_INVOICE_PLATFORM=superpdp` et les credentials OAuth (`SUPERPDP_CLIENT_ID` / `SUPERPDP_CLIENT_SECRET`, ou équivalents sandbox). `SUPERPDP_ACCESS_TOKEN` optionnel (sans OAuth).
+
+Runbook opérationnel : [facturation-electronique.md](documentation/fr/facturation-electronique.md) · [electronic-invoicing.md](documentation/en/electronic-invoicing.md).
 
 Documentation complète (spec d’intégration, phases, structure de code) :
 

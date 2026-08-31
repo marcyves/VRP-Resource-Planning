@@ -129,3 +129,4 @@ La déduplication des lignes de relevé utilise le compte, la date d'opération,
 
 - [V2 - navigation et modules](v2-navigation-modules.md)
 - [V2 - facturation par école](v2-facturation-par-ecole.md)
+- [Facturation électronique](facturation-electronique.md)

@@ -97,4 +97,5 @@ If the PDF file later disappears from storage, viewing the invoice regenerates i
 
 - [V2 — navigation](v2-navigation-modules.md)
 - [V2 — treasury & bank reconciliation](v2-treasury-bank-reconciliation.md)
+- [Electronic invoicing](electronic-invoicing.md)
 - [Training data model](training-data-model.md)

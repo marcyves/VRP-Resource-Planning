@@ -238,7 +238,9 @@ Credential information is povided there.
 
 **Already in place:** PDF, e-invoice statuses (`draft` → `ready` → `transmitted` → `accepted` / `rejected`), SIREN/SIRET on company and clients.
 
-**POC:** **[SuperPDP](https://www.superpdp.tech/)** adapter (PDF send). Set `E_INVOICE_PLATFORM=superpdp` and `SUPERPDP_ACCESS_TOKEN` in `.env`. See [roadmap-electronic-invoicing.md](documentation/en/roadmap-electronic-invoicing.md).
+**POC:** **[SuperPDP](https://www.superpdp.tech/)** adapter — structured **CII → Factur-X** (not the TCPDF PDF). Set `E_INVOICE_PLATFORM=superpdp` plus OAuth credentials (`SUPERPDP_CLIENT_ID` / `SUPERPDP_CLIENT_SECRET`, or sandbox equivalents). Optional `SUPERPDP_ACCESS_TOKEN` skips OAuth.
+
+Operational runbook: [electronic-invoicing.md](documentation/en/electronic-invoicing.md) · [facturation-electronique.md](documentation/fr/facturation-electronique.md).
 
 Full docs (integration spec, phases, code layout):
 

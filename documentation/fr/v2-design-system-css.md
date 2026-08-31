@@ -60,7 +60,7 @@ Définis dans `global.css` (clair) et surchargés dans `theme.css` (sombre) :
 | `x-group-card` / `x-program-card` | Carte ressource (liste) |
 | `x-confirm-delete-modal` | Confirmation suppression (Alpine store) |
 
-Stores Alpine : `createDeleteStore()` dans `resources/js/delete-store.js` (`groupDelete`, `programDelete`, `planningDelete`, `documentDelete`).
+Stores Alpine : `createDeleteStore()` dans `resources/js/delete-store.js` (`groupDelete`, `programDelete`, `documentDelete`). La suppression et la duplication à date libre des sessions d’agenda utilisent des `<dialog>` natifs dans `resources/js/planning-calendar.js`, pas Alpine.
 
 ## Mode sombre
 
