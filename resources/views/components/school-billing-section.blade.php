@@ -51,18 +51,18 @@
                         <thead>
                             <tr>
                                 <th class="billing-col-group">@schoolMsg('group')</th>
-                                <th class="date">{{ __('messages.schedule') }}</th>
-                                <th class="money">{{ __('messages.hours') }}</th>
-                                <th class="money">{{ __('messages.amount_ht') }}</th>
-                                <th class="money">{{ __('messages.amount_ttc') }}</th>
-                                <th>{{ __('messages.bill') }}</th>
+                                <th class="billing-col-schedule date">{{ __('messages.schedule') }}</th>
+                                <th class="billing-col-hours money">{{ __('messages.hours') }}</th>
+                                <th class="billing-col-money money">{{ __('messages.amount_ht') }}</th>
+                                <th class="billing-col-money money">{{ __('messages.amount_ttc') }}</th>
+                                <th class="billing-col-bill">{{ __('messages.bill') }}</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($schedules['schedule'] as $planningId => $schedule)
                                 <tr>
                                     <td class="billing-col-group" title="{{ $schedule['group'] }}">{{ $schedule['group'] }}</td>
-                                    <td class="date">
+                                    <td class="billing-col-schedule date">
                                         @if (Auth::user()->getMode() == 'Edit')
                                             <a class="billing-schedule-link" href="{{ route('planning.edit', $planningId) }}">
                                                 {{ \Carbon\Carbon::parse($schedule['begin'])->format('d/m/Y H:i') }} – {{ \Carbon\Carbon::parse($schedule['end'])->format('H:i') }}
@@ -71,7 +71,7 @@
                                             {{ \Carbon\Carbon::parse($schedule['begin'])->format('d/m/Y H:i') }} – {{ \Carbon\Carbon::parse($schedule['end'])->format('H:i') }}
                                         @endif
                                     </td>
-                                    <td class="money">
+                                    <td class="billing-col-hours money">
                                         <span class="billing-hours-badge {{ $schedule['duration'] != $schedules['duration'] ? 'billing-hours-badge--warning' : '' }}">
                                             @if ($schedule['billable_rate'] != 1)
                                                 ({{ number_format($schedule['billable_rate'], 2) }})
@@ -79,9 +79,9 @@
                                             {{ number_format($schedule['duration'], 1) }} h
                                         </span>
                                     </td>
-                                    <td class="money">@money($schedule['gain']) €</td>
-                                    <td class="money">@money($schedule['gain_ttc']) €</td>
-                                    <td>
+                                    <td class="billing-col-money money">@money($schedule['gain'])</td>
+                                    <td class="billing-col-money money">@money($schedule['gain_ttc'])</td>
+                                    <td class="billing-col-bill">
                                         @if ($schedule['bill'])
                                             <span class="status-chip status-chip--bill">{{ $schedule['bill'] }}</span>
                                         @else
