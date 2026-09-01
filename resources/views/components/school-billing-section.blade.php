@@ -53,6 +53,7 @@
                                 <th>@schoolMsg('group')</th>
                                 <th>{{ __('messages.schedule') }}</th>
                                 <th>{{ __('messages.hours') }}</th>
+                                <th>{{ __('messages.amount_ht') }}</th>
                                 <th>{{ __('messages.bill') }}</th>
                             </tr>
                         </thead>
@@ -77,6 +78,7 @@
                                             {{ number_format($schedule['duration'], 1) }} h
                                         </span>
                                     </td>
+                                    <td class="money">@money($schedule['gain']) € HT</td>
                                     <td>
                                         @if ($schedule['bill'])
                                             <span class="status-chip status-chip--bill">{{ $schedule['bill'] }}</span>

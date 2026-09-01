@@ -365,6 +365,7 @@ class Tools
                 "end"      => $event->end,
                 "duration" => $duration,
                 "billable_rate" => $event->billable_rate,
+                "gain"     => $gain,
                 "bill"     => $event->invoice_id
             );
         }
