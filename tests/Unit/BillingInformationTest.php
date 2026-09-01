@@ -32,5 +32,6 @@ class BillingInformationTest extends TestCase
         $schedule = reset($course['schedule']);
 
         $this->assertSame(300.0, $schedule['gain']);
+        $this->assertSame(360.0, $schedule['gain_ttc']);
     }
 }

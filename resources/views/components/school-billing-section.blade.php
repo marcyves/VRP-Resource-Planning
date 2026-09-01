@@ -50,17 +50,18 @@
                     <table>
                         <thead>
                             <tr>
-                                <th>@schoolMsg('group')</th>
-                                <th>{{ __('messages.schedule') }}</th>
-                                <th>{{ __('messages.hours') }}</th>
-                                <th>{{ __('messages.amount_ht') }}</th>
+                                <th class="billing-col-group">@schoolMsg('group')</th>
+                                <th class="date">{{ __('messages.schedule') }}</th>
+                                <th class="money">{{ __('messages.hours') }}</th>
+                                <th class="money">{{ __('messages.amount_ht') }}</th>
+                                <th class="money">{{ __('messages.amount_ttc') }}</th>
                                 <th>{{ __('messages.bill') }}</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($schedules['schedule'] as $planningId => $schedule)
                                 <tr>
-                                    <td>{{ $schedule['group'] }}</td>
+                                    <td class="billing-col-group" title="{{ $schedule['group'] }}">{{ $schedule['group'] }}</td>
                                     <td class="date">
                                         @if (Auth::user()->getMode() == 'Edit')
                                             <a class="billing-schedule-link" href="{{ route('planning.edit', $planningId) }}">
@@ -78,7 +79,8 @@
                                             {{ number_format($schedule['duration'], 1) }} h
                                         </span>
                                     </td>
-                                    <td class="money">@money($schedule['gain']) € HT</td>
+                                    <td class="money">@money($schedule['gain']) €</td>
+                                    <td class="money">@money($schedule['gain_ttc']) €</td>
                                     <td>
                                         @if ($schedule['bill'])
                                             <span class="status-chip status-chip--bill">{{ $schedule['bill'] }}</span>

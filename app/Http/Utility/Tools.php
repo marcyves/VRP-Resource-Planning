@@ -366,6 +366,7 @@ class Tools
                 "duration" => $duration,
                 "billable_rate" => $event->billable_rate,
                 "gain"     => $gain,
+                "gain_ttc" => round($gain * self::VAT_MULTIPLIER, 2),
                 "bill"     => $event->invoice_id
             );
         }
