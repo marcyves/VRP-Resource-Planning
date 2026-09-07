@@ -24,9 +24,26 @@ Composant : `resources/views/components/school-billing-section.blade.php`
 |------|-------------|
 | Sélecteur de période | Mois précédent / suivant, liste déroulante des mois |
 | Bascule **Par date** | Regroupement chronologique vs par cours (session `school_billing_by_date`) |
-| Tableaux sessions | Groupe, horaire, heures, n° facture |
+| Tableaux sessions | Groupe, horaire, heures, **HT**, **TTC**, n° facture |
 | Totaux | Heures et montants HT / TTC par cours et par école |
 | Actions (mode Edit) | Assigner une facture existante, créer une facture |
+
+### Montants par ligne de session
+
+Chaque intervention affiche HT et TTC à côté des heures (`Tools::getBillingInformation()`) :
+
+| Colonne | Source |
+|---------|--------|
+| Heures | `sessionDurationHours()` — badge d’alerte si la durée ≠ `session_length` du cours |
+| HT | `planningGain()` stocké dans `gain` |
+| TTC | `gain_ttc` = `round(gain * Tools::VAT_MULTIPLIER, 2)` (multiplicateur TVA **1,2**) |
+| N° facture | `planning.invoice_id` |
+
+Les **totaux** cours / école affichent `gain` HT et `gain * 1.2` TTC en ligne — ils ne somment pas les `gain_ttc` arrondis par ligne.
+
+La directive `@money` ajoute déjà `€` (`AppServiceProvider`). Les cellules de ligne utilisent `@money($schedule['gain'])` / `@money($schedule['gain_ttc'])` **sans second symbole euro**. Les totaux utilisent `number_format(...) € HT / ... € TTC`.
+
+Mise en page (`resources/css/bills.css`) : `table-layout: fixed` ; groupe 30 % avec ellipse ; horaire 25ch ; heures 10ch ; montants 15ch ; facture 10ch.
 
 ## Variables de session billing
 
@@ -56,9 +73,12 @@ Centralisé dans `App\Http\Utility\Tools` :
 
 - `sessionDurationHours()` — durée réelle de la session
 - `billableMultiplier()` — normalise le taux facturable (correction import calendrier)
-- `planningGain()` — montant HT session
+- `planningGain()` — montant HT session (`gain`)
+- `gain_ttc` — `round(gain * VAT_MULTIPLIER, 2)` pour la colonne TTC
 
 Utilisé par la préparation facturation **et** les stats « non facturé » de la liste écoles.
+
+Le bandeau **gain mensuel** / **taux horaire** sous les totaux école réutilise le même `monthlyGain` HT, sans libellé TVA — à ne pas confondre avec les cartes KPI TTC de l’agenda.
 
 ## Lien avec la Trésorerie
 
@@ -97,4 +117,5 @@ Si le fichier PDF disparaît ensuite du stockage, l'ouverture de la facture le r
 
 - [V2 — navigation](v2-navigation-modules.md)
 - [V2 — trésorerie & rapprochement bancaire](v2-tresorerie-rapprochement-bancaire.md)
+- [Facturation électronique](facturation-electronique.md)
 - [Modèle de données](modele-donnees-formation.md)

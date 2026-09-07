@@ -30,6 +30,34 @@
 | Voir tous les groupes / archiver | **Groupes** (`/group`) |
 | Voir cours liés et sessions | Fiche groupe (`/group/{id}`) |
 | Créer groupe + session en une fois | Agenda → nouvelle session → « Nouveau groupe ci-dessous » |
+| Dupliquer une session | Cellule jour / événement semaine / édition → actions de copie |
+
+## Duplication de session (agenda)
+
+On peut copier une session existante sans ressaisir cours, groupe, lieu ni taux facturable.
+
+| Offset | Horaires cibles |
+|--------|-----------------|
+| `tomorrow` | Même heure, +1 jour |
+| `next_week` | Même heure, +1 semaine |
+| `custom` | Date choisie, heure de début d’origine ; durée conservée |
+
+**Contraintes (`PlanningController::duplicate`) :**
+
+- Bloqué si la session source a un `invoice_id` (même verrou que la suppression).
+- Refusé si une autre session du même `group_id` chevauche le nouvel intervalle.
+- Succès : année/mois de session mis à jour, retour sur `planning.index`.
+- Date libre : dialogue natif `#planning-duplicate-dialog` (`planning-calendar.js`), y compris sur la page d’édition.
+
+| Élément | Chemin |
+|---------|--------|
+| Route | `POST /planning/{id}/duplicate` (`planning.duplicate`) |
+| UI | `planning-duplicate-actions`, `planning-duplicate-dialog` |
+| JS | `resources/js/planning-calendar.js` |
+
+## Sessions à cheval sur deux années
+
+L’index groupes, la fiche groupe et le panneau **groupes** de l’école listent les occurrences avec l’année `'all'` (`Group::planningOccurrencesForIds(..., 'all')`). Le filtre porte sur **`begin`**, pas sur `courses.year` : un cours étiqueté 2026 affiche quand même ses séances de janvier 2027.
 
 ## Ce qui a été harmonisé (technique)
 
@@ -44,4 +72,5 @@
 
 - [Modèle de données formation](modele-donnees-formation.md)
 - [Parcours création école](parcours-creation-ecole.md)
+- [V2 — navigation & modules](v2-navigation-modules.md)
 - [V2 — refactoring listes](v2-revue-code-refactoring-listes.md)

@@ -21,6 +21,7 @@ Wiki-style guides: data model, user workflows, and **terminology profiles** (tra
 | [Production SFTP deploy](production-sftp-deploy.md) | IONOS deploy, protected files, config.php restore |
 | [V2 — billing per school](v2-billing-per-school.md) | Billing preparation on school detail |
 | [V2 — treasury & bank reconciliation](v2-treasury-bank-reconciliation.md) | Invoice dashboard, bank accounts, imports and matching |
+| **[Electronic invoicing](electronic-invoicing.md)** | SuperPDP POC: submit, webhooks, artisan commands |
 | [V2 — CSS design system](v2-design-system-css.md) | Tokens, components, Vite build |
 | [V2 — code review & list refactor](v2-code-review-list-refactoring.md) | Global review, steps 1–3 + i18n, remaining items |
 | **[Roadmap — electronic invoicing](roadmap-electronic-invoicing.md)** | PA-agnostic spec, phases, code structure |
