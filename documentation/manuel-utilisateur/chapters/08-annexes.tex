@@ -5,7 +5,7 @@
 
 \begin{description}[style=nextline, leftmargin=2.8cm]
   \item[Session] Créneau planifié dans l'agenda, rattaché à un cours et un groupe.
-  \item[Plan de charge] Vue d'ensemble des écoles et KPIs annuels.
+  \item[Plan de charge] KPIs annuels (\texttt{/school/dashboard}), distincts de la liste \texttt{/home}.
   \item[Non facturé TTC] Montant des sessions sans facture, TVA incluse (affichage liste écoles).
   \item[Rapprochement] Lien entre une ligne bancaire et une facture, dépense ou note de frais.
   \item[Contexte métier] Profil terminologique education / consulting / medical.
@@ -49,6 +49,7 @@ Pour les détails d'implémentation, consultez le dossier \texttt{documentation/
   \item \texttt{parcours-creation-ecole.md}
   \item \texttt{v2-facturation-par-ecole.md}
   \item \texttt{v2-tresorerie-rapprochement-bancaire.md}
+  \item \texttt{facturation-electronique.md}
 \end{itemize}
 
 \section{Dépannage courant}
@@ -60,10 +61,11 @@ Pour les détails d'implémentation, consultez le dossier \texttt{documentation/
     \toprule
     \textbf{Symptôme} & \textbf{Piste de résolution} \\
     \midrule
-    Bouton Planifier inactif & Vérifier le mode Édition et l'absence de formulaire imbriqué. \\
-    Montants incohérents & Distinction HT (section facturation) vs TTC (liste écoles, trésorerie planifiée). \\
+    Bouton Planifier inactif & Mode Édition, cours sélectionné dans le fil d'Ariane, pas de formulaire imbriqué. \\
+    Montants incohérents & HT (lignes facturation) vs TTC (liste écoles, KPI agenda, trésorerie planifiée). Ne pas ajouter un second «~€~» autour de \texttt{@money}. \\
     Import bancaire refusé & Fichier \texttt{.xlsx} avec colonnes attendues, $<$ 10\,Mo. \\
     Pas de suggestion rapprochement & Facture déjà rapprochée ou montant hors tolérance 0{,}02\,€. \\
+    Bouton e-facture absent & \texttt{E\_INVOICE\_PLATFORM=superpdp} et credentials OAuth~; statut facture «~Prête~». \\
     \bottomrule
   \end{tabular}
 \end{table}

@@ -26,7 +26,7 @@ Les \textbf{programmes} sont globaux à l'entreprise. Chaque \textbf{école} reg
 \section{Étape 1 — Créer les programmes}
 
 \begin{workflowstep}[Programmes]
-  Menu \menu{Plan de charge} → onglet \menu{Programmes} (\texttt{/program}). Créez une entrée par filière ou offre (ex.~«~Licence Pro~», «~Master Data~»).
+  Menu \menu{Référentiel} → onglet \menu{Programmes} (\texttt{/program}). Créez une entrée par filière ou offre (ex.~«~Licence Pro~», «~Master Data~»).
 \end{workflowstep}
 
 \screenshot[keepaspectratio]{07-programs.png}{Liste et création de programmes}
@@ -42,8 +42,10 @@ Exemple cible~: \emph{1 école}, \emph{3 programmes}, \emph{2 cours par programm
 \section{Étape 3 — Créer les cours}
 
 \begin{workflowstep}[Cours]
-  Depuis la fiche école, ajoutez un cours (\texttt{/course/\{school\_id\}/create}). Associez-le à un programme, définissez le libellé, le volume horaire et le tarif si différent du défaut école.
+  Depuis la fiche école, ajoutez un cours (\texttt{/course/\{school\_id\}/create}). Associez-le à un programme. Le formulaire compact saisit le volume sur une ligne (\textbf{n sessions de n heures}, total calculé) et le \textbf{tarif horaire en TTC} par défaut (radio HT disponible). La base stocke toujours le tarif \textbf{HT} avec \textbf{4 décimales} pour un aller-retour TTC fidèle (TVA ×\,1{,}2).
 \end{workflowstep}
+
+Après \textbf{création}, redirection vers \texttt{/home} (le cours reste sélectionné en session). Après \textbf{modification}, redirection vers la fiche école (\texttt{school.show}), pas vers l'accueil.
 
 \section{Étape 4 — Créer les groupes}
 
