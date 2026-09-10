@@ -6,7 +6,7 @@
 Une fois connecté, toutes les pages métier partagent la même coque~:
 
 \begin{description}[style=nextline, leftmargin=2.2cm]
-  \item[Barre latérale] Menu principal compact ou étendu. Trois entrées~: \menu{Agenda}, \menu{Trésorerie}, \menu{Plan de charge}. Le logo ramène également à \texttt{/home}.
+  \item[Barre latérale] Menu principal compact ou étendu. Ordre~: \menu{Agenda}, \menu{Écoles} (libellé selon le profil), \menu{Trésorerie}, puis \menu{Référentiel} (Programmes · Groupes). Le logo ramène à \texttt{/home}.
   \item[Bandeau supérieur] Titre de la page courante, fil d'Ariane, bascule \textbf{Édition}/\textbf{Consultation}, bascule thème.
   \item[Zone de contenu] Onglets de module et tableaux selon le contexte.
 \end{description}
@@ -24,13 +24,16 @@ Chaque grand module propose des sous-onglets~:
     \toprule
     \textbf{Module} & \textbf{Onglets} \\
     \midrule
-    Plan de charge  & Plan de charge · Écoles · Programmes · Groupes \\
-    Agenda          & Planning · Calendrier (import ICS, admin) \\
-    Trésorerie      & Synthèse · Factures · Créer facture · Banque · Notes de frais · Dépenses · Créer dépense \\
+    Agenda          & Planning · Calendrier (import ICS, admin) --- vues \textbf{mois} / \textbf{semaine} \\
+    Trésorerie      & Synthèse · Factures · Banque · Dépenses \\
+    Référentiel     & Programmes · Groupes \\
     Paramètres      & Entreprise · Profil utilisateur \\
     \bottomrule
   \end{tabular}
 \end{table}
+
+Les actions \menu{Créer facture} et \menu{Créer dépense} sont des boutons dans la page, pas des onglets.
+La préparation de facturation reste sur la fiche école (\texttt{\#billing}), pas dans la sidebar.
 
 \section{Modes Édition et Consultation}
 
@@ -66,7 +69,7 @@ Accessible via \menu{Paramètres}, l'onglet \menu{Entreprise} regroupe~:
 \section{Raccourcis de navigation}
 
 \begin{workflowstep}[Retour accueil]
-  Cliquez sur le logo ou sur \menu{Plan de charge} dans la barre latérale → \texttt{/home}.
+  Cliquez sur le logo ou sur \menu{Écoles} dans la barre latérale → \texttt{/home}.
 \end{workflowstep}
 
 \begin{workflowstep}[Ouvrir une école]

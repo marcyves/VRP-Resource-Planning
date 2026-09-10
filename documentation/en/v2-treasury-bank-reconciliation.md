@@ -129,3 +129,4 @@ Statement-line deduplication uses account, operation date, label, debit, and cre
 
 - [V2 - navigation and modules](v2-navigation-modules.md)
 - [V2 - billing per school](v2-billing-per-school.md)
+- [Electronic invoicing](electronic-invoicing.md)

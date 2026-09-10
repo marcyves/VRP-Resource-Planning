@@ -22,7 +22,7 @@ Depuis la v2, la \textbf{préparation de facturation} est \textbf{contextualisé
     \midrule
     Sélecteur de période & Mois précédent/suivant, liste des mois \\
     Bascule \menu{Par date} & Regroupement chronologique ou par cours \\
-    Tableau des sessions & Groupe, horaire, heures, n° facture \\
+    Tableau des sessions & Groupe, horaire, heures, montant HT, montant TTC, n° facture \\
     Totaux & Heures et montants HT/TTC par cours et par école \\
     Actions (Édition) & Rattacher une facture existante, créer une facture \\
     \bottomrule
@@ -32,6 +32,8 @@ Depuis la v2, la \textbf{préparation de facturation} est \textbf{contextualisé
 \section{Navigation mensuelle}
 
 Les variables de session \texttt{billing\_year} et \texttt{current\_month} pilotent l'affichage. L'année de facturation est distincte de l'année académique (\texttt{current\_year}).
+
+Chaque ligne d'intervention affiche le montant \textbf{HT} (durée réelle × tarif × multiplicateur facturable) et le \textbf{TTC} (HT ×\,1{,}2, arrondi à 2 décimales). Les totaux cours / école rappellent HT et TTC.
 
 \begin{workflowstep}[Changer de mois]
   Utilisez les flèches ou la liste déroulante des mois. Les totaux et sessions se mettent à jour instantanément.
