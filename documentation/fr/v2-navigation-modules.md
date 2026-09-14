@@ -12,7 +12,7 @@
 
 ### Menu latéral (ordre — utilisateur entreprise)
 
-1. **Agenda** → `planning.index` (+ calendrier admin sous `calendar.*`) — vues **mois** / **semaine** · panneau **Facturer les interventions du mois** (écoles avec sessions, priorisation non facturé)
+1. **Agenda** → `planning.index` (+ onglet **Calendrier** `calendar.index`) — vues **mois** / **semaine** · panneau **Facturer les interventions du mois** (écoles avec sessions, priorisation non facturé). Import ICS : [import-calendrier.md](import-calendrier.md)
 2. **Écoles** (libellé terminologique) → `home`
 3. **Trésorerie** → `treasury.index`
 4. séparateur
@@ -41,7 +41,7 @@ Constante post-login : `RouteServiceProvider::HOME = '/home'`.
 
 | Composant | Module | Onglets |
 |-----------|--------|---------|
-| `scheduling-module-tabs` | Agenda | Planning · Calendrier |
+| `scheduling-module-tabs` | Agenda | Planning · Calendrier (`/admin/calendars` — import ICS) |
 | `treasury-module-tabs` | Trésorerie | Synthèse · Factures · Banque · Dépenses |
 | `referential-module-tabs` | Référentiel | Programmes · Groupes |
 | `settings-module-tabs` | Paramètres | Entreprise · profil |
@@ -118,3 +118,4 @@ La date libre utilise la boîte de dialogue native `#planning-duplicate-dialog` 
 - [V2 — facturation par école](v2-facturation-par-ecole.md)
 - [V2 — trésorerie & rapprochement bancaire](v2-tresorerie-rapprochement-bancaire.md)
 - [V2 — mode école mentoring](v2-mode-ecole-mentoring.md)
+- [Import calendrier](import-calendrier.md)

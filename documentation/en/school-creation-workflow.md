@@ -60,6 +60,20 @@ HT is stored with **4 decimal places** so TTC round-trips: `33.33` TTC → `27.7
 | After create | Redirects to `dashboard` (`/home`), with `course` / `course_id` set in session |
 | After update | Redirects to `school.show` (the school course list), not `/home` |
 
+## School documents
+
+On `school.show?panel=documents` (Edit mode):
+
+| Constraint | Detail |
+|------------|--------|
+| Route | `POST /school/{school_id}/document` (`document.store`) |
+| Fields | `description` required; `year`; file `document` |
+| File types | PDF, DOC, DOCX — max **4096 KB** (`DocumentController@store`) |
+| Storage | `storage/app/public/data_store/{timestamp}_{originalName}` — needs `php artisan storage:link` |
+| List / delete | `documents-school-table`; delete via Alpine `documentDelete` → `documents.destroy` |
+
+`DocumentController::edit` is empty; the edit button on the table currently has no implementation.
+
 ## “Distinct groups” rule
 
 For **one group per course**, create **6 different groups** (do not reuse the same `group_id` on multiple courses unless linking explicitly via `group.link`).
@@ -79,3 +93,5 @@ flowchart TD
 
 - [Data model](training-data-model.md)
 - [Phase 1 — terminology](phase-1-terminology.md)
+- [V2 — school mode mentoring](v2-school-mode-mentoring.md) — `?panel=` tabs
+- [Calendar import](calendar-import.md)

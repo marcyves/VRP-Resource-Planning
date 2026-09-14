@@ -73,3 +73,4 @@ Group index, group detail, and the school **groups** panel list occurrences with
 - [Training data model](training-data-model.md)
 - [School creation workflow](school-creation-workflow.md)
 - [V2 — navigation & modules](v2-navigation-modules.md)
+- [Calendar import](calendar-import.md)

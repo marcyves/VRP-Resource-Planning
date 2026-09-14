@@ -47,4 +47,5 @@ Schema stays many-to-many. **Business rules are UI + validation**, by school mod
 
 - [School mode mentoring](v2-school-mode-mentoring.md)
 - [Training data model](training-data-model.md)
-- [V2 navigation](v2-navigation-modules.md)
+- [V2 — navigation](v2-navigation-modules.md)
+- [Calendar import](calendar-import.md)

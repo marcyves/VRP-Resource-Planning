@@ -73,4 +73,5 @@ L’index groupes, la fiche groupe et le panneau **groupes** de l’école liste
 - [Modèle de données formation](modele-donnees-formation.md)
 - [Parcours création école](parcours-creation-ecole.md)
 - [V2 — navigation & modules](v2-navigation-modules.md)
+- [Import calendrier](import-calendrier.md)
 - [V2 — refactoring listes](v2-revue-code-refactoring-listes.md)

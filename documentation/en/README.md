@@ -15,8 +15,12 @@ Wiki-style guides: data model, user workflows, and **terminology profiles** (tra
 | [Configuration](configuration.md) | Environment variables and company settings |
 | [Platform administration](platform-administration.md) | Super-admin bootstrap, tenant provisioning, access boundaries |
 | [Consulting labels](consulting-labels.md) | Label mapping and consulting-specific strings |
+| [Medical labels](medical-labels.md) | Structure / service / session / patient overlays |
+| [Group workflow](group-workflow.md) | Instructor flow, archive vs unlink, duplication |
+| [Group management](group-management.md) | Training one-course vs mentoring multi-activity rules |
 | **[V2 — user interface](v2-user-interface.md)** | UI refactor overview |
 | [V2 — navigation & modules](v2-navigation-modules.md) | Sidebar, `/home`, module tabs |
+| [Calendar import](calendar-import.md) | ICS upload/URL, mapping, reimport constraints |
 | [V2 — school mode mentoring](v2-school-mode-mentoring.md) | Per-school education vs mentoring labels |
 | [Production SFTP deploy](production-sftp-deploy.md) | IONOS deploy, protected files, config.php restore |
 | [V2 — billing per school](v2-billing-per-school.md) | Billing preparation on school detail |

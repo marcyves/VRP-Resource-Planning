@@ -43,7 +43,7 @@ Route boundaries are defined in `routes/web.php`:
    php artisan vrp:create-super-admin admin@example.com "Platform Admin"
    ```
 
-   The command prompts for a password unless `--password=` is supplied. It validates email uniqueness and Laravel's default password rules, creates a user without `company_id`, and assigns `Status::superAdminId()`.
+   The command prompts for a password unless `--password=` is supplied. It validates email uniqueness and Laravel's default password rules, creates a user without `company_id`, and assigns `Status::superAdminId()`. Avoid `--password` in interactive shells: the value can remain in history.
 
 3. Sign in at `/login`. Super admins are redirected to `/super-admin/companies`.
 
@@ -103,8 +103,22 @@ This is destructive and not a soft delete. Export or back up tenant data before 
 |---------|---------|----------|
 | `VRP_ALLOW_REGISTRATION` | `false` | `/register` GET and POST return 404 |
 | `VRP_ALLOW_REGISTRATION=true` | opt-in | Public registration form is available |
+| `VRP_ACCOUNT_REQUEST_EMAIL` | `MAIL_FROM_ADDRESS` if **unset** | Recipient for `/demande-acces` |
 
 Public registration creates a user account only; it does not create a company or assign a tenant role. For production onboarding, keep registration disabled and create tenants from `/super-admin/companies`.
+
+### Account request (`/demande-acces`)
+
+The landing page and login link to **Request an account** (`account-request.create`). This is **not** self-provisioning:
+
+1. Guest submits company name, contact, email, optional phone, terminology profile, message (`StoreAccountRequestRequest`; POST throttled `5,1`).
+2. `AccountRequestController` mails `AccountRequestMail` to `config('vrp.account_request_email')`.
+3. User sees a success flash. No user or company row is created.
+4. An operator then provisions the tenant from `/super-admin/companies`.
+
+If `VRP_ACCOUNT_REQUEST_EMAIL` is present but **empty** (as in `.env.example`), Laravel does not apply the `MAIL_FROM_ADDRESS` fallback. The form still redirects with success; the controller `report()`s a `RuntimeException` and sends nothing.
+
+Coverage: `tests/Feature/LandingPageTest.php`.
 
 ## Troubleshooting
 
@@ -116,6 +130,8 @@ Public registration creates a user account only; it does not create a company or
 | Company creation fails on bill prefix | Prefix must be alphanumeric, max 10 chars, and unique across companies |
 | New course cannot use a program | Program belongs to another company or is missing `company_id` |
 | `/register` returns 404 | `VRP_ALLOW_REGISTRATION` is false, which is the default |
+| Account request succeeds but no email arrives | `VRP_ACCOUNT_REQUEST_EMAIL` is empty; omit the key to fall back to `MAIL_FROM_ADDRESS`, or set a real inbox |
+| `/demande-acces` POST is 429 | Throttle `5,1` on `account-request.store` |
 
 ## Key files
 
@@ -126,128 +142,20 @@ Public registration creates a user account only; it does not create a company or
 | `app/Http/Middleware/EnsureTenantUser.php` | Keeps tenant routes company-scoped |
 | `app/Http/Controllers/SuperAdmin/CompanyController.php` | Company list, create, update, delete |
 | `app/Http/Controllers/SuperAdmin/CompanyUserController.php` | Adds tenant users |
+| `app/Http/Controllers/AccountRequestController.php` | Guest `/demande-acces` mail |
 | `app/Services/CompanyProvisioner.php` | Transactional company + first admin creation |
 | `app/Services/CompanyUserProvisioner.php` | Tenant user creation and contact sync |
 | `app/Services/CompanyDeleter.php` | Destructive tenant cleanup |
-| `config/vrp.php` | `VRP_ALLOW_REGISTRATION` gate |
+| `config/vrp.php` | `VRP_ALLOW_REGISTRATION` and `VRP_ACCOUNT_REQUEST_EMAIL` |
 | `config/terminology.php` | Available terminology profiles |
 | `tests/Feature/SuperAdmin/*` | Platform route and provisioning coverage |
+| `tests/Feature/LandingPageTest.php` | Landing + account-request coverage |
 | `tests/Feature/ProgramCompanyScopeTest.php` | Program tenant isolation |
-# Platform administration
-
-**FR:** [administration-plateforme.md](../fr/administration-plateforme.md)
-
-VRP is a multi-tenant application: each customer company owns its users and business data, while a separate **super admin** account provisions and maintains companies from `/super-admin/companies`.
-
-## Intent
-
-| Concern | Behavior |
-|---------|----------|
-| Tenant users | Must have a `company_id`; they use the regular VRP modules (`/home`, planning, treasury, company settings). |
-| Super admins | Have no `company_id`; they only access the platform administration area. |
-| Public registration | Disabled by default with `VRP_ALLOW_REGISTRATION=false`; tenant accounts should be provisioned from the platform UI. |
-
-## Bootstrap a platform admin
-
-Run migrations first so the `super admin` status exists and `users.company_id` is nullable:
-
-```bash
-php artisan migrate
-php artisan vrp:create-super-admin admin@example.com "Platform Admin"
-```
-
-The command asks for the password securely when `--password` is omitted. Avoid passing `--password` in interactive shells because it can remain in command history.
-
-After login, super admins are redirected to:
-
-```text
-/super-admin/companies
-```
-
-## Access boundaries
-
-| Area | Route / middleware | Result |
-|------|--------------------|--------|
-| Platform admin | `/super-admin/companies*` with `auth`, `superadmin` | Only `User::isSuperAdmin()` may enter; other users receive 403. |
-| Tenant app | `/home`, `/dashboard`, planning, billing, treasury, company settings with `auth`, `tenant`, `SetTerminologyLocale` | Super admins are redirected back to the company list; users without `company_id` receive 403. |
-| Login / guest redirects | `AuthenticatedSessionController`, `RedirectIfAuthenticated` | Uses `User::homePath()` to choose the super-admin or tenant landing page. |
-
-The sidebar follows the same split: super admins only see the company list, while tenant users see planning, treasury, and workload modules.
-
-## Company provisioning workflow
-
-Use **Create company** from `/super-admin/companies`.
-
-| Field | Constraint / effect |
-|-------|---------------------|
-| Company name | Required, max 255 characters. |
-| Invoice prefix | Required, alphanumeric, max 10 characters, unique in `companies.bill_prefix`; stored uppercase and used in invoice numbers. |
-| Terminology profile | Must be one of the configured company profiles (`education`, `consulting`, `medical`). |
-| Administrator name/email/password | Creates the first tenant admin; email must be unique and password follows Laravel password defaults. |
-
-`CompanyProvisioner` wraps creation in a database transaction:
-
-1. creates `companies` with the selected invoice prefix and terminology profile;
-2. creates the first tenant admin with `status_id = Status::ADMIN`, `mode = Edit`, and the new `company_id`;
-3. copies the admin contact details to `companies.contact_user_id`, `email`, `phone`, and `website` when available.
-
-Example tenant payload:
-
-```text
-company_name: Acme Formation
-bill_prefix: ACM
-terminology_profile: education
-admin_email: alice@acme.test
-```
-
-## Managing an existing company
-
-The company detail page (`super-admin.companies.show`) supports:
-
-- changing the company terminology profile;
-- listing users for the company;
-- adding users with role **Administrator**, **Editor**, or **Reader**;
-- deleting the company and its related data.
-
-When adding a user, `CompanyUserProvisioner` sets `mode = Edit` for admin/editor roles and `mode = Browse` for readers. If the company has no contact user yet and the new user is an admin, the company contact is synchronized from that user.
-
-## Tenant isolation and shared data
-
-The super-admin work also scopes programs per company:
-
-- `programs.company_id` is required after migration;
-- `Program::forCurrentCompany()` limits program lists to the authenticated user's company;
-- `ProgramController` rejects another company's program with 404;
-- `CourseController` validates that `program_id` belongs to the current company before creating or updating a course.
-
-This prevents tenants from seeing or attaching courses to another company's programs.
-
-## Deleting a company
-
-Deletion is destructive. `CompanyDeleter` clears company contact/billing account pointers, then removes related tenant data in a transaction:
-
-- schools, courses, calendars, documents, school-user links;
-- groups, group-course links, planning rows tied to the company's groups/courses;
-- invoices, programs, users;
-- the company record itself.
-
-It also clears legacy planning `invoice_id` values matching the company's invoice prefix before deleting invoices. Company-owned treasury balances, expenses, banks, bank accounts, bank imports, statement lines, and reconciliations rely on their `company_id` foreign keys with `cascadeOnDelete` when the company row is removed. Use the UI danger-zone confirmation only when the tenant data should be permanently removed.
-
-## Configuration and source map
-
-| Purpose | File |
-|---------|------|
-| Registration flag | `config/vrp.php`, `.env.example` (`VRP_ALLOW_REGISTRATION`) |
-| Super-admin CLI | `app/Console/Commands/CreateSuperAdminCommand.php` |
-| Route boundaries | `routes/web.php`, `app/Http/Middleware/EnsureSuperAdmin.php`, `app/Http/Middleware/EnsureTenantUser.php` |
-| Provisioning/deletion | `app/Services/CompanyProvisioner.php`, `CompanyUserProvisioner.php`, `CompanyDeleter.php` |
-| Company UI | `app/Http/Controllers/SuperAdmin/*`, `resources/views/super-admin/companies/*` |
-| Tenant program isolation | `app/Models/Program.php`, `app/Http/Controllers/ProgramController.php`, `CourseController.php` |
-| Feature coverage | `tests/Feature/SuperAdmin/*`, `tests/Feature/ProgramCompanyScopeTest.php` |
 
 ## Common pitfalls
 
 - Keep `VRP_ALLOW_REGISTRATION=false` for managed multi-tenant deployments. Public registration creates a plain user without tenant context; tenant middleware requires `company_id` before regular modules can be used.
+- Do not treat `/demande-acces` as signup. It only emails operators.
 - Do not attach business records to a super admin. The platform account intentionally has `company_id = null`.
 - Choose invoice prefixes carefully. They are unique, uppercased, and used to associate legacy planning invoice identifiers.
 - Run migrations before creating the first super admin; otherwise the required status and nullable `users.company_id` may not exist.

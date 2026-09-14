@@ -21,7 +21,7 @@ Le mode est **par école** (`schools.context`), pas au niveau entreprise — les
 | Cours / activités | `courses` (défaut) | Tableau des cours + bloc facturation |
 | Groupes / étudiants | `groups` | Groupes liés actifs/inactifs (occurrences toutes années) |
 | Détails | `details` | Adresse / métadonnées (`address` redirige ici) |
-| Documents | `documents` | Documents de l’école |
+| Documents | `documents` | Documents de l’école (PDF/DOC/DOCX, max 4 Mo — [parcours de création](parcours-creation-ecole.md)) |
 
 `?focus=billing` force le panneau cours (la facturation y vit). Après édition, la redirection atterrit sur `?panel=details`.
 
@@ -63,3 +63,4 @@ Sans école partagée (dashboard, etc.), `@schoolMsg` retombe sur `messages.*`.
 - [Gestion des groupes](gestion-groupes.md) — une activité vs multi-activités en mentoring
 - [V2 — navigation & modules](v2-navigation-modules.md)
 - [V2 — facturation par école](v2-facturation-par-ecole.md)
+- [Import calendrier](import-calendrier.md)

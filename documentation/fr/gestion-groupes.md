@@ -48,3 +48,4 @@ Le schéma reste N–N. **Les règles métier sont appliquées en UI + validatio
 - [Mode école mentoring](v2-mode-ecole-mentoring.md)
 - [Modèle de données](modele-donnees-formation.md)
 - [Navigation V2](v2-navigation-modules.md)
+- [Import calendrier](import-calendrier.md)

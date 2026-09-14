@@ -73,6 +73,7 @@ La **v2** apporte une refonte de l’interface (2025–2026) : coque sidebar + t
 | ----------------------------------- | --------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
 | Vue d’ensemble v2                   | [v2-interface-utilisateur.md](documentation/fr/v2-interface-utilisateur.md)                         | [v2-user-interface.md](documentation/en/v2-user-interface.md)                             |
 | Navigation & modules                | [v2-navigation-modules.md](documentation/fr/v2-navigation-modules.md)                               | [v2-navigation-modules.md](documentation/en/v2-navigation-modules.md)                     |
+| Import calendrier (ICS)             | [import-calendrier.md](documentation/fr/import-calendrier.md)                                       | [calendar-import.md](documentation/en/calendar-import.md)                                 |
 | Facturation par école               | [v2-facturation-par-ecole.md](documentation/fr/v2-facturation-par-ecole.md)                         | [v2-billing-per-school.md](documentation/en/v2-billing-per-school.md)                     |
 | Trésorerie & rapprochement bancaire | [v2-tresorerie-rapprochement-bancaire.md](documentation/fr/v2-tresorerie-rapprochement-bancaire.md) | [v2-treasury-bank-reconciliation.md](documentation/en/v2-treasury-bank-reconciliation.md) |
 | Administration plateforme           | [administration-plateforme.md](documentation/fr/administration-plateforme.md)                       | [platform-administration.md](documentation/en/platform-administration.md)                 |
@@ -177,7 +178,7 @@ VRP est **multi-tenant** : chaque entreprise cliente a ses utilisateurs et ses d
 | **Créer un client**      | **Créer une entreprise** : nom, préfixe facture, profil terminologique, compte admin |
 
 
-L’inscription publique `/register` est **désactivée par défaut** (`VRP_ALLOW_REGISTRATION=false`). Les comptes entreprise sont créés par le super admin ou par un admin existant dans l’UI VRP classique.
+L’inscription publique `/register` est **désactivée par défaut** (`VRP_ALLOW_REGISTRATION=false`). Les comptes entreprise sont créés par le super admin ou par un admin existant dans l’UI VRP classique. Les invités peuvent **demander** un compte sur `/demande-acces` (e-mail seulement — renseigner `VRP_ACCOUNT_REQUEST_EMAIL`).
 
 Runbook détaillé : [documentation/fr/administration-plateforme.md](documentation/fr/administration-plateforme.md) · [documentation/en/platform-administration.md](documentation/en/platform-administration.md).
 
@@ -209,7 +210,12 @@ Le paquet `joedixon/laravel-translation` est présent pour faciliter la gestion 
 ./vendor/bin/pint              # formatage PHP (Laravel Pint)
 ./vendor/bin/phpstan analyse   # analyse statique (selon config du projet)
 php artisan test               # PHPUnit
+php artisan test --testsuite=Unit   # sans base
 ```
+
+`phpunit.xml` fixe `DB_DATABASE=testing` mais **hérite `DB_CONNECTION` du `.env`**. Les tests Feature avec `RefreshDatabase` sur un schéma MySQL `testing` déjà migré échouent car `2026_06_02_120000_add_short_description_to_programs_table` n’est pas idempotente (`Duplicate column name 'short_description'`). Les tests Unit sans DB passent encore (`CourseFormHelperTest`, `ElectronicInvoiceCiiBuilderTest`). Utiliser un schéma vide dédié, ou la suite Unit seule, tant que cette migration n’est pas gardée.
+
+Mail de demande de compte : `tests/Feature/LandingPageTest.php` (nécessite une DB migrable).
 
 ---
 
