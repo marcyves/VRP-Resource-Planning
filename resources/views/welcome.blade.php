@@ -1,15 +1,14 @@
 <x-marketing-layout>
     <section class="marketing-hero" aria-labelledby="landing-title">
         <div class="marketing-hero__content">
-            <p class="marketing-hero__eyebrow">{{ __('messages.landing_eyebrow') }}</p>
             <h1 id="landing-title" class="marketing-hero__title">{{ __('messages.landing_title') }}</h1>
             <p class="marketing-hero__lead">{{ __('messages.landing_lead') }}</p>
 
             <div class="marketing-hero__actions">
-                <a href="{{ route('account-request.create') }}" class="button-primary marketing-hero__cta">
+                <a href="{{ route('account-request.create') }}" class="btn btn-primary marketing-hero__cta">
                     {{ __('messages.landing_request_access') }}
                 </a>
-                <a href="{{ route('login') }}" class="button-secondary marketing-hero__cta">
+                <a href="{{ route('login') }}" class="btn btn-secondary marketing-hero__cta">
                     {{ __('messages.login') }}
                 </a>
             </div>
@@ -23,6 +22,7 @@
                 height="360"
                 class="marketing-hero__image"
                 decoding="async"
+                fetchpriority="high"
             >
         </div>
     </section>
@@ -57,7 +57,7 @@
         <div class="marketing-cta-band__inner">
             <h2 id="cta-title">{{ __('messages.landing_cta_title') }}</h2>
             <p>{{ __('messages.landing_cta_lead') }}</p>
-            <a href="{{ route('account-request.create') }}" class="button-primary">
+            <a href="{{ route('account-request.create') }}" class="btn btn-primary">
                 {{ __('messages.landing_request_access') }}
             </a>
         </div>

@@ -7,7 +7,7 @@
             <p>{{ __('messages.landing_request_lead') }}</p>
         </header>
 
-        <form method="POST" action="{{ route('account-request.store') }}" class="marketing-auth-form nice-form">
+        <form method="POST" action="{{ route('account-request.store') }}" class="marketing-auth-form">
             @csrf
 
             <div class="form-group">

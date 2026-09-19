@@ -34,9 +34,10 @@
         'marketing-page',
         'marketing-page--narrow' => $narrow ?? false,
     ])>
+        <a href="#main-content" class="marketing-skip">{{ __('messages.landing_skip_content') }}</a>
+
         <header class="marketing-header">
-            <a href="{{ route('welcome') }}" class="marketing-brand" aria-label="{{ config('app.name') }}">
-                <img src="{{ asset('images/VRP.jpeg') }}" alt="" width="36" height="36" class="marketing-brand__logo" decoding="async">
+            <a href="{{ route('welcome') }}" class="marketing-brand">
                 <span class="marketing-brand__name">{{ config('app.name') }}</span>
             </a>
 
@@ -66,14 +67,14 @@
                 @endunless
 
                 @unless (request()->routeIs('account-request.*'))
-                    <a href="{{ route('account-request.create') }}" class="button-primary marketing-nav__cta">
+                    <a href="{{ route('account-request.create') }}" class="btn btn-primary btn--compact marketing-nav__cta">
                         {{ __('messages.landing_request_access') }}
                     </a>
                 @endunless
             </nav>
         </header>
 
-        <main class="marketing-main">
+        <main id="main-content" class="marketing-main" tabindex="-1">
             {{ $slot }}
         </main>
 
