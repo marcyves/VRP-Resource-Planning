@@ -213,7 +213,7 @@ php artisan test               # PHPUnit
 php artisan test --testsuite=Unit   # sans base
 ```
 
-`phpunit.xml` fixe `DB_DATABASE=testing` mais **hérite `DB_CONNECTION` du `.env`**. Les tests Feature avec `RefreshDatabase` sur un schéma MySQL `testing` déjà migré échouent car `2026_06_02_120000_add_short_description_to_programs_table` n’est pas idempotente (`Duplicate column name 'short_description'`). Les tests Unit sans DB passent encore (`CourseFormHelperTest`, `ElectronicInvoiceCiiBuilderTest`). Utiliser un schéma vide dédié, ou la suite Unit seule, tant que cette migration n’est pas gardée.
+`phpunit.xml` fixe `DB_DATABASE=testing` mais **hérite `DB_CONNECTION` du `.env`**. La migration `2026_06_02_120000_add_short_description_to_programs_table` est idempotente (garde `Schema::hasColumn`). Préférer `./vendor/bin/sail test`.
 
 Mail de demande de compte : `tests/Feature/LandingPageTest.php` (nécessite une DB migrable).
 

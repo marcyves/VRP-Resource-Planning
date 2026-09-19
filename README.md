@@ -213,7 +213,7 @@ php artisan test               # PHPUnit
 php artisan test --testsuite=Unit   # no database
 ```
 
-`phpunit.xml` sets `DB_DATABASE=testing` but **inherits `DB_CONNECTION` from `.env`**. Feature tests that use `RefreshDatabase` against a shared MySQL `testing` schema fail when `2026_06_02_120000_add_short_description_to_programs_table` is not idempotent (`Duplicate column name 'short_description'`). Unit tests that never touch the DB still pass (`CourseFormHelperTest`, `ElectronicInvoiceCiiBuilderTest`). Use a dedicated empty schema, or run the Unit suite only, until that migration is guarded.
+`phpunit.xml` sets `DB_DATABASE=testing` but **inherits `DB_CONNECTION` from `.env`**. The `2026_06_02_120000_add_short_description_to_programs_table` migration is idempotent (`Schema::hasColumn` guard). Prefer `./vendor/bin/sail test`.
 
 Account-request mail in tests: `tests/Feature/LandingPageTest.php` (needs a migratable DB).
 
