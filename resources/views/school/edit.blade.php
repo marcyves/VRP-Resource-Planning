@@ -14,7 +14,8 @@
             </div>
             <div class="school-form-input">
                 <x-input-label for="code">{{ __('messages.code') }}</x-input-label>
-                <x-text-input type="text" name="code" id="code" value="{{ old('code', $school->code) }}" />
+                <x-text-input type="text" name="code" id="code" value="{{ old('code', $school->code) }}" aria-invalid="{{ $errors->has('code') ? 'true' : 'false' }}" />
+                <x-input-error :messages="$errors->get('code')" />
             </div>
 
             <div class="school-form-input">

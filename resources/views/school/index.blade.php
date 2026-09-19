@@ -189,7 +189,8 @@
                     <x-text-input type="text" name="name" id="name" placeholder="{{ __('messages.name') }}" value="{{old('name')}}" required />
                 </div>
                 <div class="school-form-input school-form-input--code">
-                    <x-text-input type="text" name="code" id="code" placeholder="{{ __('messages.code') }}" value="{{old('code')}}" />
+                    <x-text-input type="text" name="code" id="code" placeholder="{{ __('messages.code') }}" value="{{old('code')}}" aria-invalid="{{ $errors->has('code') ? 'true' : 'false' }}" />
+                    <x-input-error :messages="$errors->get('code')" />
                 </div>
             </div>
 

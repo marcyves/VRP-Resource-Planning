@@ -512,6 +512,7 @@ return [
     'terminology_profile_consulting' => 'Clients & projects (clients, projects, phases)',
     'terminology_profile_medical' => 'Medical & services (structures, services, sessions, patients)',
     'terminology_profile_hint' => 'Adapts application labels without changing your data.',
+    'school_code_taken' => 'This school code is already in use.',
     'school_saved_success' => 'School :name saved successfully.',
     'school_save_error' => 'Error while saving school :name.',
     'school_updated_success' => 'School :name updated successfully.',

@@ -528,6 +528,7 @@ return [
     'terminology_profile_consulting' => 'Clients & projets (clients, projets, phases)',
     'terminology_profile_medical' => 'Médical & prestations (structures, prestations, séances, patients)',
     'terminology_profile_hint' => 'Adapte les libellés de l\'application sans modifier vos données.',
+    'school_code_taken' => 'Ce code est déjà utilisé par une autre école.',
     'school_saved_success' => 'École :name enregistrée avec succès.',
     'school_save_error' => 'Erreur lors de l\'enregistrement de l\'école :name.',
     'school_updated_success' => 'École :name modifiée avec succès.',

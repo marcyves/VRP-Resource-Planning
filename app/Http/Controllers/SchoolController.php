@@ -7,6 +7,8 @@ use App\Models\Group;
 use App\Models\School;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Unique;
 
 class SchoolController extends Controller
 {
@@ -91,15 +93,20 @@ class SchoolController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request->all());
-        $validated = $request->validate([
-            'name' => 'required|max:80',
-        ]);
+        $this->normalizeSchoolCode($request);
+
+        $validated = $request->validate(
+            array_merge([
+                'name' => 'required|max:80',
+            ], $this->schoolCodeRules()),
+            $this->schoolCodeMessages()
+        );
 
         try {
             $company_id = Auth::user()->company_id;
             $school = School::create([
-                'name' => $request->name,
+                'name' => $validated['name'],
+                'code' => $validated['code'] ?? null,
                 'company_id' => $company_id,
                 'siren' => $request->siren,
                 'siret' => $request->siret,
@@ -120,7 +127,7 @@ class SchoolController extends Controller
             session()->flash('success', __('messages.school_saved_success', ['name' => $school->name]));
             session()->put('school', $school->name);
             session()->put('school_id', $school->id);
-        session()->put('last_school_id', $school->id);
+            session()->put('last_school_id', $school->id);
 
             return redirect(route('school.index'));
         } catch (\Exception $e) {
@@ -242,19 +249,24 @@ class SchoolController extends Controller
      */
     public function update(Request $request, string $school_id)
     {
-        $validated = $request->validate([
-            'name' => 'required|max:80',
-            'context' => ['nullable', 'in:'.implode(',', \App\Support\SchoolContext::values())],
-            'siren' => ['nullable', 'digits:9'],
-            'siret' => ['nullable', 'digits:14'],
-            'vat_number' => ['nullable', 'string', 'max:20'],
-            'electronic_address' => ['nullable', 'string', 'max:100'],
-        ]);
+        $this->normalizeSchoolCode($request);
+
+        $validated = $request->validate(
+            array_merge([
+                'name' => 'required|max:80',
+                'context' => ['nullable', 'in:'.implode(',', \App\Support\SchoolContext::values())],
+                'siren' => ['nullable', 'digits:9'],
+                'siret' => ['nullable', 'digits:14'],
+                'vat_number' => ['nullable', 'string', 'max:20'],
+                'electronic_address' => ['nullable', 'string', 'max:100'],
+            ], $this->schoolCodeRules((int) $school_id)),
+            $this->schoolCodeMessages()
+        );
 
         try {
             $school = School::findOrFail($school_id);
-            $school->name = $request->name;
-            $school->code = $request->code;
+            $school->name = $validated['name'];
+            $school->code = $validated['code'] ?? null;
             $school->context = $request->input('context', \App\Support\SchoolContext::EDUCATION);
             $school->siren = $request->siren;
             $school->siret = $request->siret;
@@ -278,7 +290,7 @@ class SchoolController extends Controller
 
             $school->save();
 
-            session()->flash('success', __('messages.school_updated_success', ['name' => $request->name]));
+            session()->flash('success', __('messages.school_updated_success', ['name' => $validated['name']]));
 
             return redirect()->to(route('school.show', $school).'?panel=details');
         } catch (\Exception $e) {
@@ -309,5 +321,47 @@ class SchoolController extends Controller
         session()->flash('warning', __('messages.school_deleted_success'));
 
         return redirect()->back();
+    }
+
+    private function normalizeSchoolCode(Request $request): void
+    {
+        $code = $request->input('code');
+
+        $request->merge([
+            'code' => is_string($code) && trim($code) !== '' ? trim($code) : null,
+        ]);
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    private function schoolCodeRules(?int $ignoreSchoolId = null): array
+    {
+        return [
+            'code' => ['nullable', 'string', 'max:80', $this->uniqueSchoolCodeRule($ignoreSchoolId)],
+        ];
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    private function schoolCodeMessages(): array
+    {
+        return [
+            'code.unique' => __('messages.school_code_taken'),
+        ];
+    }
+
+    private function uniqueSchoolCodeRule(?int $ignoreSchoolId = null): Unique
+    {
+        $rule = Rule::unique('schools', 'code')->where(
+            fn ($query) => $query->where('company_id', Auth::user()->company_id)
+        );
+
+        if ($ignoreSchoolId !== null) {
+            $rule->ignore($ignoreSchoolId);
+        }
+
+        return $rule;
     }
 }
