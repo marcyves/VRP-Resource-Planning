@@ -1,0 +1,92 @@
+\chapter{Annexes}
+\label{ch:annexes}
+
+\section{Glossaire rapide}
+
+\begin{description}[style=nextline, leftmargin=2.8cm]
+  \item[Session] Créneau planifié dans l'agenda, rattaché à un cours et un groupe.
+  \item[Plan de charge] KPIs annuels (\texttt{/school/dashboard}), distincts de la liste \texttt{/home}.
+  \item[Non facturé TTC] Montant des sessions sans facture, TVA incluse (affichage liste écoles).
+  \item[Rapprochement] Lien entre une ligne bancaire et une facture, dépense ou note de frais.
+  \item[Contexte métier] Profil terminologique education / consulting / medical.
+\end{description}
+
+\section{Régénérer les captures d'écran}
+\label{ch:annexes-captures}
+
+Les images sont stockées dans \texttt{screenshots/}. Pour les mettre à jour après une évolution de l'interface~:
+
+\begin{enumerate}[leftmargin=*]
+  \item Démarrer le serveur local~: \texttt{php artisan serve} à la racine du projet.
+  \item S'assurer qu'un compte de démonstration existe (seed ou compte admin).
+  \item Exécuter depuis ce dossier~:
+\begin{verbatim}
+cd documentation/manuel-utilisateur
+npm install puppeteer-core   # une seule fois
+node scripts/capture-screenshots.mjs
+\end{verbatim}
+  \item Variables optionnelles~: \texttt{VRP\_SCREENSHOT\_BASE}, \texttt{VRP\_SCREENSHOT\_EMAIL}, \texttt{VRP\_SCREENSHOT\_PASSWORD}.
+  \item Recompiler le PDF~: \texttt{make}.
+\end{enumerate}
+
+\section{Compiler le PDF}
+
+Prérequis~: \textbf{XeLaTeX} et polices TeX Gyre (distribution TeX Live ou MacTeX).
+
+\begin{verbatim}
+cd documentation/manuel-utilisateur
+make          # produit manuel-utilisateur-vrp.pdf
+make clean    # supprime les fichiers auxiliaires
+\end{verbatim}
+
+\section{Documentation technique}
+
+Pour les détails d'implémentation, consultez le dossier \texttt{documentation/fr/} du dépôt~:
+
+\begin{itemize}[leftmargin=*]
+  \item \texttt{v2-interface-utilisateur.md}
+  \item \texttt{v2-navigation-modules.md}
+  \item \texttt{parcours-creation-ecole.md}
+  \item \texttt{v2-facturation-par-ecole.md}
+  \item \texttt{v2-tresorerie-rapprochement-bancaire.md}
+  \item \texttt{facturation-electronique.md}
+\end{itemize}
+
+\section{Dépannage courant}
+
+\begin{table}[htbp]
+  \centering
+  \caption{Problèmes fréquents}
+  \begin{tabular}{@{}lp{7.5cm}@{}}
+    \toprule
+    \textbf{Symptôme} & \textbf{Piste de résolution} \\
+    \midrule
+    Bouton Planifier inactif & Mode Édition, cours sélectionné dans le fil d'Ariane, pas de formulaire imbriqué. \\
+    Montants incohérents & HT (lignes facturation) vs TTC (liste écoles, KPI agenda, trésorerie planifiée). Ne pas ajouter un second «~€~» autour de \texttt{@money}. \\
+    Import bancaire refusé & Fichier \texttt{.xlsx} avec colonnes attendues, $<$ 10\,Mo. \\
+    Pas de suggestion rapprochement & Facture déjà rapprochée ou montant hors tolérance 0{,}02\,€. \\
+    Bouton e-facture absent & \texttt{E\_INVOICE\_PLATFORM=superpdp} et credentials OAuth~; statut facture «~Prête~». \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\section{Index des captures}
+
+\begin{table}[htbp]
+  \centering
+  \begin{tabular}{@{}ll@{}}
+    \toprule
+    \textbf{Fichier} & \textbf{Écran} \\
+    \midrule
+    \texttt{01-landing.png} & Page d'accueil publique \\
+    \texttt{02-login.png} & Connexion \\
+    \texttt{03-demande-acces.png} & Demande de compte \\
+    \texttt{04-home.png} & Liste des écoles / plan de charge \\
+    \texttt{05-planning.png} & Agenda planning \\
+    \texttt{06-treasury.png} & Synthèse trésorerie \\
+    \texttt{07-programs.png} & Programmes \\
+    \texttt{08-groups.png} & Groupes \\
+    \texttt{09-school-billing.png} & Facturation fiche école \\
+    \bottomrule
+  \end{tabular}
+\end{table}

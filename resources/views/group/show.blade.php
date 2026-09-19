@@ -3,11 +3,15 @@
         <h2>{{ $group->name }}</h2>
     </x-slot>
 
-    <x-workload-module-tabs />
-
     @php
         $sessionCount = $occurences->count();
     @endphp
+
+    @if($returnCourseId)
+        <p class="form-hint">
+            <a href="{{ route('course.show', $returnCourseId) }}">← {{ __('messages.back') }}</a>
+        </p>
+    @endif
 
     <section class="program-detail-card">
         <header class="program-detail-card__header">

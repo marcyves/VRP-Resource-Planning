@@ -3,7 +3,7 @@
         <h2>{{ __('messages.program_modification') }}</h2>
     </x-slot>
 
-    <x-workload-module-tabs />
+    <x-referential-module-tabs />
 
     <section>
         <form action="{{ route('program.update', $program->id) }}" method="post" class="group-form nice-form">

@@ -44,10 +44,11 @@ class PlanningController extends Controller
 
         session()->put('school', $school->name);
         session()->put('school_id', $school->id);
+        session()->put('last_school_id', $school->id);
         session()->forget('course');
         session()->forget('course_id');
 
-        return redirect()->to($this->planningContextRedirectUrl($request));
+        return redirect()->to($this->planningContextRedirectUrl($request, $school));
     }
 
     public function selectCourse(Request $request)
@@ -82,48 +83,43 @@ class PlanningController extends Controller
         $current_year = Tools::getCurrentYear($request);
         $current_month = Tools::getCurrentMonth($request);
 
-        return $this->buildPlanning($current_semester, $current_month, $current_year);
+        return $this->buildPlanning($request, $current_semester, $current_month, $current_year);
     }
 
     public function previous(Request $request)
     {
-        $current_semester = Tools::getCurrentSemester($request);
-        $current_year = Tools::getCurrentYear($request);
-        $current_month = Tools::getCurrentMonth($request);
-
-        $current_month -= 1;
-        if ($current_month < 1) {
-            $current_month = 12;
-            $current_year -= 1;
-            session(['current_year' => $current_year]);
-        }
-        session(['current_month' => $current_month]);
-
-        return $this->buildPlanning($current_semester, $current_month, $current_year);
+        return $this->navigatePlanning($request, -1);
     }
 
     public function next(Request $request)
     {
+        return $this->navigatePlanning($request, 1);
+    }
 
+    private function navigatePlanning(Request $request, int $direction)
+    {
         $current_semester = Tools::getCurrentSemester($request);
         $current_year = Tools::getCurrentYear($request);
         $current_month = Tools::getCurrentMonth($request);
+        $planningView = Tools::getPlanningView($request);
+        $weekStart = Tools::getPlanningWeekStart($request, $current_year, $current_month);
+        $shifted = Tools::shiftPlanningPeriod($planningView, $weekStart, $current_year, $current_month, $direction);
 
-        $current_month += 1;
-        if ($current_month > 11) {
-            $current_month -= 12;
-            $current_year += 1;
-            session(['current_year' => $current_year]);
-        }
-        session(['current_month' => $current_month]);
+        session([
+            'planning_week_start' => $shifted['week_start']->toDateString(),
+            'current_year' => $shifted['year'],
+            'current_month' => $shifted['month'],
+        ]);
 
-        return $this->buildPlanning($current_semester, $current_month, $current_year);
+        return $this->buildPlanning($request, $current_semester, $shifted['month'], $shifted['year']);
     }
 
-    private function buildPlanning($current_semester, $current_month, $current_year)
+    private function buildPlanning(Request $request, $current_semester, $current_month, $current_year)
     {
 
         $current_day = now()->format('d');
+        $planningView = Tools::getPlanningView($request);
+        $weekStart = Tools::getPlanningWeekStart($request, (int) $current_year, (int) $current_month);
 
         $schools = Auth::user()->getSchools();
 
@@ -136,21 +132,75 @@ class PlanningController extends Controller
         } else {
             $years = $schools->getYears();
         }
-        // Collect Planning information for display
-        //$planning = $schools->getPlanning($current_year, $current_month);
-        $planning = Planning::getDetails($current_year, $current_month);
+
+        if ($planningView === 'week') {
+            $weekEndExclusive = $weekStart->copy()->addWeek();
+            $planning = Planning::getDetailsBetween(
+                $weekStart->format('Y-m-d H:i:s'),
+                $weekEndExclusive->format('Y-m-d H:i:s')
+            );
+            $calendarDays = collect(range(0, 6))->map(fn ($offset) => $weekStart->copy()->addDays($offset));
+        } else {
+            $planning = Planning::getDetails((string) $current_year, (string) $current_month);
+            $calendarDays = null;
+        }
 
         $monthly_gain = 0;
         $monthly_hours = 0;
+        $billingSchools = [];
         foreach ($planning as $event) {
+            $sessionGain = Tools::planningGain($event->begin, $event->end, $event->rate, $event->billable_rate);
             $monthly_hours += $event->session_length;
-            $monthly_gain += $event->session_length * $event->rate;
+            $monthly_gain += $sessionGain;
+
+            $schoolId = (int) $event->school_id;
+            if (! isset($billingSchools[$schoolId])) {
+                $billingSchools[$schoolId] = [
+                    'id' => $schoolId,
+                    'name' => $event->school_name,
+                    'sessions' => 0,
+                    'hours' => 0.0,
+                    'amount_ht' => 0.0,
+                    'unbilled_sessions' => 0,
+                    'unbilled_amount_ht' => 0.0,
+                ];
+            }
+            $billingSchools[$schoolId]['sessions']++;
+            $billingSchools[$schoolId]['hours'] += (float) $event->session_length;
+            $billingSchools[$schoolId]['amount_ht'] += $sessionGain;
+            if ($event->invoice_id === null || $event->invoice_id === '') {
+                $billingSchools[$schoolId]['unbilled_sessions']++;
+                $billingSchools[$schoolId]['unbilled_amount_ht'] += $sessionGain;
+            }
         }
+        $billingSchools = collect($billingSchools)
+            ->map(function (array $school) {
+                $school['amount_ttc'] = round($school['amount_ht'] * 1.2, 2);
+                $school['unbilled_amount_ttc'] = round($school['unbilled_amount_ht'] * 1.2, 2);
+                $school['amount_ht'] = round($school['amount_ht'], 2);
+                $school['unbilled_amount_ht'] = round($school['unbilled_amount_ht'], 2);
+
+                return $school;
+            })
+            ->sortByDesc(fn (array $school) => [$school['unbilled_sessions'], $school['unbilled_amount_ht'], $school['hours']])
+            ->values();
 
         $months = Tools::getMonthNames();         //generate month names according to the current locale
         $weekdays = collect(Carbon::getDays())->map(fn($dayName) => ucfirst(Carbon::create($dayName)->dayName)); //generate day names according to the current locale
         $weekdays->push($weekdays[0]);         // Week starts on Monday
         $weekdays->shift();
+
+        $locale = \App\Support\TerminologyLocale::normalizeBaseLocale(app()->getLocale());
+        if ($planningView === 'week') {
+            $weekEnd = $weekStart->copy()->addDays(6);
+            $start = $weekStart->copy()->locale($locale);
+            $end = $weekEnd->copy()->locale($locale);
+            $periodTitle = $start->isSameMonth($end)
+                ? $start->translatedFormat('j').'–'.$end->translatedFormat('j M Y')
+                : $start->translatedFormat('j M').' – '.$end->translatedFormat('j M Y');
+        } else {
+            $periodTitle = ucfirst(Carbon::create((int) $current_year, (int) $current_month, 1)->locale($locale)->translatedFormat('F')).' '.$current_year;
+        }
 
         return view('planning.index', compact(
             'planning',
@@ -162,6 +212,10 @@ class PlanningController extends Controller
             'current_day',
             'monthly_gain',
             'monthly_hours',
+            'billingSchools',
+            'planningView',
+            'calendarDays',
+            'periodTitle',
         ));
     }
 
@@ -173,6 +227,8 @@ class PlanningController extends Controller
         $validated = $request->validate([
             'date' => 'required|date',
             'course' => 'nullable|exists:courses,id',
+            'hour' => 'nullable|integer|min:8|max:19',
+            'minutes' => 'nullable|integer|min:0|max:59',
         ]);
 
         $courseId = $validated['course'] ?? session('course_id');
@@ -185,6 +241,8 @@ class PlanningController extends Controller
 
         $request->session()->put('planning_create_date', $validated['date']);
         $request->session()->put('planning_create_course_id', $courseId);
+        $request->session()->put('planning_create_hour', (int) ($validated['hour'] ?? 8));
+        $request->session()->put('planning_create_minutes', (int) ($validated['minutes'] ?? 0));
 
         return redirect()->route('planning.create');
     }
@@ -218,8 +276,10 @@ class PlanningController extends Controller
 
         $groups = $course->getLinkedGroups(true);
         $session_length = $course->session_length;
+        $hour = (int) $request->session()->get('planning_create_hour', 8);
+        $minutes = (int) $request->session()->get('planning_create_minutes', 0);
 
-        return view('planning.create', compact('date', 'groups', 'session_length', 'course'));
+        return view('planning.create', compact('date', 'groups', 'session_length', 'course', 'hour', 'minutes'));
     }
 
     /**
@@ -509,14 +569,45 @@ class PlanningController extends Controller
         session()->put('school_id', $school->id);
     }
 
-    private function planningContextRedirectUrl(Request $request): string
+    private function planningContextRedirectUrl(Request $request, ?School $school = null): string
     {
         $redirect = $request->input('redirect');
 
         if (is_string($redirect) && $redirect !== '' && str_starts_with($redirect, url('/'))) {
+            if ($school !== null) {
+                $rewritten = $this->rewriteSchoolScopedRedirect($redirect, $school);
+                if ($rewritten !== null) {
+                    return $rewritten;
+                }
+            }
+
             return $redirect;
         }
 
         return route('planning.index');
+    }
+
+    /**
+     * On school show/edit, changing the breadcrumb school must open that school
+     * (not bounce back to the previous school URL which re-binds session).
+     */
+    private function rewriteSchoolScopedRedirect(string $redirect, School $school): ?string
+    {
+        $path = parse_url($redirect, PHP_URL_PATH) ?? '';
+        $query = parse_url($redirect, PHP_URL_QUERY);
+
+        if (preg_match('#/school/\d+/edit/?$#', $path)) {
+            $url = route('school.edit', $school->id);
+
+            return $query ? "{$url}?{$query}" : $url;
+        }
+
+        if (preg_match('#/school/\d+/?$#', $path)) {
+            $url = route('school.show', $school);
+
+            return $query ? "{$url}?{$query}" : $url;
+        }
+
+        return null;
     }
 }

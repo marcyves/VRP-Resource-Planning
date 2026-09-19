@@ -3,7 +3,7 @@
         <h2>{{ __('messages.groups_list') }}</h2>
     </x-slot>
 
-    <x-workload-module-tabs />
+    <x-referential-module-tabs />
 
     <p class="form-hint">{{ __('messages.groups_index_help') }}</p>
     @if($sessionCourseId && $sessionCourseName)

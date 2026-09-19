@@ -3,7 +3,7 @@
         <h2>{{ __('messages.program_create') }}</h2>
     </x-slot>
 
-    <x-workload-module-tabs />
+    <x-referential-module-tabs />
 
     <section>
         <form action="{{ route('program.store') }}" method="post" class="group-form nice-form">

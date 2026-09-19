@@ -29,8 +29,8 @@ Operational setup, submit flow, webhooks, and artisan commands: **[electronic-in
 | Legal identifiers in PDF (no hard-coded values) | ✅ via company / school records |
 | PA-agnostic layer + `Null` / `SuperPdp` drivers | ✅ POC |
 | Structured submission (CII → Factur-X via SuperPDP) | ✅ POC |
-| Submit button on Treasury → Invoices | ✅ when platform configured |
-| Webhook status updates | ✅ stub + HMAC verify |
+| Issue button on Treasury → Invoices | ✅ when platform is configured |
+| Status webhooks | ✅ HMAC verify + apply |
 | Supplier invoice reception via PA | ❌ |
 
 Existing `invoices` fields:
@@ -364,5 +364,5 @@ Operational detail (`.env`, sandbox/production OAuth, artisan commands, webhooks
 ## Links
 
 - [Operational guide — electronic invoicing](electronic-invoicing.md)
-- [README — roadmap summary](../../README.md#roadmap--facturation-électronique)
+- [README — roadmap summary](../../README.md#roadmap--e-invoicing)
 - [PWA & offline roadmap](roadmap-pwa-offline.md) — deferred, not priority

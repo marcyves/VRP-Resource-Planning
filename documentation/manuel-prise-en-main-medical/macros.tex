@@ -1,0 +1,70 @@
+% Macros — prise en main médical VRP Plan
+
+\usepackage{xcolor}
+\definecolor{vrpblue}{HTML}{0D9488}
+\definecolor{vrpdark}{HTML}{134E4A}
+\definecolor{vrpaccent}{HTML}{5EEAD4}
+\definecolor{vrpmuted}{HTML}{64748B}
+\definecolor{vrpbg}{HTML}{F0FDFA}
+
+\newtcolorbox{workflowstep}[1][]{
+  enhanced,
+  colback=vrpbg,
+  colframe=vrpblue,
+  fonttitle=\bfseries\small,
+  title=#1,
+  boxrule=0.6pt,
+  arc=3pt,
+  left=8pt, right=8pt, top=6pt, bottom=6pt,
+  attach boxed title to top left={yshift=-2mm, xshift=4mm},
+  boxed title style={colback=vrpblue, colframe=vrpblue, coltext=white, arc=2pt}
+}
+
+\newtcolorbox{astuce}[1][Astuce]{
+  enhanced,
+  colback=white,
+  colframe=vrpaccent,
+  fonttitle=\bfseries\small\color{vrpdark},
+  title=#1,
+  boxrule=0.5pt,
+  arc=2pt,
+  left=8pt, right=8pt, top=4pt, bottom=4pt
+}
+
+\newtcolorbox{avertissement}[1][Attention]{
+  enhanced,
+  colback=orange!5,
+  colframe=orange!70!black,
+  fonttitle=\bfseries\small,
+  title=#1,
+  boxrule=0.5pt,
+  arc=2pt
+}
+
+\newcommand{\shotpath}{screenshots/}
+\newcommand{\screenshot}[3][]{%
+  \begin{figure}[htbp]
+    \centering
+    \IfFileExists{\shotpath#2}{%
+      \includegraphics[width=\linewidth,#1]{\shotpath#2}%
+    }{%
+      \begin{tikzpicture}
+        \node[
+          draw=vrpmuted, dashed, rounded corners=4pt,
+          minimum width=0.92\linewidth, minimum height=4.5cm,
+          align=center, text=vrpmuted, font=\small
+        ] {Capture manquante\\\texttt{\shotpath#2}};
+      \end{tikzpicture}%
+    }
+    \caption{#3}
+    \label{fig:#2}
+  \end{figure}%
+}
+
+\newcommand{\menu}[1]{\textsf{\textbf{#1}}}
+
+% Termes métier médical (rappel visuel)
+\newcommand{\structure}{\textbf{structure}}
+\newcommand{\prestation}{\textbf{prestation}}
+\newcommand{\seance}{\textbf{séance}}
+\newcommand{\patient}{\textbf{patient}}

@@ -141,6 +141,40 @@
    margin-top: var(--spacing-3);
 }
 
+.billing-sessions-table table {
+   table-layout: fixed;
+   width: 100%;
+}
+
+.billing-sessions-table .billing-col-group {
+   width: 30%;
+   min-width: 30%;
+   overflow: hidden;
+   text-overflow: ellipsis;
+   white-space: nowrap;
+}
+
+.billing-sessions-table .billing-col-schedule {
+   width: 25ch;
+}
+
+.billing-sessions-table .billing-col-hours {
+   width: 10ch;
+}
+
+.billing-sessions-table .billing-col-money {
+   width: 15ch;
+}
+
+.billing-sessions-table .billing-col-bill {
+   width: 10ch;
+   text-align: center;
+}
+
+.billing-sessions-table thead th.billing-col-bill {
+   text-align: center;
+}
+
 .billing-school-footer {
    display: flex;
    flex-wrap: wrap;

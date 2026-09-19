@@ -24,9 +24,26 @@ Component: `resources/views/components/school-billing-section.blade.php`
 |-------|-------------|
 | Period selector | Previous / next month, month dropdown |
 | **By date** toggle | Chronological vs by-course grouping (`school_billing_by_date` session) |
-| Session tables | Group, schedule, hours, invoice # |
+| Session tables | Group, schedule, hours, **HT**, **TTC**, invoice # |
 | Totals | Hours and ex-VAT / incl-VAT amounts per course and school |
 | Actions (Edit mode) | Assign existing invoice, create invoice |
+
+### Session line amounts
+
+Each intervention row shows HT and TTC next to hours (`Tools::getBillingInformation()`):
+
+| Column | Source |
+|--------|--------|
+| Hours | `sessionDurationHours()` — badge warns when duration ≠ course `session_length` |
+| HT | `planningGain()` stored as `gain` |
+| TTC | `gain_ttc` = `round(gain * Tools::VAT_MULTIPLIER, 2)` (VAT multiplier **1.2**) |
+| Invoice # | `planning.invoice_id` |
+
+Course and school **totals** still print `gain` HT and `gain * 1.2` TTC inline — they do not sum the per-row rounded `gain_ttc` values.
+
+`@money` already appends `€` (`AppServiceProvider`). Line cells use `@money($schedule['gain'])` / `@money($schedule['gain_ttc'])` with **no extra euro sign**. Totals use `number_format(...) € HT / ... € TTC`.
+
+Table layout (`resources/css/bills.css`): `table-layout: fixed`; group 30% with ellipsis; schedule 25ch; hours 10ch; money 15ch; bill 10ch.
 
 ## Billing session keys
 
@@ -56,9 +73,12 @@ Centralized in `App\Http\Utility\Tools`:
 
 - `sessionDurationHours()` — actual session duration
 - `billableMultiplier()` — normalizes billable rate (calendar import fix)
-- `planningGain()` — ex-VAT session amount
+- `planningGain()` — ex-VAT session amount (`gain`)
+- `gain_ttc` — `round(gain * VAT_MULTIPLIER, 2)` for the TTC column
 
 Used by billing preparation **and** school list « unbilled » stats.
+
+The footer **monthly gain** / **hour rate** strip under the school totals uses the same HT `monthlyGain` without a VAT label — do not confuse it with the TTC KPI cards on the agenda.
 
 ## Link with Treasury
 
@@ -97,4 +117,5 @@ If the PDF file later disappears from storage, viewing the invoice regenerates i
 
 - [V2 — navigation](v2-navigation-modules.md)
 - [V2 — treasury & bank reconciliation](v2-treasury-bank-reconciliation.md)
+- [Electronic invoicing](electronic-invoicing.md)
 - [Training data model](training-data-model.md)

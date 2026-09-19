@@ -77,4 +77,13 @@ return [
     'terminology_profile_medical' => 'Medical & services (structures, services, sessions, patients)',
     'terminology_profile_hint' => 'Adapts application labels without changing your data.',
     'workload_plan' => 'Activity overview',
+    'nav_referential' => 'Catalog',
+    'billing_needs_school_hint' => 'Open a structure to prepare invoicing from scheduled sessions.',
+    'workload_plan_annual_link' => 'Annual activity overview',
+    'planning_billing_title' => 'Invoice this month’s work',
+    'planning_billing_intro' => 'Structures with sessions in the displayed period — prioritize those still unbilled.',
+    'planning_billing_sessions' => 'sessions',
+    'planning_billing_unbilled' => 'unbilled',
+    'planning_billing_unbilled_amount' => 'to invoice',
+    'planning_billing_all_invoiced' => 'already invoiced',
 ];

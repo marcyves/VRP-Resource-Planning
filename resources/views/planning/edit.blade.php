@@ -204,5 +204,5 @@
         @endif
     </section>
 
-    <x-planning-duplicate-modal />
+    <x-planning-duplicate-dialog />
 </x-app-layout>

@@ -3,7 +3,15 @@
         <h2>{{ __('messages.schools_list') }} @if($current_year !== 'all'){{ $current_year }}@endif</h2>
     </x-slot>
 
-    <x-workload-module-tabs />
+    @if (session('billing_needs_school'))
+        <div class="alert alert-info" role="status">
+            {{ __('messages.billing_needs_school_hint') }}
+        </div>
+    @endif
+
+    <p class="school-list-toolbar">
+        <a class="btn btn-secondary" href="{{ route('school.dashboard') }}">{{ __('messages.workload_plan') }}</a>
+    </p>
 
     <section>
         <ul class="resource-grid">

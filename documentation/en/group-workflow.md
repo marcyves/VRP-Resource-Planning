@@ -30,7 +30,7 @@
 | Browse all groups / archive | **Groups** (`/group`) |
 | See linked courses and sessions | Group detail (`/group/{id}`) |
 | Create group + session at once | Calendar → new session → “New group below” |
-| Duplicate a session | Planning day cell / edit → copy actions |
+| Duplicate a session | Planning day cell / week event / edit → copy actions |
 
 ## Planning session duplication
 
@@ -47,12 +47,17 @@ Instructors can copy an existing session without re-entering course, group, loca
 - Blocked when the source session has an `invoice_id` (same lock as delete).
 - Rejected when another session for the same `group_id` overlaps the new interval.
 - On success, session year/month are updated and the user returns to `planning.index`.
+- Custom date uses the native `#planning-duplicate-dialog` (`planning-calendar.js`), including the session edit page.
 
 | Piece | Path |
 |-------|------|
 | Route | `POST /planning/{id}/duplicate` (`planning.duplicate`) |
-| UI | `planning-duplicate-actions`, `planning-duplicate-dialog`, `planning-duplicate-modal` |
-| Alpine store | `resources/js/duplicate-store.js` |
+| UI | `planning-duplicate-actions`, `planning-duplicate-dialog` |
+| JS | `resources/js/planning-calendar.js` |
+
+## Cross-year sessions
+
+Group index, group detail, and the school **groups** panel list occurrences with year `'all'` (`Group::planningOccurrencesForIds(..., 'all')`). Filtering is by **session `begin`**, not by `courses.year`, so a course labelled 2026 still shows its January 2027 sessions.
 
 ## Technical alignment
 
@@ -67,4 +72,4 @@ Instructors can copy an existing session without re-entering course, group, loca
 
 - [Training data model](training-data-model.md)
 - [School creation workflow](school-creation-workflow.md)
-- [V2 — billing per school](v2-billing-per-school.md)
+- [V2 — navigation & modules](v2-navigation-modules.md)

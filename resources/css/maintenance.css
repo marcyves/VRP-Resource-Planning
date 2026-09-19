@@ -42,10 +42,6 @@
   opacity: 0.9;
 }
 
-body:has(> .maintenance-notice) > .maintenance-logo {
-  display: none;
-}
-
 .maintenance-logo {
   width: 50%;
   margin: 1rem auto;

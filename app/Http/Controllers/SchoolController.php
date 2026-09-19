@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Utility\Tools;
+use App\Models\Group;
 use App\Models\School;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -80,6 +81,7 @@ class SchoolController extends Controller
 
         session()->put('school', $school->name);
         session()->put('school_id', $school->id);
+        session()->put('last_school_id', $school->id);
 
         return view('school.add', compact('school'));
     }
@@ -118,6 +120,7 @@ class SchoolController extends Controller
             session()->flash('success', __('messages.school_saved_success', ['name' => $school->name]));
             session()->put('school', $school->name);
             session()->put('school_id', $school->id);
+        session()->put('last_school_id', $school->id);
 
             return redirect(route('school.index'));
         } catch (\Exception $e) {
@@ -148,22 +151,53 @@ class SchoolController extends Controller
 
         session()->put('school', $school->name);
         session()->put('school_id', $school->id);
+        session()->put('last_school_id', $school->id);
 
-        $invoices = $school->getInvoices($year);
-        $documents = $school->getDocuments();
-        $bills = $invoices;
+        view()->share('schoolContextSchool', $school);
 
+        $panel = $request->query('panel', 'courses');
+        if ($request->query('focus') === 'billing') {
+            $panel = 'courses';
+        }
+        if ($panel === 'address') {
+            $panel = 'details';
+        }
+        if (! in_array($panel, ['courses', 'groups', 'details', 'documents'], true)) {
+            $panel = 'courses';
+        }
+
+        $invoices = collect();
+        $documents = collect();
+        $bills = collect();
+        $groups = collect();
+        $inactiveGroups = collect();
+        $occurences = collect();
         $billingData = null;
         $monthlyHours = 0;
         $monthlyGain = 0;
+        $hasPreviousUnbilled = false;
 
-        $planning = $school->getBillingPlanning($billingYear, $currentMonth);
-        if ($planning) {
-            [$schoolsBilling, $monthlyGain, $monthlyHours] = Tools::getBillingInformation($planning);
-            $billingData = reset($schoolsBilling) ?: null;
+        if ($panel === 'courses') {
+            $invoices = $school->getInvoices($year);
+            $bills = $invoices;
+
+            $planning = $school->getBillingPlanning($billingYear, $currentMonth);
+            if ($planning) {
+                [$schoolsBilling, $monthlyGain, $monthlyHours] = Tools::getBillingInformation($planning);
+                $billingData = reset($schoolsBilling) ?: null;
+            }
+
+            $hasPreviousUnbilled = $school->hasPreviousUnbilledPeriod($billingYear, $currentMonth);
+        } elseif ($panel === 'groups') {
+            $groups = $school->getLinkedGroups(true);
+            $inactiveGroups = $school->getLinkedGroups(false);
+            $occurences = Group::planningOccurrencesForIds(
+                $groups->pluck('id')->merge($inactiveGroups->pluck('id')),
+                'all'
+            );
+        } elseif ($panel === 'documents') {
+            $documents = $school->getDocuments();
         }
-
-        $hasPreviousUnbilled = $school->hasPreviousUnbilledPeriod($billingYear, $currentMonth);
 
         return view('school.show', compact(
             'school',
@@ -181,6 +215,10 @@ class SchoolController extends Controller
             'bills',
             'billingByDate',
             'hasPreviousUnbilled',
+            'panel',
+            'groups',
+            'inactiveGroups',
+            'occurences',
         ));
     }
 
@@ -192,6 +230,9 @@ class SchoolController extends Controller
         $school = School::findOrFail($school_id);
         session()->put('school', $school->name);
         session()->put('school_id', $school->id);
+        session()->put('last_school_id', $school->id);
+
+        view()->share('schoolContextSchool', $school);
 
         return view('school.edit', compact('school'));
     }
@@ -203,6 +244,7 @@ class SchoolController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|max:80',
+            'context' => ['nullable', 'in:'.implode(',', \App\Support\SchoolContext::values())],
             'siren' => ['nullable', 'digits:9'],
             'siret' => ['nullable', 'digits:14'],
             'vat_number' => ['nullable', 'string', 'max:20'],
@@ -213,6 +255,7 @@ class SchoolController extends Controller
             $school = School::findOrFail($school_id);
             $school->name = $request->name;
             $school->code = $request->code;
+            $school->context = $request->input('context', \App\Support\SchoolContext::EDUCATION);
             $school->siren = $request->siren;
             $school->siret = $request->siret;
             $school->vat_number = $request->vat_number;
@@ -229,6 +272,7 @@ class SchoolController extends Controller
             $school->description = $request->description;
 
             session()->put('school_id', $school_id);
+            session()->put('last_school_id', $school_id);
 
             session()->put('school', $school->name);
 
@@ -236,7 +280,7 @@ class SchoolController extends Controller
 
             session()->flash('success', __('messages.school_updated_success', ['name' => $request->name]));
 
-            return redirect(route('dashboard'));
+            return redirect()->to(route('school.show', $school).'?panel=details');
         } catch (\Exception $e) {
             // dd($e);
 

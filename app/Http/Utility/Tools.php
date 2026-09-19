@@ -53,6 +53,160 @@ class Tools
         return (int) $current_month;
     }
 
+    /**
+     * @return 'month'|'week'
+     */
+    public static function getPlanningView(Request $request): string
+    {
+        $view = $request->input('view', session('planning_view', 'month'));
+
+        if (! in_array($view, ['month', 'week'], true)) {
+            $view = 'month';
+        }
+
+        session(['planning_view' => $view]);
+
+        return $view;
+    }
+
+    public static function getPlanningWeekStart(Request $request, int $year, int $month): Carbon
+    {
+        $monthChanged = $request->has('current_month');
+
+        if ($request->filled('week_start') && ! $monthChanged) {
+            $start = Carbon::parse($request->input('week_start'))->startOfWeek(Carbon::MONDAY);
+        } elseif (! $monthChanged && session('planning_week_start')) {
+            $start = Carbon::parse((string) session('planning_week_start'))->startOfWeek(Carbon::MONDAY);
+        } else {
+            $today = now();
+            $anchor = ((int) $today->year === $year && (int) $today->month === $month)
+                ? $today->copy()
+                : Carbon::create($year, $month, 1);
+            $start = $anchor->startOfWeek(Carbon::MONDAY);
+        }
+
+        session(['planning_week_start' => $start->toDateString()]);
+
+        return $start;
+    }
+
+    /**
+     * @return array{week_start: Carbon, year: int, month: int}
+     */
+    public static function shiftPlanningPeriod(string $view, Carbon $weekStart, int $year, int $month, int $direction): array
+    {
+        if ($view === 'week') {
+            $start = $weekStart->copy()->addWeeks($direction)->startOfWeek(Carbon::MONDAY);
+
+            return [
+                'week_start' => $start,
+                'year' => $start->year,
+                'month' => $start->month,
+            ];
+        }
+
+        $cursor = Carbon::create($year, $month, 1)->addMonths($direction);
+
+        return [
+            'week_start' => $cursor->copy()->startOfWeek(Carbon::MONDAY),
+            'year' => $cursor->year,
+            'month' => $cursor->month,
+        ];
+    }
+
+    public const WEEK_AGENDA_START_HOUR = 8;
+
+    public const WEEK_AGENDA_END_HOUR = 20;
+
+    public const VAT_MULTIPLIER = 1.2;
+
+    /**
+     * Hour labels for the week grid (8h … 20h).
+     *
+     * @return list<int>
+     */
+    public static function weekAgendaHours(): array
+    {
+        return range(self::WEEK_AGENDA_START_HOUR, self::WEEK_AGENDA_END_HOUR);
+    }
+
+    /**
+     * @return array{top: float, height: float, visible: bool}
+     */
+    public static function weekEventPosition(Carbon $begin, Carbon $end): array
+    {
+        $startBound = self::WEEK_AGENDA_START_HOUR * 60;
+        $endBound = self::WEEK_AGENDA_END_HOUR * 60;
+        $span = $endBound - $startBound;
+
+        $beginMinutes = ($begin->hour * 60) + $begin->minute;
+        $endMinutes = ($end->hour * 60) + $end->minute;
+
+        if ($end->toDateString() !== $begin->toDateString() && $endMinutes === 0) {
+            $endMinutes = 24 * 60;
+        }
+
+        $clampedStart = max($beginMinutes, $startBound);
+        $clampedEnd = min($endMinutes, $endBound);
+
+        if ($clampedEnd <= $clampedStart || $clampedStart >= $endBound || $clampedEnd <= $startBound) {
+            return [
+                'top' => 0.0,
+                'height' => 0.0,
+                'visible' => false,
+            ];
+        }
+
+        return [
+            'top' => (($clampedStart - $startBound) / $span) * 100,
+            'height' => (($clampedEnd - $clampedStart) / $span) * 100,
+            'visible' => true,
+        ];
+    }
+
+    public static function parseDecimal(mixed $value): float
+    {
+        return (float) str_replace(',', '.', (string) $value);
+    }
+
+    public static function courseTotalHours(mixed $sessions, mixed $sessionLength): float
+    {
+        return round(self::parseDecimal($sessions) * self::parseDecimal($sessionLength), 2);
+    }
+
+    /**
+     * Hourly rate stored on courses is always HT (4 decimals for VAT round-trip).
+     *
+     * @param  'ht'|'ttc'|string  $basis
+     */
+    public static function hourlyRateHt(mixed $amount, string $basis = 'ttc'): float
+    {
+        $rate = self::parseDecimal($amount);
+
+        if ($basis !== 'ht') {
+            $ttc = round($rate, 2);
+
+            return round($ttc / self::VAT_MULTIPLIER, 4);
+        }
+
+        return round($rate, 4);
+    }
+
+    /**
+     * Display TTC from stored HT — 2 decimals for UI and invoices.
+     */
+    public static function hourlyRateTtc(mixed $htAmount): float
+    {
+        return round(self::parseDecimal($htAmount) * self::VAT_MULTIPLIER, 2);
+    }
+
+    public static function defaultCourseSemester(?int $month = null): string
+    {
+        $month ??= (int) now()->month;
+
+        return $month <= 6 ? '1' : '2';
+    }
+
     public static function getBillingYear(Request $request): int
     {
         if (isset($request->billing_year)) {
@@ -211,6 +365,8 @@ class Tools
                 "end"      => $event->end,
                 "duration" => $duration,
                 "billable_rate" => $event->billable_rate,
+                "gain"     => $gain,
+                "gain_ttc" => round($gain * self::VAT_MULTIPLIER, 2),
                 "bill"     => $event->invoice_id
             );
         }

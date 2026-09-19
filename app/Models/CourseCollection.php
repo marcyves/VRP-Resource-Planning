@@ -97,7 +97,6 @@ class CourseCollection extends Collection
         ->join('plannings', 'plannings.group_id', '=', 'groups.id')
         ->join('schools', 'schools.id', '=', 'school_id')
         ->where('plannings.course_id', '=', 'courses.id')
-        ->where(['year' => $year])
         ->where('begin', '>', $start_date)
         ->where('end', '<', $end_date)
         ->orderBy('begin', 'asc')

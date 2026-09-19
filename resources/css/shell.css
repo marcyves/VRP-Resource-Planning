@@ -223,6 +223,42 @@ html[data-sidebar-compact="true"] {
     text-align: left;
 }
 
+.sidebar-nav-separator {
+    height: 1px;
+    margin: 0.5rem 0.875rem;
+    background: var(--nav-border);
+}
+
+.sidebar-nav-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+}
+
+.sidebar-nav-group__items {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    padding-left: 0.5rem;
+}
+
+.sidebar-link--nested {
+    padding-left: 1.5rem;
+    font-size: 0.8125rem;
+}
+
+html[data-sidebar-compact="true"] .sidebar-nav-group__items {
+    padding-left: 0;
+}
+
+html[data-sidebar-compact="true"] .sidebar-link--nested {
+    padding-left: 0.65rem;
+}
+
+html[data-sidebar-compact="true"] .sidebar-nav-separator {
+    margin-inline: 0.35rem;
+}
+
 /* Sidebar compact — icônes seules */
 html[data-sidebar-compact="true"] .app-sidebar__brand {
     justify-content: center;

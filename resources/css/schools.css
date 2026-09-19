@@ -45,6 +45,24 @@
     margin: 0;
 }
 
+.school-header--tools-only {
+    flex-direction: row;
+    justify-content: flex-end;
+}
+
+.school-section-header--sub {
+    margin-top: 1.5rem;
+    font-size: 1.05rem;
+}
+
+.school-section-header-row .school-section-header {
+    margin-bottom: 0.35rem;
+}
+
+.school-section-header-row .form-hint {
+    margin-bottom: 1rem;
+}
+
 /* Schools list grid — compact cards, stay inside section */
 main section:has(> ul.resource-grid) {
     overflow: hidden;
@@ -333,6 +351,61 @@ main .school-details-grid > section {
 
 .documents-school-table__link:hover {
     color: var(--text-heading);
+}
+
+.school-details-panel__header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+}
+
+.school-details-panel__header .school-section-header {
+    margin-bottom: 0;
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.school-details-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+    gap: 1rem 1.5rem;
+    margin: 0;
+}
+
+.school-details-list__item {
+    margin: 0;
+}
+
+.school-details-list__item--full {
+    grid-column: 1 / -1;
+}
+
+.school-details-list__item dt {
+    margin: 0 0 0.25rem;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+}
+
+.school-details-list__item dd {
+    margin: 0;
+    color: var(--text-heading);
+    line-height: 1.45;
+}
+
+.school-details-list__plain {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.school-details-list__plain li + li {
+    margin-top: 0.25rem;
 }
 
 .school-address-box {

@@ -3,8 +3,6 @@
         <h2>{{ __('messages.school_edit') }}</h2>
     </x-slot>
 
-    <x-workload-module-tabs />
-
     <section>
         <form action="{{ route('school.update', $school->id) }}" method="post" class="school-create-form nice-form">
             @csrf
@@ -17,6 +15,19 @@
             <div class="school-form-input">
                 <x-input-label for="code">{{ __('messages.code') }}</x-input-label>
                 <x-text-input type="text" name="code" id="code" value="{{ old('code', $school->code) }}" />
+            </div>
+
+            <div class="school-form-input">
+                <x-input-label for="context">{{ __('messages.school_context') }}</x-input-label>
+                <select name="context" id="context" class="form-input">
+                    @foreach (\App\Support\SchoolContext::values() as $context)
+                        <option value="{{ $context }}" @selected(old('context', $school->context ?? 'education') === $context)>
+                            {{ __('messages.school_context_'.$context) }}
+                        </option>
+                    @endforeach
+                </select>
+                <p class="form-hint">{{ __('messages.school_context_hint') }}</p>
+                <x-input-error :messages="$errors->get('context')" />
             </div>
 
             <fieldset class="school-form-fieldset">
@@ -34,7 +45,7 @@
                     <x-text-input type="text" name="vat_number" id="vat_number" value="{{ old('vat_number', $school->vat_number) }}" />
                 </div>
                 <div class="form-group">
-                    <x-input-label for="electronic_address">Adresse électronique (PEPPOL 0225)</x-input-label>
+                    <x-input-label for="electronic_address">{{ __('messages.electronic_address') }}</x-input-label>
                     <x-text-input type="text" name="electronic_address" id="electronic_address" placeholder="315143296_12712" value="{{ old('electronic_address', $school->electronic_address) }}" />
                 </div>
             </fieldset>
@@ -61,7 +72,7 @@
             </div>
 
             <div class="form-actions">
-                <a class="btn btn-secondary" href="{{ route('school.show', $school->id) }}">{{ __('messages.cancel') }}</a>
+                <a class="btn btn-secondary" href="{{ route('school.show', $school->id) }}?panel=details">{{ __('messages.cancel') }}</a>
                 <x-button-primary>{{ __('messages.update') }}</x-button-primary>
             </div>
         </form>

@@ -62,13 +62,15 @@
     background: var(--surface-container-low);
 }
 
-.data-table .money {
+.data-table .money,
+.data-table thead th.money {
     text-align: right;
     font-variant-numeric: tabular-nums;
     white-space: nowrap;
 }
 
-.data-table .date {
+.data-table .date,
+.data-table thead th.date {
     text-align: center;
     white-space: nowrap;
 }

@@ -18,7 +18,7 @@ Trésorerie → Factures
         → SuperPdpPlatform::submitOutbound()
             → ElectronicInvoiceCiiBuilder (XML CII EN 16931)
             → SuperPdpClient::convertInvoice(cii → factur-x)
-            → SuperPdpClient::sendInvoicePdf(...)
+            → SuperPdpClient::sendInvoicePdf(...)   # PDF Factur-X issu du convert, pas le PDF TCPDF
         → statut facture = transmitted + pdp_reference
 
 POST /webhooks/e-invoice/superpdp  (CSRF exclu)
@@ -37,7 +37,7 @@ POST /webhooks/e-invoice/superpdp  (CSRF exclu)
 | Config | `config/electronic-invoicing.php` |
 | Bouton UI | `resources/views/components/table-invoices.blade.php` |
 
-Drivers : `null` (défaut si `E_INVOICE_PLATFORM` absent/autre) ou `superpdp`. B2Brouter **n’est pas** encore implémenté.
+Drivers : `null` (défaut si `E_INVOICE_PLATFORM` absent/autre) ou `superpdp`. B2Brouter **n’est pas** encore implémenté. Le contrat codé se limite à l’émission + webhook (`isConfigured`, `submitOutbound`, `parseWebhook`, `verifyWebhook`) — pas d’onboarding entreprise ni de fetch inbound.
 
 ## Configuration
 
@@ -61,7 +61,7 @@ SUPERPDP_SANDBOX_CLIENT_SECRET=
 # SUPERPDP_WEBHOOK_SECRET=
 ```
 
-Auth : flux `client_credentials` vers `POST /oauth2/token`, token mis en cache. Le choix sandbox / production passe par `SuperPdpConfig::activeCredentials()`.
+Auth : flux `client_credentials` vers `POST /oauth2/token`, token mis en cache (`superpdp.access_token.{md5(client_id)}`, TTL = `expires_in − 60s`). Le choix sandbox / production passe par `SuperPdpConfig::activeCredentials()`.
 
 Vérifier la connexion :
 
@@ -91,7 +91,7 @@ Commandes utiles :
 |-------|--------|
 | Statut `ready` | `invoices.electronic_invoice_status` |
 | Facture non payée | `paid_at` null |
-| Émetteur : SIREN + adresse complète | `companies` |
+| Émetteur : SIREN + adresse complète | `companies` (`siren`, `address`, `city`, `zip`) |
 | Client : SIREN ou SIRET + adresse | `schools` |
 | PDF en stockage | `Storage::exists(...)` |
 
@@ -101,18 +101,20 @@ Le suivi **payée** (`paid_at`) reste indépendant du statut e-facture.
 
 L’envoi utilise **CII XML → Factur-X** via l’API convert SuperPDP. Le PDF TCPDF reste pour l’affichage VRP ; ce n’est **pas** le payload structuré.
 
-En sandbox, sans `electronic_address` sur l’école, un routage par défaut (`SUPERPDP_SANDBOX_BUYER_*`) peut être injecté. Sinon l’adresse électronique de l’école est utilisée.
+Les lignes viennent de `Tools::getInvoiceDetails()` (lignes planning de type `T`). Si aucune ne qualifie, le builder retombe sur `invoice.amount / 1.2` en une ligne C62. La TVA du builder CII est actuellement **fixe à 20 %**. L’échéance CII est **date d’émission + 1 jour**.
+
+En sandbox, sans `electronic_address` sur l’école, un routage par défaut (`SUPERPDP_SANDBOX_BUYER_*`) peut être injecté. Sinon l’adresse électronique de l’école est utilisée (`CiiTradeParty::fromSchool`).
 
 ## Webhooks
 
 | Élément | Valeur |
 |---------|--------|
-| Route | `POST /webhooks/e-invoice/{platform}` — seul `superpdp` accepté |
-| CSRF | Exclu dans `VerifyCsrfToken` |
+| Route | `POST /webhooks/e-invoice/{platform}` — seul `superpdp` accepté (autre plateforme → 404) |
+| CSRF | Exclu dans `VerifyCsrfToken` (`webhooks/e-invoice/*`) |
 | Auth | HMAC-SHA256 du corps brut ; en-têtes `X-SuperPDP-Signature` ou `X-Webhook-Signature` |
 | Succès | HTTP 204 |
 
-Mapping des statuts (sous-chaîne dans le payload) :
+Mapping des statuts (sous-chaîne dans `status` / `status_code`) :
 
 | Indice payload | `PlatformEventType` | Mise à jour facture |
 |----------------|---------------------|---------------------|
@@ -127,7 +129,7 @@ Recherche facture : `pdp_reference` d’abord, puis partie numérique de `extern
 - Sans `E_INVOICE_PLATFORM=superpdp` et credentials valides, le bouton UI reste masqué.
 - SIREN/adresse ou PDF manquant → flash danger + liste d’erreurs.
 - Webhook sans `SUPERPDP_WEBHOOK_SECRET` → toujours **401**.
-- TVA du builder CII fixée à **20 %** pour l’instant.
+- TVA du builder CII fixée à **20 %** (indépendante des taux société / cours).
 - Pas d’UI de réception fournisseurs.
 
 ## Voir aussi

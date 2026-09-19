@@ -1,0 +1,44 @@
+% !TEX root = ../prise-en-main-medical-vrp.tex
+\section{Démarrage en 5 minutes}
+\label{sec:demarrage}
+
+\subsection{Connexion}
+
+\begin{workflowstep}[Étape 1 — Accéder à l'application]
+  Ouvrez l'URL fournie par votre administrateur. Page publique → \menu{Se connecter}. Saisissez e-mail et mot de passe → vous arrivez sur \texttt{/home} (liste des \textbf{structures}).
+\end{workflowstep}
+
+\screenshot[keepaspectratio]{01-home-structures.png}{Accueil — liste des structures avec libellés médicaux}
+
+\subsection{Vérifier le contexte métier}
+
+\begin{workflowstep}[Étape 2 — Confirmer le profil médical]
+  Menu \menu{Paramètres} → \menu{Entreprise}. Le champ \textbf{Contexte métier} doit afficher \emph{Médical}. Sinon, demandez à l'administrateur de la modifier (seul un admin peut le faire).
+\end{workflowstep}
+
+%L'interface bascule alors sur les locales \texttt{fr\_medical} / \texttt{en\_medical} / \texttt{it\_medical}~: menus \menu{Prestations}, \menu{Patients}, \menu{Pilotage d'activité}, etc.
+
+\subsection{Premier tour de l'interface}
+
+\begin{table}[htbp]
+  \centering
+  \caption{Navigation essentielle (profil médical)}
+  \begin{tabular}{@{}ll@{}}
+    \toprule
+    \textbf{Menu latéral} & \textbf{Rôle} \\
+    \midrule
+    \menu{Agenda} & Planifier et modifier les \seance{}s (vues mois / semaine) \\
+    \menu{Structures} & Liste des \structure{}s, facturation par fiche \\
+    \menu{Trésorerie} & Factures, banque, rapprochement \\
+    \menu{Référentiel} & Prestations et patients \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+Onglets du référentiel~: \menu{Prestations} · \menu{Patients}. La préparation de facturation est sur la fiche \structure{} (\texttt{\#billing}).
+
+\screenshot[keepaspectratio]{02-navigation.png}{Barre latérale et onglets — terminologie médicale}
+
+\subsection{Mode Édition}
+
+Activez le mode \textbf{Édition} dans le bandeau supérieur pour créer ou modifier des données. En \textbf{Consultation}, l'application est en lecture seule.

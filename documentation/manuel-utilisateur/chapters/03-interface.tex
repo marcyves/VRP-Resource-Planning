@@ -1,0 +1,89 @@
+\chapter{Interface et navigation}
+\label{ch:interface}
+
+\section{Coque applicative}
+
+Une fois connecté, toutes les pages métier partagent la même coque~:
+
+\begin{description}[style=nextline, leftmargin=2.2cm]
+  \item[Barre latérale] Menu principal compact ou étendu. Ordre~: \menu{Agenda}, \menu{Écoles} (libellé selon le profil), \menu{Trésorerie}, puis \menu{Référentiel} (Programmes · Groupes). Le logo ramène à \texttt{/home}.
+  \item[Bandeau supérieur] Titre de la page courante, fil d'Ariane, bascule \textbf{Édition}/\textbf{Consultation}, bascule thème.
+  \item[Zone de contenu] Onglets de module et tableaux selon le contexte.
+\end{description}
+
+La sidebar démarre en mode \textbf{compact}~; cliquez sur le chevron pour l'élargir. L'état est mémorisé dans le navigateur (\texttt{localStorage}).
+
+\section{Onglets par module}
+
+Chaque grand module propose des sous-onglets~:
+
+\begin{table}[htbp]
+  \centering
+  \caption{Onglets des modules principaux}
+  \begin{tabular}{@{}lp{9cm}@{}}
+    \toprule
+    \textbf{Module} & \textbf{Onglets} \\
+    \midrule
+    Agenda          & Planning · Calendrier (import ICS, admin) --- vues \textbf{mois} / \textbf{semaine} \\
+    Trésorerie      & Synthèse · Factures · Banque · Dépenses \\
+    Référentiel     & Programmes · Groupes \\
+    Paramètres      & Entreprise · Profil utilisateur \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+Les actions \menu{Créer facture} et \menu{Créer dépense} sont des boutons dans la page, pas des onglets.
+La préparation de facturation reste sur la fiche école (\texttt{\#billing}), pas dans la sidebar.
+
+\section{Modes Édition et Consultation}
+
+Le bandeau permet de basculer entre deux modes globaux~:
+
+\begin{itemize}[leftmargin=*]
+  \item \textbf{Consultation}~: lecture seule, idéal pour les reportings.
+  \item \textbf{Édition}~: formulaires, boutons d'action, création et modification des enregistrements.
+\end{itemize}
+
+Vérifiez le mode actif avant de planifier une session ou de préparer une facture.
+
+\section{Plan de charge vs liste des écoles}
+
+Deux écrans proches mais complémentaires~:
+
+\begin{itemize}[leftmargin=*]
+  \item \texttt{/home} — \textbf{Liste des écoles}~: porte d'entrée avec \emph{facturé TTC} et \emph{non facturé TTC} par établissement, graphique de répartition (voir figure~\ref{fig:04-home.png}).
+  \item \texttt{/school/dashboard} — \textbf{Plan de charge}~: KPIs annuels et tableaux de cours détaillés.
+\end{itemize}
+
+\section{Paramètres entreprise}
+
+Accessible via \menu{Paramètres}, l'onglet \menu{Entreprise} regroupe~:
+
+\begin{itemize}[leftmargin=*]
+  \item Identité de la société (raison sociale, adresse, SIRET, TVA).
+  \item Contexte métier et libellés associés.
+  \item Compte bancaire de facturation par défaut.
+  \item Gestion des utilisateurs (réservé à l'administrateur).
+\end{itemize}
+
+\section{Raccourcis de navigation}
+
+\begin{workflowstep}[Retour accueil]
+  Cliquez sur le logo ou sur \menu{Écoles} dans la barre latérale → \texttt{/home}.
+\end{workflowstep}
+
+\begin{workflowstep}[Ouvrir une école]
+  Depuis la liste, cliquez sur le nom de l'établissement → fiche détaillée (cours, adresse, documents, facturation).
+\end{workflowstep}
+
+\begin{workflowstep}[Accéder à l'agenda]
+  \menu{Agenda} dans la sidebar → \texttt{/planning}.
+\end{workflowstep}
+
+\begin{workflowstep}[Accéder à la trésorerie]
+  \menu{Trésorerie} → \texttt{/treasury} (synthèse mensuelle).
+\end{workflowstep}
+
+\screenshot[keepaspectratio]{07-programs.png}{Module Programmes — création des offres globales à l'entreprise}
+
+\screenshot[keepaspectratio]{08-groups.png}{Module Groupes — liaison cours / participants}

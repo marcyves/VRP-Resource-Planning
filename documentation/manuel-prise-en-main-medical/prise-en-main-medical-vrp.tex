@@ -1,0 +1,59 @@
+% !TEX program = pdflatex
+\documentclass[11pt,a4paper]{scrartcl}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{mathpazo}
+\usepackage[scaled=0.95]{helvet}
+\usepackage{beramono}
+\usepackage{microtype}
+\renewcommand{\familydefault}{\rmdefault}
+
+\usepackage[french]{babel}
+\usepackage{graphicx}
+\usepackage{tcolorbox}
+\tcbuselibrary{skins}
+\usepackage{tikz}
+\usetikzlibrary{positioning,arrows.meta}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{amssymb}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage{cleveref}
+\usepackage[margin=2.4cm, headheight=14pt]{geometry}
+
+\input{metadata}
+\input{macros}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=vrpblue,
+  urlcolor=vrpblue,
+  pdftitle={\manueltitle\ — Prise en main médical},
+  pdfauthor={\manualeditor}
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\textsf{\manualproduct}}
+\fancyhead[R]{\small\leftmark}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+\KOMAoptions{parskip=half}
+\setkomafont{section}{\Large\bfseries\color{vrpdark}}
+
+\begin{document}
+
+\input{chapters/00-titre}
+\tableofcontents
+\newpage
+
+\input{chapters/01-contexte}
+\input{chapters/02-demarrage}
+\input{chapters/03-organisation}
+\input{chapters/04-quotidien}
+\input{chapters/05-memoire}
+
+\end{document}

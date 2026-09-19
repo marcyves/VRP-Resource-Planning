@@ -1,0 +1,68 @@
+% !TEX root = ../prise-en-main-medical-vrp.tex
+
+\section{Aide-mémoire}
+\label{sec:memoire}
+
+\subsection{Checklist premier jour}
+
+\begin{itemize}[label=$\square$, leftmargin=*]
+  \item Connexion OK, profil \emph{Médical} confirmé
+  \item Au moins une \prestation{} et une \structure{}
+  \item Une \seance{} et un \patient{} de test
+  \item Une \seance{} planifiée dans l'agenda
+  \item Parcours facturation \texttt{\#billing} parcouru sur la \structure{}
+  \item Compte bancaire renseigné (Trésorerie → Banque)
+\end{itemize}
+
+\subsection{Checklist hebdomadaire}
+
+\begin{itemize}[label=$\square$, leftmargin=*]
+  \item \seance{}s de la semaine saisies ou importées
+  \item Factures du mois préparées par \structure{}
+  \item Relevé bancaire importé et rapproché
+  \item Montants \emph{non facturé TTC} sur l'accueil à zéro ou expliqués
+\end{itemize}
+
+\subsection{Raccourcis utiles}
+
+\begin{table}[htbp]
+  \centering
+  \begin{tabular}{@{}ll@{}}
+    \toprule
+    \textbf{Objectif} & \textbf{Où aller} \\
+    \midrule
+    Liste des \structure{}s & \texttt{/home} \\
+    Ajouter \patient{} & \texttt{/group} \\
+    Planifier & \texttt{/planning} \\
+    Facturer & Fiche \structure{} → \texttt{\#billing} \\
+    Banque & \texttt{/treasury/bank} \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\subsection{Dépannage rapide}
+
+\begin{table}[htbp]
+  \centering
+  \begin{tabular}{@{}lp{7cm}@{}}
+    \toprule
+    \textbf{Problème} & \textbf{Piste} \\
+    \midrule
+    Libellés « école / cours » & Contexte métier pas sur \emph{Médical} — voir Paramètres entreprise \\
+    Création depuis la grille inactive & Mode Édition \emph{et} \seance{} sélectionnée dans le fil d'Ariane \\
+    \seance{} non modifiable & Liée à une facture — détacher ou annuler côté facturation \\
+    Montant non facturé élevé & \seance{}s sans facture sur le mois — section \texttt{\#billing} \\
+    Import calendrier & Vérifier le champ ICS (nom \seance{} / \patient{}) \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+%\subsection{Aller plus loin}
+%
+%\begin{itemize}[leftmargin=*]
+%  \item Manuel utilisateur complet~: \texttt{documentation/manuel-utilisateur/}
+%  \item Libellés médicaux (technique)~: \texttt{documentation/fr/libelles-medical.md}
+%  \item Facturation par \structure{}~: \texttt{documentation/fr/v2-facturation-par-ecole.md}
+%\end{itemize}
+%\vspace{1em}
+%\noindent\textsf{\small \manualproduct{} — \manualeditor}

@@ -13,11 +13,11 @@
 </colgroup>
 <thead>
     <tr>
-        <th scope="col" class="course-table__th" title="{{ __('messages.program') }}">
-            {{ __('messages.course_table_th_program') }}
+        <th scope="col" class="course-table__th" title="@schoolMsg('program')">
+            @schoolMsg('course_table_th_program')
         </th>
-        <th scope="col" class="course-table__th" title="{{ __('messages.course') }}">
-            {{ __('messages.course') }}
+        <th scope="col" class="course-table__th" title="@schoolMsg('course')">
+            @schoolMsg('course')
         </th>
         <th scope="col" class="course-table__th course-table__th--compact" title="{{ __('messages.semester') }}">
             {{ __('messages.course_table_th_semester') }}
@@ -37,8 +37,8 @@
                 <span class="course-table__th-line course-table__th-line--sub">{{ __('messages.course_table_th_course_time_sub') }}</span>
             </span>
         </th>
-        <th scope="col" class="course-table__th course-table__th--compact" title="{{ __('messages.groups') }}">
-            {{ __('messages.course_table_th_groups') }}
+        <th scope="col" class="course-table__th course-table__th--compact" title="@schoolMsg('groups')">
+            @schoolMsg('course_table_th_groups')
         </th>
         <th scope="col" class="course-table__th course-table__th--compact" title="{{ __('messages.total_time') }}">
             <span class="course-table__th-stack">

@@ -42,8 +42,32 @@ class Planning extends Model
             return $school->id;
         });
 
+        return self::planningDetailsQuery($list)
+            ->where('begin', '>', $start_date)
+            ->where('end', '<', $end_date)
+            ->orderBy('begin', 'asc')
+            ->get();
+    }
+
+    public static function getDetailsBetween(string $start, string $end)
+    {
+        $schools = Auth::user()->getSchools();
+        $list = $schools->map(function (School $school) {
+            return $school->id;
+        });
+
+        return self::planningDetailsQuery($list)
+            ->where('begin', '>=', $start)
+            ->where('begin', '<', $end)
+            ->orderBy('begin', 'asc')
+            ->get();
+    }
+
+    private static function planningDetailsQuery($schoolIds)
+    {
         return Planning::select([
             'plannings.id as id',
+            'schools.id as school_id',
             'schools.name as school_name',
             'begin',
             'end',
@@ -52,6 +76,7 @@ class Planning extends Model
             'courses.short_name as short_name',
             'rate',
             'session_length',
+            'billable_rate',
             'invoice_id',
             'groups.name as group_name',
             'groups.short_name as group_short_name'
@@ -59,12 +84,7 @@ class Planning extends Model
             ->join('groups', 'groups.id', '=', 'plannings.group_id')
             ->join('courses', 'courses.id', '=', 'plannings.course_id')
             ->join('schools', 'schools.id', '=', 'school_id')
-            ->whereIn('school_id', $list)
-            ->where(['courses.year' => $year])
-            ->where('begin', '>', $start_date)
-            ->where('end', '<', $end_date)
-            ->orderBy('begin', 'asc')
-            ->get();
+            ->whereIn('school_id', $schoolIds);
     }
     public static function getPlanningByCourseAndDate($course_id, $start_date, $end_date)
     {

@@ -1,0 +1,55 @@
+\chapter{Introduction}
+\label{ch:introduction}
+
+\section{À quoi sert VRP Plan~?}
+
+\manualproduct{} répond à quatre besoins quotidiens d'un indépendant, d'un cabinet ou d'un organisme de formation~:
+
+\begin{enumerate}[label=\textbf{\arabic*.}]
+  \item \textbf{Planifier} les sessions d'intervention (cours, missions, consultations) et les visualiser dans un agenda.
+  \item \textbf{Organiser} la charge de travail par établissement, programme et groupe d'apprenants ou de participants.
+  \item \textbf{Préparer et émettre} les factures à partir des sessions réalisées.
+  \item \textbf{Piloter} la trésorerie~: factures payées, relevés bancaires, rapprochement et dépenses.
+\end{enumerate}
+
+Chaque entreprise dispose d'un \textbf{espace isolé}~: vos données ne sont jamais mélangées avec celles d'une autre société.
+
+\section{Contextes métier}
+
+Au provisionnement, l'administrateur choisit un \textbf{contexte métier}. Les libellés de l'interface s'adaptent~:
+
+\begin{table}[htbp]
+  \centering
+  \caption{Correspondance des termes selon le contexte}
+  \begin{tabular}{@{}llll@{}}
+    \toprule
+    \textbf{Concept} & \textbf{Formation} & \textbf{Conseil} & \textbf{Médical} \\
+    \midrule
+    Établissement    & École            & Client           & Structure \\
+    Offre            & Programme        & Projet           & Prestation \\
+    Unité d'enseignement & Cours        & Phase            & Séance \\
+    Participants     & Groupe           & Équipe           & Patients \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+Dans la suite de ce manuel, nous utilisons le vocabulaire \emph{formation} (écoles, programmes, cours) par défaut. Les gestes restent identiques dans les autres contextes.
+
+\section{Architecture de l'interface v2}
+
+La refonte v2 modernise la présentation sans changer le modèle de données~:
+
+\begin{itemize}[leftmargin=*]
+  \item \textbf{Barre latérale} (260\,px)~: Agenda, Écoles, Trésorerie, Référentiel (Programmes · Groupes).
+  \item \textbf{Bandeau supérieur}~: titre, fil d'Ariane, bascule \menu{Édition}/\menu{Consultation}, thème clair/sombre.
+  \item \textbf{Page d'accueil} \texttt{/home}~: liste des écoles avec indicateurs financiers.
+  \item \textbf{Facturation}~: déplacée sur la fiche de chaque école (\texttt{\#billing}), plus dans l'agenda.
+\end{itemize}
+
+\section{Prérequis}
+
+\begin{itemize}[leftmargin=*]
+  \item Navigateur récent (Firefox, Chrome, Safari, Edge).
+  \item Compte utilisateur créé par votre administrateur ou par le super-administrateur de la plateforme.
+  \item Connexion Internet vers l'instance hébergée (ou \texttt{php artisan serve} en local).
+\end{itemize}

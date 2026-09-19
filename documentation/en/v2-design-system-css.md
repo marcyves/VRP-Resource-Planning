@@ -60,7 +60,7 @@ Defined in `global.css` (light) and overridden in `theme.css` (dark):
 | `x-group-card` / `x-program-card` | Resource card (list) |
 | `x-confirm-delete-modal` | Delete confirmation (Alpine store) |
 
-Alpine stores: `createDeleteStore()` in `resources/js/delete-store.js` (`groupDelete`, `programDelete`, `planningDelete`, `documentDelete`).
+Alpine stores: `createDeleteStore()` in `resources/js/delete-store.js` (`groupDelete`, `programDelete`, `documentDelete`). Planning session delete and custom-date duplicate use native `<dialog>` elements in `resources/js/planning-calendar.js`, not Alpine.
 
 ## Dark mode
 

@@ -3,8 +3,6 @@
         <h2 class="header-title">{{ __('messages.workload_plan') }}</h2>
     </x-slot>
 
-    <x-workload-module-tabs />
-
     @php
         $gross_total_time = 0;
         $gross_total_budget = 0;

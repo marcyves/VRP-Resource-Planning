@@ -23,6 +23,7 @@ Wiki-style guides from product design and implementation work (data model, workf
 | V2 — Navigation & modules | [v2-navigation-modules.md](fr/v2-navigation-modules.md) | [v2-navigation-modules.md](en/v2-navigation-modules.md) |
 | V2 — Billing per school | [v2-facturation-par-ecole.md](fr/v2-facturation-par-ecole.md) | [v2-billing-per-school.md](en/v2-billing-per-school.md) |
 | V2 — Treasury & bank reconciliation | [v2-tresorerie-rapprochement-bancaire.md](fr/v2-tresorerie-rapprochement-bancaire.md) | [v2-treasury-bank-reconciliation.md](en/v2-treasury-bank-reconciliation.md) |
+| **Electronic invoicing (ops)** | [facturation-electronique.md](fr/facturation-electronique.md) | [electronic-invoicing.md](en/electronic-invoicing.md) |
 | V2 — CSS design system | [v2-design-system-css.md](fr/v2-design-system-css.md) | [v2-design-system-css.md](en/v2-design-system-css.md) |
 | V2 — Code review & list refactor | [v2-revue-code-refactoring-listes.md](fr/v2-revue-code-refactoring-listes.md) | [v2-code-review-list-refactoring.md](en/v2-code-review-list-refactoring.md) |
 | Electronic invoicing (ops) | [facturation-electronique.md](fr/facturation-electronique.md) | [electronic-invoicing.md](en/electronic-invoicing.md) |
@@ -31,5 +32,6 @@ Wiki-style guides from product design and implementation work (data model, workf
 
 ## Repository
 
-- [Main README](../README.md) — install, stack, i18n
-- Code: `app/Support/TerminologyLocale.php`, `config/terminology.php`, `config/vrp.php`, `resources/lang/*_consulting/`
+- [Main README (English)](../README.md) — install, stack, i18n
+- [README français](../README.fr.md) — same content in French
+- Code: `app/Support/TerminologyLocale.php`, `config/terminology.php`, `config/vrp.php`, `config/electronic-invoicing.php`, `resources/lang/*_consulting/`

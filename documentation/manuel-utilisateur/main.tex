@@ -1,0 +1,71 @@
+% !TEX program = pdflatex
+\documentclass[11pt,a4paper,twoside,openright,numbers=noenddot]{scrbook}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{mathpazo}
+\usepackage[scaled=0.95]{helvet}
+\usepackage{beramono}
+\usepackage{microtype}
+\renewcommand{\familydefault}{\rmdefault}
+
+\usepackage[french]{babel}
+\usepackage{graphicx}
+\usepackage{tcolorbox}
+\tcbuselibrary{skins}
+\usepackage{tikz}
+\usetikzlibrary{positioning,arrows.meta}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{float}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage{cleveref}
+\usepackage[margin=2.8cm, headheight=14pt]{geometry}
+
+\input{metadata}
+\input{macros}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=vrpblue,
+  urlcolor=vrpblue,
+  citecolor=vrpblue,
+  pdftitle={\manueltitle\ — Manuel utilisateur},
+  pdfauthor={\manualeditor}
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[LE,RO]{\small\textsf{\manualproduct}}
+\fancyhead[RE,LO]{\small\leftmark}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+\KOMAoptions{parskip=half}
+
+\begin{document}
+
+\frontmatter
+\input{chapters/00-frontmatter}
+
+\tableofcontents
+\cleardoublepage
+
+\mainmatter
+\input{chapters/01-introduction}
+\input{chapters/02-premiere-connexion}
+\input{chapters/03-interface}
+\input{chapters/04-mise-en-place}
+\input{chapters/05-agenda}
+\input{chapters/06-facturation}
+\input{chapters/07-tresorerie}
+\input{chapters/08-annexes}
+
+\backmatter
+\cleardoublepage
+\chapter*{Remerciements}
+\addcontentsline{toc}{chapter}{Remerciements}
+Ce manuel accompagne la refonte \emph{interface v2} de \manualproduct. Pour toute question ou demande de compte, contactez \manualeditor.
+
+\end{document}

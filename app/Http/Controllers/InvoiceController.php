@@ -53,12 +53,28 @@ class InvoiceController extends Controller
 
         session()->put('school', $school->name);
         session()->put('school_id', $school->id);
+        session()->put('last_school_id', $school->id);
         session()->forget('course');
         session()->forget('course_id');
 
         $redirect = $request->input('redirect');
 
         if (is_string($redirect) && $redirect !== '' && str_starts_with($redirect, url('/'))) {
+            $path = parse_url($redirect, PHP_URL_PATH) ?? '';
+            $query = parse_url($redirect, PHP_URL_QUERY);
+
+            if (preg_match('#/school/\d+/edit/?$#', $path)) {
+                $url = route('school.edit', $school->id);
+
+                return redirect()->to($query ? "{$url}?{$query}" : $url);
+            }
+
+            if (preg_match('#/school/\d+/?$#', $path)) {
+                $url = route('school.show', $school);
+
+                return redirect()->to($query ? "{$url}?{$query}" : $url);
+            }
+
             return redirect()->to($redirect);
         }
 

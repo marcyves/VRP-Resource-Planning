@@ -26,7 +26,7 @@ class BillingController extends Controller
             'current_month' => $currentMonth,
         ]);
 
-        return redirect()->route('school.show', $school)->withFragment('billing');
+        return $this->redirectToSchoolBilling($school);
     }
 
     public function next(School $school, Request $request)
@@ -44,14 +44,14 @@ class BillingController extends Controller
             'current_month' => $currentMonth,
         ]);
 
-        return redirect()->route('school.show', $school)->withFragment('billing');
+        return $this->redirectToSchoolBilling($school);
     }
 
     public function toggleByDate(School $school)
     {
         session(['school_billing_by_date' => ! session('school_billing_by_date', false)]);
 
-        return redirect()->route('school.show', $school)->withFragment('billing');
+        return $this->redirectToSchoolBilling($school);
     }
 
     public function jumpToUnbilled(School $school, Request $request)
@@ -67,7 +67,7 @@ class BillingController extends Controller
             ]);
         }
 
-        return redirect()->route('school.show', $school)->withFragment('billing');
+        return $this->redirectToSchoolBilling($school);
     }
 
     public function setBill(Request $request, School $school)
@@ -96,7 +96,7 @@ class BillingController extends Controller
 
         session()->flash('success', __('messages.billing_invoice_saved_success'));
 
-        return redirect()->route('school.show', $school)->withFragment('billing');
+        return $this->redirectToSchoolBilling($school);
     }
 
     public function billing(Request $request)
@@ -159,9 +159,16 @@ class BillingController extends Controller
         $schoolId = session('school_id');
 
         if ($schoolId) {
-            return redirect()->route('school.show', $schoolId)->withFragment('billing');
+            return $this->redirectToSchoolBilling(School::findOrFail($schoolId));
         }
 
         return redirect()->route('school.index');
+    }
+
+    private function redirectToSchoolBilling(School $school): \Illuminate\Http\RedirectResponse
+    {
+        return redirect()
+            ->route('school.show', ['school' => $school, 'focus' => 'billing'])
+            ->withFragment('billing');
     }
 }

@@ -3,7 +3,7 @@
         <h2 class="header-title">{{ $program->name }}</h2>
     </x-slot>
 
-    <x-workload-module-tabs />
+    <x-referential-module-tabs />
 
     @php
         $totalHours = $courses->sum(fn ($course) => $course->session_length * $course->sessions * $course->groups_count);

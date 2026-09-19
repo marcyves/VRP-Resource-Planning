@@ -38,6 +38,8 @@ class PlanningUpdateTest extends TestCase
             __('messages.plan'),
             'planning-duplicate-actions',
         ], false);
+        $response->assertSee('data-planning-duplicate-open', false);
+        $response->assertSee('planning-duplicate-dialog', false);
 
         $updatePos = strpos($response->getContent(), 'planning.update');
         $duplicatePos = strpos($response->getContent(), 'planning-duplicate-actions');

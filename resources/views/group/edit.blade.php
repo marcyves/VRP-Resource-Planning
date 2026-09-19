@@ -1,15 +1,13 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2>{{ __('messages.group_edit') }}</h2>
+        <h2>@schoolMsg('group_edit')</h2>
     </x-slot>
-
-    <x-workload-module-tabs />
 
     @if(Auth::user()->getMode() == "Edit")
     <section>
         @if($linkedCourses->isNotEmpty())
         <p class="form-hint group-edit-linked">
-            {{ __('messages.group_linked_courses') }}:
+            @schoolMsg('group_linked_courses'):
             @foreach($linkedCourses as $linkedCourse)
                 <a href="{{ route('course.show', $linkedCourse->id) }}">{{ $linkedCourse->name }}</a>@if(!$loop->last), @endif
             @endforeach
@@ -51,7 +49,7 @@
                 @if($returnCourseId)
                     <a class="btn btn-secondary" href="{{ route('course.show', $returnCourseId) }}">{{ __('messages.cancel') }}</a>
                 @else
-                    <a class="btn btn-secondary" href="{{ route('group.show', $group->id) }}">{{ __('messages.cancel') }}</a>
+                    <a class="btn btn-secondary" href="{{ route('home') }}">{{ __('messages.cancel') }}</a>
                 @endif
                 <x-button-primary>{{ __('messages.update') }}</x-button-primary>
             </div>

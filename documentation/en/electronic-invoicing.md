@@ -11,14 +11,14 @@ VRP prepares invoices (planning, PDF, legal identifiers) and can **submit struct
 ## Architecture (as coded)
 
 ```text
-Treasury → Factures
+Treasury → Invoices
   POST /invoice/{invoice}/submit-electronic
     → ElectronicInvoiceService::submit()
         → ElectronicInvoiceValidator
         → SuperPdpPlatform::submitOutbound()
             → ElectronicInvoiceCiiBuilder (CII EN 16931 XML)
             → SuperPdpClient::convertInvoice(cii → factur-x)
-            → SuperPdpClient::sendInvoicePdf(...)
+            → SuperPdpClient::sendInvoicePdf(...)   # Factur-X PDF from convert, not the TCPDF file
         → invoice status = transmitted + pdp_reference
 
 POST /webhooks/e-invoice/superpdp  (CSRF excluded)
@@ -37,7 +37,7 @@ POST /webhooks/e-invoice/superpdp  (CSRF excluded)
 | Config | `config/electronic-invoicing.php` |
 | UI submit | `resources/views/components/table-invoices.blade.php` |
 
-Drivers: `null` (default when `E_INVOICE_PLATFORM` is unset/other) or `superpdp`. B2Brouter is **not** implemented yet.
+Drivers: `null` (default when `E_INVOICE_PLATFORM` is unset/other) or `superpdp`. B2Brouter is **not** implemented yet. The coded contract is submit + webhook only (`isConfigured`, `submitOutbound`, `parseWebhook`, `verifyWebhook`) — no company registration or inbound fetch yet.
 
 ## Configuration
 
@@ -61,7 +61,7 @@ SUPERPDP_SANDBOX_CLIENT_SECRET=
 # SUPERPDP_WEBHOOK_SECRET=
 ```
 
-Auth flow: `client_credentials` against `POST /oauth2/token`, token cached. Sandbox vs production credentials are selected by `SuperPdpConfig::activeCredentials()`.
+Auth flow: `client_credentials` against `POST /oauth2/token`, token cached (`superpdp.access_token.{md5(client_id)}`, TTL = `expires_in − 60s`). Sandbox vs production credentials are selected by `SuperPdpConfig::activeCredentials()`.
 
 Check connectivity:
 
@@ -91,7 +91,7 @@ Optional helpers:
 |------|--------|
 | Status must be `ready` | `invoices.electronic_invoice_status` |
 | Invoice not paid | `paid_at` null |
-| Issuer SIREN + full address | `companies` |
+| Issuer SIREN + full address | `companies` (`siren`, `address`, `city`, `zip`) |
 | Client SIREN or SIRET + full address | `schools` |
 | PDF present in storage | `Storage::exists(...)` |
 
@@ -101,18 +101,20 @@ Paid tracking (`paid_at`) stays independent of e-invoice status.
 
 Outbound uses **CII XML → Factur-X** via SuperPDP convert API. The TCPDF PDF stays for VRP display; it is **not** the structured payload sent as the e-invoice.
 
-Sandbox without a school `electronic_address` can inject default routing (`SUPERPDP_SANDBOX_BUYER_*`). If the school has `electronic_address`, that value is used instead.
+Line amounts come from `Tools::getInvoiceDetails()` (planning type `T` rows). If none qualify, the builder falls back to `invoice.amount / 1.2` as a single C62 line. VAT in the CII builder is currently fixed at **20%**. Due date in CII is **issue date + 1 day**.
+
+Sandbox without a school `electronic_address` can inject default routing (`SUPERPDP_SANDBOX_BUYER_*`). If the school has `electronic_address`, that value is used instead (`CiiTradeParty::fromSchool`).
 
 ## Webhooks
 
 | Item | Value |
 |------|-------|
-| Route | `POST /webhooks/e-invoice/{platform}` — only `superpdp` accepted |
-| CSRF | Excluded in `VerifyCsrfToken` |
+| Route | `POST /webhooks/e-invoice/{platform}` — only `superpdp` accepted (other platforms → 404) |
+| CSRF | Excluded in `VerifyCsrfToken` (`webhooks/e-invoice/*`) |
 | Auth | HMAC-SHA256 of raw body; headers `X-SuperPDP-Signature` or `X-Webhook-Signature` |
 | Success | HTTP 204 |
 
-Status mapping (substring match on payload status):
+Status mapping (substring match on payload `status` / `status_code`):
 
 | Payload hint | `PlatformEventType` | Invoice update |
 |--------------|---------------------|----------------|
@@ -127,7 +129,7 @@ Invoice lookup: `pdp_reference` first, then numeric part of `external_id` as VRP
 - Without `E_INVOICE_PLATFORM=superpdp` and valid credentials, the UI submit button stays hidden (`NullElectronicInvoicePlatform::isConfigured()` → false).
 - Missing SIREN/address or PDF yields a flash danger + warning list of validation messages.
 - Webhooks without `SUPERPDP_WEBHOOK_SECRET` always return **401**.
-- VAT in the CII builder is currently fixed at **20%**.
+- VAT in the CII builder is currently fixed at **20%** (independent of company/course rates).
 - Supplier invoice reception UI is not built yet.
 
 ## See also

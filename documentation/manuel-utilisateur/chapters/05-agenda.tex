@@ -1,0 +1,80 @@
+\chapter{Agenda et planning}
+\label{ch:agenda}
+
+Le module \textbf{Agenda} sert à saisir, modifier et visualiser les \textbf{sessions} d'intervention. En v2, la préparation de facturation n'y figure plus~: elle est sur la fiche école (chapitre~\ref{ch:facturation}).
+
+\section{Accès}
+
+\menu{Agenda} dans la barre latérale → \texttt{/planning}. Deux onglets~: \menu{Planning} et \menu{Calendrier}. Bascule \textbf{mois} / \textbf{semaine} (mémorisée en session).
+
+\screenshot[keepaspectratio]{05-planning.png}{Vue planning — sélection école et cours, calendrier mensuel}
+
+\section{Sélection du contexte}
+
+Avant de planifier, choisissez~:
+
+\begin{enumerate}[label=\textbf{\arabic*.}]
+  \item L'\textbf{école} (établissement client).
+  \item Le \textbf{cours} concerné — le sélecteur du fil d'Ariane liste \textbf{tous} les cours de l'école, y compris ceux d'une autre année civile.
+  \item Le \textbf{groupe} si plusieurs groupes sont liés au cours.
+\end{enumerate}
+
+Ces choix sont mémorisés en session pour accélérer les saisies successives.
+
+\section{Vues mois et semaine}
+
+\begin{itemize}[leftmargin=*]
+  \item \textbf{Mois} (défaut)~: grille 7 colonnes sur le mois calendaire. Les flèches avancent d'un mois.
+  \item \textbf{Semaine}~: lundi--dimanche, grille horaire 08{,}00--20{,}00. Les flèches avancent d'une semaine. Les événements hors plage sont masqués ou calés.
+\end{itemize}
+
+Les cartes KPI portent sur la \textbf{période visible} (semaine ou mois), montants en TTC (HT ×\,1{,}2). L'agenda liste les sessions par \textbf{date de début}, pas par l'année du cours~: un cours 2026 avec une séance en janvier 2027 apparaît bien en janvier 2027.
+
+\section{Planifier une session}
+
+\begin{workflowstep}[Depuis la grille]
+  Mode \textbf{Édition} \emph{et} cours sélectionné. Sans cours, les numéros de jour restent inactifs. Cliquez le numéro du jour (ou l'en-tête de jour en vue semaine) pour créer à \textbf{08{,}00}, ou un créneau horaire (08{h}--19{h}) pour créer à cette heure pile.
+\end{workflowstep}
+
+\begin{workflowstep}[Formulaire]
+  Complétez horaires, groupe, lieu. Validez avec \menu{Planifier}. Le bouton doit appartenir au même formulaire que les champs date/heure.
+\end{workflowstep}
+
+La durée facturable est calculée à partir des horaires réels. Un multiplicateur corrige les imports calendrier erronés (\texttt{billableMultiplier}).
+
+\section{Dupliquer une session}
+
+Depuis une case jour, un événement semaine ou la fiche session (mode Édition)~: recopier vers \textbf{demain}, \textbf{la semaine suivante} ou une \textbf{date personnalisée} (même heure, durée conservée).
+
+\begin{itemize}[leftmargin=*]
+  \item Bloqué si la session source a déjà un n° de facture.
+  \item Refusé s'il existe déjà une session du même groupe sur le créneau cible.
+  \item La date personnalisée s'ouvre dans une boîte de dialogue native (pas une modale Alpine).
+\end{itemize}
+
+\section{Navigation temporelle}
+
+\begin{itemize}[leftmargin=*]
+  \item Flèches précédent / suivant (mois ou semaine selon la vue).
+  \item Clic sur une session existante pour l'éditer ou la dupliquer.
+\end{itemize}
+
+\section{Import calendrier (administrateur)}
+
+L'onglet \menu{Calendrier} permet d'importer des fichiers ICS~:
+
+\begin{workflowstep}[Import ICS]
+  Téléversez un fichier, associez-le à une source, puis lancez l'import ou la réimportation. Les événements deviennent des sessions candidates à valider dans le planning.
+\end{workflowstep}
+
+\section{Lien avec la facturation}
+
+Chaque session planifiée alimente~:
+
+\begin{itemize}[leftmargin=*]
+  \item le montant \textbf{non facturé TTC} sur la liste des écoles~;
+  \item la section \texttt{\#billing} de la fiche école pour le mois concerné~;
+  \item l'histogramme \textbf{planifié} de la trésorerie.
+\end{itemize}
+
+La facturation elle-même se prépare depuis la fiche école, pas depuis l'agenda.

@@ -26,6 +26,7 @@ class School extends Model
         'vat_number',
         'electronic_address',
         'company_id',
+        'context',
         'address',
         'address2',
         'city',
@@ -37,6 +38,18 @@ class School extends Model
         'logo',
         'description',
     ];
+
+    public function isMentoring(): bool
+    {
+        return $this->context === \App\Support\SchoolContext::MENTORING;
+    }
+
+    public function contextLabel(): string
+    {
+        $context = $this->context ?: \App\Support\SchoolContext::EDUCATION;
+
+        return __("messages.school_context_{$context}");
+    }
 
     public function users(): BelongsToMany
     {
@@ -53,6 +66,27 @@ class School extends Model
         return $this->HasMany(Course::class);
     }
 
+    /**
+     * Groups linked to at least one course of this school (via group_course).
+     *
+     * @param  bool|null  $active  true = active only, false = inactive only, null = all
+     */
+    public function getLinkedGroups(?bool $active = true)
+    {
+        $query = Group::query()
+            ->where('groups.company_id', $this->company_id)
+            ->whereHas('courses', fn ($q) => $q->where('courses.school_id', $this->id))
+            ->with(['courses' => fn ($q) => $q->where('courses.school_id', $this->id)->orderBy('name')])
+            ->orderBy('groups.name');
+
+        if ($active !== null) {
+            $query->where('groups.active', $active);
+        }
+
+        return $query->get();
+    }
+
+    /** @deprecated Broken HasManyThrough (no groups.course_id). Use getLinkedGroups(). */
     public function groups(): HasManyThrough
     {
         return $this->HasManyThrough(Group::class, Course::class);
