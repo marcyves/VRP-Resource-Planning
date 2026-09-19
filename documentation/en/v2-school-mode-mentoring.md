@@ -21,7 +21,7 @@ Mode is **per school** (`schools.context`), not company-wide — global screens 
 | Courses / activities | `courses` (default) | Course table + billing block |
 | Groups / students | `groups` | Linked active/inactive groups (occurrences for all years) |
 | Details | `details` | Address / school metadata (`address` alias redirects here) |
-| Documents | `documents` | School documents |
+| Documents | `documents` | School documents (PDF/DOC/DOCX, max 4 MB — see [school creation](school-creation-workflow.md#school-documents)) |
 
 `?focus=billing` forces the courses panel (billing lives there). After edit, redirect lands on `?panel=details`.
 
@@ -63,3 +63,4 @@ Without a shared school (dashboard, etc.), `@schoolMsg` falls back to `messages.
 - [Group management](group-management.md) — training one-course vs mentoring multi-activity rules
 - [V2 — navigation & modules](v2-navigation-modules.md)
 - [V2 — billing per school](v2-billing-per-school.md)
+- [Calendar import](calendar-import.md)

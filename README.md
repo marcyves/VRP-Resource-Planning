@@ -73,6 +73,7 @@ Web app for **scheduling**, **budgeting**, and **invoice tracking** for trainers
 | ------------------------------ | ----------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
 | V2 overview                    | [v2-user-interface.md](documentation/en/v2-user-interface.md)                             | [v2-interface-utilisateur.md](documentation/fr/v2-interface-utilisateur.md)                         |
 | Navigation & modules           | [v2-navigation-modules.md](documentation/en/v2-navigation-modules.md)                     | [v2-navigation-modules.md](documentation/fr/v2-navigation-modules.md)                               |
+| Calendar import (ICS)          | [calendar-import.md](documentation/en/calendar-import.md)                                 | [import-calendrier.md](documentation/fr/import-calendrier.md)                                       |
 | Billing per school             | [v2-billing-per-school.md](documentation/en/v2-billing-per-school.md)                     | [v2-facturation-par-ecole.md](documentation/fr/v2-facturation-par-ecole.md)                         |
 | Treasury & bank reconciliation | [v2-treasury-bank-reconciliation.md](documentation/en/v2-treasury-bank-reconciliation.md) | [v2-tresorerie-rapprochement-bancaire.md](documentation/fr/v2-tresorerie-rapprochement-bancaire.md) |
 | Platform administration        | [platform-administration.md](documentation/en/platform-administration.md)                 | [administration-plateforme.md](documentation/fr/administration-plateforme.md)                       |
@@ -177,7 +178,7 @@ VRP is **multi-tenant**: each customer company has its own users and data. A **s
 | **Create a tenant**    | **Create company**: name, invoice prefix, terminology profile, admin account |
 
 
-Public `/register` is **disabled by default** (`VRP_ALLOW_REGISTRATION=false`). Company accounts are created by the super admin or by an existing admin in the classic VRP UI.
+Public `/register` is **disabled by default** (`VRP_ALLOW_REGISTRATION=false`). Company accounts are created by the super admin or by an existing admin in the classic VRP UI. Guests can **request** an account at `/demande-acces` (mail only — set `VRP_ACCOUNT_REQUEST_EMAIL`).
 
 Runbook: [platform-administration.md](documentation/en/platform-administration.md) · [administration-plateforme.md](documentation/fr/administration-plateforme.md).
 
@@ -209,7 +210,12 @@ Wiki docs (FR/EN): [documentation/](documentation/README.md) — [en/](documenta
 ./vendor/bin/pint              # PHP formatting (Laravel Pint)
 ./vendor/bin/phpstan analyse   # static analysis (per project config)
 php artisan test               # PHPUnit
+php artisan test --testsuite=Unit   # no database
 ```
+
+`phpunit.xml` sets `DB_DATABASE=testing` but **inherits `DB_CONNECTION` from `.env`**. The `2026_06_02_120000_add_short_description_to_programs_table` migration is idempotent (`Schema::hasColumn` guard). Prefer `./vendor/bin/sail test`.
+
+Account-request mail in tests: `tests/Feature/LandingPageTest.php` (needs a migratable DB).
 
 ---
 

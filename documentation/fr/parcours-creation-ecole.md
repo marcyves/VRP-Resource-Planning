@@ -60,6 +60,20 @@ Le HT est stocké sur **4 décimales** pour un aller-retour TTC : `33,33` TTC �
 | Après création | Redirection vers `dashboard` (`/home`), `course` / `course_id` en session |
 | Après modification | Redirection vers `school.show` (liste des cours de l’école), pas `/home` |
 
+## Documents de l’école
+
+Sur `school.show?panel=documents` (mode Édition) :
+
+| Contrainte | Détail |
+|------------|--------|
+| Route | `POST /school/{school_id}/document` (`document.store`) |
+| Champs | `description` obligatoire ; `year` ; fichier `document` |
+| Types | PDF, DOC, DOCX — max **4096 Ko** (`DocumentController@store`) |
+| Stockage | `storage/app/public/data_store/{timestamp}_{nomOriginal}` — nécessite `php artisan storage:link` |
+| Liste / suppression | `documents-school-table` ; suppression Alpine `documentDelete` → `documents.destroy` |
+
+`DocumentController::edit` est vide ; le bouton modifier du tableau n’a pas d’implémentation.
+
 ## Règle « groupes distincts »
 
 Pour un groupe **par cours**, créer **6 groupes différents** (ne pas réutiliser le même `group_id` sur plusieurs cours sauf lien explicite via `group.link`).
@@ -79,3 +93,5 @@ flowchart TD
 
 - [Modèle de données](modele-donnees-formation.md)
 - [Phase 1 — terminologie](phase-1-terminologie.md)
+- [V2 — mode école mentoring](v2-mode-ecole-mentoring.md) — onglets `?panel=`
+- [Import calendrier](import-calendrier.md)

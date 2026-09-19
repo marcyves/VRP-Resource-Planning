@@ -40,3 +40,4 @@ Fichier : `resources/lang/fr_consulting/overrides.php`
 
 - [Contexte métier](contexte-metier-clients-projets.md)
 - [Configuration](configuration.md)
+- [Libellés médical](libelles-medical.md)

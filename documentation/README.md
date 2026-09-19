@@ -21,6 +21,11 @@ Wiki-style guides from product design and implementation work (data model, workf
 | Consulting labels | [libelles-consulting.md](fr/libelles-consulting.md) | [consulting-labels.md](en/consulting-labels.md) |
 | **V2 — UI overview** | [v2-interface-utilisateur.md](fr/v2-interface-utilisateur.md) | [v2-user-interface.md](en/v2-user-interface.md) |
 | V2 — Navigation & modules | [v2-navigation-modules.md](fr/v2-navigation-modules.md) | [v2-navigation-modules.md](en/v2-navigation-modules.md) |
+| V2 — School mode mentoring | [v2-mode-ecole-mentoring.md](fr/v2-mode-ecole-mentoring.md) | [v2-school-mode-mentoring.md](en/v2-school-mode-mentoring.md) |
+| Group management | [gestion-groupes.md](fr/gestion-groupes.md) | [group-management.md](en/group-management.md) |
+| Calendar import (ICS) | [import-calendrier.md](fr/import-calendrier.md) | [calendar-import.md](en/calendar-import.md) |
+| Production SFTP deploy | [mise-en-production-sftp.md](fr/mise-en-production-sftp.md) | [production-sftp-deploy.md](en/production-sftp-deploy.md) |
+| Medical labels | [libelles-medical.md](fr/libelles-medical.md) | [medical-labels.md](en/medical-labels.md) |
 | V2 — Billing per school | [v2-facturation-par-ecole.md](fr/v2-facturation-par-ecole.md) | [v2-billing-per-school.md](en/v2-billing-per-school.md) |
 | V2 — Treasury & bank reconciliation | [v2-tresorerie-rapprochement-bancaire.md](fr/v2-tresorerie-rapprochement-bancaire.md) | [v2-treasury-bank-reconciliation.md](en/v2-treasury-bank-reconciliation.md) |
 | **Electronic invoicing (ops)** | [facturation-electronique.md](fr/facturation-electronique.md) | [electronic-invoicing.md](en/electronic-invoicing.md) |
@@ -33,4 +38,4 @@ Wiki-style guides from product design and implementation work (data model, workf
 
 - [Main README (English)](../README.md) — install, stack, i18n
 - [README français](../README.fr.md) — same content in French
-- Code: `app/Support/TerminologyLocale.php`, `config/terminology.php`, `config/vrp.php`, `config/electronic-invoicing.php`, `resources/lang/*_consulting/`
+- Code: `app/Support/TerminologyLocale.php`, `config/terminology.php`, `config/vrp.php`, `config/electronic-invoicing.php`, `resources/lang/*_consulting/`, `resources/lang/*_medical/`

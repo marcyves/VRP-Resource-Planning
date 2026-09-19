@@ -81,4 +81,4 @@ Laravel server
 
 - [Repository README — e-invoicing roadmap](../../README.md#roadmap--facturation-électronique)
 - [V2 — navigation & modules](v2-navigation-modules.md) (Schedule module)
-- Calendar import: routes `admin/calendars/*`, `CalendarFileController`
+- [Calendar import](calendar-import.md)

@@ -9,6 +9,7 @@
 | `APP_LOCALE` | `fr` | Base language (`fr`, `en`, `it`) |
 | `TERMINOLOGY_PROFILE` | `education` | Profile for guests / no company loaded |
 | `VRP_ALLOW_REGISTRATION` | `false` | Public self-registration at `/register` |
+| `VRP_ACCOUNT_REQUEST_EMAIL` | `MAIL_FROM_ADDRESS` if the key is **unset** | Inbox for `/demande-acces`. An empty `VRP_ACCOUNT_REQUEST_EMAIL=` in `.env` does **not** fall back (empty string is set) — the form still succeeds, but `AccountRequestController` reports a `RuntimeException` and sends no mail |
 | `E_INVOICE_PLATFORM` | *(unset)* | `superpdp` to bind SuperPDP; otherwise Null driver |
 | `SUPERPDP_ENV` | `production` | `sandbox` or `production` (selects OAuth credentials) |
 | `SUPERPDP_CLIENT_ID` / `SUPERPDP_CLIENT_SECRET` | — | Production OAuth (`client_credentials`) |
@@ -22,6 +23,7 @@ Example `.env.example`:
 APP_LOCALE=fr
 TERMINOLOGY_PROFILE=consulting
 VRP_ALLOW_REGISTRATION=false
+# VRP_ACCOUNT_REQUEST_EMAIL=ops@example.com
 # E_INVOICE_PLATFORM=superpdp
 # SUPERPDP_ENV=sandbox
 ```
@@ -60,6 +62,6 @@ The super admin has no company attached; tenant users require a `company_id`.
 ## Links
 
 - [Phase 1 — terminology](phase-1-terminology.md)
-- [Platform administration](platform-administration.md)
+- [Platform administration](platform-administration.md) — `/demande-acces` vs `/register`
 - [Consulting labels](consulting-labels.md)
 - [Electronic invoicing](electronic-invoicing.md)

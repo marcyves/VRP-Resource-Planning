@@ -12,7 +12,7 @@
 
 ### Sidebar menu (order — company user)
 
-1. **Agenda** → `planning.index` (+ admin calendar under `calendar.*`) — **month** / **week** views · **Invoice this month’s work** panel (schools with sessions, unbilled first)
+1. **Agenda** → `planning.index` (+ **Calendar** tab `calendar.index`) — **month** / **week** views · **Invoice this month’s work** panel (schools with sessions, unbilled first). ICS import: [calendar-import.md](calendar-import.md)
 2. **Schools** (terminology label) → `home`
 3. **Treasury** → `treasury.index`
 4. separator
@@ -41,7 +41,7 @@ Post-login constant: `RouteServiceProvider::HOME = '/home'`.
 
 | Component | Module | Tabs |
 |-----------|--------|------|
-| `scheduling-module-tabs` | Scheduling | Planning · Calendar |
+| `scheduling-module-tabs` | Scheduling | Planning · Calendar (`/admin/calendars` — ICS import) |
 | `treasury-module-tabs` | Treasury | Summary · Invoices · Bank · Expenses |
 | `referential-module-tabs` | Referential | Programs · Groups |
 | `settings-module-tabs` | Settings | Company · profile |
@@ -118,3 +118,4 @@ Custom date uses the native dialog `#planning-duplicate-dialog` (not Alpine). Tr
 - [V2 — billing per school](v2-billing-per-school.md)
 - [V2 — treasury & bank reconciliation](v2-treasury-bank-reconciliation.md)
 - [V2 — school mode mentoring](v2-school-mode-mentoring.md)
+- [Calendar import](calendar-import.md)

@@ -81,4 +81,4 @@ Serveur Laravel
 
 - [README du dépôt — roadmap facturation électronique](../../README.md#roadmap--facturation-électronique)
 - [V2 — navigation & modules](v2-navigation-modules.md) (module Agenda)
-- Import calendrier : routes `admin/calendars/*`, `CalendarFileController`
+- [Import calendrier](import-calendrier.md)

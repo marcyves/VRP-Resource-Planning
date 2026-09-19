@@ -59,13 +59,21 @@ Depuis une case jour, un événement semaine ou la fiche session (mode Édition)
   \item Clic sur une session existante pour l'éditer ou la dupliquer.
 \end{itemize}
 
-\section{Import calendrier (administrateur)}
+\section{Import calendrier (ICS)}
 
-L'onglet \menu{Calendrier} permet d'importer des fichiers ICS~:
+L'onglet \menu{Calendrier} (\texttt{/admin/calendars}) importe un fichier \texttt{.ics} \emph{ou} une URL ICS vers une \textbf{école}.
 
-\begin{workflowstep}[Import ICS]
-  Téléversez un fichier, associez-le à une source, puis lancez l'import ou la réimportation. Les événements deviennent des sessions candidates à valider dans le planning.
+\begin{workflowstep}[Analyser puis mapper]
+  Choisissez l'école, déposez le fichier (ou l'URL), \menu{Analyser}. Pour chaque libellé détecté dans le \textbf{SUMMARY}, associez un \textbf{cours et un groupe}, puis validez. Les sessions sont créées avec \texttt{billable\_rate = 1} (durée complète). Les chevauchements du même groupe sont ignorés.
 \end{workflowstep}
+
+\begin{itemize}[leftmargin=*]
+  \item Cours \emph{et} groupe sont tous les deux requis pour créer une session, même si l'UI libelle le groupe «~optionnel~».
+  \item Le \textbf{réimport} relit uniquement le mapping mémorisé (un morph cours \emph{ou} groupe, le cours l'emporte) et le champ SUMMARY~: après un mapping cours, le réimport ignore en pratique tous les événements faute de groupe.
+  \item Supprimer une source d'import n'efface pas les sessions déjà créées (\texttt{calendar\_source\_id} n'est pas dans \texttt{Planning::\$fillable}).
+\end{itemize}
+
+Détail technique (wiki)~: \texttt{documentation/fr/import-calendrier.md}.
 
 \section{Lien avec la facturation}
 

@@ -23,6 +23,7 @@ Cette refonte est **purement présentationnelle et navigationnelle** : le modèl
 | Sujet | Fiche |
 |-------|--------|
 | Navigation, accueil, modules | [v2-navigation-modules.md](v2-navigation-modules.md) |
+| Import calendrier (ICS) | [import-calendrier.md](import-calendrier.md) |
 | Facturation par école | [v2-facturation-par-ecole.md](v2-facturation-par-ecole.md) |
 | Trésorerie et rapprochement bancaire | [v2-tresorerie-rapprochement-bancaire.md](v2-tresorerie-rapprochement-bancaire.md) |
 | Facturation électronique | [facturation-electronique.md](facturation-electronique.md) |
@@ -35,7 +36,7 @@ Cette refonte est **purement présentationnelle et navigationnelle** : le modèl
 2. Consulter **facturé TTC** et **non facturé** par établissement
 3. Ouvrir une **école** → cours, adresse, factures, documents, **préparation facturation**
 4. Naviguer mois par mois ou **sauter aux sessions non facturées** (retour arrière)
-5. **Agenda** (menu latéral) pour saisir / modifier les sessions — vue **mois** ou **semaine**, clic sur un jour ou un créneau, duplication vers demain / la semaine suivante
+5. **Agenda** (menu latéral) pour saisir / modifier les sessions — vue **mois** ou **semaine**, clic sur un jour ou un créneau, duplication vers demain / la semaine suivante ; onglet **Calendrier** pour importer un `.ics` ou une URL ([import-calendrier.md](import-calendrier.md))
 6. **Trésorerie** (menu latéral) pour les factures (émission e-facture si SuperPDP est configuré), le rapprochement bancaire, les dépenses et le suivi financier global
 
 ## Compatibilité

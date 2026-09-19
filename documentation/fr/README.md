@@ -15,8 +15,12 @@ Fiches wiki : modèle métier, parcours utilisateur et **contexte terminologique
 | [Configuration](configuration.md) | Variables d’environnement et fiche entreprise |
 | [Administration plateforme](administration-plateforme.md) | Initialisation super-admin, provisionnement tenant, frontières d'accès |
 | [Libellés mode consulting](libelles-consulting.md) | Correspondances et libellés spécifiques |
+| [Libellés mode médical](libelles-medical.md) | Structure / prestation / séance / patient |
+| [Parcours groupes](parcours-groupes.md) | Flux instructeur, archive vs détacher, duplication |
+| [Gestion des groupes](gestion-groupes.md) | Règles formation 1 cours vs mentoring multi-activités |
 | **[V2 — interface utilisateur](v2-interface-utilisateur.md)** | Vue d’ensemble de la refonte UI |
 | [V2 — navigation & modules](v2-navigation-modules.md) | Sidebar, accueil `/home`, onglets |
+| [Import calendrier ICS](import-calendrier.md) | Upload/URL ICS, mapping, contraintes de réimport |
 | [V2 — mode école mentoring](v2-mode-ecole-mentoring.md) | Libellés formation vs mentoring par école |
 | [Mise en production SFTP](mise-en-production-sftp.md) | Deploy IONOS, fichiers protégés, restauration config.php |
 | [V2 — facturation par école](v2-facturation-par-ecole.md) | Préparation facturation sur fiche école |

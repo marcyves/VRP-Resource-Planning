@@ -49,3 +49,4 @@ File: `resources/lang/en_consulting/overrides.php` (merged over `en/messages.php
 
 - [Business context](business-context-clients-projects.md)
 - [Configuration](configuration.md)
+- [Medical labels](medical-labels.md)

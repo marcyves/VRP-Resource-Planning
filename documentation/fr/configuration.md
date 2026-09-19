@@ -9,6 +9,7 @@
 | `APP_LOCALE` | `fr` | Langue de base (`fr`, `en`, `it`) |
 | `TERMINOLOGY_PROFILE` | `education` | Profil pour invités / sans entreprise |
 | `VRP_ALLOW_REGISTRATION` | `false` | Inscription publique `/register` |
+| `VRP_ACCOUNT_REQUEST_EMAIL` | `MAIL_FROM_ADDRESS` si la clé est **absente** | Boîte de `/demande-acces`. Un `VRP_ACCOUNT_REQUEST_EMAIL=` vide dans `.env` **ne** bascule **pas** (chaîne vide = valeur définie) : le formulaire réussit, mais `AccountRequestController` journalise une `RuntimeException` et n’envoie pas de mail |
 | `E_INVOICE_PLATFORM` | *(absent)* | `superpdp` pour SuperPDP ; sinon driver Null |
 | `SUPERPDP_ENV` | `production` | `sandbox` ou `production` (choix des credentials OAuth) |
 | `SUPERPDP_CLIENT_ID` / `SUPERPDP_CLIENT_SECRET` | — | OAuth production (`client_credentials`) |
@@ -22,6 +23,7 @@ Exemple `.env.example` :
 APP_LOCALE=fr
 TERMINOLOGY_PROFILE=consulting
 VRP_ALLOW_REGISTRATION=false
+# VRP_ACCOUNT_REQUEST_EMAIL=ops@example.com
 # E_INVOICE_PLATFORM=superpdp
 # SUPERPDP_ENV=sandbox
 ```
@@ -62,6 +64,6 @@ Runbook détaillé : [Administration plateforme](administration-plateforme.md).
 ## Liens
 
 - [Phase 1 — terminologie](phase-1-terminologie.md)
-- [Administration plateforme](administration-plateforme.md)
+- [Administration plateforme](administration-plateforme.md) — `/demande-acces` vs `/register`
 - [Libellés consulting](libelles-consulting.md)
 - [Facturation électronique](facturation-electronique.md)
