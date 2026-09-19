@@ -598,6 +598,7 @@ return [
     'super_admin_role_editor' => 'Editor',
     'super_admin_role_reader' => 'Reader',
 
+    'landing_skip_content' => 'Skip to main content',
     'landing_nav' => 'Public navigation',
     'landing_home' => 'Home',
     'landing_eyebrow' => 'Professional activity management',

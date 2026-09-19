@@ -1,0 +1,391 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-09-20T10:45:00+02:00",
+  "title": "Design System: VRP Plan",
+  "extensions": {
+    "colorMeta": {
+      "primary": {
+        "displayName": "Harbor Navy",
+        "role": "primary",
+        "canonical": "#00236f",
+        "tonalRamp": ["#0f172a", "#152238", "#00236f", "#1e3a8a", "#4059aa", "#6b82c4", "#90a8ff", "#eef2ff"]
+      },
+      "primary-hover": {
+        "displayName": "Dockyard Blue",
+        "role": "primary",
+        "canonical": "#1e3a8a",
+        "tonalRamp": ["#02004d", "#081c6b", "#1e3a8a", "#3858aa", "#5376cb", "#759bf4", "#99c1ff", "#bfe9ff"]
+      },
+      "accent": {
+        "displayName": "Chart Blue",
+        "role": "primary",
+        "canonical": "#4059aa",
+        "tonalRamp": ["#05004b", "#101c69", "#253a88", "#3e57a8", "#5975c9", "#7b9af1", "#a0c0ff", "#c5e8ff"]
+      },
+      "logo-bg": {
+        "displayName": "Crest Navy",
+        "role": "primary",
+        "canonical": "#243b62",
+        "tonalRamp": ["#000e31", "#12284d", "#2b426a", "#455e88", "#617ba7", "#849fcd", "#a9c5f5", "#cfedff"]
+      },
+      "accent-soft": {
+        "displayName": "Soft Indigo Wash",
+        "role": "neutral",
+        "canonical": "#eef2ff",
+        "tonalRamp": ["#0f111a", "#262832", "#3f424c", "#5a5d68", "#767a85", "#9a9eaa", "#c0c4d0", "#e7ebf8"]
+      },
+      "surface-page": {
+        "displayName": "Cool Paper",
+        "role": "neutral",
+        "canonical": "#f4f6f9",
+        "tonalRamp": ["#101214", "#27292b", "#414245", "#5c5e60", "#797a7d", "#9d9ea1", "#c2c4c7", "#e9ebee"]
+      },
+      "surface-card": {
+        "displayName": "Frost Card",
+        "role": "neutral",
+        "canonical": "#f8fafcf5",
+        "tonalRamp": ["#101213", "#28292a", "#414244", "#5c5e5f", "#797a7c", "#9d9fa0", "#c2c4c6", "#e9ebed"]
+      },
+      "surface-nav": {
+        "displayName": "Night Dock",
+        "role": "neutral",
+        "canonical": "#152238",
+        "tonalRamp": ["#061125", "#1c293f", "#34435b", "#4f5e78", "#6b7b96", "#8e9fbc", "#b3c5e2", "#daecff"]
+      },
+      "surface-input": {
+        "displayName": "Input White",
+        "role": "neutral",
+        "canonical": "#ffffff",
+        "tonalRamp": ["#121212", "#292929", "#424242", "#5d5d5d", "#7a7a7a", "#9e9e9e", "#c4c4c4", "#ebebeb"]
+      },
+      "surface-container-lowest": {
+        "displayName": "Glass Paper",
+        "role": "neutral",
+        "canonical": "#f8fafcf0",
+        "tonalRamp": ["#101213", "#28292a", "#414244", "#5c5e5f", "#797a7c", "#9d9fa0", "#c2c4c6", "#e9ebed"]
+      },
+      "surface-container-low": {
+        "displayName": "Quiet Gray",
+        "role": "neutral",
+        "canonical": "#eef2f7",
+        "tonalRamp": ["#0f1215", "#26292d", "#3f4347", "#5b5e62", "#777b7f", "#9b9fa3", "#c1c4c9", "#e8ecf0"]
+      },
+      "text-heading": {
+        "displayName": "Ink Navy",
+        "role": "neutral",
+        "canonical": "#1a2f4d",
+        "tonalRamp": ["#01102c", "#142946", "#2d4363", "#485f80", "#647c9f", "#87a0c5", "#acc6ec", "#d2edff"]
+      },
+      "text-body": {
+        "displayName": "Slate Ink",
+        "role": "neutral",
+        "canonical": "#2c3440",
+        "tonalRamp": ["#0b121c", "#222935", "#3b434f", "#555e6c", "#727b89", "#959fae", "#bbc5d4", "#e2ecfc"]
+      },
+      "text-secondary": {
+        "displayName": "Harbor Slate",
+        "role": "neutral",
+        "canonical": "#5a6578",
+        "tonalRamp": ["#091120", "#202939", "#394354", "#535e71", "#6f7b8f", "#939fb4", "#b8c5da", "#dfecff"]
+      },
+      "text-subtle": {
+        "displayName": "Quiet Slate",
+        "role": "neutral",
+        "canonical": "#6b7589",
+        "tonalRamp": ["#0a1120", "#21293a", "#394255", "#545e71", "#707b8f", "#949fb4", "#b9c4da", "#e0ecff"]
+      },
+      "border-subtle": {
+        "displayName": "Mist Line",
+        "role": "neutral",
+        "canonical": "#d8e0ea",
+        "tonalRamp": ["#0d1219", "#232931", "#3d434b", "#575e67", "#747b84", "#989fa9", "#bdc5cf", "#e4ecf6"]
+      },
+      "on-primary": {
+        "displayName": "Signal White",
+        "role": "neutral",
+        "canonical": "#ffffff",
+        "tonalRamp": ["#121212", "#292929", "#424242", "#5d5d5d", "#7a7a7a", "#9e9e9e", "#c4c4c4", "#ebebeb"]
+      },
+      "marketing-text": {
+        "displayName": "Signal White",
+        "role": "neutral",
+        "canonical": "#ffffff",
+        "tonalRamp": ["#121212", "#292929", "#424242", "#5d5d5d", "#7a7a7a", "#9e9e9e", "#c4c4c4", "#ebebeb"]
+      },
+      "marketing-text-muted": {
+        "displayName": "Soft Signal",
+        "role": "neutral",
+        "canonical": "#ffffffd9",
+        "tonalRamp": ["#121212", "#292929", "#424242", "#5d5d5d", "#7a7a7a", "#9e9e9e", "#c4c4c4", "#ebebeb"]
+      },
+      "invert-cta-bg": {
+        "displayName": "Inverted Paper",
+        "role": "neutral",
+        "canonical": "#f8fafc",
+        "tonalRamp": ["#101213", "#28292a", "#414244", "#5c5e5f", "#797a7c", "#9d9fa0", "#c2c4c6", "#e9ebed"]
+      },
+      "invert-cta-fg": {
+        "displayName": "Inverted Ink",
+        "role": "neutral",
+        "canonical": "#0f172a",
+        "tonalRamp": ["#091123", "#1f283d", "#384258", "#535d75", "#6f7a93", "#939eb8", "#b8c4df", "#dfebff"]
+      },
+      "dark-primary": {
+        "displayName": "Night Beacon",
+        "role": "primary",
+        "canonical": "#90a8ff",
+        "tonalRamp": ["#080049", "#161c67", "#2b3986", "#4456a5", "#5f74c6", "#8199ee", "#a6bfff", "#cce6ff"]
+      },
+      "dark-surface": {
+        "displayName": "Night Paper",
+        "role": "neutral",
+        "canonical": "#0f172a",
+        "tonalRamp": ["#091123", "#1f283d", "#384258", "#535d75", "#6f7a93", "#939eb8", "#b8c4df", "#dfebff"]
+      },
+      "dark-card": {
+        "displayName": "Night Card",
+        "role": "neutral",
+        "canonical": "#1e293bf2",
+        "tonalRamp": ["#081122", "#1e293b", "#374356", "#525e73", "#6e7b91", "#919fb6", "#b6c5dd", "#ddecff"]
+      },
+      "feedback-success": {
+        "displayName": "Ledger Green",
+        "role": "neutral",
+        "canonical": "#15803d",
+        "tonalRamp": ["#001e00", "#003900", "#005512", "#00722f", "#2d904c", "#57b66f", "#7edd94", "#a5ffba"]
+      },
+      "feedback-danger": {
+        "displayName": "Alert Crimson",
+        "role": "neutral",
+        "canonical": "#b91c1c",
+        "tonalRamp": ["#480000", "#6a0000", "#8d0000", "#b00c13", "#d43b34", "#ff6458", "#ff8c7d", "#ffb4a3"]
+      }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "Marketing hero title only. Stands alone — no line above it." },
+      "headline": { "displayName": "Headline", "purpose": "Section titles and the CTA-band heading." },
+      "title": { "displayName": "Title", "purpose": "Auth card headings. Feature-card titles sit slightly smaller (1.05rem)." },
+      "wordmark": { "displayName": "Wordmark", "purpose": "Public header product name." },
+      "lead": { "displayName": "Lead", "purpose": "Hero and section supporting copy; cap near 36–38rem." },
+      "body": { "displayName": "Body", "purpose": "Default document size (0.875rem / 1.5)." },
+      "button": { "displayName": "Button", "purpose": "Every shared control (0.8125rem / 600)." },
+      "label": { "displayName": "Label", "purpose": "Uppercase form field labels." }
+    },
+    "shadows": [
+      {
+        "name": "shadow-sm",
+        "value": "0 1px 3px 0 #0f172a0d",
+        "purpose": "Resting lift on inputs and compact surfaces."
+      },
+      {
+        "name": "shadow-md",
+        "value": "0 4px 14px -3px #0f172a12, 0 2px 4px -2px #0f172a0a",
+        "purpose": "Card lift under marketing feature cards."
+      },
+      {
+        "name": "shadow-lg",
+        "value": "0 12px 28px -6px #0f172a18, 0 4px 8px -4px #0f172a0d",
+        "purpose": "Stage lift under the hero illustration, auth cards, and CTA band."
+      },
+      {
+        "name": "btn-primary-shadow",
+        "value": "0 1px 2px #00236f1a, 0 4px 14px #00236f26",
+        "purpose": "Filled primary on paper."
+      },
+      {
+        "name": "btn-primary-shadow-hover",
+        "value": "0 2px 4px #00236f1f, 0 8px 20px #00236f33",
+        "purpose": "Filled primary hover on paper; also paired with the focus ring."
+      },
+      {
+        "name": "btn-primary-invert-shadow",
+        "value": "0 1px 2px #00000040, 0 8px 20px #00000033",
+        "purpose": "Inverted primary sitting on navy (dark header/hero and CTA band)."
+      },
+      {
+        "name": "focus-ring",
+        "value": "0 0 0 3px #538ce94c",
+        "purpose": "Keyboard focus on paper controls. Dark theme uses #90a8ff59."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease-control",
+        "value": "150ms ease",
+        "purpose": "Button color, border, and shadow; nav link color and fill."
+      },
+      {
+        "name": "ease-press",
+        "value": "100ms ease",
+        "purpose": "Primary and danger scale(0.98) on active."
+      },
+      {
+        "name": "ease-field",
+        "value": "0.15s ease",
+        "purpose": "Input border, shadow, and background."
+      },
+      {
+        "name": "canvas-drift",
+        "value": "AnimateBG 48s ease infinite",
+        "purpose": "Default marketing and app navy gradient drift. Disabled in explicit dark theme, light marketing, and prefers-reduced-motion."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "marketing-compact",
+        "value": "640px",
+        "purpose": "Max-width: hide public nav text links; hero actions go full width."
+      },
+      {
+        "name": "marketing-split",
+        "value": "900px",
+        "purpose": "Min-width: hero becomes 1.05 / 0.95 columns; feature grid locks to three columns."
+      },
+      {
+        "name": "app-compact",
+        "value": "767px",
+        "purpose": "Max-width: signed-in topbar hides tool labels and profile name (lower design priority)."
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Harbor Navy filled action on paper. Shared control — not a parallel class.",
+      "html": "<button type=\"button\" class=\"ds-btn-primary\">Demander un compte</button>",
+      "css": ".ds-btn-primary { display: inline-flex; align-items: center; justify-content: center; gap: 0.375rem; min-height: 2.5rem; padding: 0.625rem 1.125rem; border-radius: var(--rounded-xl, 0.75rem); font-family: Inter, \"Segoe UI\", system-ui, sans-serif; font-weight: 600; font-size: 0.8125rem; letter-spacing: 0.01em; line-height: 1.25rem; cursor: pointer; border: 1px solid transparent; text-decoration: none; white-space: nowrap; background-color: var(--btn-primary-bg, #00236f); color: var(--btn-primary-fg, #ffffff); box-shadow: var(--btn-primary-shadow, 0 1px 2px #00236f1a, 0 4px 14px #00236f26); transition: background-color 150ms ease, border-color 150ms ease, color 150ms ease, box-shadow 150ms ease, transform 100ms ease; } .ds-btn-primary:hover { background-color: var(--btn-primary-hover-bg, #1e3a8a); box-shadow: var(--btn-primary-shadow-hover, 0 2px 4px #00236f1f, 0 8px 20px #00236f33); } .ds-btn-primary:active { transform: scale(0.98); } .ds-btn-primary:focus-visible { outline: none; box-shadow: var(--btn-primary-shadow-hover, 0 2px 4px #00236f1f, 0 8px 20px #00236f33), 0 0 0 3px var(--focus-ring, #538ce94c); }"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Glass-paper outlined action paired with the primary.",
+      "html": "<button type=\"button\" class=\"ds-btn-secondary\">Se connecter</button>",
+      "css": ".ds-btn-secondary { display: inline-flex; align-items: center; justify-content: center; gap: 0.375rem; min-height: 2.5rem; padding: 0.625rem 1.125rem; border-radius: var(--rounded-xl, 0.75rem); font-family: Inter, \"Segoe UI\", system-ui, sans-serif; font-weight: 600; font-size: 0.8125rem; letter-spacing: 0.01em; line-height: 1.25rem; cursor: pointer; text-decoration: none; white-space: nowrap; background-color: var(--btn-secondary-bg, #f8fafcf0); color: var(--btn-secondary-fg, #5a6578); border: 1px solid var(--btn-secondary-border, #d8e0ea); box-shadow: none; transition: background-color 150ms ease, border-color 150ms ease, color 150ms ease, box-shadow 150ms ease; } .ds-btn-secondary:hover { background-color: var(--btn-secondary-hover-bg, #eef2f7); border-color: var(--btn-secondary-hover-border, #c5ced9); color: var(--btn-secondary-hover-fg, #1a2f4d); } .ds-btn-secondary:focus-visible { outline: none; box-shadow: 0 0 0 3px var(--focus-ring, #538ce94c); }"
+    },
+    {
+      "name": "Inverted Primary",
+      "kind": "button",
+      "refersTo": "button-primary-invert",
+      "description": "Light-on-navy primary for the dark canvas header/hero and every CTA band.",
+      "html": "<div class=\"ds-invert-stage\"><button type=\"button\" class=\"ds-btn-invert\">Demander un compte</button></div>",
+      "css": ".ds-invert-stage { display: flex; justify-content: center; padding: 1.5rem; border-radius: 0.5rem; background: linear-gradient(135deg, #1e3a8acc 0%, #00236fcc 100%); } .ds-btn-invert { display: inline-flex; align-items: center; justify-content: center; min-height: 2.5rem; padding: 0.625rem 1.125rem; border-radius: var(--rounded-xl, 0.75rem); font-family: Inter, \"Segoe UI\", system-ui, sans-serif; font-weight: 600; font-size: 0.8125rem; letter-spacing: 0.01em; line-height: 1.25rem; cursor: pointer; border: 1px solid transparent; background-color: #f8fafc; color: #0f172a; box-shadow: 0 1px 2px #00000026, 0 8px 20px #00000033; transition: background-color 150ms ease, box-shadow 150ms ease, transform 100ms ease; } .ds-btn-invert:hover { background-color: #f1f5f9; color: #0f172a; } .ds-btn-invert:active { transform: scale(0.98); } .ds-btn-invert:focus-visible { outline: none; box-shadow: 0 0 0 3px #ffffff73; }"
+    },
+    {
+      "name": "Marketing Wordmark",
+      "kind": "nav",
+      "refersTo": "marketing-wordmark",
+      "description": "Public chrome: product name only. No photographic mark.",
+      "html": "<header class=\"ds-mkt-header\"><a href=\"#\" class=\"ds-mkt-brand\"><span class=\"ds-mkt-name\">VRP Plan</span></a><nav class=\"ds-mkt-nav\" aria-label=\"Navigation publique\"><a href=\"#\" class=\"ds-mkt-link\">Se connecter</a><a href=\"#\" class=\"ds-mkt-cta\">Demander un compte</a></nav></header>",
+      "css": ".ds-mkt-header { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 0.75rem 1.5rem; background: #0f172a99; backdrop-filter: blur(12px); border-bottom: 1px solid #ffffff1a; font-family: Inter, \"Segoe UI\", system-ui, sans-serif; } .ds-mkt-brand { display: inline-flex; align-items: center; color: #ffffff; text-decoration: none; font-weight: 700; border-radius: 0.375rem; } .ds-mkt-brand:focus-visible { outline: 2px solid #ffffff; outline-offset: 3px; } .ds-mkt-name { font-size: 1.125rem; letter-spacing: -0.02em; line-height: 1.2; white-space: nowrap; } .ds-mkt-nav { display: flex; align-items: center; gap: 0.75rem; } .ds-mkt-link { color: #ffffffd9; text-decoration: none; font-size: 0.9375rem; font-weight: 500; padding: 0.5rem 0.75rem; border-radius: 0.375rem; min-height: 2.5rem; display: inline-flex; align-items: center; transition: color 0.15s ease, background-color 0.15s ease; } .ds-mkt-link:hover { color: #ffffff; background: #ffffff14; } .ds-mkt-link:focus-visible { outline: 2px solid #ffffff; outline-offset: 2px; color: #ffffff; } .ds-mkt-cta { display: inline-flex; align-items: center; justify-content: center; min-height: 2.25rem; padding: 0.5rem 0.875rem; border-radius: 0.5rem; font-weight: 600; font-size: 0.8125rem; letter-spacing: 0.01em; text-decoration: none; background-color: #f8fafc; color: #0f172a; box-shadow: 0 1px 2px #00000040, 0 8px 20px #00000033; } .ds-mkt-cta:hover { background-color: #ffffff; } .ds-mkt-cta:focus-visible { outline: 2px solid #ffffff; outline-offset: 2px; }"
+    },
+    {
+      "name": "Feature Card",
+      "kind": "card",
+      "refersTo": "marketing-feature-card",
+      "description": "Glass-edged marketing card on the harbor canvas. No hover translation.",
+      "html": "<article class=\"ds-feature-card\"><span class=\"ds-feature-icon\" aria-hidden=\"true\"><svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.75\" stroke-linecap=\"round\" stroke-linejoin=\"round\" width=\"21\" height=\"21\"><rect x=\"3\" y=\"4\" width=\"18\" height=\"18\" rx=\"2\"></rect><line x1=\"16\" y1=\"2\" x2=\"16\" y2=\"6\"></line><line x1=\"8\" y1=\"2\" x2=\"8\" y2=\"6\"></line><line x1=\"3\" y1=\"10\" x2=\"21\" y2=\"10\"></line><path d=\"M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01\"></path></svg></span><h3 class=\"ds-feature-title\">Planning &amp; agenda</h3><p class=\"ds-feature-text\">Sessions, import calendrier et suivi des interventions au jour le jour.</p></article>",
+      "css": ".ds-feature-card { padding: 1.5rem; border-radius: var(--rounded-lg, 0.5rem); background: #ffffff12; border: 1px solid #ffffff1f; backdrop-filter: blur(8px); box-shadow: var(--shadow-md, 0 4px 14px -3px #0f172a12, 0 2px 4px -2px #0f172a0a); font-family: Inter, \"Segoe UI\", system-ui, sans-serif; max-width: 20rem; } .ds-feature-card:hover { transform: none; } .ds-feature-icon { display: inline-flex; align-items: center; justify-content: center; width: 2.5rem; height: 2.5rem; margin-bottom: 0.75rem; border-radius: 0.375rem; background: #ffffff1a; color: #ffffff; } .ds-feature-title { margin: 0 0 0.5rem; color: #ffffff; font-size: 1.05rem; font-weight: 700; } .ds-feature-text { margin: 0; color: #ffffffbf; font-size: 0.9375rem; line-height: 1.55; }"
+    },
+    {
+      "name": "Auth Card",
+      "kind": "card",
+      "refersTo": "marketing-auth-card",
+      "description": "Paper card on the harbor canvas for login and account request.",
+      "html": "<article class=\"ds-auth-card\"><header class=\"ds-auth-header\"><h1>Connexion</h1><p>Accédez à votre espace entreprise.</p></header><form class=\"ds-auth-form\"><label class=\"ds-auth-label\" for=\"ds-email\">E-mail</label><input id=\"ds-email\" class=\"ds-auth-input\" type=\"email\" value=\"marie@exemple.fr\"><button type=\"button\" class=\"ds-auth-submit\">Se connecter</button></form><p class=\"ds-auth-foot\">Pas encore de compte ? <a href=\"#\">Demander un compte</a></p></article>",
+      "css": ".ds-auth-card { width: min(28rem, 100%); padding: 1.5rem; border-radius: var(--rounded-lg, 0.5rem); background: var(--surface-card, #f8fafcf5); border: 1px solid var(--border-subtle, #d8e0ea); box-shadow: var(--shadow-lg, 0 12px 28px -6px #0f172a18, 0 4px 8px -4px #0f172a0d); color: var(--text-body, #2c3440); font-family: Inter, \"Segoe UI\", system-ui, sans-serif; } .ds-auth-header { margin-bottom: 1.5rem; text-align: center; } .ds-auth-header h1 { margin: 0 0 0.5rem; color: var(--text-heading, #1a2f4d); font-size: 1.5rem; font-weight: 700; } .ds-auth-header p { margin: 0; color: var(--text-secondary, #5a6578); font-size: 0.9375rem; line-height: 1.5; } .ds-auth-form { display: flex; flex-direction: column; gap: 0.25rem; } .ds-auth-label { font-size: 0.6875rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-secondary, #5a6578); } .ds-auth-input { width: 100%; padding: 0.625rem 0.75rem; border: 1px solid var(--surface-input-border, #d8e0ea); border-radius: var(--rounded-md, 0.375rem); background-color: var(--surface-input, #ffffff); color: var(--text-body, #2c3440); font-size: 0.9375rem; line-height: 1.4; box-shadow: var(--shadow-sm, 0 1px 3px 0 #0f172a0d); font-family: inherit; } .ds-auth-input:hover { border-color: #c5ced9; } .ds-auth-input:focus-visible { outline: none; border-color: var(--brand-accent, #4059aa); box-shadow: 0 0 0 3px var(--focus-ring, #538ce94c); } .ds-auth-submit { margin-top: 1rem; width: 100%; display: inline-flex; align-items: center; justify-content: center; min-height: 2.5rem; padding: 0.625rem 1.125rem; border-radius: 0.75rem; border: 1px solid transparent; font-weight: 600; font-size: 0.8125rem; letter-spacing: 0.01em; cursor: pointer; background-color: #00236f; color: #ffffff; box-shadow: 0 1px 2px #00236f1a, 0 4px 14px #00236f26; } .ds-auth-submit:hover { background-color: #1e3a8a; } .ds-auth-submit:focus-visible { outline: none; box-shadow: 0 2px 4px #00236f1f, 0 8px 20px #00236f33, 0 0 0 3px #538ce94c; } .ds-auth-foot { margin: 1.5rem 0 0; padding-top: 1rem; border-top: 1px solid #d8e0ea; text-align: center; font-size: 0.875rem; color: #5a6578; } .ds-auth-foot a { color: #4059aa; font-weight: 600; text-decoration: none; } .ds-auth-foot a:hover { text-decoration: underline; }"
+    },
+    {
+      "name": "Text Input",
+      "kind": "input",
+      "refersTo": "form-input",
+      "description": "Paper field with Chart Blue focus ring.",
+      "html": "<label class=\"ds-field\"><span class=\"ds-field-label\">E-mail</span><input class=\"ds-field-input\" type=\"email\" placeholder=\"marie@exemple.fr\"></label>",
+      "css": ".ds-field { display: flex; flex-direction: column; gap: 0.25rem; font-family: Inter, \"Segoe UI\", system-ui, sans-serif; width: min(20rem, 100%); } .ds-field-label { font-size: 0.6875rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-secondary, #5a6578); } .ds-field-input { width: 100%; padding: 0.625rem 0.75rem; border: 1px solid var(--surface-input-border, #d8e0ea); border-radius: var(--rounded-md, 0.375rem); background-color: var(--surface-input, #ffffff); color: var(--text-body, #2c3440); font-size: 0.9375rem; line-height: 1.4; box-shadow: var(--shadow-sm, 0 1px 3px 0 #0f172a0d); font-family: inherit; transition: border-color 0.15s ease, box-shadow 0.15s ease; } .ds-field-input:hover { border-color: #c5ced9; } .ds-field-input:focus-visible { outline: none; border-color: var(--brand-accent, #4059aa); box-shadow: 0 0 0 3px var(--focus-ring, #538ce94c); }"
+    },
+    {
+      "name": "Theme Toggle",
+      "kind": "button",
+      "refersTo": "theme-toggle",
+      "description": "2.5rem chrome square; sun and moon stroke icons.",
+      "html": "<button type=\"button\" class=\"ds-theme-toggle\" aria-label=\"Basculer le mode sombre\" aria-pressed=\"false\"><svg class=\"ds-theme-icon\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.75\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z\"></path></svg></button>",
+      "css": ".ds-theme-toggle { display: inline-flex; align-items: center; justify-content: center; width: 2.5rem; height: 2.5rem; padding: 0; border: 1px solid #ffffff1a; border-radius: 0.375rem; background: #ffffff1a; color: #ffffff; cursor: pointer; transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease; } .ds-theme-toggle:hover, .ds-theme-toggle:focus-visible { color: #ffffff; background: #ffffff14; outline: 2px solid #ffffff; outline-offset: 1px; } .ds-theme-icon { width: 1.125rem; height: 1.125rem; display: block; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Harbor Briefing",
+    "overview": "VRP Plan presents as a dusk-harbor desk: a deep navy field, a quiet wordmark, and Inter set with the restraint of an operations brief. The public canvas persuades without theatre — no second brand mark, no decorative kicker, no invented social proof. Paper cards and a single navy voice do the work.\n\nTwo surfaces share one system. Marketing (the design-priority surface) is a prospect briefing: sticky frosted chrome, a two-column hero, glass-edged feature cards, and a navy close. The signed-in shell reuses the same navy, Inter, radii, and buttons for daily operation; it is not the surface this system is optimized for.\n\nThe material is professional and slightly maritime — cool paper, mist borders, modest downward shadows — aligned with the EduProf navy lineage. Imagery is documentary (the login photograph as a hero illustration), never a logo.",
+    "keyCharacteristics": [
+      "One navy voice; paper and frost as the only counter-materials",
+      "Wordmark chrome; no photographic header mark",
+      "Inter only, loaded at 400 / 500 / 600 / 700",
+      "Modest corners and soft offset shadows",
+      "Dark-canvas primaries invert to paper; the closing band stays light-on-navy"
+    ],
+    "rules": [
+      {
+        "name": "The Harbor Ink Rule",
+        "body": "Harbor Navy is the only brand voice of action. Do not introduce a second filled hue.",
+        "section": "colors"
+      },
+      {
+        "name": "The Canvas Invert Rule",
+        "body": "On the dark marketing canvas, header and hero primaries flip to Inverted Paper on Inverted Ink. The closing CTA band always keeps a light primary on navy, in every theme.",
+        "section": "colors"
+      },
+      {
+        "name": "The Bare Headline Rule",
+        "body": "The hero title stands alone. No kicker, eyebrow, or category line above it.",
+        "section": "typography"
+      },
+      {
+        "name": "The One Family Rule",
+        "body": "Inter carries every role. Do not pair a second display face.",
+        "section": "typography"
+      },
+      {
+        "name": "The Isolated Canvas Rule",
+        "body": "Public pages do not inherit signed-in section chrome. Marketing regions stay flush and unboxed.",
+        "section": "layout"
+      },
+      {
+        "name": "The Offset Lift Rule",
+        "body": "Depth is a modest downward offset plus blur. Never a zero-offset glow halo.",
+        "section": "elevation"
+      },
+      {
+        "name": "The Modest Corner Rule",
+        "body": "Cards and images use the large radius. Default buttons use the extra-large radius. No pills, no squares.",
+        "section": "shapes"
+      },
+      {
+        "name": "The Wordmark Rule",
+        "body": "Public chrome is the product name. Never the VRP.jpeg photograph as a header mark.",
+        "section": "components"
+      },
+      {
+        "name": "The Shared Control Rule",
+        "body": "Actions use the shared primary / secondary button pair. Do not invent a parallel button class.",
+        "section": "components"
+      }
+    ],
+    "dos": [
+      "Do set public chrome as the Inter wordmark at 1.125rem / 700.",
+      "Do invert header and hero primaries on the dark canvas; keep the CTA-band primary light-on-navy in every theme.",
+      "Do use Inter at 400 / 500 / 600 / 700 from fonts.bunny.net on marketing and app layouts.",
+      "Do treat `VRP-login.jpg` as a hero illustration (large radius, stage lift), never as a mark.",
+      "Do keep a skip control that moves into view on focus.",
+      "Do isolate marketing regions from signed-in section, list, and header treatments."
+    ],
+    "donts": [
+      "Don't use `VRP.jpeg` as a header mark, favicon stand-in, or brand tile on public pages.",
+      "Don't place a kicker, eyebrow, or category line above the hero title.",
+      "Don't invent testimonials, customer logos, pricing, or a second brand mark.",
+      "Don't treat the signed-in shell as the design-priority surface.",
+      "Don't introduce a parallel button class beside the shared primary / secondary pair.",
+      "Don't use zero-offset halo shadows or a second display typeface."
+    ]
+  }
+}

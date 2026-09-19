@@ -280,4 +280,5 @@ return array (
   'by_date' => 'Per data',
   'summary' => 'Sintesi',
   'workload_plan' => 'Piano di carico',
+  'landing_skip_content' => 'Vai al contenuto',
 );

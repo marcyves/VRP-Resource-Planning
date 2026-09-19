@@ -614,6 +614,7 @@ return [
     'super_admin_role_editor' => 'Éditeur',
     'super_admin_role_reader' => 'Lecteur',
 
+    'landing_skip_content' => 'Aller au contenu',
     'landing_nav' => 'Navigation publique',
     'landing_home' => 'Accueil',
     'landing_eyebrow' => 'Gestion d\'activité professionnelle',
