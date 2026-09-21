@@ -15,6 +15,8 @@ buttons.css / forms.css     → boutons, champs, nice-form
 tables.css                  → data-table, tableaux factures
 cards.css / alerts.css      → cartes, messages
 … domaines métier …         → schools, plannings, bills, treasury, etc.
+login.css                   → overrides résiduels page maintenance
+marketing.css               → canvas public landing / auth (importé en dernier)
 tw-compat.css               → utilitaires résiduels (migration)
 ```
 
@@ -44,12 +46,15 @@ Définis dans `global.css` (clair) et surchargés dans `theme.css` (sombre) :
 | `.planning-controls`, `.period-nav` | `plannings.css` | Navigation mensuelle |
 | `.kpi-grid` | `dashboard.css` | Indicateurs plan de charge |
 | `.module-tabs` | via composant Blade | Onglets de module |
+| `.marketing-page`, `.marketing-hero`, `.marketing-auth-card` | `marketing.css` | Landing publique et auth |
 
 ## Composants Blade associés
 
 | Composant | Rôle |
 |-----------|------|
 | `x-app-layout` | Layout authentifié |
+| `x-marketing-layout` | Canvas public (landing) ; `narrow` / `title` optionnels |
+| `x-guest-layout` | Même layout marketing avec `narrow=true` (login, demande de compte, mots de passe, register, maintenance) |
 | `x-module-tabs` | Onglets génériques |
 | `x-kpi-grid` | Tuiles KPI |
 | `x-period-selector` | Mois précédent / sélecteur / suivant |
@@ -62,11 +67,39 @@ Définis dans `global.css` (clair) et surchargés dans `theme.css` (sombre) :
 
 Stores Alpine : `createDeleteStore()` dans `resources/js/delete-store.js` (`groupDelete`, `programDelete`, `documentDelete`). La suppression et la duplication à date libre des sessions d’agenda utilisent des `<dialog>` natifs dans `resources/js/planning-calendar.js`, pas Alpine.
 
+## Canvas marketing public
+
+Les pages invitées partagent `resources/views/layouts/marketing.blade.php`. Source visuelle : `DESIGN.md` à la racine (et `.impeccable/design.json`). Périmètre produit : `PRODUCT.md` — la priorité design est le **prospect non authentifié**.
+
+| Surface | Route / composant | Layout |
+|---------|-------------------|--------|
+| Landing | `/` (`welcome`) → `welcome.blade.php` | `x-marketing-layout` (pleine largeur) |
+| Login, mot de passe, register | Vues Breeze | `x-guest-layout` |
+| Demande de compte | `/demande-acces` | `x-guest-layout` |
+| Maintenance | `maintenance.blade.php` | `x-guest-layout` |
+
+Un visiteur déjà connecté sur `/` est redirigé par `WelcomeController` vers `User::homePath()` (`/home`, ou `/super-admin/companies` pour un super admin).
+
+### Contraintes (code + `LandingPageTest`)
+
+| Règle | Détail |
+|-------|--------|
+| Chrome wordmark | L’en-tête affiche seulement `config('app.name')`. Ne **pas** réintroduire `marketing-brand__logo` ni `public/images/VRP.jpeg` comme marque d’en-tête |
+| Pas d’eyebrow | `messages.landing_eyebrow` existe encore dans les fichiers de langue mais n’est pas utilisé ; le titre hero est seul |
+| Skip link | `.marketing-skip` → `#main-content` est obligatoire |
+| Thème partagé | La bascule d’en-tête marketing utilise la même clé `vrp-theme` que la coque connectée |
+| Inversion canvas | En thème sombre, les primaires header/hero passent papier-sur-encre ; la bande CTA finale reste clair-sur-navy **dans tous les thèmes** |
+| Régions isolées | `body.marketing-page .marketing-main > section` ne doit pas hériter du chrome panneaux/listes de l’app |
+| Copie | Uniquement `messages.landing_*` — pas de témoignages, tarifs ou logos clients inventés |
+| Illustration hero | `public/images/VRP-login.jpg` est une image, pas une marque (`aria-hidden`) |
+
+Couverture : `tests/Feature/LandingPageTest.php`. Mail de demande de compte : [administration-plateforme.md](administration-plateforme.md#demande-de-compte-demande-acces).
+
 ## Mode sombre
 
-- Bascule via topbar → attribut `data-theme="dark"` sur `<html>`
-- Tokens recalculés dans `theme.css`
-- Préférence persistée (localStorage / script layout)
+- Bascule via topbar **ou** en-tête marketing → attribut `data-theme="dark"` sur `<html>`
+- Tokens recalculés dans `theme.css` ; les pages marketing surchargent aussi `--marketing-*` dans `marketing.css`
+- Préférence persistée (clé `localStorage` `vrp-theme` / script layout)
 
 ## Directives Blade utilitaires
 
@@ -97,4 +130,5 @@ npm run build  # production
 
 - [V2 — revue de code & refactor listes](v2-revue-code-refactoring-listes.md)
 - [V2 — vue d’ensemble](v2-interface-utilisateur.md)
+- [Administration plateforme](administration-plateforme.md) — landing publique vs `/register`
 - [Configuration](configuration.md)

@@ -93,7 +93,7 @@ User manuals (LaTeX PDF): [user manual](documentation/manuel-utilisateur/README.
 
 | Layer    | Detail                                                               |
 | -------- | -------------------------------------------------------------------- |
-| Backend  | **PHP 8.2+**, **Laravel 11**                                         |
+| Backend  | **PHP 8.2+**, **Laravel 11** (Sail local image: **PHP 8.4**)         |
 | Frontend | **Vite 4**, **Alpine.js**, modular CSS (`resources/css/`), **Blade** |
 | PDF      | **TCPDF** (invoices)                                                 |
 | iCal     | **ics-parser**                                                       |
@@ -145,6 +145,16 @@ php artisan key:generate
 
 Locally you can run `npm run dev` alongside `php artisan serve` (or your vhost).
 
+**Laravel Sail (Docker):** `docker-compose.yml` builds `vendor/laravel/sail/runtimes/8.4` (`image: sail-8.4/app`). App code still supports PHP 8.2+. After `composer install`:
+
+```bash
+./vendor/bin/sail up -d
+./vendor/bin/sail artisan migrate
+./vendor/bin/sail npm run dev
+```
+
+Prefer `./vendor/bin/sail test` so Feature tests hit the Sail MySQL `testing` database created by `create-testing-database.sh`.
+
 ---
 
 
@@ -155,6 +165,7 @@ Locally you can run `npm run dev` alongside `php artisan serve` (or your vhost).
 | Command             | Role                       |
 | ------------------- | -------------------------- |
 | `php artisan serve` | Laravel development server |
+| `./vendor/bin/sail up -d` | Docker stack (PHP **8.4** image) |
 | `npm run dev`       | Vite watch (HMR)           |
 | `npm run build`     | Production asset build     |
 

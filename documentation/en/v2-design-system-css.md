@@ -15,6 +15,8 @@ buttons.css / forms.css     → buttons, fields, nice-form
 tables.css                  → data-table, invoice tables
 cards.css / alerts.css        → cards, alerts
 … domain sheets …           → schools, plannings, bills, treasury, etc.
+login.css                   → leftover maintenance-form overrides
+marketing.css               → public landing / auth canvas (imported last)
 tw-compat.css               → leftover utilities (migration)
 ```
 
@@ -44,12 +46,15 @@ Defined in `global.css` (light) and overridden in `theme.css` (dark):
 | `.planning-controls`, `.period-nav` | `plannings.css` | Monthly navigation |
 | `.kpi-grid` | `dashboard.css` | Workload KPIs |
 | `.module-tabs` | via Blade component | Module tabs |
+| `.marketing-page`, `.marketing-hero`, `.marketing-auth-card` | `marketing.css` | Public landing and auth |
 
 ## Related Blade components
 
 | Component | Role |
 |-----------|------|
 | `x-app-layout` | Authenticated layout |
+| `x-marketing-layout` | Public canvas (landing); optional `narrow` / `title` |
+| `x-guest-layout` | Same marketing layout with `narrow=true` (login, account request, passwords, register, maintenance) |
 | `x-module-tabs` | Generic tabs |
 | `x-kpi-grid` | KPI tiles |
 | `x-period-selector` | Previous month / selector / next |
@@ -62,11 +67,39 @@ Defined in `global.css` (light) and overridden in `theme.css` (dark):
 
 Alpine stores: `createDeleteStore()` in `resources/js/delete-store.js` (`groupDelete`, `programDelete`, `documentDelete`). Planning session delete and custom-date duplicate use native `<dialog>` elements in `resources/js/planning-calendar.js`, not Alpine.
 
+## Public marketing canvas
+
+Guest surfaces share `resources/views/layouts/marketing.blade.php`. Visual source of truth: root `DESIGN.md` (and `.impeccable/design.json`). Product scope: `PRODUCT.md` — design priority is the **unauthenticated prospect**.
+
+| Surface | Route / component | Layout |
+|---------|-------------------|--------|
+| Landing | `/` (`welcome`) → `welcome.blade.php` | `x-marketing-layout` (full width) |
+| Login, password, register | Breeze auth views | `x-guest-layout` |
+| Account request | `/demande-acces` | `x-guest-layout` |
+| Maintenance | `maintenance.blade.php` | `x-guest-layout` |
+
+Signed-in visitors hitting `/` are redirected by `WelcomeController` to `User::homePath()` (`/home`, or `/super-admin/companies` for a super admin).
+
+### Constraints (verified in code + `LandingPageTest`)
+
+| Rule | Detail |
+|------|--------|
+| Wordmark chrome | Header shows `config('app.name')` only. Do **not** restore `marketing-brand__logo` or `public/images/VRP.jpeg` as a header mark |
+| No eyebrow | `messages.landing_eyebrow` still exists in lang files but is unused; the hero title stands alone |
+| Skip link | `.marketing-skip` → `#main-content` is required |
+| Shared theme | Marketing header toggle uses the same `vrp-theme` localStorage key as the signed-in shell |
+| Canvas invert | Dark-theme header/hero primaries flip to paper-on-ink; the closing CTA band stays light-on-navy in **every** theme |
+| Isolated regions | `body.marketing-page .marketing-main > section` must not inherit signed-in panel/list chrome |
+| Copy | `messages.landing_*` only — no invented testimonials, pricing, or customer logos |
+| Hero illustration | `public/images/VRP-login.jpg` is an image, not a mark (`aria-hidden`) |
+
+Coverage: `tests/Feature/LandingPageTest.php`. Account-request mail behaviour: [platform-administration.md](platform-administration.md#account-request-demande-acces).
+
 ## Dark mode
 
-- Toggle via topbar → `data-theme="dark"` on `<html>`
-- Tokens recomputed in `theme.css`
-- Preference persisted (localStorage / layout script)
+- Toggle via topbar **or** marketing header → `data-theme="dark"` on `<html>`
+- Tokens recomputed in `theme.css`; marketing pages also override `--marketing-*` in `marketing.css`
+- Preference persisted (`localStorage` key `vrp-theme` / layout script)
 
 ## Utility Blade directives
 
@@ -97,4 +130,5 @@ npm run build  # production
 
 - [V2 — code review & list refactor](v2-code-review-list-refactoring.md)
 - [V2 — overview](v2-user-interface.md)
+- [Platform administration](platform-administration.md) — public landing vs `/register`
 - [Configuration](configuration.md)

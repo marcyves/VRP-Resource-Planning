@@ -13,7 +13,7 @@ The platform flow is meant for controlled tenant onboarding:
 - create each company with its billing prefix, terminology profile, and first administrator;
 - add more tenant users from the company detail page.
 
-Public self-registration is disabled by default and does not provision a company. Use the super-admin flow for normal tenant onboarding.
+Public self-registration is disabled by default and does not provision a company. Use the super-admin flow for normal tenant onboarding. Guests land on `/` (`WelcomeController`) and request an account at `/demande-acces`.
 
 ## Access model
 
@@ -109,7 +109,7 @@ Public registration creates a user account only; it does not create a company or
 
 ### Account request (`/demande-acces`)
 
-The landing page and login link to **Request an account** (`account-request.create`). This is **not** self-provisioning:
+The landing page and login link to **Request an account** (`account-request.create`). This is **not** self-provisioning. The public chrome is the marketing layout (wordmark only — [CSS design system](v2-design-system-css.md#public-marketing-canvas)).
 
 1. Guest submits company name, contact, email, optional phone, terminology profile, message (`StoreAccountRequestRequest`; POST throttled `5,1`).
 2. `AccountRequestController` mails `AccountRequestMail` to `config('vrp.account_request_email')`.
@@ -132,6 +132,7 @@ Coverage: `tests/Feature/LandingPageTest.php`.
 | `/register` returns 404 | `VRP_ALLOW_REGISTRATION` is false, which is the default |
 | Account request succeeds but no email arrives | `VRP_ACCOUNT_REQUEST_EMAIL` is empty; omit the key to fall back to `MAIL_FROM_ADDRESS`, or set a real inbox |
 | `/demande-acces` POST is 429 | Throttle `5,1` on `account-request.store` |
+| Signed-in user still sees the public landing | `WelcomeController` should redirect to `User::homePath()`; check the session |
 
 ## Key files
 
@@ -143,6 +144,8 @@ Coverage: `tests/Feature/LandingPageTest.php`.
 | `app/Http/Controllers/SuperAdmin/CompanyController.php` | Company list, create, update, delete |
 | `app/Http/Controllers/SuperAdmin/CompanyUserController.php` | Adds tenant users |
 | `app/Http/Controllers/AccountRequestController.php` | Guest `/demande-acces` mail |
+| `app/Http/Controllers/WelcomeController.php` | Guest landing `/`; signed-in redirect |
+| `resources/views/layouts/marketing.blade.php` | Public chrome (wordmark, skip link, theme toggle) |
 | `app/Services/CompanyProvisioner.php` | Transactional company + first admin creation |
 | `app/Services/CompanyUserProvisioner.php` | Tenant user creation and contact sync |
 | `app/Services/CompanyDeleter.php` | Destructive tenant cleanup |

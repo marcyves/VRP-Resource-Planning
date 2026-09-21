@@ -17,6 +17,7 @@ This is a **presentation and navigation** refactor: data model, business routes 
 | **Side navigation** | 260 px sidebar, topbar, breadcrumbs, dark mode |
 | **Schools hub** | Home page = school list with invoiced / unbilled indicators |
 | **Contextual billing** | Preparation on `school/show`, no longer under scheduling |
+| **Public canvas** | Landing `/` and auth share the marketing layout — [CSS design system](v2-design-system-css.md#public-marketing-canvas) |
 
 ## Detailed guides
 
@@ -31,6 +32,8 @@ This is a **presentation and navigation** refactor: data model, business routes 
 | Code review & list refactor | [v2-code-review-list-refactoring.md](v2-code-review-list-refactoring.md) |
 
 ## Typical user flow
+
+Guests start on the **landing** `/` (or `/demande-acces`). Signed-in users hitting `/` are sent to `User::homePath()`.
 
 1. **Sign in** → `/home` (school list)
 2. Review **invoiced incl. VAT** and **unbilled** per school

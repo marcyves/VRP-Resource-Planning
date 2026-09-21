@@ -93,7 +93,7 @@ Manuels utilisateur (PDF LaTeX) : [manuel-utilisateur](documentation/manuel-util
 
 | Couche   | Détail                                                                 |
 | -------- | ---------------------------------------------------------------------- |
-| Backend  | **PHP 8.2+**, **Laravel 11**                                           |
+| Backend  | **PHP 8.2+**, **Laravel 11** (image Sail locale : **PHP 8.4**)         |
 | Frontend | **Vite 4**, **Alpine.js**, CSS modulaire (`resources/css/`), **Blade** |
 | PDF      | **TCPDF** (factures)                                                   |
 | iCal     | **ics-parser**                                                         |
@@ -145,6 +145,16 @@ php artisan key:generate
 
 En local, vous pouvez utiliser `npm run dev` en parallèle d’un serveur PHP (`php artisan serve` ou votre vhost).
 
+**Laravel Sail (Docker) :** `docker-compose.yml` construit `vendor/laravel/sail/runtimes/8.4` (`image: sail-8.4/app`). Le code applicatif reste compatible PHP 8.2+. Après `composer install` :
+
+```bash
+./vendor/bin/sail up -d
+./vendor/bin/sail artisan migrate
+./vendor/bin/sail npm run dev
+```
+
+Préférer `./vendor/bin/sail test` pour que les tests Feature ciblent la base MySQL `testing` créée par `create-testing-database.sh`.
+
 ---
 
 
@@ -152,11 +162,12 @@ En local, vous pouvez utiliser `npm run dev` en parallèle d’un serveur PHP (`
 ## Développement
 
 
-| Commande            | Rôle                             |
-| ------------------- | -------------------------------- |
-| `php artisan serve` | Serveur de développement Laravel |
-| `npm run dev`       | Vite en mode watch (HMR)         |
-| `npm run build`     | Build de production des assets   |
+| Commande                  | Rôle                             |
+| ------------------------- | -------------------------------- |
+| `php artisan serve`       | Serveur de développement Laravel |
+| `./vendor/bin/sail up -d` | Stack Docker (image PHP **8.4**) |
+| `npm run dev`             | Vite en mode watch (HMR)         |
+| `npm run build`           | Build de production des assets   |
 
 
 Penser à régénérer le cache des routes si besoin : `php artisan route:cache` (production uniquement, en général).
