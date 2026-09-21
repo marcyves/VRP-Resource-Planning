@@ -17,6 +17,7 @@ Cette refonte est **purement présentationnelle et navigationnelle** : le modèl
 | **Navigation latérale** | Sidebar 260 px, topbar, fil d’Ariane, mode sombre |
 | **Hub écoles** | Page d’accueil = liste des écoles avec indicateurs facturé / non facturé |
 | **Facturation contextualisée** | Préparation sur `school/show`, plus dans l’agenda |
+| **Canvas public** | Landing `/` et auth partagent le layout marketing — [design system CSS](v2-design-system-css.md#canvas-marketing-public) |
 
 ## Fiches détaillées
 
@@ -31,6 +32,8 @@ Cette refonte est **purement présentationnelle et navigationnelle** : le modèl
 | Revue de code & refactor listes | [v2-revue-code-refactoring-listes.md](v2-revue-code-refactoring-listes.md) |
 
 ## Parcours utilisateur type
+
+Les invités commencent sur la **landing** `/` (ou `/demande-acces`). Un utilisateur déjà connecté sur `/` va vers `User::homePath()`.
 
 1. **Connexion** → `/home` (liste des écoles)
 2. Consulter **facturé TTC** et **non facturé** par établissement

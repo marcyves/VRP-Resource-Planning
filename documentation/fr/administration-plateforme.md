@@ -13,7 +13,7 @@ Le parcours plateforme sert à contrôler l'onboarding :
 - créer chaque entreprise avec son préfixe de facturation, son profil terminologique et son premier administrateur ;
 - ajouter les autres utilisateurs depuis la fiche entreprise.
 
-L'inscription publique est désactivée par défaut et ne provisionne pas d'entreprise. Utiliser le parcours super admin pour l'onboarding courant.
+L'inscription publique est désactivée par défaut et ne provisionne pas d'entreprise. Utiliser le parcours super admin pour l'onboarding courant. Les invités arrivent sur `/` (`WelcomeController`) et demandent un compte sur `/demande-acces`.
 
 ## Modèle d'accès
 
@@ -109,7 +109,7 @@ L'inscription publique crée seulement un compte utilisateur ; elle ne crée ni 
 
 ### Demande de compte (`/demande-acces`)
 
-La page d'accueil et le login pointent vers **Demander un compte** (`account-request.create`). Ce n'est **pas** un auto-provisionnement :
+La page d'accueil et le login pointent vers **Demander un compte** (`account-request.create`). Ce n'est **pas** un auto-provisionnement. Le chrome public est le layout marketing (wordmark seul — [design system CSS](v2-design-system-css.md#canvas-marketing-public)).
 
 1. L'invité envoie nom d'entreprise, contact, e-mail, téléphone optionnel, profil terminologique, message (`StoreAccountRequestRequest` ; POST limité `5,1`).
 2. `AccountRequestController` envoie `AccountRequestMail` à `config('vrp.account_request_email')`.
@@ -132,6 +132,7 @@ Couverture : `tests/Feature/LandingPageTest.php`.
 | `/register` renvoie 404 | `VRP_ALLOW_REGISTRATION` vaut false, le défaut |
 | Demande de compte OK mais pas d'e-mail | `VRP_ACCOUNT_REQUEST_EMAIL` est vide ; omettre la clé pour retomber sur `MAIL_FROM_ADDRESS`, ou renseigner une vraie boîte |
 | POST `/demande-acces` en 429 | Limiteur `5,1` sur `account-request.store` |
+| Un utilisateur connecté voit encore la landing | `WelcomeController` doit rediriger vers `User::homePath()` ; vérifier la session |
 
 ## Fichiers clés
 
@@ -143,6 +144,8 @@ Couverture : `tests/Feature/LandingPageTest.php`.
 | `app/Http/Controllers/SuperAdmin/CompanyController.php` | Liste, création, modification et suppression entreprise |
 | `app/Http/Controllers/SuperAdmin/CompanyUserController.php` | Ajout d'utilisateurs tenant |
 | `app/Http/Controllers/AccountRequestController.php` | Mail invité `/demande-acces` |
+| `app/Http/Controllers/WelcomeController.php` | Landing invitée `/` ; redirection si déjà connecté |
+| `resources/views/layouts/marketing.blade.php` | Chrome public (wordmark, skip link, bascule de thème) |
 | `app/Services/CompanyProvisioner.php` | Création transactionnelle entreprise + premier admin |
 | `app/Services/CompanyUserProvisioner.php` | Création utilisateur tenant et synchronisation contact |
 | `app/Services/CompanyDeleter.php` | Nettoyage destructif d'un tenant |

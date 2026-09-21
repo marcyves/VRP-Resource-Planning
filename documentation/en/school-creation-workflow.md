@@ -39,6 +39,21 @@ School "My institution"
 | Course | `course.store` | `CourseController@store` |
 | Group | `group.save` | `GroupController@store` |
 
+### School code (optional, unique per company)
+
+Create (`school.index` inline form) and edit (`school.edit`) both persist `schools.code`. `SchoolController` trims the value; blank input becomes `null`.
+
+| Constraint | Detail |
+|------------|--------|
+| Optional | Empty / whitespace-only codes store as `null`. Several schools in the same company may have no code |
+| Length | `string`, max **80** |
+| Uniqueness | Unique **within the current company** (`Rule::unique` + `where company_id`). The same code is allowed in another tenant |
+| Update | The current school is ignored (`->ignore($school_id)`), so keeping the same code is valid |
+| Error | `messages.school_code_taken` |
+| Database | Column is a nullable string **without** a unique index (`2025_09_09_170129_add_code_to_schools_table`). Uniqueness is application-level only — seeders / tinker can still insert duplicates |
+
+Coverage: `tests/Feature/SchoolCodeUniquenessTest.php`.
+
 The course form (`create` / `edit`) is a compact two-row layout:
 
 | Row | Component | Fields |

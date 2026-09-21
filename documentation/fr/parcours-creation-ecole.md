@@ -39,6 +39,21 @@ Les **programmes** sont créés en premier (globaux à l’entreprise), puis l�
 | Cours | `course.store` | `CourseController@store` |
 | Groupe | `group.save` | `GroupController@store` |
 
+### Code école (optionnel, unique par entreprise)
+
+La création (formulaire inline sur `school.index`) et l’édition (`school.edit`) enregistrent `schools.code`. `SchoolController` trimme la valeur ; un champ vide devient `null`.
+
+| Contrainte | Détail |
+|------------|--------|
+| Optionnel | Un code vide / blanc est stocké `null`. Plusieurs écoles de la même entreprise peuvent n’avoir aucun code |
+| Longueur | `string`, max **80** |
+| Unicité | Unique **dans l’entreprise courante** (`Rule::unique` + `where company_id`). Le même code est autorisé chez un autre tenant |
+| Mise à jour | L’école courante est ignorée (`->ignore($school_id)`) : conserver le même code est valide |
+| Erreur | `messages.school_code_taken` |
+| Base | Colonne string nullable **sans** index unique (`2025_09_09_170129_add_code_to_schools_table`). L’unicité est applicative — seeders / tinker peuvent encore insérer des doublons |
+
+Couverture : `tests/Feature/SchoolCodeUniquenessTest.php`.
+
 Le formulaire cours (`create` / `edit`) est un layout compact sur deux lignes :
 
 | Ligne | Composant | Champs |
