@@ -92,6 +92,8 @@ Un visiteur déjà connecté sur `/` est redirigé par `WelcomeController` vers 
 | Régions isolées | `body.marketing-page .marketing-main > section` ne doit pas hériter du chrome panneaux/listes de l’app |
 | Copie | Uniquement `messages.landing_*` — pas de témoignages, tarifs ou logos clients inventés |
 | Illustration hero | `public/images/VRP-login.jpg` est une image, pas une marque (`aria-hidden`) |
+| Aperçu social résiduel | `x-metas` pointe encore itemprop / twitter:image vers `http://vrp.xdm-consulting.fr/images/VRP.jpeg`. Ce n’est **pas** le chrome d’en-tête |
+| Layout guest inutilisé | `resources/views/layouts/guest.blade.php` embarque encore `VRP.jpeg` ; les pages invitées en prod utilisent `layouts/marketing.blade.php` |
 
 Couverture : `tests/Feature/LandingPageTest.php`. Mail de demande de compte : [administration-plateforme.md](administration-plateforme.md#demande-de-compte-demande-acces).
 

@@ -92,6 +92,8 @@ Signed-in visitors hitting `/` are redirected by `WelcomeController` to `User::h
 | Isolated regions | `body.marketing-page .marketing-main > section` must not inherit signed-in panel/list chrome |
 | Copy | `messages.landing_*` only — no invented testimonials, pricing, or customer logos |
 | Hero illustration | `public/images/VRP-login.jpg` is an image, not a mark (`aria-hidden`) |
+| Social preview leftover | `x-metas` still sets itemprop / twitter:image to `http://vrp.xdm-consulting.fr/images/VRP.jpeg`. That is **not** header chrome |
+| Unused guest layout | `resources/views/layouts/guest.blade.php` still embeds `VRP.jpeg`; live guest pages use `layouts/marketing.blade.php` |
 
 Coverage: `tests/Feature/LandingPageTest.php`. Account-request mail behaviour: [platform-administration.md](platform-administration.md#account-request-demande-acces).
 
