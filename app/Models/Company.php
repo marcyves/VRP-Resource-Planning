@@ -80,11 +80,26 @@ class Company extends Model
     {
         $parts = array_filter([
             $this->legal_form,
-            $this->share_capital ? __('messages.share_capital_label', ['amount' => $this->share_capital]) : null,
+            $this->formattedShareCapitalForFooter(),
             $this->siren ? __('messages.siren_label', ['siren' => $this->siren]) : null,
         ]);
 
         return $parts !== [] ? implode(' - ', $parts) : null;
+    }
+
+    private function formattedShareCapitalForFooter(): ?string
+    {
+        if (! $this->share_capital) {
+            return null;
+        }
+
+        $amount = trim(preg_replace('/\s*€\s*$/u', '', trim((string) $this->share_capital)));
+
+        if ($amount === '') {
+            return null;
+        }
+
+        return __('messages.share_capital_label', ['amount' => $amount]);
     }
 
     public function schools(): HasMany
