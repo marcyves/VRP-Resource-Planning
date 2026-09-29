@@ -95,6 +95,29 @@ class ElectronicInvoiceWebhookTest extends TestCase
         $this->assertNull($invoice->fresh()->pdp_reference);
     }
 
+    public function test_https_required_rejects_plain_http_webhook(): void
+    {
+        config(['electronic-invoicing.require_https_webhooks' => true]);
+        $this->bindPlatform('test-secret');
+
+        $this->postJson(route('webhooks.e-invoice', 'superpdp'), ['id' => '42', 'status' => 'accepted'])
+            ->assertStatus(400);
+    }
+
+    public function test_go_live_check_hides_secrets(): void
+    {
+        config([
+            'electronic-invoicing.superpdp.webhook_secret' => 'super-secret-value',
+            'electronic-invoicing.superpdp.client_id' => 'live-client-id',
+        ]);
+
+        $this->artisan('superpdp:go-live-check')
+            ->expectsOutputToContain('E_INVOICE_ALLOW_PRODUCTION : false')
+            ->doesntExpectOutputToContain('super-secret-value')
+            ->doesntExpectOutputToContain('live-client-id')
+            ->assertSuccessful();
+    }
+
     private function bindPlatform(string $secret): void
     {
         $this->app->instance(

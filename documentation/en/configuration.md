@@ -11,7 +11,11 @@
 | `VRP_ALLOW_REGISTRATION` | `false` | Public self-registration at `/register` |
 | `VRP_ACCOUNT_REQUEST_EMAIL` | `MAIL_FROM_ADDRESS` if the key is **unset** | Inbox for `/demande-acces`. An empty `VRP_ACCOUNT_REQUEST_EMAIL=` in `.env` does **not** fall back (empty string is set) — the form still succeeds, but `AccountRequestController` reports a `RuntimeException` and sends no mail |
 | `E_INVOICE_PLATFORM` | *(unset)* | `superpdp` to bind SuperPDP; otherwise Null driver. Leave unset on live tenants. |
-| `E_INVOICE_ALLOW_PRODUCTION` | `false` | Hard lock: live SuperPDP submit stays off until this is `true` |
+| `E_INVOICE_ALLOW_PRODUCTION` | `false` | Hard lock: live SuperPDP submit stays off until this is `true` (server `.env` only; never commit `true`) |
+| `E_INVOICE_WEBHOOK_URL` | `APP_URL` + path | Public webhook URL to register at SuperPDP |
+| `E_INVOICE_REQUIRE_HTTPS_WEBHOOKS` | `false` | Reject `POST /webhooks/e-invoice/*` over HTTP (400). Enable on IONOS after TLS + `TRUSTED_PROXIES` |
+| `E_INVOICE_ALERT_EMAIL` | *(unset)* | Optional ops mail on submit/webhook failure |
+| `TRUSTED_PROXIES` | *(unset)* | `*` on IONOS so HTTPS is visible to Laravel |
 | `SUPERPDP_ENV` | `sandbox` | `sandbox` or `production` (selects OAuth credentials) |
 | `SUPERPDP_CLIENT_ID` / `SUPERPDP_CLIENT_SECRET` | — | Production OAuth (`client_credentials`) |
 | `SUPERPDP_SANDBOX_CLIENT_ID` / `SUPERPDP_SANDBOX_CLIENT_SECRET` | — | Sandbox OAuth when `SUPERPDP_ENV=sandbox` |

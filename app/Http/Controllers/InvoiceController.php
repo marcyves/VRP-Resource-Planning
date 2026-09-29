@@ -8,6 +8,7 @@ use App\Http\Utility\Tools;
 use App\Models\Invoice;
 use App\Models\Planning;
 use App\Models\School;
+use App\Services\ElectronicInvoicing\ElectronicInvoiceMonitor;
 use App\Services\ElectronicInvoicing\ElectronicInvoiceService;
 use App\Services\InvoiceService;
 use Carbon\Carbon;
@@ -309,8 +310,11 @@ class InvoiceController extends Controller
         }
     }
 
-    public function submitElectronic(Invoice $invoice, ElectronicInvoiceService $electronicInvoiceService)
-    {
+    public function submitElectronic(
+        Invoice $invoice,
+        ElectronicInvoiceService $electronicInvoiceService,
+        ElectronicInvoiceMonitor $monitor,
+    ) {
         $this->authorizeInvoice($invoice);
 
         try {
@@ -325,10 +329,21 @@ class InvoiceController extends Controller
             if ($e->errors !== []) {
                 session()->flash('warning', implode(' · ', $e->errors));
             }
+
+            $monitor->warning('e-invoice submit failed', [
+                'invoice_id' => $invoice->id,
+                'message' => $e->getMessage(),
+            ]);
         } catch (\Throwable $e) {
             session()->flash('danger', __('messages.electronic_invoice_submit_error', [
                 'message' => $e->getMessage(),
             ]));
+
+            $monitor->alert(
+                'Échec émission e-facture',
+                "Facture {$invoice->id} : {$e->getMessage()}",
+                ['invoice_id' => $invoice->id],
+            );
         }
 
         return redirect()->back();

@@ -43,6 +43,8 @@ Drivers: `null` (default when `E_INVOICE_PLATFORM` is unset/other) or `superpdp`
 
 **Production lock:** `E_INVOICE_ALLOW_PRODUCTION` defaults to `false`. `SUPERPDP_ENV` defaults to `sandbox`. If `SUPERPDP_ENV=production` without the allow flag, `isConfigured()` is false (submit button hidden; `superpdp:send-test` refused). `superpdp:test` may still check OAuth and prints a warning.
 
+**Per-tenant switch:** `companies.electronic_invoicing_enabled` defaults **false**. The Treasury e-button requires the process platform **and** this flag. Go-live runbook: [electronic-invoicing-go-live.md](electronic-invoicing-go-live.md).
+
 ## Configuration
 
 ```env
@@ -82,12 +84,13 @@ Optional helpers:
 | `php artisan superpdp:send-test` | Send SuperPDP-generated sandbox invoice |
 | `php artisan superpdp:send-test --invoice={id}` | Submit a ready VRP invoice |
 | `php artisan superpdp:setup-tricatel` | Seed sandbox buyer school (Tricatel / PEPPOL address) |
+| `php artisan superpdp:go-live-check` | Print go-live checklist (no secrets) |
 
 ## Submit workflow
 
 1. Create an invoice → status set to **`ready`** (`InvoiceController::store`).
 2. Ensure PDF exists on disk (`invoices/{bill_prefix}{id}.pdf`). Missing PDF blocks submit.
-3. Open **Treasury → Invoices**. The e-invoice button appears only when `ElectronicInvoiceService::platformConfigured()` is true **and** status is `ready`.
+3. Open **Treasury → Invoices**. The e-invoice button appears only when the platform is configured, **the company opt-in is on**, and status is `ready`.
 4. `POST invoice.submitElectronic` validates then submits.
 5. On success: status **`transmitted`**, `pdp_reference` set, `rejection_reason` cleared.
 
@@ -140,7 +143,9 @@ Invoice lookup: `pdp_reference` first, then numeric part of `external_id` as VRP
 - Webhooks without `SUPERPDP_WEBHOOK_SECRET` always return **401**. Unmatched invoices return **204** (logged). Unexpected errors return **500**.
 - VAT in the CII builder is currently fixed at **20%** (independent of company/course rates).
 - Supplier invoice reception UI is not built yet.
-- The PA switch is **process-wide**, not per company — do not enable production on a multi-tenant host until there is a per-tenant flag.
+- The PA needs **both** the process lock and the per-company opt-in. Enabling production env without opt-in still emits for nobody.
+- Logs: `storage/logs/e-invoice.log`. Optional `E_INVOICE_ALERT_EMAIL`.
+- Production cut-over: [electronic-invoicing-go-live.md](electronic-invoicing-go-live.md).
 
 ## See also
 

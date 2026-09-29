@@ -110,4 +110,63 @@ class SuperPdpConfig
     {
         return ! self::isProductionBlocked($config);
     }
+
+    /**
+     * Public URL to register in the SuperPDP application (no secret).
+     *
+     * @param  array<string, mixed>|null  $config
+     */
+    public static function publicWebhookUrl(?array $config = null): string
+    {
+        $override = self::appConfig($config)['webhook_url'] ?? null;
+
+        if (is_string($override) && $override !== '') {
+            return $override;
+        }
+
+        return rtrim((string) config('app.url'), '/').'/webhooks/e-invoice/superpdp';
+    }
+
+    /**
+     * @param  array<string, mixed>|null  $config
+     */
+    public static function webhookUrlIsHttps(?array $config = null): bool
+    {
+        return str_starts_with(strtolower(self::publicWebhookUrl($config)), 'https://');
+    }
+
+    /**
+     * @param  array<string, mixed>|null  $config
+     */
+    public static function requireHttpsWebhooks(?array $config = null): bool
+    {
+        return (bool) (self::appConfig($config)['require_https_webhooks'] ?? false);
+    }
+
+    /**
+     * @param  array<string, mixed>|null  $config
+     */
+    public static function webhookSecretConfigured(?array $config = null): bool
+    {
+        $secret = self::superpdpConfig($config)['webhook_secret'] ?? null;
+
+        return is_string($secret) && $secret !== '';
+    }
+
+    /**
+     * @param  array<string, mixed>|null  $config
+     */
+    public static function oauthConfigured(?array $config = null): bool
+    {
+        $superpdp = self::superpdpConfig($config);
+        $token = $superpdp['access_token'] ?? null;
+
+        if (is_string($token) && $token !== '') {
+            return true;
+        }
+
+        [$id, $secret] = self::activeCredentials($superpdp);
+
+        return is_string($id) && $id !== '' && is_string($secret) && $secret !== '';
+    }
 }

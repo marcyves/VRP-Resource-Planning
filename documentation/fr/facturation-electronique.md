@@ -43,6 +43,8 @@ Drivers : `null` (défaut si `E_INVOICE_PLATFORM` absent/autre) ou `superpdp`. B
 
 **Verrou production :** `E_INVOICE_ALLOW_PRODUCTION` vaut `false` par défaut. `SUPERPDP_ENV` vaut `sandbox` par défaut. Si `SUPERPDP_ENV=production` sans le flag, `isConfigured()` est faux (bouton masqué ; `superpdp:send-test` refusé). `superpdp:test` peut encore vérifier l’OAuth et affiche un avertissement.
 
+**Interrupteur locataire :** `companies.electronic_invoicing_enabled` vaut **false** par défaut. Le bouton Trésorerie exige la PA process **et** ce flag. Runbook go-live : [facturation-electronique-go-live.md](facturation-electronique-go-live.md).
+
 ## Configuration
 
 ```env
@@ -82,12 +84,13 @@ Commandes utiles :
 | `php artisan superpdp:send-test` | Envoie une facture sandbox générée par SuperPDP |
 | `php artisan superpdp:send-test --invoice={id}` | Soumet une facture VRP prête |
 | `php artisan superpdp:setup-tricatel` | Prépare l’école acheteur sandbox (adresse PEPPOL) |
+| `php artisan superpdp:go-live-check` | Checklist go-live (aucun secret affiché) |
 
 ## Parcours d’émission
 
 1. Créer une facture → statut **`ready`** (`InvoiceController::store`).
 2. PDF présent sur disque (`invoices/{bill_prefix}{id}.pdf`). Absent = blocage.
-3. **Trésorerie → Factures** : le bouton e-facture n’apparaît que si `platformConfigured()` est vrai **et** le statut est `ready`.
+3. **Trésorerie → Factures** : le bouton e-facture n’apparaît que si la PA est configurée, **l’opt-in société est on**, et le statut est `ready`.
 4. `POST invoice.submitElectronic` valide puis soumet.
 5. Succès : statut **`transmitted`**, `pdp_reference` renseigné, `rejection_reason` effacé.
 
@@ -140,7 +143,9 @@ Recherche facture : `pdp_reference` d’abord, puis partie numérique de `extern
 - Webhook sans `SUPERPDP_WEBHOOK_SECRET` → toujours **401**. Facture introuvable → **204** (journalisé). Erreur inattendue → **500**.
 - TVA du builder CII fixée à **20 %** (indépendante des taux société / cours).
 - Pas d’UI de réception fournisseurs.
-- L’interrupteur PA est **global au process**, pas par entreprise — ne pas allumer la production sur un hôte multi-locataires tant qu’il n’y a pas de flag par société.
+- L’émission exige **à la fois** le verrou process et l’opt-in société. Allumer l’env production sans opt-in n’émet pour personne.
+- Journaux : `storage/logs/e-invoice.log`. Mail optionnel `E_INVOICE_ALERT_EMAIL`.
+- Cut-over production : [facturation-electronique-go-live.md](facturation-electronique-go-live.md).
 
 ## Voir aussi
 

@@ -11,7 +11,11 @@
 | `VRP_ALLOW_REGISTRATION` | `false` | Inscription publique `/register` |
 | `VRP_ACCOUNT_REQUEST_EMAIL` | `MAIL_FROM_ADDRESS` si la clé est **absente** | Boîte de `/demande-acces`. Un `VRP_ACCOUNT_REQUEST_EMAIL=` vide dans `.env` **ne** bascule **pas** (chaîne vide = valeur définie) : le formulaire réussit, mais `AccountRequestController` journalise une `RuntimeException` et n’envoie pas de mail |
 | `E_INVOICE_PLATFORM` | *(absent)* | `superpdp` pour SuperPDP ; sinon driver Null. Laisser absent sur les locataires live. |
-| `E_INVOICE_ALLOW_PRODUCTION` | `false` | Verrou : l’émission SuperPDP production reste off tant que ce n’est pas `true` |
+| `E_INVOICE_ALLOW_PRODUCTION` | `false` | Verrou : l’émission SuperPDP production reste off tant que ce n’est pas `true` (`.env` serveur uniquement ; ne jamais committer `true`) |
+| `E_INVOICE_WEBHOOK_URL` | `APP_URL` + chemin | URL webhook publique à coller chez SuperPDP |
+| `E_INVOICE_REQUIRE_HTTPS_WEBHOOKS` | `false` | Rejeter `POST /webhooks/e-invoice/*` en HTTP (400). Activer sur IONOS après TLS + `TRUSTED_PROXIES` |
+| `E_INVOICE_ALERT_EMAIL` | *(absent)* | Mail ops optionnel si émission/webhook en échec |
+| `TRUSTED_PROXIES` | *(absent)* | `*` sur IONOS pour que Laravel voie le HTTPS |
 | `SUPERPDP_ENV` | `sandbox` | `sandbox` ou `production` (choix des credentials OAuth) |
 | `SUPERPDP_CLIENT_ID` / `SUPERPDP_CLIENT_SECRET` | — | OAuth production (`client_credentials`) |
 | `SUPERPDP_SANDBOX_CLIENT_ID` / `SUPERPDP_SANDBOX_CLIENT_SECRET` | — | OAuth sandbox si `SUPERPDP_ENV=sandbox` |

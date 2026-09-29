@@ -47,6 +47,11 @@ class Company extends Model
         'bic',
         'iban',
         'billing_bank_account_id',
+        'electronic_invoicing_enabled',
+    ];
+
+    protected $casts = [
+        'electronic_invoicing_enabled' => 'boolean',
     ];
 
     public function billingBankAccount(): BelongsTo
@@ -148,5 +153,10 @@ class Company extends Model
         $profile = $this->terminology_profile ?? self::PROFILE_EDUCATION;
 
         return __("messages.terminology_profile_{$profile}");
+    }
+
+    public function allowsElectronicInvoicing(): bool
+    {
+        return (bool) $this->electronic_invoicing_enabled;
     }
 }

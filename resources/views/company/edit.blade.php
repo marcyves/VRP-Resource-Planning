@@ -123,6 +123,17 @@
                 @endif
             </div>
 
+            <div class="company-form-block">
+                <h3 class="company-form-block__title">{{ __('messages.electronic_invoicing_enabled') }}</h3>
+                <p class="form-hint">{{ __('messages.electronic_invoicing_enabled_hint') }}</p>
+                <div class="school-form-input">
+                    <label class="form-hint">
+                        <input type="checkbox" name="electronic_invoicing_enabled" value="1" @checked(old('electronic_invoicing_enabled', $company->electronic_invoicing_enabled))>
+                        {{ __('messages.electronic_invoicing_enabled') }}
+                    </label>
+                </div>
+            </div>
+
             <div class="form-actions company-form-actions">
                 <a href="{{ route('company.show') }}" class="btn btn-secondary">{{ __('messages.cancel') }}</a>
                 <x-button-primary>{{ __('messages.update') }}</x-button-primary>

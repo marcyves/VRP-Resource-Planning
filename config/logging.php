@@ -118,6 +118,14 @@ return [
             'replace_placeholders' => true,
         ],
 
+        'e-invoice' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/e-invoice.log'),
+            'level' => env('LOG_LEVEL', 'info'),
+            'days' => 30,
+            'replace_placeholders' => true,
+        ],
+
         'null' => [
             'driver' => 'monolog',
             'handler' => NullHandler::class,

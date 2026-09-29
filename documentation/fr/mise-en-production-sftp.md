@@ -71,6 +71,14 @@ Ne pas régénérer `config:cache` en local pour l’envoyer en prod (ce serait 
 4. `./scripts/deploy-xdm-vrp.sh --upload`
 5. Smoke test : login, liste factures, une fiche école
 
+## Facturation électronique (`.env` serveur uniquement)
+
+Le SFTP n’envoie jamais `.env`. Après ce code en live, suivre [facturation-electronique-go-live.md](facturation-electronique-go-live.md) :
+
+1. Appliquer `electronic_invoicing_enabled` sur MySQL prod (le fichier de migration est de la doc).
+2. Poser les variables SuperPDP **production** sur IONOS (`E_INVOICE_ALLOW_PRODUCTION` reste `false` jusqu’au cut-over).
+3. `php artisan superpdp:go-live-check` sur le serveur (n’affiche aucun secret).
+
 ## Erreurs fréquentes et correctifs
 
 | Symptôme | Cause probable | Correctif |

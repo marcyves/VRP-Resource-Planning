@@ -27,6 +27,23 @@ return [
     */
     'allow_production' => filter_var(env('E_INVOICE_ALLOW_PRODUCTION', false), FILTER_VALIDATE_BOOLEAN),
 
+    /*
+    | Optional public webhook URL (otherwise APP_URL + /webhooks/e-invoice/superpdp).
+    | Register this HTTPS URL in the SuperPDP application. Never commit the HMAC secret.
+    */
+    'webhook_url' => env('E_INVOICE_WEBHOOK_URL'),
+
+    /*
+    | When true, POST /webhooks/e-invoice/* over plain HTTP is rejected (400).
+    | Enable on IONOS only after HTTPS (and TRUSTED_PROXIES if TLS is terminated upstream).
+    */
+    'require_https_webhooks' => filter_var(env('E_INVOICE_REQUIRE_HTTPS_WEBHOOKS', false), FILTER_VALIDATE_BOOLEAN),
+
+    /*
+    | Ops mailbox for submit/webhook failures. Empty = log only (storage/logs/e-invoice.log).
+    */
+    'alert_email' => env('E_INVOICE_ALERT_EMAIL'),
+
     'superpdp' => [
         'base_url' => env('SUPERPDP_BASE_URL', 'https://api.superpdp.tech'),
         // sandbox par défaut — jamais production implicite

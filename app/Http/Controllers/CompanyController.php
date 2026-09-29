@@ -56,10 +56,12 @@ class CompanyController extends Controller
                 'nullable',
                 Rule::exists('bank_accounts', 'id')->where(fn ($query) => $query->where('company_id', $company->id)),
             ],
+            'electronic_invoicing_enabled' => ['sometimes', 'boolean'],
         ]);
 
-        $company->fill(collect($validated)->except('contact_user_id')->all());
+        $company->fill(collect($validated)->except(['contact_user_id', 'electronic_invoicing_enabled'])->all());
         $company->billing_bank_account_id = $validated['billing_bank_account_id'] ?? null;
+        $company->electronic_invoicing_enabled = $request->boolean('electronic_invoicing_enabled');
 
         $contactUser = ! empty($validated['contact_user_id'])
             ? $this->companyUsersQuery()->find($validated['contact_user_id'])

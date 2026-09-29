@@ -71,6 +71,14 @@ Do not run `config:cache` locally and upload it (that would be **local** config)
 4. `./scripts/deploy-xdm-vrp.sh --upload`
 5. Smoke test: login, invoice list, one school page
 
+## Electronic invoicing (server `.env` only)
+
+SFTP never uploads `.env`. After this code is live, follow [electronic-invoicing-go-live.md](electronic-invoicing-go-live.md):
+
+1. Apply `electronic_invoicing_enabled` on prod MySQL (migration file is uploaded as documentation).
+2. Set SuperPDP production variables **on IONOS** (`E_INVOICE_ALLOW_PRODUCTION` stays `false` until cut-over).
+3. `php artisan superpdp:go-live-check` on the server (prints no secrets).
+
 ## See also
 
 - [AGENTS.md](../../AGENTS.md)
