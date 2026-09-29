@@ -53,6 +53,7 @@ return [
         'sandbox_client_id' => env('SUPERPDP_SANDBOX_CLIENT_ID'),
         'sandbox_client_secret' => env('SUPERPDP_SANDBOX_CLIENT_SECRET'),
         'access_token' => env('SUPERPDP_ACCESS_TOKEN'),
+        // Optional .env fallback; runtime prefers the encrypted UI-stored secret.
         'webhook_secret' => env('SUPERPDP_WEBHOOK_SECRET'),
         // Sandbox : adresses de routage annuaire / PEPPOL (client test Tricatel par défaut)
         'sandbox_routing_prefix' => env('SUPERPDP_SANDBOX_ROUTING_PREFIX', '315143296'),

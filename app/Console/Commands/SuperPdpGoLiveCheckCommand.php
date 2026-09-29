@@ -27,13 +27,17 @@ class SuperPdpGoLiveCheckCommand extends Command
         $this->line('SUPERPDP_ENV : '.$env);
         $this->line('E_INVOICE_ALLOW_PRODUCTION : '.($allowProduction ? 'true' : 'false'));
         $this->line('OAuth / token configuré : '.($auth->isConfigured() && SuperPdpConfig::oauthConfigured() ? 'oui' : 'non'));
-        $this->line('Secret webhook présent : '.(SuperPdpConfig::webhookSecretConfigured() ? 'oui' : 'non'));
+        $this->line('Secret webhook présent : '.$this->webhookSecretPresenceLabel());
         $this->line('URL webhook à déclarer chez SuperPDP : '.$webhookUrl);
         $this->line('URL webhook en HTTPS : '.(SuperPdpConfig::webhookUrlIsHttps() ? 'oui' : 'NON'));
         $this->line('Exiger HTTPS sur POST webhook : '.(SuperPdpConfig::requireHttpsWebhooks() ? 'oui' : 'non'));
         $this->line('TRUSTED_PROXIES : '.(env('TRUSTED_PROXIES') ?: '(non défini)'));
         $this->line('E-mail d’alerte : '.(filled(config('electronic-invoicing.alert_email')) ? 'oui' : 'non (logs seulement)'));
         $this->line('Verrou production : '.(SuperPdpConfig::isProductionBlocked() ? 'FERMÉ (pas d’émission live)' : 'ouvert ou sandbox'));
+
+        if (! Schema::hasTable('platform_settings')) {
+            $this->warn('Table platform_settings absente — appliquer la migration / CREATE SQL du runbook go-live (secret HMAC UI).');
+        }
 
         if (! Schema::hasColumn('companies', 'electronic_invoicing_enabled')) {
             $this->warn('Colonne electronic_invoicing_enabled absente — appliquer la migration / ALTER SQL du runbook go-live.');
@@ -76,5 +80,14 @@ class SuperPdpGoLiveCheckCommand extends Command
         }
 
         return self::SUCCESS;
+    }
+
+    private function webhookSecretPresenceLabel(): string
+    {
+        return match (SuperPdpConfig::webhookSecretSource()) {
+            'ui' => 'oui (interface super-admin)',
+            'env' => 'oui (.env)',
+            default => 'non',
+        };
     }
 }

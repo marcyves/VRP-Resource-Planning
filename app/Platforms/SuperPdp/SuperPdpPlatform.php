@@ -19,7 +19,7 @@ class SuperPdpPlatform implements ElectronicInvoicePlatform
         private readonly ?SuperPdpClient $client,
         private readonly ElectronicInvoiceValidator $validator,
         private readonly ElectronicInvoiceCiiBuilder $ciiBuilder,
-        private readonly ?string $webhookSecret,
+        private readonly ?string $webhookSecret = null,
     ) {}
 
     public function isConfigured(): bool
@@ -125,7 +125,9 @@ class SuperPdpPlatform implements ElectronicInvoicePlatform
 
     public function verifyWebhook(Request $request): bool
     {
-        if (! $this->webhookSecret) {
+        $secret = $this->resolvedWebhookSecret();
+
+        if (! $secret) {
             return false;
         }
 
@@ -136,8 +138,17 @@ class SuperPdpPlatform implements ElectronicInvoicePlatform
             return false;
         }
 
-        $expected = hash_hmac('sha256', $request->getContent(), $this->webhookSecret);
+        $expected = hash_hmac('sha256', $request->getContent(), $secret);
 
         return hash_equals($expected, $signature);
+    }
+
+    private function resolvedWebhookSecret(): ?string
+    {
+        if (is_string($this->webhookSecret) && $this->webhookSecret !== '') {
+            return $this->webhookSecret;
+        }
+
+        return SuperPdpConfig::webhookSecret();
     }
 }

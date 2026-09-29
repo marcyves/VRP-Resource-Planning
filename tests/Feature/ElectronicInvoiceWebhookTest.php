@@ -113,6 +113,7 @@ class ElectronicInvoiceWebhookTest extends TestCase
 
         $this->artisan('superpdp:go-live-check')
             ->expectsOutputToContain('E_INVOICE_ALLOW_PRODUCTION : false')
+            ->expectsOutputToContain('oui (.env)')
             ->doesntExpectOutputToContain('super-secret-value')
             ->doesntExpectOutputToContain('live-client-id')
             ->assertSuccessful();

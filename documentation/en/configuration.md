@@ -20,7 +20,7 @@
 | `SUPERPDP_CLIENT_ID` / `SUPERPDP_CLIENT_SECRET` | — | Production OAuth (`client_credentials`) |
 | `SUPERPDP_SANDBOX_CLIENT_ID` / `SUPERPDP_SANDBOX_CLIENT_SECRET` | — | Sandbox OAuth when `SUPERPDP_ENV=sandbox` |
 | `SUPERPDP_ACCESS_TOKEN` | — | Optional bearer token (skips OAuth) |
-| `SUPERPDP_WEBHOOK_SECRET` | — | HMAC secret; missing secret → webhook **401** |
+| `SUPERPDP_WEBHOOK_SECRET` | — | Optional HMAC fallback ; prefer super-admin → Electronic invoicing. Missing secret → webhook **401** |
 
 Example `.env.example`:
 

@@ -65,7 +65,7 @@ SUPERPDP_SANDBOX_CLIENT_SECRET=
 # optional: skip OAuth and use a bearer token
 # SUPERPDP_ACCESS_TOKEN=
 
-# required for status callbacks (missing → webhook 401)
+# required for status callbacks unless stored in super-admin → Electronic invoicing
 # SUPERPDP_WEBHOOK_SECRET=
 ```
 
@@ -122,7 +122,7 @@ Sandbox without a school `electronic_address` can inject default routing (`SUPER
 |------|-------|
 | Route | `POST /webhooks/e-invoice/{platform}` — only `superpdp` accepted (other platforms → 404) |
 | CSRF | Excluded in `VerifyCsrfToken` (`webhooks/e-invoice/*`) |
-| Auth | HMAC-SHA256 of raw body; headers `X-SuperPDP-Signature` or `X-Webhook-Signature` |
+| Auth | HMAC-SHA256 of raw body; headers `X-SuperPDP-Signature` or `X-Webhook-Signature`. Secret: **super-admin → Electronic invoicing** first (encrypted), then optional `SUPERPDP_WEBHOOK_SECRET` |
 | Success | HTTP 204 |
 
 Status mapping (substring match on payload `status` / `status_code`):
@@ -140,7 +140,7 @@ Invoice lookup: `pdp_reference` first, then numeric part of `external_id` as VRP
 - Without `E_INVOICE_PLATFORM=superpdp` and valid **sandbox** credentials, the UI submit button stays hidden (`isConfigured()` → false). The status column stays visible.
 - `SUPERPDP_ENV=production` without `E_INVOICE_ALLOW_PRODUCTION=true` also hides submit and blocks `superpdp:send-test`.
 - Missing SIREN/address or PDF yields a flash danger + warning list of validation messages.
-- Webhooks without `SUPERPDP_WEBHOOK_SECRET` always return **401**. Unmatched invoices return **204** (logged). Unexpected errors return **500**.
+- Webhooks without an HMAC secret (UI-stored or `SUPERPDP_WEBHOOK_SECRET`) always return **401**. Unmatched invoices return **204** (logged). Unexpected errors return **500**.
 - VAT in the CII builder is currently fixed at **20%** (independent of company/course rates).
 - Supplier invoice reception UI is not built yet.
 - The PA needs **both** the process lock and the per-company opt-in. Enabling production env without opt-in still emits for nobody.

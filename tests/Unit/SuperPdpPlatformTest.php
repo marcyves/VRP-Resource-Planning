@@ -9,12 +9,15 @@ use App\Platforms\SuperPdp\SuperPdpClient;
 use App\Platforms\SuperPdp\SuperPdpPlatform;
 use App\Services\ElectronicInvoicing\ElectronicInvoiceCiiBuilder;
 use App\Services\ElectronicInvoicing\ElectronicInvoiceValidator;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\Request;
 use Mockery;
 use Tests\TestCase;
 
 class SuperPdpPlatformTest extends TestCase
 {
+    use RefreshDatabase;
+
     public function test_is_not_configured_when_live_pa_is_locked(): void
     {
         config([
@@ -92,6 +95,20 @@ class SuperPdpPlatformTest extends TestCase
 
         $noSecret = $this->platform(null);
         $this->assertFalse($noSecret->verifyWebhook($request));
+    }
+
+    public function test_verify_webhook_uses_env_secret_when_constructor_secret_is_empty(): void
+    {
+        config(['electronic-invoicing.superpdp.webhook_secret' => 'from-env']);
+
+        $platform = $this->platform(null);
+        $payload = '{"id":"42"}';
+        $request = Request::create('/', 'POST', [], [], [], [
+            'HTTP_X_SUPERPDP_SIGNATURE' => hash_hmac('sha256', $payload, 'from-env'),
+            'CONTENT_TYPE' => 'application/json',
+        ], $payload);
+
+        $this->assertTrue($platform->verifyWebhook($request));
     }
 
     private function platform(?string $secret): SuperPdpPlatform

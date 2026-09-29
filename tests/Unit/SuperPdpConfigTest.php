@@ -3,10 +3,13 @@
 namespace Tests\Unit;
 
 use App\Platforms\SuperPdp\SuperPdpConfig;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class SuperPdpConfigTest extends TestCase
 {
+    use RefreshDatabase;
+
     public function test_uses_sandbox_credentials_when_env_is_sandbox(): void
     {
         [$clientId, $clientSecret, $env] = SuperPdpConfig::activeCredentials([
@@ -67,6 +70,15 @@ class SuperPdpConfigTest extends TestCase
 
         $this->assertFalse(SuperPdpConfig::isProductionBlocked());
         $this->assertTrue(SuperPdpConfig::outboundAllowed());
+    }
+
+    public function test_webhook_secret_falls_back_to_env_when_ui_is_empty(): void
+    {
+        config(['electronic-invoicing.superpdp.webhook_secret' => 'env-only-secret']);
+
+        $this->assertSame('env-only-secret', SuperPdpConfig::webhookSecret());
+        $this->assertSame('env', SuperPdpConfig::webhookSecretSource());
+        $this->assertTrue(SuperPdpConfig::webhookSecretConfigured());
     }
 
     public function test_public_webhook_url_uses_app_url_and_https_check(): void

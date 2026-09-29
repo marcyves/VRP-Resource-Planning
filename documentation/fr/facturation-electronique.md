@@ -65,7 +65,7 @@ SUPERPDP_SANDBOX_CLIENT_SECRET=
 # optionnel : bearer token (sans OAuth)
 # SUPERPDP_ACCESS_TOKEN=
 
-# obligatoire pour les callbacks de statut (absent → webhook 401)
+# obligatoire pour les callbacks de statut, sauf secret saisi en super-admin → Facturation électronique
 # SUPERPDP_WEBHOOK_SECRET=
 ```
 
@@ -122,7 +122,7 @@ En sandbox, sans `electronic_address` sur l’école, un routage par défaut (`S
 |---------|--------|
 | Route | `POST /webhooks/e-invoice/{platform}` — seul `superpdp` accepté (autre plateforme → 404) |
 | CSRF | Exclu dans `VerifyCsrfToken` (`webhooks/e-invoice/*`) |
-| Auth | HMAC-SHA256 du corps brut ; en-têtes `X-SuperPDP-Signature` ou `X-Webhook-Signature` |
+| Auth | HMAC-SHA256 du corps brut ; en-têtes `X-SuperPDP-Signature` ou `X-Webhook-Signature`. Secret : **super-admin → Facturation électronique** d’abord (chiffré), puis repli optionnel `SUPERPDP_WEBHOOK_SECRET` |
 | Succès | HTTP 204 |
 
 Mapping des statuts (sous-chaîne dans `status` / `status_code`) :
@@ -140,7 +140,7 @@ Recherche facture : `pdp_reference` d’abord, puis partie numérique de `extern
 - Sans `E_INVOICE_PLATFORM=superpdp` et credentials **sandbox** valides, le bouton UI reste masqué. La colonne de statut reste visible.
 - `SUPERPDP_ENV=production` sans `E_INVOICE_ALLOW_PRODUCTION=true` masque aussi le bouton et bloque `superpdp:send-test`.
 - SIREN/adresse ou PDF manquant → flash danger + liste d’erreurs.
-- Webhook sans `SUPERPDP_WEBHOOK_SECRET` → toujours **401**. Facture introuvable → **204** (journalisé). Erreur inattendue → **500**.
+- Webhook sans secret HMAC (UI super-admin ou `SUPERPDP_WEBHOOK_SECRET`) → toujours **401**. Facture introuvable → **204** (journalisé). Erreur inattendue → **500**.
 - TVA du builder CII fixée à **20 %** (indépendante des taux société / cours).
 - Pas d’UI de réception fournisseurs.
 - L’émission exige **à la fois** le verrou process et l’opt-in société. Allumer l’env production sans opt-in n’émet pour personne.
