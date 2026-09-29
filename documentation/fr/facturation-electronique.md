@@ -43,7 +43,7 @@ Drivers : `null` (défaut si `E_INVOICE_PLATFORM` absent/autre) ou `superpdp`. B
 
 **Verrou production :** `E_INVOICE_ALLOW_PRODUCTION` vaut `false` par défaut. `SUPERPDP_ENV` vaut `sandbox` par défaut. Si `SUPERPDP_ENV=production` sans le flag, `isConfigured()` est faux (bouton masqué ; `superpdp:send-test` refusé). `superpdp:test` peut encore vérifier l’OAuth et affiche un avertissement.
 
-**Interrupteur locataire :** `companies.electronic_invoicing_enabled` vaut **false** par défaut. Le bouton Trésorerie exige la PA process **et** ce flag. Runbook go-live : [facturation-electronique-go-live.md](facturation-electronique-go-live.md).
+**Interrupteur locataire :** `companies.electronic_invoicing_enabled` vaut **false** par défaut. Le bouton **e** (Trésorerie et fiche école) exige la PA process **et** ce flag. Runbook go-live : [facturation-electronique-go-live.md](facturation-electronique-go-live.md).
 
 ## Configuration
 
@@ -88,17 +88,17 @@ Commandes utiles :
 
 ## Parcours d’émission
 
-1. Créer une facture → statut **`ready`** (`InvoiceController::store`).
+1. Créer une facture → statut **`ready`** (`InvoiceController::store`). Les factures encore **`draft`** (défaut SQL) restent émissibles via le bouton **e**.
 2. PDF présent sur disque (`invoices/{bill_prefix}{id}.pdf`). Absent = blocage.
-3. **Trésorerie → Factures** : le bouton e-facture n’apparaît que si la PA est configurée, **l’opt-in société est on**, et le statut est `ready`.
-4. `POST invoice.submitElectronic` valide puis soumet.
+3. Bouton **e** (mode **Édition** uniquement) sur **Trésorerie → Factures** et **fiche école** (`school/show`) si la PA est configurée **et** l’opt-in société est on, que la facture est **impayée**, et que le statut est `draft`, `ready` ou `rejected`. Masqué si payée, `transmitted` ou `accepted`.
+4. `POST invoice.submitElectronic` valide ; un `draft` ou `rejected` est promu **`ready`** puis soumis à SuperPDP. Une facture **rejetée** peut donc être réémise (données corrigées).
 5. Succès : statut **`transmitted`**, `pdp_reference` renseigné, `rejection_reason` effacé.
 
 ### Règles de validation (bloquantes)
 
 | Règle | Source |
 |-------|--------|
-| Statut `ready` | `invoices.electronic_invoice_status` |
+| Statut `draft`, `ready` ou `rejected` | `invoices.electronic_invoice_status` |
 | Facture non payée | `paid_at` null |
 | Date de facture | `bill_date` |
 | Montant > 0 | `amount` |

@@ -60,6 +60,8 @@ class ElectronicInvoiceService
             );
         }
 
+        $this->promoteToReadyBeforeSubmit($invoice);
+
         $submission = $this->platform->submitOutbound($invoice);
 
         $invoice->electronic_invoice_status = ElectronicInvoiceStatus::Transmitted;
@@ -101,6 +103,20 @@ class ElectronicInvoiceService
         ]);
 
         return $invoice->fresh(['company', 'school']);
+    }
+
+    private function promoteToReadyBeforeSubmit(Invoice $invoice): void
+    {
+        $status = $invoice->electronic_invoice_status ?? ElectronicInvoiceStatus::Draft;
+
+        if ($status !== ElectronicInvoiceStatus::Draft && $status !== ElectronicInvoiceStatus::Rejected) {
+            return;
+        }
+
+        $invoice->electronic_invoice_status = ElectronicInvoiceStatus::Ready;
+        $invoice->electronic_status_at = Carbon::now();
+        $invoice->rejection_reason = null;
+        $invoice->save();
     }
 
     private function findInvoiceForEvent(PlatformEvent $event): ?Invoice

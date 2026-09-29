@@ -175,8 +175,8 @@ VRP statuses (`ElectronicInvoiceStatus`):
 
 | VRP status | Meaning | Trigger |
 |------------|---------|---------|
-| `draft` | Draft, not submittable | Partial creation (future) |
-| `ready` | Ready — PDF OK, legal data complete | `InvoiceController::store` |
+| `draft` | Draft — submittable (promoted to `ready` on e click) | SQL default; partial creation |
+| `ready` | Ready — PDF OK, legal data complete | `InvoiceController::store`; promotion from `draft` / `rejected` |
 | `transmitted` | Accepted by PA | Webhook / submit API response |
 | `accepted` | Validated by recipient / lifecycle OK | PA webhook |
 | `rejected` | Rejected (validation or recipient) | PA webhook + `rejection_reason` |
@@ -211,7 +211,7 @@ Return HTTP **200** quickly; heavy work in queue (`ProcessPlatformEvent` job).
 
 ### 5. Pre-submission validation
 
-`ElectronicInvoiceValidator` blocks `ready` → submit when:
+`ElectronicInvoiceValidator` blocks `draft` / `ready` / `rejected` → submit when:
 
 | Rule | Field |
 |------|-------|
@@ -258,7 +258,7 @@ routes/web.php
 | Phase | Screen | Action |
 |-------|--------|--------|
 | 1 | Invoice list | E-invoice status column (existing) |
-| 2 | Detail / list | **Issue e-invoice** button if `ready` |
+| 2 | Detail / list | **Issue e-invoice** button if `draft` / `ready` / `rejected`, unpaid, Edit mode (Treasury + school show) |
 | 2 | Detail | Show `pdp_reference`, rejection reason |
 | 2 | Treasury | **Received invoices** tab (PA inbound) |
 | 3 | My company | PA onboarding state (connected / incomplete) |

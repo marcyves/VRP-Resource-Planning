@@ -186,8 +186,8 @@ Statuts VRP (`ElectronicInvoiceStatus`) :
 
 | Statut VRP | Signification | Déclencheur |
 |------------|---------------|-------------|
-| `draft` | Brouillon, non transmissible | Création partielle (futur) |
-| `ready` | Prête — PDF OK, données légales complètes | `InvoiceController::store` |
+| `draft` | Brouillon — émissible (promu `ready` au clic e) | défaut SQL ; création partielle |
+| `ready` | Prête — PDF OK, données légales complètes | `InvoiceController::store` ; promotion depuis `draft` / `rejected` |
 | `transmitted` | Dépôt accepté par la PA | Webhook / réponse API submit |
 | `accepted` | Validée par le destinataire / cycle de vie OK | Webhook PA |
 | `rejected` | Rejetée (validation ou destinataire) | Webhook PA + `rejection_reason` |
@@ -222,7 +222,7 @@ Réponse HTTP **200** rapidement ; traitement lourd en queue (`ProcessPlatformEv
 
 ### 5. Validations avant émission
 
-`ElectronicInvoiceValidator` bloque le passage `ready` → submit si :
+`ElectronicInvoiceValidator` bloque le passage `draft` / `ready` / `rejected` → submit si :
 
 | Règle | Champ |
 |-------|-------|
@@ -269,7 +269,7 @@ routes/web.php                           # webhook
 | Phase | Écran | Action |
 |-------|-------|--------|
 | 1 | Liste factures | Colonne statut e-facture (existant) |
-| 2 | Détail / liste | Bouton **Émettre e-facture** si `ready` |
+| 2 | Détail / liste | Bouton **Émettre e-facture** si `draft` / `ready` / `rejected`, impayée, mode Édition (Trésorerie + fiche école) |
 | 2 | Détail | Afficher `pdp_reference`, motif rejet |
 | 2 | Trésorerie | Onglet **Factures reçues** (inbound PA) |
 | 3 | Mon entreprise | État onboarding PA (connecté / incomplet) |

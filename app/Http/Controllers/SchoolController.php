@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Utility\Tools;
 use App\Models\Group;
 use App\Models\School;
+use App\Services\ElectronicInvoicing\ElectronicInvoiceService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
@@ -142,7 +143,7 @@ class SchoolController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(School $school, Request $request)
+    public function show(School $school, Request $request, ElectronicInvoiceService $electronicInvoiceService)
     {
         $year = Tools::getCurrentYear($request);
         $billingYear = Tools::getBillingYear($request);
@@ -206,6 +207,8 @@ class SchoolController extends Controller
             $documents = $school->getDocuments();
         }
 
+        $electronicInvoicingEnabled = $electronicInvoiceService->enabledForCompany(Auth::user()->company);
+
         return view('school.show', compact(
             'school',
             'courses',
@@ -226,6 +229,7 @@ class SchoolController extends Controller
             'groups',
             'inactiveGroups',
             'occurences',
+            'electronicInvoicingEnabled',
         ));
     }
 

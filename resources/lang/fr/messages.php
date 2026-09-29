@@ -517,7 +517,7 @@ return [
     'electronic_invoice_platform_not_configured' => 'SuperPDP n\'est pas configuré (voir .env).',
     'electronic_invoice_superpdp_error' => 'SuperPDP : :message',
     'electronic_invoice_superpdp_auth_error' => 'Authentification SuperPDP échouée : :message',
-    'electronic_invoice_submit_status_invalid' => 'Seules les factures au statut « Prête » peuvent être émises.',
+    'electronic_invoice_submit_status_invalid' => 'Les factures transmises ou acceptées ne peuvent pas être réémises.',
     'electronic_invoice_issuer' => 'Émetteur (mon entreprise)',
     'electronic_invoice_siren_missing' => 'SIREN manquant pour :name.',
     'electronic_invoice_address_missing' => 'Adresse incomplète pour :name.',

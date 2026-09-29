@@ -24,6 +24,38 @@ class ElectronicInvoiceValidatorTest extends TestCase
         $this->assertSame([], (new ElectronicInvoiceValidator)->validate($invoice));
     }
 
+    public function test_draft_and_rejected_invoices_with_legal_data_and_pdf_pass(): void
+    {
+        Storage::fake('local');
+        $invoice = $this->makeInvoice();
+        Storage::put('invoices/XDM26001.pdf', '%PDF-1.4 test');
+
+        $invoice->electronic_invoice_status = ElectronicInvoiceStatus::Draft;
+        $this->assertSame([], (new ElectronicInvoiceValidator)->validate($invoice));
+
+        $invoice->electronic_invoice_status = ElectronicInvoiceStatus::Rejected;
+        $this->assertSame([], (new ElectronicInvoiceValidator)->validate($invoice));
+    }
+
+    public function test_rejects_transmitted_and_accepted_status(): void
+    {
+        Storage::fake('local');
+        $invoice = $this->makeInvoice();
+        Storage::put('invoices/XDM26001.pdf', '%PDF-1.4 test');
+
+        $invoice->electronic_invoice_status = ElectronicInvoiceStatus::Transmitted;
+        $this->assertContains(
+            __('messages.electronic_invoice_submit_status_invalid'),
+            (new ElectronicInvoiceValidator)->validate($invoice),
+        );
+
+        $invoice->electronic_invoice_status = ElectronicInvoiceStatus::Accepted;
+        $this->assertContains(
+            __('messages.electronic_invoice_submit_status_invalid'),
+            (new ElectronicInvoiceValidator)->validate($invoice),
+        );
+    }
+
     public function test_rejects_invalid_status_paid_amount_and_identifiers(): void
     {
         Storage::fake('local');
@@ -55,13 +87,13 @@ class ElectronicInvoiceValidatorTest extends TestCase
             'paid_at' => now(),
             'company_id' => $company->id,
             'school_id' => $school->id,
-            'electronic_invoice_status' => ElectronicInvoiceStatus::Draft,
+            'electronic_invoice_status' => ElectronicInvoiceStatus::Transmitted,
         ]);
 
         $errors = (new ElectronicInvoiceValidator)->validate($invoice);
 
         $this->assertNotEmpty($errors);
-        $this->assertTrue(collect($errors)->contains(fn (string $message) => str_contains($message, 'Ready') || str_contains($message, 'Prête')));
+        $this->assertContains(__('messages.electronic_invoice_submit_status_invalid'), $errors);
         $this->assertTrue(collect($errors)->contains(fn (string $message) => str_contains($message, 'SIREN')));
         $this->assertTrue(collect($errors)->contains(fn (string $message) => str_contains($message, 'SIRET')));
     }

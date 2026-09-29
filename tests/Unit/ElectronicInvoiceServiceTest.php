@@ -71,6 +71,78 @@ class ElectronicInvoiceServiceTest extends TestCase
         $this->assertSame('42', $updated->pdp_reference);
     }
 
+    public function test_submit_promotes_draft_to_ready_then_transmits(): void
+    {
+        Storage::fake('local');
+        $invoice = $this->makeReadyInvoice();
+        $invoice->electronic_invoice_status = ElectronicInvoiceStatus::Draft;
+        $invoice->save();
+        Storage::put('invoices/XDM26001.pdf', '%PDF-1.4 test');
+
+        $platform = Mockery::mock(ElectronicInvoicePlatform::class);
+        $platform->shouldReceive('isConfigured')->andReturn(true);
+        $platform->shouldReceive('submitOutbound')
+            ->once()
+            ->with(Mockery::on(function (Invoice $submitted) {
+                return $submitted->electronic_invoice_status === ElectronicInvoiceStatus::Ready;
+            }))
+            ->andReturn(new PlatformSubmission(pdpReference: '42', rawResponse: ['id' => 42]));
+
+        $service = new ElectronicInvoiceService($platform, new ElectronicInvoiceValidator, new ElectronicInvoiceMonitor);
+
+        $updated = $service->submit($invoice);
+
+        $this->assertSame(ElectronicInvoiceStatus::Transmitted, $updated->electronic_invoice_status);
+        $this->assertSame('42', $updated->pdp_reference);
+    }
+
+    public function test_submit_allows_rejected_resubmit(): void
+    {
+        Storage::fake('local');
+        $invoice = $this->makeReadyInvoice();
+        $invoice->electronic_invoice_status = ElectronicInvoiceStatus::Rejected;
+        $invoice->rejection_reason = 'SIREN invalide';
+        $invoice->save();
+        Storage::put('invoices/XDM26001.pdf', '%PDF-1.4 test');
+
+        $platform = Mockery::mock(ElectronicInvoicePlatform::class);
+        $platform->shouldReceive('isConfigured')->andReturn(true);
+        $platform->shouldReceive('submitOutbound')
+            ->once()
+            ->andReturn(new PlatformSubmission(pdpReference: '77', rawResponse: ['id' => 77]));
+
+        $service = new ElectronicInvoiceService($platform, new ElectronicInvoiceValidator, new ElectronicInvoiceMonitor);
+
+        $updated = $service->submit($invoice);
+
+        $this->assertSame(ElectronicInvoiceStatus::Transmitted, $updated->electronic_invoice_status);
+        $this->assertSame('77', $updated->pdp_reference);
+        $this->assertNull($updated->rejection_reason);
+    }
+
+    public function test_submit_rejects_transmitted_invoice(): void
+    {
+        Storage::fake('local');
+        $invoice = $this->makeReadyInvoice();
+        $invoice->electronic_invoice_status = ElectronicInvoiceStatus::Transmitted;
+        $invoice->save();
+        Storage::put('invoices/XDM26001.pdf', '%PDF-1.4 test');
+
+        $platform = Mockery::mock(ElectronicInvoicePlatform::class);
+        $platform->shouldReceive('isConfigured')->andReturn(true);
+        $platform->shouldReceive('submitOutbound')->never();
+
+        $service = new ElectronicInvoiceService($platform, new ElectronicInvoiceValidator, new ElectronicInvoiceMonitor);
+
+        try {
+            $service->submit($invoice);
+            $this->fail('Expected ElectronicInvoiceException');
+        } catch (ElectronicInvoiceException $e) {
+            $this->assertSame(__('messages.electronic_invoice_validation_failed'), $e->getMessage());
+            $this->assertContains(__('messages.electronic_invoice_submit_status_invalid'), $e->errors);
+        }
+    }
+
     public function test_submit_is_blocked_when_live_pa_lock_is_on(): void
     {
         config([

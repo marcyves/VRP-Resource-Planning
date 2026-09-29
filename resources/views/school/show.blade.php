@@ -27,7 +27,10 @@
             <section>
                 <h3 class="school-section-header">{{ __('messages.invoices') }}</h3>
                 <div class="bills">
-                    <x-table-invoices :invoices="$invoices" />
+                    <x-table-invoices
+                        :invoices="$invoices"
+                        :electronic-invoicing-enabled="$electronicInvoicingEnabled ?? false"
+                    />
                 </div>
             </section>
 
