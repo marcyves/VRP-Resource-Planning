@@ -10,8 +10,9 @@
 | `TERMINOLOGY_PROFILE` | `education` | Profil pour invités / sans entreprise |
 | `VRP_ALLOW_REGISTRATION` | `false` | Inscription publique `/register` |
 | `VRP_ACCOUNT_REQUEST_EMAIL` | `MAIL_FROM_ADDRESS` si la clé est **absente** | Boîte de `/demande-acces`. Un `VRP_ACCOUNT_REQUEST_EMAIL=` vide dans `.env` **ne** bascule **pas** (chaîne vide = valeur définie) : le formulaire réussit, mais `AccountRequestController` journalise une `RuntimeException` et n’envoie pas de mail |
-| `E_INVOICE_PLATFORM` | *(absent)* | `superpdp` pour SuperPDP ; sinon driver Null |
-| `SUPERPDP_ENV` | `production` | `sandbox` ou `production` (choix des credentials OAuth) |
+| `E_INVOICE_PLATFORM` | *(absent)* | `superpdp` pour SuperPDP ; sinon driver Null. Laisser absent sur les locataires live. |
+| `E_INVOICE_ALLOW_PRODUCTION` | `false` | Verrou : l’émission SuperPDP production reste off tant que ce n’est pas `true` |
+| `SUPERPDP_ENV` | `sandbox` | `sandbox` ou `production` (choix des credentials OAuth) |
 | `SUPERPDP_CLIENT_ID` / `SUPERPDP_CLIENT_SECRET` | — | OAuth production (`client_credentials`) |
 | `SUPERPDP_SANDBOX_CLIENT_ID` / `SUPERPDP_SANDBOX_CLIENT_SECRET` | — | OAuth sandbox si `SUPERPDP_ENV=sandbox` |
 | `SUPERPDP_ACCESS_TOKEN` | — | Bearer optionnel (sans OAuth) |
@@ -25,6 +26,7 @@ TERMINOLOGY_PROFILE=consulting
 VRP_ALLOW_REGISTRATION=false
 # VRP_ACCOUNT_REQUEST_EMAIL=ops@example.com
 # E_INVOICE_PLATFORM=superpdp
+# E_INVOICE_ALLOW_PRODUCTION=false
 # SUPERPDP_ENV=sandbox
 ```
 

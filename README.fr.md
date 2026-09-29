@@ -253,7 +253,7 @@ Les informations de connexion sont disponibles en ligne.
 
 **Déjà en place :** PDF, statuts e-facture (`draft` → `ready` → `transmitted` → `accepted` / `rejected`), SIREN/SIRET sur société et clients.
 
-**POC :** adaptateur **[SuperPDP](https://www.superpdp.tech/)** — **CII → Factur-X** structuré (pas le PDF TCPDF). Configurer `E_INVOICE_PLATFORM=superpdp` et les credentials OAuth (`SUPERPDP_CLIENT_ID` / `SUPERPDP_CLIENT_SECRET`, ou équivalents sandbox). `SUPERPDP_ACCESS_TOKEN` optionnel (sans OAuth).
+**POC (pas en production — préparation go-live) :** adaptateur **[SuperPDP](https://www.superpdp.tech/)** — **CII → Factur-X** structuré (pas le PDF TCPDF). Laisser `E_INVOICE_PLATFORM` absent sur les locataires live. Sandbox : `E_INVOICE_PLATFORM=superpdp`, `SUPERPDP_ENV=sandbox` (défaut), `E_INVOICE_ALLOW_PRODUCTION=false`. La PA live reste verrouillée tant que `E_INVOICE_ALLOW_PRODUCTION=true` n’est pas posé **explicitement**.
 
 Runbook opérationnel : [facturation-electronique.md](documentation/fr/facturation-electronique.md) · [electronic-invoicing.md](documentation/en/electronic-invoicing.md).
 

@@ -5,25 +5,109 @@ namespace App\Platforms\SuperPdp;
 class SuperPdpConfig
 {
     /**
-     * @param  array<string, mixed>  $config
+     * @param  array<string, mixed>|null  $config
+     * @return array<string, mixed>
+     */
+    public static function appConfig(?array $config = null): array
+    {
+        return $config ?? config('electronic-invoicing', []);
+    }
+
+    /**
+     * @param  array<string, mixed>|null  $config
+     * @return array<string, mixed>
+     */
+    public static function superpdpConfig(?array $config = null): array
+    {
+        $app = self::appConfig($config);
+
+        if (isset($app['superpdp']) && is_array($app['superpdp'])) {
+            return $app['superpdp'];
+        }
+
+        return $app;
+    }
+
+    /**
+     * @param  array<string, mixed>  $config  SuperPDP subtree or full electronic-invoicing config
      * @return array{0: ?string, 1: ?string, 2: string}
      */
     public static function activeCredentials(array $config): array
     {
-        $env = (string) ($config['env'] ?? 'production');
+        $superpdp = isset($config['superpdp']) && is_array($config['superpdp'])
+            ? $config['superpdp']
+            : $config;
+
+        $env = self::environment($superpdp);
 
         if ($env === 'sandbox') {
             return [
-                $config['sandbox_client_id'] ?? $config['client_id'] ?? null,
-                $config['sandbox_client_secret'] ?? $config['client_secret'] ?? null,
+                $superpdp['sandbox_client_id'] ?? $superpdp['client_id'] ?? null,
+                $superpdp['sandbox_client_secret'] ?? $superpdp['client_secret'] ?? null,
                 'sandbox',
             ];
         }
 
         return [
-            $config['client_id'] ?? null,
-            $config['client_secret'] ?? null,
+            $superpdp['client_id'] ?? null,
+            $superpdp['client_secret'] ?? null,
             'production',
         ];
+    }
+
+    /**
+     * @param  array<string, mixed>|null  $config
+     */
+    public static function environment(?array $config = null): string
+    {
+        $superpdp = self::superpdpConfig($config);
+        $env = strtolower((string) ($superpdp['env'] ?? 'sandbox'));
+
+        return $env === 'production' ? 'production' : 'sandbox';
+    }
+
+    /**
+     * @param  array<string, mixed>|null  $config
+     */
+    public static function allowProduction(?array $config = null): bool
+    {
+        $app = self::appConfig($config);
+
+        if (array_key_exists('allow_production', $app)) {
+            return (bool) $app['allow_production'];
+        }
+
+        return false;
+    }
+
+    /**
+     * Live SuperPDP is requested but the explicit production lock is still off.
+     *
+     * @param  array<string, mixed>|null  $config
+     */
+    public static function isProductionBlocked(?array $config = null): bool
+    {
+        return self::environment($config) === 'production'
+            && ! self::allowProduction($config);
+    }
+
+    /**
+     * @param  array<string, mixed>|null  $config
+     */
+    public static function platform(?array $config = null): ?string
+    {
+        $platform = self::appConfig($config)['platform'] ?? null;
+
+        return is_string($platform) && $platform !== '' ? $platform : null;
+    }
+
+    /**
+     * Outbound SuperPDP calls (submit / send-test) are allowed.
+     *
+     * @param  array<string, mixed>|null  $config
+     */
+    public static function outboundAllowed(?array $config = null): bool
+    {
+        return ! self::isProductionBlocked($config);
     }
 }

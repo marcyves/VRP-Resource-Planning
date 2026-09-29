@@ -14,7 +14,7 @@ La réforme de la **facturation électronique B2B** en France impose des facture
 | Émission — GE et ETI | **1ᵉʳ septembre 2026** |
 | Émission — PME, TPE, micro-entreprises | **1ᵉʳ septembre 2027** |
 
-VRP couvre la **préparation métier**, l’**émission PDF** (TCPDF) et un **POC SuperPDP** pour l’émission structurée (CII → Factur-X). Archivage, routage d’annuaire et e-reporting restent chez la PA externe.
+VRP couvre la **préparation métier**, l’**émission PDF** (TCPDF) et un **POC SuperPDP** pour l’émission structurée (CII → Factur-X). **Pas en production** ; préparation du go-live en cours (`E_INVOICE_ALLOW_PRODUCTION` reste false). Archivage, routage d’annuaire et e-reporting restent chez la PA externe.
 
 Setup, parcours d’émission, webhooks et commandes artisan : **[facturation-electronique.md](facturation-electronique.md)**.
 
@@ -352,7 +352,7 @@ Le détail opérationnel (`.env`, OAuth sandbox/production, commandes artisan, w
 
 | Besoin | Action |
 |--------|--------|
-| Activer le POC | `E_INVOICE_PLATFORM=superpdp` + credentials OAuth |
+| Activer le POC sandbox | `E_INVOICE_PLATFORM=superpdp` + OAuth sandbox ; garder `E_INVOICE_ALLOW_PRODUCTION=false` |
 | Tester l’API | `php artisan superpdp:test` |
 | Émettre | Trésorerie → Factures (bouton e) ou `superpdp:send-test --invoice=` |
 | Webhook | `POST /webhooks/e-invoice/superpdp` + `SUPERPDP_WEBHOOK_SECRET` |

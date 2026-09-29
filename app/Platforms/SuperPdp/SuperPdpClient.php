@@ -75,17 +75,21 @@ class SuperPdpClient
 
     public function generateTestInvoice(string $format = 'factur-x'): string
     {
-        $response = Http::baseUrl(rtrim($this->baseUrl, '/'))
-            ->withToken($this->auth->accessToken())
-            ->withHeaders(['Accept' => 'application/pdf'])
-            ->timeout(60)
-            ->get('/v1.beta/invoices/generate_test_invoice', [
-                'format' => $format,
-            ]);
+        try {
+            $response = Http::baseUrl(rtrim($this->baseUrl, '/'))
+                ->withToken($this->auth->accessToken())
+                ->withHeaders(['Accept' => 'application/pdf'])
+                ->timeout(60)
+                ->get('/v1.beta/invoices/generate_test_invoice', [
+                    'format' => $format,
+                ]);
 
-        $response->throw();
+            $response->throw();
 
-        return $response->body();
+            return $response->body();
+        } catch (RequestException $e) {
+            throw $this->toElectronicInvoiceException($e);
+        }
     }
 
     /**
@@ -93,16 +97,20 @@ class SuperPdpClient
      */
     public function showInvoice(int $id): array
     {
-        $response = Http::baseUrl(rtrim($this->baseUrl, '/'))
-            ->withToken($this->auth->accessToken())
-            ->acceptJson()
-            ->timeout(30)
-            ->get("/v1.beta/invoices/{$id}");
+        try {
+            $response = Http::baseUrl(rtrim($this->baseUrl, '/'))
+                ->withToken($this->auth->accessToken())
+                ->acceptJson()
+                ->timeout(30)
+                ->get("/v1.beta/invoices/{$id}");
 
-        $response->throw();
+            $response->throw();
 
-        /** @var array<string, mixed> */
-        return $response->json() ?? [];
+            /** @var array<string, mixed> */
+            return $response->json() ?? [];
+        } catch (RequestException $e) {
+            throw $this->toElectronicInvoiceException($e);
+        }
     }
 
     /**
@@ -110,16 +118,20 @@ class SuperPdpClient
      */
     public function companyMe(): array
     {
-        $response = Http::baseUrl(rtrim($this->baseUrl, '/'))
-            ->withToken($this->auth->accessToken())
-            ->acceptJson()
-            ->timeout(30)
-            ->get('/v1.beta/companies/me');
+        try {
+            $response = Http::baseUrl(rtrim($this->baseUrl, '/'))
+                ->withToken($this->auth->accessToken())
+                ->acceptJson()
+                ->timeout(30)
+                ->get('/v1.beta/companies/me');
 
-        $response->throw();
+            $response->throw();
 
-        /** @var array<string, mixed> */
-        return $response->json() ?? [];
+            /** @var array<string, mixed> */
+            return $response->json() ?? [];
+        } catch (RequestException $e) {
+            throw $this->toElectronicInvoiceException($e);
+        }
     }
 
     private function convertContentTypeHeader(string $from): string

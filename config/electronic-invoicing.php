@@ -7,16 +7,30 @@ return [
     | Plateforme agréée (PA)
     |--------------------------------------------------------------------------
     |
-    | null     — désactivé (driver Null, tests)
-    | superpdp — SuperPDP (POC)
+    | null     — désactivé (driver Null)
+    | superpdp — SuperPDP (POC / sandbox ; production verrouillée ci-dessous)
+    |
+    | Ne pas définir E_INVOICE_PLATFORM en production locataire tant que le
+    | go-live n’est pas explicitement autorisé.
     |
     */
     'platform' => env('E_INVOICE_PLATFORM'),
 
+    /*
+    |--------------------------------------------------------------------------
+    | Verrou production
+    |--------------------------------------------------------------------------
+    |
+    | Même avec SUPERPDP_ENV=production et des credentials live, VRP n’émet
+    | pas vers la PA tant que ce flag n’est pas true. Rester false par défaut.
+    |
+    */
+    'allow_production' => filter_var(env('E_INVOICE_ALLOW_PRODUCTION', false), FILTER_VALIDATE_BOOLEAN),
+
     'superpdp' => [
         'base_url' => env('SUPERPDP_BASE_URL', 'https://api.superpdp.tech'),
-        // production (défaut) ou sandbox — credentials distincts chez SuperPDP (Paramètres > Applications)
-        'env' => env('SUPERPDP_ENV', 'production'),
+        // sandbox par défaut — jamais production implicite
+        'env' => env('SUPERPDP_ENV', 'sandbox'),
         'client_id' => env('SUPERPDP_CLIENT_ID'),
         'client_secret' => env('SUPERPDP_CLIENT_SECRET'),
         'sandbox_client_id' => env('SUPERPDP_SANDBOX_CLIENT_ID'),
@@ -27,7 +41,7 @@ return [
         'sandbox_routing_prefix' => env('SUPERPDP_SANDBOX_ROUTING_PREFIX', '315143296'),
         'sandbox_buyer_siren' => env('SUPERPDP_SANDBOX_BUYER_SIREN', '000000001'),
         'sandbox_buyer_electronic_address' => env('SUPERPDP_SANDBOX_BUYER_ELECTRONIC_ADDRESS', '315143296_12712'),
-        'force_sandbox_buyer' => env('SUPERPDP_FORCE_SANDBOX_BUYER', false),
+        'force_sandbox_buyer' => filter_var(env('SUPERPDP_FORCE_SANDBOX_BUYER', false), FILTER_VALIDATE_BOOLEAN),
     ],
 
 ];

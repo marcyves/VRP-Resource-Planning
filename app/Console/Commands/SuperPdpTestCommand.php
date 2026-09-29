@@ -25,9 +25,14 @@ class SuperPdpTestCommand extends Command
             $token = $auth->accessToken();
             $this->info('OAuth OK — token obtenu ('.strlen($token).' caractères).');
 
-            $configuredEnv = (string) config('electronic-invoicing.superpdp.env', 'production');
+            $configuredEnv = SuperPdpConfig::environment();
             [, , $credentialEnv] = SuperPdpConfig::activeCredentials(config('electronic-invoicing.superpdp'));
             $this->line("Credentials VRP : {$credentialEnv} (SUPERPDP_ENV={$configuredEnv})");
+            $this->line('Verrou production : '.(SuperPdpConfig::allowProduction() ? 'ouvert (E_INVOICE_ALLOW_PRODUCTION=true)' : 'fermé'));
+
+            if (SuperPdpConfig::isProductionBlocked()) {
+                $this->warn(__('messages.electronic_invoice_production_blocked'));
+            }
 
             $client = new SuperPdpClient(config('electronic-invoicing.superpdp.base_url'), $auth);
             $company = $client->companyMe();

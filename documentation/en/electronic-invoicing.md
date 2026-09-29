@@ -2,6 +2,8 @@
 
 **FR:** [facturation-electronique.md](../fr/facturation-electronique.md)
 
+> **Not in production.** SuperPDP is a POC. Go-live preparation is underway; do **not** set `E_INVOICE_ALLOW_PRODUCTION=true` or point tenants on vrp.xdm-consulting.fr at the live PA until Marc explicitly says so.
+
 Operational guide for the **implemented** PA-agnostic layer and SuperPDP POC. Strategy, phases, and regulatory context live in the [roadmap](roadmap-electronic-invoicing.md).
 
 ## Intent
@@ -39,14 +41,18 @@ POST /webhooks/e-invoice/superpdp  (CSRF excluded)
 
 Drivers: `null` (default when `E_INVOICE_PLATFORM` is unset/other) or `superpdp`. B2Brouter is **not** implemented yet. The coded contract is submit + webhook only (`isConfigured`, `submitOutbound`, `parseWebhook`, `verifyWebhook`) — no company registration or inbound fetch yet.
 
+**Production lock:** `E_INVOICE_ALLOW_PRODUCTION` defaults to `false`. `SUPERPDP_ENV` defaults to `sandbox`. If `SUPERPDP_ENV=production` without the allow flag, `isConfigured()` is false (submit button hidden; `superpdp:send-test` refused). `superpdp:test` may still check OAuth and prints a warning.
+
 ## Configuration
 
 ```env
-E_INVOICE_PLATFORM=superpdp
-SUPERPDP_ENV=sandbox          # or production
+# Leave unset on production tenants
+# E_INVOICE_PLATFORM=superpdp
+E_INVOICE_ALLOW_PRODUCTION=false
+SUPERPDP_ENV=sandbox
 SUPERPDP_BASE_URL=https://api.superpdp.tech
 
-# production credentials
+# production credentials (unused while the lock is off)
 SUPERPDP_CLIENT_ID=
 SUPERPDP_CLIENT_SECRET=
 
@@ -57,11 +63,11 @@ SUPERPDP_SANDBOX_CLIENT_SECRET=
 # optional: skip OAuth and use a bearer token
 # SUPERPDP_ACCESS_TOKEN=
 
-# optional: webhook HMAC secret
+# required for status callbacks (missing → webhook 401)
 # SUPERPDP_WEBHOOK_SECRET=
 ```
 
-Auth flow: `client_credentials` against `POST /oauth2/token`, token cached (`superpdp.access_token.{md5(client_id)}`, TTL = `expires_in − 60s`). Sandbox vs production credentials are selected by `SuperPdpConfig::activeCredentials()`.
+Auth flow: `client_credentials` against `POST /oauth2/token`, token cached (`superpdp.access_token.{env}.{md5(client_id)}`, TTL = `expires_in − 60s`). Sandbox vs production credentials are selected by `SuperPdpConfig::activeCredentials()`.
 
 Check connectivity:
 
@@ -91,8 +97,10 @@ Optional helpers:
 |------|--------|
 | Status must be `ready` | `invoices.electronic_invoice_status` |
 | Invoice not paid | `paid_at` null |
-| Issuer SIREN + full address | `companies` (`siren`, `address`, `city`, `zip`) |
-| Client SIREN or SIRET + full address | `schools` |
+| Invoice date present | `bill_date` |
+| Amount > 0 | `amount` |
+| Issuer SIREN (9 digits) or SIRET (14 digits) + full address | `companies` |
+| Client SIREN or SIRET (same formats) + full address | `schools` |
 | PDF present in storage | `Storage::exists(...)` |
 
 Paid tracking (`paid_at`) stays independent of e-invoice status.
@@ -126,11 +134,13 @@ Invoice lookup: `pdp_reference` first, then numeric part of `external_id` as VRP
 
 ## Constraints and pitfalls
 
-- Without `E_INVOICE_PLATFORM=superpdp` and valid credentials, the UI submit button stays hidden (`NullElectronicInvoicePlatform::isConfigured()` → false).
+- Without `E_INVOICE_PLATFORM=superpdp` and valid **sandbox** credentials, the UI submit button stays hidden (`isConfigured()` → false). The status column stays visible.
+- `SUPERPDP_ENV=production` without `E_INVOICE_ALLOW_PRODUCTION=true` also hides submit and blocks `superpdp:send-test`.
 - Missing SIREN/address or PDF yields a flash danger + warning list of validation messages.
-- Webhooks without `SUPERPDP_WEBHOOK_SECRET` always return **401**.
+- Webhooks without `SUPERPDP_WEBHOOK_SECRET` always return **401**. Unmatched invoices return **204** (logged). Unexpected errors return **500**.
 - VAT in the CII builder is currently fixed at **20%** (independent of company/course rates).
 - Supplier invoice reception UI is not built yet.
+- The PA switch is **process-wide**, not per company — do not enable production on a multi-tenant host until there is a per-tenant flag.
 
 ## See also
 

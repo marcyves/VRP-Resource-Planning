@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use App\Models\Invoice;
 use App\Platforms\SuperPdp\SuperPdpAuth;
 use App\Platforms\SuperPdp\SuperPdpClient;
+use App\Platforms\SuperPdp\SuperPdpConfig;
 use App\Services\ElectronicInvoicing\ElectronicInvoiceService;
 use Illuminate\Console\Command;
 
@@ -18,6 +19,12 @@ class SuperPdpSendTestCommand extends Command
 
     public function handle(SuperPdpAuth $auth, ElectronicInvoiceService $electronicInvoiceService): int
     {
+        if (! SuperPdpConfig::outboundAllowed()) {
+            $this->error(__('messages.electronic_invoice_production_blocked'));
+
+            return self::FAILURE;
+        }
+
         if (! $auth->isConfigured()) {
             $this->error('SuperPDP non configuré (.env).');
 

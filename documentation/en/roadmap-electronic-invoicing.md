@@ -14,7 +14,7 @@ French **B2B e-invoicing** reform requires **structured invoices** (not PDF alon
 | Issue — large companies and mid-caps | **1 September 2026** |
 | Issue — SMEs, micro-businesses | **1 September 2027** |
 
-VRP covers **business preparation**, **PDF output** (TCPDF), and a **SuperPDP POC** for structured submission (CII → Factur-X). Legal archiving, directory routing, and e-reporting remain with the external PA.
+VRP covers **business preparation**, **PDF output** (TCPDF), and a **SuperPDP POC** for structured submission (CII → Factur-X). **Not in production**; go-live prep is underway (`E_INVOICE_ALLOW_PRODUCTION` stays false). Legal archiving, directory routing, and e-reporting remain with the external PA.
 
 Operational setup, submit flow, webhooks, and artisan commands: **[electronic-invoicing.md](electronic-invoicing.md)**.
 
@@ -341,7 +341,7 @@ Operational detail (`.env`, sandbox/production OAuth, artisan commands, webhooks
 
 | Need | Action |
 |------|--------|
-| Enable POC | `E_INVOICE_PLATFORM=superpdp` + OAuth credentials |
+| Enable sandbox POC | `E_INVOICE_PLATFORM=superpdp` + sandbox OAuth; keep `E_INVOICE_ALLOW_PRODUCTION=false` |
 | Test API | `php artisan superpdp:test` |
 | Submit | Treasury → Invoices (e button) or `superpdp:send-test --invoice=` |
 | Webhook | `POST /webhooks/e-invoice/superpdp` + `SUPERPDP_WEBHOOK_SECRET` |

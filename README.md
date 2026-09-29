@@ -255,7 +255,7 @@ Credential information is povided there.
 
 **Already in place:** PDF, e-invoice statuses (`draft` → `ready` → `transmitted` → `accepted` / `rejected`), SIREN/SIRET on company and clients.
 
-**POC:** **[SuperPDP](https://www.superpdp.tech/)** adapter — structured **CII → Factur-X** (not the TCPDF PDF). Set `E_INVOICE_PLATFORM=superpdp` plus OAuth credentials (`SUPERPDP_CLIENT_ID` / `SUPERPDP_CLIENT_SECRET`, or sandbox equivalents). Optional `SUPERPDP_ACCESS_TOKEN` skips OAuth.
+**POC (not in production — go-live prep):** **[SuperPDP](https://www.superpdp.tech/)** adapter — structured **CII → Factur-X** (not the TCPDF PDF). Leave `E_INVOICE_PLATFORM` unset on live tenants. Sandbox: `E_INVOICE_PLATFORM=superpdp`, `SUPERPDP_ENV=sandbox` (default), `E_INVOICE_ALLOW_PRODUCTION=false`. Live PA stays locked until `E_INVOICE_ALLOW_PRODUCTION=true` is set **explicitly**.
 
 Operational runbook: [electronic-invoicing.md](documentation/en/electronic-invoicing.md) · [facturation-electronique.md](documentation/fr/facturation-electronique.md).
 
