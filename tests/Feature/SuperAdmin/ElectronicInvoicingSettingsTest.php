@@ -118,6 +118,7 @@ class ElectronicInvoicingSettingsTest extends TestCase
         $tenantAdmin = User::factory()->create([
             'status_id' => Status::ADMIN,
             'company_id' => Company::factory()->create()->id,
+            'password' => 'password',
         ]);
 
         $this->actingAs($tenantAdmin)
@@ -175,6 +176,7 @@ class ElectronicInvoicingSettingsTest extends TestCase
         return User::factory()->create([
             'company_id' => null,
             'status_id' => Status::superAdminId(),
+            'password' => 'password',
         ]);
     }
 }
