@@ -20,12 +20,4 @@ enum ElectronicInvoiceStatus: string
             self::Rejected => __('messages.electronic_invoice_status_rejected'),
         };
     }
-
-    public function allowsOutboundSubmit(): bool
-    {
-        return match ($this) {
-            self::Draft, self::Ready, self::Rejected => true,
-            self::Transmitted, self::Accepted => false,
-        };
-    }
 }

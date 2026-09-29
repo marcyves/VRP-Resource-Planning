@@ -83,12 +83,8 @@ class Invoice extends Model
 
     public function canSubmitElectronic(): bool
     {
-        if ($this->paid_at !== null) {
-            return false;
-        }
-
-        return ($this->electronic_invoice_status ?? ElectronicInvoiceStatus::Draft)
-            ->allowsOutboundSubmit();
+        return $this->paid_at === null
+            && $this->electronic_invoice_status === ElectronicInvoiceStatus::Ready;
     }
 
     /** @var array<string, float|null> */

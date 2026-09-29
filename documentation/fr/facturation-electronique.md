@@ -88,17 +88,17 @@ Commandes utiles :
 
 ## Parcours d’émission
 
-1. Créer une facture → statut **`ready`** (`InvoiceController::store`). Les factures encore **`draft`** (défaut SQL) restent émissibles via le bouton **e**.
+1. Créer une facture → statut **`ready`** (`InvoiceController::store`).
 2. PDF présent sur disque (`invoices/{bill_prefix}{id}.pdf`). Absent = blocage.
-3. Bouton **e** (mode **Édition** uniquement) sur **Trésorerie → Factures** et **fiche école** (`school/show`) si la PA est configurée **et** l’opt-in société est on, que la facture est **impayée**, et que le statut est `draft`, `ready` ou `rejected`. Masqué si payée, `transmitted` ou `accepted`.
-4. `POST invoice.submitElectronic` valide ; un `draft` ou `rejected` est promu **`ready`** puis soumis à SuperPDP. Une facture **rejetée** peut donc être réémise (données corrigées).
+3. Bouton **e** (mode **Édition** uniquement) sur **Trésorerie → Factures** et **fiche école** (`school/show`) si la PA est configurée **et** l’opt-in société est on, que la facture est **impayée**, et que le statut est **`ready`**. Masqué si brouillon, payée, `transmitted`, `accepted` ou `rejected`.
+4. `POST invoice.submitElectronic` valide puis soumet. Pas de promotion automatique `draft` → `ready`.
 5. Succès : statut **`transmitted`**, `pdp_reference` renseigné, `rejection_reason` effacé.
 
 ### Règles de validation (bloquantes)
 
 | Règle | Source |
 |-------|--------|
-| Statut `draft`, `ready` ou `rejected` | `invoices.electronic_invoice_status` |
+| Statut `ready` | `invoices.electronic_invoice_status` |
 | Facture non payée | `paid_at` null |
 | Date de facture | `bill_date` |
 | Montant > 0 | `amount` |

@@ -25,9 +25,9 @@ class ElectronicInvoiceSubmitButtonTest extends TestCase
         $this->seed(StatusSeeder::class);
     }
 
-    public function test_treasury_shows_e_button_for_unpaid_draft_in_edit_mode(): void
+    public function test_treasury_shows_e_button_for_unpaid_ready_in_edit_mode(): void
     {
-        [$user, $invoice] = $this->makeContext(ElectronicInvoiceStatus::Draft);
+        [$user, $invoice] = $this->makeContext(ElectronicInvoiceStatus::Ready);
         $this->bindConfiguredPlatform();
 
         $this->actingAs($user)
@@ -37,29 +37,9 @@ class ElectronicInvoiceSubmitButtonTest extends TestCase
             ->assertSee(route('invoice.submitElectronic', $invoice->id), false);
     }
 
-    public function test_treasury_shows_e_button_for_unpaid_ready_and_rejected(): void
+    public function test_school_show_shows_e_button_for_unpaid_ready_in_edit_mode(): void
     {
-        [$user, $ready] = $this->makeContext(ElectronicInvoiceStatus::Ready, invoiceId: '26011');
-        $rejected = $this->makeInvoice(
-            $ready->company,
-            School::find($ready->school_id),
-            ElectronicInvoiceStatus::Rejected,
-            '26012',
-        );
-        $this->bindConfiguredPlatform();
-
-        $html = $this->actingAs($user)
-            ->get(route('treasury.invoices.index'))
-            ->assertOk()
-            ->getContent();
-
-        $this->assertStringContainsString(route('invoice.submitElectronic', $ready->id), $html);
-        $this->assertStringContainsString(route('invoice.submitElectronic', $rejected->id), $html);
-    }
-
-    public function test_school_show_shows_e_button_for_unpaid_draft_in_edit_mode(): void
-    {
-        [$user, $invoice] = $this->makeContext(ElectronicInvoiceStatus::Draft);
+        [$user, $invoice] = $this->makeContext(ElectronicInvoiceStatus::Ready);
         $this->bindConfiguredPlatform();
 
         $this->actingAs($user)
@@ -69,9 +49,35 @@ class ElectronicInvoiceSubmitButtonTest extends TestCase
             ->assertSee(route('invoice.submitElectronic', $invoice->id), false);
     }
 
+    public function test_hides_e_button_for_draft_and_rejected_on_treasury_and_school(): void
+    {
+        [$user, $draft] = $this->makeContext(ElectronicInvoiceStatus::Draft, invoiceId: '26011');
+        $rejected = $this->makeInvoice(
+            $draft->company,
+            School::find($draft->school_id),
+            ElectronicInvoiceStatus::Rejected,
+            '26012',
+        );
+        $this->bindConfiguredPlatform();
+
+        foreach ([
+            route('treasury.invoices.index'),
+            route('school.show', $draft->school_id),
+        ] as $url) {
+            $html = $this->actingAs($user)
+                ->get($url)
+                ->assertOk()
+                ->getContent();
+
+            $this->assertStringNotContainsString('icon--e-invoice', $html);
+            $this->assertStringNotContainsString(route('invoice.submitElectronic', $draft->id), $html);
+            $this->assertStringNotContainsString(route('invoice.submitElectronic', $rejected->id), $html);
+        }
+    }
+
     public function test_school_show_hides_e_button_when_platform_is_off(): void
     {
-        [$user, $invoice] = $this->makeContext(ElectronicInvoiceStatus::Draft);
+        [$user, $invoice] = $this->makeContext(ElectronicInvoiceStatus::Ready);
 
         $this->actingAs($user)
             ->get(route('school.show', $invoice->school_id))
@@ -82,7 +88,7 @@ class ElectronicInvoiceSubmitButtonTest extends TestCase
 
     public function test_school_show_hides_e_button_when_company_opt_in_is_off(): void
     {
-        [$user, $invoice] = $this->makeContext(ElectronicInvoiceStatus::Draft);
+        [$user, $invoice] = $this->makeContext(ElectronicInvoiceStatus::Ready);
         $invoice->company->electronic_invoicing_enabled = false;
         $invoice->company->save();
         $this->bindConfiguredPlatform();
@@ -93,9 +99,9 @@ class ElectronicInvoiceSubmitButtonTest extends TestCase
             ->assertDontSee('icon--e-invoice', false);
     }
 
-    public function test_hides_e_button_for_paid_draft_on_treasury_and_school(): void
+    public function test_hides_e_button_for_paid_ready_on_treasury_and_school(): void
     {
-        [$user, $invoice] = $this->makeContext(ElectronicInvoiceStatus::Draft, paid: true);
+        [$user, $invoice] = $this->makeContext(ElectronicInvoiceStatus::Ready, paid: true);
         $this->bindConfiguredPlatform();
 
         $this->actingAs($user)
@@ -134,7 +140,7 @@ class ElectronicInvoiceSubmitButtonTest extends TestCase
 
     public function test_hides_e_button_in_browse_mode(): void
     {
-        [$user, $invoice] = $this->makeContext(ElectronicInvoiceStatus::Draft, mode: 'Browse');
+        [$user, $invoice] = $this->makeContext(ElectronicInvoiceStatus::Ready, mode: 'Browse');
         $this->bindConfiguredPlatform();
 
         $this->actingAs($user)
@@ -148,9 +154,9 @@ class ElectronicInvoiceSubmitButtonTest extends TestCase
             ->assertDontSee('icon--e-invoice', false);
     }
 
-    public function test_submitting_draft_from_treasury_promotes_then_transmits(): void
+    public function test_submitting_ready_from_treasury_transmits(): void
     {
-        [$user, $invoice] = $this->makeContext(ElectronicInvoiceStatus::Draft);
+        [$user, $invoice] = $this->makeContext(ElectronicInvoiceStatus::Ready);
         $this->putInvoicePdf($invoice);
         $this->bindConfiguredPlatform(expectSubmit: true);
 
@@ -165,9 +171,9 @@ class ElectronicInvoiceSubmitButtonTest extends TestCase
         $this->assertSame('99', $fresh->pdp_reference);
     }
 
-    public function test_submitting_draft_from_school_show_promotes_then_transmits(): void
+    public function test_submitting_ready_from_school_show_transmits(): void
     {
-        [$user, $invoice] = $this->makeContext(ElectronicInvoiceStatus::Draft);
+        [$user, $invoice] = $this->makeContext(ElectronicInvoiceStatus::Ready);
         $this->putInvoicePdf($invoice);
         $this->bindConfiguredPlatform(expectSubmit: true);
 
@@ -180,6 +186,22 @@ class ElectronicInvoiceSubmitButtonTest extends TestCase
         $fresh = $invoice->fresh();
         $this->assertSame(ElectronicInvoiceStatus::Transmitted, $fresh->electronic_invoice_status);
         $this->assertSame('99', $fresh->pdp_reference);
+    }
+
+    public function test_submitting_draft_does_not_promote_or_transmit(): void
+    {
+        [$user, $invoice] = $this->makeContext(ElectronicInvoiceStatus::Draft);
+        $this->putInvoicePdf($invoice);
+        $this->bindConfiguredPlatform(expectSubmit: false);
+
+        $this->actingAs($user)
+            ->from(route('treasury.invoices.index'))
+            ->post(route('invoice.submitElectronic', $invoice->id))
+            ->assertRedirect(route('treasury.invoices.index'));
+
+        $fresh = $invoice->fresh();
+        $this->assertSame(ElectronicInvoiceStatus::Draft, $fresh->electronic_invoice_status);
+        $this->assertNull($fresh->pdp_reference);
     }
 
     /**
@@ -259,6 +281,8 @@ class ElectronicInvoiceSubmitButtonTest extends TestCase
                     return $invoice->electronic_invoice_status === ElectronicInvoiceStatus::Ready;
                 }))
                 ->andReturn(new PlatformSubmission(pdpReference: '99', rawResponse: ['id' => 99]));
+        } else {
+            $platform->shouldReceive('submitOutbound')->never();
         }
 
         $this->app->instance(ElectronicInvoicePlatform::class, $platform);

@@ -88,17 +88,17 @@ Optional helpers:
 
 ## Submit workflow
 
-1. Create an invoice → status set to **`ready`** (`InvoiceController::store`). Invoices still in **`draft`** (SQL default) remain submittable via the **e** button.
+1. Create an invoice → status set to **`ready`** (`InvoiceController::store`).
 2. Ensure PDF exists on disk (`invoices/{bill_prefix}{id}.pdf`). Missing PDF blocks submit.
-3. The **e** button (Edit mode only) appears on **Treasury → Invoices** and **school show** (`school/show`) when the platform is configured **and** the company opt-in is on, the invoice is **unpaid**, and status is `draft`, `ready`, or `rejected`. Hidden when paid, `transmitted`, or `accepted`.
-4. `POST invoice.submitElectronic` validates; a `draft` or `rejected` invoice is promoted to **`ready`** then submitted to SuperPDP. **Rejected** invoices can be resubmitted after fixing data.
+3. The **e** button (Edit mode only) appears on **Treasury → Invoices** and **school show** (`school/show`) when the platform is configured **and** the company opt-in is on, the invoice is **unpaid**, and status is **`ready`**. Hidden for draft, paid, `transmitted`, `accepted`, or `rejected`.
+4. `POST invoice.submitElectronic` validates then submits. No automatic `draft` → `ready` promotion.
 5. On success: status **`transmitted`**, `pdp_reference` set, `rejection_reason` cleared.
 
 ### Validation rules (blocking)
 
 | Rule | Source |
 |------|--------|
-| Status must be `draft`, `ready`, or `rejected` | `invoices.electronic_invoice_status` |
+| Status must be `ready` | `invoices.electronic_invoice_status` |
 | Invoice not paid | `paid_at` null |
 | Invoice date present | `bill_date` |
 | Amount > 0 | `amount` |

@@ -18,8 +18,7 @@ class ElectronicInvoiceValidator
         $invoice->loadMissing(['company', 'school']);
         $errors = [];
 
-        $status = $invoice->electronic_invoice_status ?? ElectronicInvoiceStatus::Draft;
-        if (! $status->allowsOutboundSubmit()) {
+        if ($invoice->electronic_invoice_status !== ElectronicInvoiceStatus::Ready) {
             $errors[] = __('messages.electronic_invoice_submit_status_invalid');
         }
 

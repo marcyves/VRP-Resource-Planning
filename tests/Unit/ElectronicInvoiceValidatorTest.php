@@ -24,32 +24,19 @@ class ElectronicInvoiceValidatorTest extends TestCase
         $this->assertSame([], (new ElectronicInvoiceValidator)->validate($invoice));
     }
 
-    public function test_draft_and_rejected_invoices_with_legal_data_and_pdf_pass(): void
+    public function test_rejects_draft_and_rejected_status(): void
     {
         Storage::fake('local');
         $invoice = $this->makeInvoice();
         Storage::put('invoices/XDM26001.pdf', '%PDF-1.4 test');
 
         $invoice->electronic_invoice_status = ElectronicInvoiceStatus::Draft;
-        $this->assertSame([], (new ElectronicInvoiceValidator)->validate($invoice));
-
-        $invoice->electronic_invoice_status = ElectronicInvoiceStatus::Rejected;
-        $this->assertSame([], (new ElectronicInvoiceValidator)->validate($invoice));
-    }
-
-    public function test_rejects_transmitted_and_accepted_status(): void
-    {
-        Storage::fake('local');
-        $invoice = $this->makeInvoice();
-        Storage::put('invoices/XDM26001.pdf', '%PDF-1.4 test');
-
-        $invoice->electronic_invoice_status = ElectronicInvoiceStatus::Transmitted;
         $this->assertContains(
             __('messages.electronic_invoice_submit_status_invalid'),
             (new ElectronicInvoiceValidator)->validate($invoice),
         );
 
-        $invoice->electronic_invoice_status = ElectronicInvoiceStatus::Accepted;
+        $invoice->electronic_invoice_status = ElectronicInvoiceStatus::Rejected;
         $this->assertContains(
             __('messages.electronic_invoice_submit_status_invalid'),
             (new ElectronicInvoiceValidator)->validate($invoice),
@@ -87,7 +74,7 @@ class ElectronicInvoiceValidatorTest extends TestCase
             'paid_at' => now(),
             'company_id' => $company->id,
             'school_id' => $school->id,
-            'electronic_invoice_status' => ElectronicInvoiceStatus::Transmitted,
+            'electronic_invoice_status' => ElectronicInvoiceStatus::Draft,
         ]);
 
         $errors = (new ElectronicInvoiceValidator)->validate($invoice);

@@ -501,7 +501,7 @@ return [
     'electronic_invoice_platform_not_configured' => 'SuperPDP is not configured (see .env).',
     'electronic_invoice_superpdp_error' => 'SuperPDP: :message',
     'electronic_invoice_superpdp_auth_error' => 'SuperPDP authentication failed: :message',
-    'electronic_invoice_submit_status_invalid' => 'Transmitted or accepted invoices cannot be submitted again.',
+    'electronic_invoice_submit_status_invalid' => 'Only invoices with status "Ready" can be submitted.',
     'electronic_invoice_issuer' => 'Issuer (my company)',
     'electronic_invoice_siren_missing' => 'Missing SIREN for :name.',
     'electronic_invoice_address_missing' => 'Incomplete address for :name.',
