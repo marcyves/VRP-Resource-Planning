@@ -8,7 +8,7 @@ Couche métier : [facturation-electronique.md](facturation-electronique.md). Dé
 
 ## Ce que le code fait vs ce que Marc fait
 
-| Dans le code (après merge PR 42) | Chez SuperPDP | Sur IONOS (serveur) |
+| Dans le code (après merge du PR go-live) | Chez SuperPDP | Sur IONOS (serveur) |
 |----------------------------------|---------------|---------------------|
 | Verrou `E_INVOICE_ALLOW_PRODUCTION` **false** par défaut | Créer une **Application production** (OAuth) | Éditer `.env` **à la main** (jamais uploadé par le script SFTP) |
 | Interrupteur **par société** `electronic_invoicing_enabled` (défaut **off**) | Secret HMAC webhook | `php artisan migrate` **ou** ALTER SQL ci-dessous |
@@ -63,7 +63,7 @@ Si Laravel ne voit pas HTTPS (webhook « HTTP » dans les logs) : garder `TRUSTE
 
 ## Séquence go-live réel
 
-1. Approuver et merger PR 42, déployer le code (`./scripts/deploy-xdm-vrp.sh --upload`).
+1. Approuver et merger le PR go-live (PR 42 déjà mergée ; suivi : opt-in locataire + runbook IONOS), déployer le code (`./scripts/deploy-xdm-vrp.sh --upload`).
 2. ALTER / migrate sur la BDD prod.
 3. Remplir `.env` **sans** ouvrir le verrou (`E_INVOICE_ALLOW_PRODUCTION=false`).
 4. `php artisan superpdp:test` — OAuth OK, env API = production, URL webhook HTTPS.
@@ -78,7 +78,7 @@ Pour **revenir en arrière** : `E_INVOICE_ALLOW_PRODUCTION=false` et/ou décoche
 
 ## Checklist Marc (jour J)
 
-- [ ] PR 42 mergée et code sur IONOS
+- [ ] PR go-live mergée et code sur IONOS
 - [ ] Colonne `electronic_invoicing_enabled` en base
 - [ ] Application SuperPDP **production** créée
 - [ ] `.env` IONOS : credentials + secret webhook (pas dans Git)

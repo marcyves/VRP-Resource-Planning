@@ -8,7 +8,7 @@ Operational layer: [electronic-invoicing.md](electronic-invoicing.md). File depl
 
 ## Code vs SuperPDP vs IONOS
 
-| In code (after PR 42) | At SuperPDP | On IONOS |
+| In code (after go-live PR) | At SuperPDP | On IONOS |
 |-----------------------|-------------|----------|
 | `E_INVOICE_ALLOW_PRODUCTION` defaults **false** | Production **Application** (OAuth) | Edit `.env` **by hand** (SFTP script never uploads it) |
 | Per-company `electronic_invoicing_enabled` (default **off**) | Webhook HMAC secret | `php artisan migrate` **or** SQL below |
@@ -61,7 +61,7 @@ If `bootstrap/cache/config.php` exists, `.env` changes are ignored until `config
 
 ## Live cut-over
 
-1. Approve/merge PR 42, deploy (`./scripts/deploy-xdm-vrp.sh --upload`).
+1. Approve/merge the go-live follow-up PR (PR 42 is already merged; this code adds per-tenant opt-in + IONOS runbook), deploy (`./scripts/deploy-xdm-vrp.sh --upload`).
 2. ALTER / migrate production DB.
 3. Fill `.env` **with the lock still false**.
 4. `php artisan superpdp:test` then `php artisan superpdp:go-live-check`.
