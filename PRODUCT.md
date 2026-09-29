@@ -36,7 +36,7 @@ A neighbouring planner or invoicing tool cannot truthfully claim this combinatio
 - Auth, company-scoped data, super-admin provisioning (`/super-admin/companies`).
 - Schools/clients, programmes, courses (volumes, HT rates), groups, planning, calendar import.
 - Invoices (PDF, payment tracking), treasury, bank reconciliation, expenses.
-- Electronic invoicing via SuperPDP is optional (`E_INVOICE_PLATFORM`); not a claim that every tenant is live on Factur-X.
+- Electronic invoicing via SuperPDP is optional (`E_INVOICE_PLATFORM`); POC only — not live for production tenants (`E_INVOICE_ALLOW_PRODUCTION` defaults false).
 - UI v2: sidebar + topbar, modular CSS (no Tailwind npm), Blade + Alpine, light/dark.
 - `VRP_ALLOW_REGISTRATION=false` by default.
 - Stack in repo: PHP ≥ 8.2 / Laravel 11, Vite 4, MySQL. Dev PHP in Sail is 8.4.

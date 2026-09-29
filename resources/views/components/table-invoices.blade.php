@@ -68,7 +68,7 @@
                     @endif
                 </td>
                 <td>
-                    <span class="status-chip invoice-e-status invoice-e-status--{{ $bill->electronic_invoice_status?->value ?? 'draft' }}">
+                    <span class="status-chip invoice-e-status invoice-e-status--{{ $bill->electronic_invoice_status?->value ?? 'draft' }}" @if ($bill->rejection_reason) title="{{ $bill->rejection_reason }}" @endif>
                         {{ $bill->electronicStatusLabel() }}
                     </span>
                 </td>

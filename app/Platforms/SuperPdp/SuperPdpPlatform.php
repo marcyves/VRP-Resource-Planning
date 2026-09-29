@@ -2,11 +2,12 @@
 
 namespace App\Platforms\SuperPdp;
 
-use App\DTO\ElectronicInvoice\CiiTradeParty;
 use App\Contracts\ElectronicInvoicePlatform;
+use App\DTO\ElectronicInvoice\CiiTradeParty;
 use App\DTO\ElectronicInvoice\PlatformEvent;
 use App\DTO\ElectronicInvoice\PlatformSubmission;
 use App\Enums\PlatformEventType;
+use App\Exceptions\ElectronicInvoiceException;
 use App\Models\Invoice;
 use App\Services\ElectronicInvoicing\ElectronicInvoiceCiiBuilder;
 use App\Services\ElectronicInvoicing\ElectronicInvoiceValidator;
@@ -23,28 +24,42 @@ class SuperPdpPlatform implements ElectronicInvoicePlatform
 
     public function isConfigured(): bool
     {
-        return $this->client !== null;
+        return $this->client !== null && SuperPdpConfig::outboundAllowed();
     }
 
     public function submitOutbound(Invoice $invoice): PlatformSubmission
     {
-        if ($this->client === null) {
-            throw new \RuntimeException('SuperPDP client is not configured.');
+        if (! SuperPdpConfig::outboundAllowed()) {
+            throw new ElectronicInvoiceException(__('messages.electronic_invoice_production_blocked'));
         }
 
-        $externalId = $this->validator->fullInvoiceNumber($invoice);
-        $companyProfile = $this->client->companyMe();
-        $platformSeller = CiiTradeParty::fromSuperPdpProfile($companyProfile);
-        $buyer = $this->resolveBuyerParty($invoice, $companyProfile);
-        $ciiXml = $this->ciiBuilder->build($invoice, $platformSeller, $buyer);
-        $facturX = $this->client->convertInvoice($ciiXml, 'cii', 'factur-x');
+        if ($this->client === null) {
+            throw new ElectronicInvoiceException(__('messages.electronic_invoice_platform_not_configured'));
+        }
 
-        $body = $this->client->sendInvoicePdf($facturX, $externalId);
+        try {
+            $externalId = $this->validator->fullInvoiceNumber($invoice);
+            $companyProfile = $this->client->companyMe();
+            $platformSeller = CiiTradeParty::fromSuperPdpProfile($companyProfile);
+            $buyer = $this->resolveBuyerParty($invoice, $companyProfile);
+            $ciiXml = $this->ciiBuilder->build($invoice, $platformSeller, $buyer);
+            $facturX = $this->client->convertInvoice($ciiXml, 'cii', 'factur-x');
+
+            $body = $this->client->sendInvoicePdf($facturX, $externalId);
+        } catch (ElectronicInvoiceException $e) {
+            throw $e;
+        } catch (\Throwable $e) {
+            throw new ElectronicInvoiceException(
+                __('messages.electronic_invoice_superpdp_error', ['message' => $e->getMessage()]),
+            );
+        }
 
         $pdpId = (string) ($body['id'] ?? $body['invoice_id'] ?? '');
 
         if ($pdpId === '') {
-            throw new \RuntimeException('SuperPDP response missing invoice id.');
+            throw new ElectronicInvoiceException(__('messages.electronic_invoice_superpdp_error', [
+                'message' => 'missing invoice id',
+            ]));
         }
 
         return new PlatformSubmission(
@@ -65,16 +80,7 @@ class SuperPdpPlatform implements ElectronicInvoicePlatform
         $invoice->loadMissing('school');
         $school = $invoice->school;
 
-        if (! $school) {
-            return null;
-        }
-
-        if ($school->electronic_address) {
-            return null;
-        }
-
-        if (($companyProfile['env'] ?? '') !== 'sandbox'
-            && ! config('electronic-invoicing.superpdp.force_sandbox_buyer', false)) {
+        if (! $school || $school->electronic_address) {
             return null;
         }
 

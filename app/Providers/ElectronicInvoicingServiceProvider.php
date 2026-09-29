@@ -18,13 +18,15 @@ class ElectronicInvoicingServiceProvider extends ServiceProvider
     {
         $this->app->singleton(SuperPdpAuth::class, function () {
             $config = config('electronic-invoicing.superpdp');
-            [$clientId, $clientSecret] = SuperPdpConfig::activeCredentials($config);
+            [$clientId, $clientSecret, $env] = SuperPdpConfig::activeCredentials($config);
+            $accessToken = $config['access_token'] ?? null;
 
             return new SuperPdpAuth(
                 $config['base_url'],
                 is_string($clientId) ? $clientId : null,
                 is_string($clientSecret) ? $clientSecret : null,
-                $config['access_token'],
+                is_string($accessToken) ? $accessToken : null,
+                $env,
             );
         });
 

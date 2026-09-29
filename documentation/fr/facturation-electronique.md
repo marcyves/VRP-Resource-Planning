@@ -2,6 +2,8 @@
 
 **EN:** [electronic-invoicing.md](../en/electronic-invoicing.md)
 
+> **Pas en production.** SuperPDP est un POC. La préparation du go-live est en cours ; **ne pas** poser `E_INVOICE_ALLOW_PRODUCTION=true` ni brancher les locataires de vrp.xdm-consulting.fr sur la PA live tant que Marc ne l’a pas autorisé.
+
 Guide opérationnel de la couche PA **déjà implémentée** et du POC SuperPDP. Stratégie, phases et contexte réglementaire : [roadmap](roadmap-facturation-electronique.md).
 
 ## Intention
@@ -39,14 +41,18 @@ POST /webhooks/e-invoice/superpdp  (CSRF exclu)
 
 Drivers : `null` (défaut si `E_INVOICE_PLATFORM` absent/autre) ou `superpdp`. B2Brouter **n’est pas** encore implémenté. Le contrat codé se limite à l’émission + webhook (`isConfigured`, `submitOutbound`, `parseWebhook`, `verifyWebhook`) — pas d’onboarding entreprise ni de fetch inbound.
 
+**Verrou production :** `E_INVOICE_ALLOW_PRODUCTION` vaut `false` par défaut. `SUPERPDP_ENV` vaut `sandbox` par défaut. Si `SUPERPDP_ENV=production` sans le flag, `isConfigured()` est faux (bouton masqué ; `superpdp:send-test` refusé). `superpdp:test` peut encore vérifier l’OAuth et affiche un avertissement.
+
 ## Configuration
 
 ```env
-E_INVOICE_PLATFORM=superpdp
-SUPERPDP_ENV=sandbox          # ou production
+# Laisser absent sur les locataires live
+# E_INVOICE_PLATFORM=superpdp
+E_INVOICE_ALLOW_PRODUCTION=false
+SUPERPDP_ENV=sandbox
 SUPERPDP_BASE_URL=https://api.superpdp.tech
 
-# credentials production
+# credentials production (inutilisés tant que le verrou est fermé)
 SUPERPDP_CLIENT_ID=
 SUPERPDP_CLIENT_SECRET=
 
@@ -57,11 +63,11 @@ SUPERPDP_SANDBOX_CLIENT_SECRET=
 # optionnel : bearer token (sans OAuth)
 # SUPERPDP_ACCESS_TOKEN=
 
-# optionnel : secret HMAC webhook
+# obligatoire pour les callbacks de statut (absent → webhook 401)
 # SUPERPDP_WEBHOOK_SECRET=
 ```
 
-Auth : flux `client_credentials` vers `POST /oauth2/token`, token mis en cache (`superpdp.access_token.{md5(client_id)}`, TTL = `expires_in − 60s`). Le choix sandbox / production passe par `SuperPdpConfig::activeCredentials()`.
+Auth : flux `client_credentials` vers `POST /oauth2/token`, token mis en cache (`superpdp.access_token.{env}.{md5(client_id)}`, TTL = `expires_in − 60s`). Le choix sandbox / production passe par `SuperPdpConfig::activeCredentials()`.
 
 Vérifier la connexion :
 
@@ -91,8 +97,10 @@ Commandes utiles :
 |-------|--------|
 | Statut `ready` | `invoices.electronic_invoice_status` |
 | Facture non payée | `paid_at` null |
-| Émetteur : SIREN + adresse complète | `companies` (`siren`, `address`, `city`, `zip`) |
-| Client : SIREN ou SIRET + adresse | `schools` |
+| Date de facture | `bill_date` |
+| Montant > 0 | `amount` |
+| Émetteur : SIREN (9 chiffres) ou SIRET (14) + adresse | `companies` |
+| Client : SIREN ou SIRET (mêmes formats) + adresse | `schools` |
 | PDF en stockage | `Storage::exists(...)` |
 
 Le suivi **payée** (`paid_at`) reste indépendant du statut e-facture.
@@ -126,11 +134,13 @@ Recherche facture : `pdp_reference` d’abord, puis partie numérique de `extern
 
 ## Contraintes et pièges
 
-- Sans `E_INVOICE_PLATFORM=superpdp` et credentials valides, le bouton UI reste masqué.
+- Sans `E_INVOICE_PLATFORM=superpdp` et credentials **sandbox** valides, le bouton UI reste masqué. La colonne de statut reste visible.
+- `SUPERPDP_ENV=production` sans `E_INVOICE_ALLOW_PRODUCTION=true` masque aussi le bouton et bloque `superpdp:send-test`.
 - SIREN/adresse ou PDF manquant → flash danger + liste d’erreurs.
-- Webhook sans `SUPERPDP_WEBHOOK_SECRET` → toujours **401**.
+- Webhook sans `SUPERPDP_WEBHOOK_SECRET` → toujours **401**. Facture introuvable → **204** (journalisé). Erreur inattendue → **500**.
 - TVA du builder CII fixée à **20 %** (indépendante des taux société / cours).
 - Pas d’UI de réception fournisseurs.
+- L’interrupteur PA est **global au process**, pas par entreprise — ne pas allumer la production sur un hôte multi-locataires tant qu’il n’y a pas de flag par société.
 
 ## Voir aussi
 

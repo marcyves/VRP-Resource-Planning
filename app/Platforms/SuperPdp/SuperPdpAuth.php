@@ -16,6 +16,7 @@ class SuperPdpAuth
         private readonly ?string $clientId,
         private readonly ?string $clientSecret,
         private readonly ?string $accessToken = null,
+        private readonly string $credentialEnv = 'sandbox',
     ) {}
 
     public function isConfigured(): bool
@@ -34,7 +35,7 @@ class SuperPdpAuth
             throw new ElectronicInvoiceException(__('messages.electronic_invoice_platform_not_configured'));
         }
 
-        $cacheKey = self::CACHE_KEY.'.'.md5($this->clientId);
+        $cacheKey = self::CACHE_KEY.'.'.$this->credentialEnv.'.'.md5($this->clientId);
 
         /** @var string|null $cached */
         $cached = Cache::get($cacheKey);

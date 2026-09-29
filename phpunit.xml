@@ -26,5 +26,14 @@
         <env name="QUEUE_CONNECTION" value="sync"/>
         <env name="SESSION_DRIVER" value="array"/>
         <env name="TELESCOPE_ENABLED" value="false"/>
+        <env name="E_INVOICE_PLATFORM" value=""/>
+        <env name="E_INVOICE_ALLOW_PRODUCTION" value="false"/>
+        <env name="SUPERPDP_ENV" value="sandbox"/>
+        <env name="SUPERPDP_CLIENT_ID" value=""/>
+        <env name="SUPERPDP_CLIENT_SECRET" value=""/>
+        <env name="SUPERPDP_SANDBOX_CLIENT_ID" value=""/>
+        <env name="SUPERPDP_SANDBOX_CLIENT_SECRET" value=""/>
+        <env name="SUPERPDP_ACCESS_TOKEN" value=""/>
+        <env name="SUPERPDP_WEBHOOK_SECRET" value=""/>
     </php>
 </phpunit>

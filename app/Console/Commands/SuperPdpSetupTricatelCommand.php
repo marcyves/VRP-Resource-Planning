@@ -8,6 +8,7 @@ use App\Models\Invoice;
 use App\Models\School;
 use App\Platforms\SuperPdp\SuperPdpAuth;
 use App\Platforms\SuperPdp\SuperPdpClient;
+use App\Platforms\SuperPdp\SuperPdpConfig;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Storage;
 
@@ -22,6 +23,12 @@ class SuperPdpSetupTricatelCommand extends Command
 
     public function handle(): int
     {
+        if (SuperPdpConfig::environment() !== 'sandbox') {
+            $this->error('superpdp:setup-tricatel est réservé au sandbox (SUPERPDP_ENV=sandbox).');
+
+            return self::FAILURE;
+        }
+
         $company = $this->resolveCompany();
 
         if (! $company) {

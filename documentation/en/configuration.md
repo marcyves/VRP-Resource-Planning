@@ -10,8 +10,9 @@
 | `TERMINOLOGY_PROFILE` | `education` | Profile for guests / no company loaded |
 | `VRP_ALLOW_REGISTRATION` | `false` | Public self-registration at `/register` |
 | `VRP_ACCOUNT_REQUEST_EMAIL` | `MAIL_FROM_ADDRESS` if the key is **unset** | Inbox for `/demande-acces`. An empty `VRP_ACCOUNT_REQUEST_EMAIL=` in `.env` does **not** fall back (empty string is set) — the form still succeeds, but `AccountRequestController` reports a `RuntimeException` and sends no mail |
-| `E_INVOICE_PLATFORM` | *(unset)* | `superpdp` to bind SuperPDP; otherwise Null driver |
-| `SUPERPDP_ENV` | `production` | `sandbox` or `production` (selects OAuth credentials) |
+| `E_INVOICE_PLATFORM` | *(unset)* | `superpdp` to bind SuperPDP; otherwise Null driver. Leave unset on live tenants. |
+| `E_INVOICE_ALLOW_PRODUCTION` | `false` | Hard lock: live SuperPDP submit stays off until this is `true` |
+| `SUPERPDP_ENV` | `sandbox` | `sandbox` or `production` (selects OAuth credentials) |
 | `SUPERPDP_CLIENT_ID` / `SUPERPDP_CLIENT_SECRET` | — | Production OAuth (`client_credentials`) |
 | `SUPERPDP_SANDBOX_CLIENT_ID` / `SUPERPDP_SANDBOX_CLIENT_SECRET` | — | Sandbox OAuth when `SUPERPDP_ENV=sandbox` |
 | `SUPERPDP_ACCESS_TOKEN` | — | Optional bearer token (skips OAuth) |
@@ -25,6 +26,7 @@ TERMINOLOGY_PROFILE=consulting
 VRP_ALLOW_REGISTRATION=false
 # VRP_ACCOUNT_REQUEST_EMAIL=ops@example.com
 # E_INVOICE_PLATFORM=superpdp
+# E_INVOICE_ALLOW_PRODUCTION=false
 # SUPERPDP_ENV=sandbox
 ```
 

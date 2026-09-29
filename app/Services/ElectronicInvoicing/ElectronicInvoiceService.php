@@ -8,7 +8,9 @@ use App\Enums\ElectronicInvoiceStatus;
 use App\Enums\PlatformEventType;
 use App\Exceptions\ElectronicInvoiceException;
 use App\Models\Invoice;
+use App\Platforms\SuperPdp\SuperPdpConfig;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
 
 class ElectronicInvoiceService
 {
@@ -24,6 +26,10 @@ class ElectronicInvoiceService
 
     public function submit(Invoice $invoice): Invoice
     {
+        if (config('electronic-invoicing.platform') === 'superpdp' && SuperPdpConfig::isProductionBlocked()) {
+            throw new ElectronicInvoiceException(__('messages.electronic_invoice_production_blocked'));
+        }
+
         if (! $this->platform->isConfigured()) {
             throw new ElectronicInvoiceException(__('messages.electronic_invoice_platform_not_configured'));
         }
@@ -44,6 +50,13 @@ class ElectronicInvoiceService
         $invoice->rejection_reason = null;
         $invoice->save();
 
+        Log::info('e-invoice submitted', [
+            'invoice_id' => $invoice->id,
+            'pdp_reference' => $submission->pdpReference,
+            'platform' => SuperPdpConfig::platform(),
+            'superpdp_env' => SuperPdpConfig::environment(),
+        ]);
+
         return $invoice->fresh(['company', 'school']);
     }
 
@@ -61,6 +74,12 @@ class ElectronicInvoiceService
             PlatformEventType::OutboundRejected => $this->markRejected($invoice, $event->rejectionReason),
             PlatformEventType::InboundReceived => null,
         };
+
+        Log::info('e-invoice webhook applied', [
+            'invoice_id' => $invoice->id,
+            'event' => $event->type->value,
+            'pdp_reference' => $event->pdpReference,
+        ]);
 
         return $invoice->fresh(['company', 'school']);
     }
