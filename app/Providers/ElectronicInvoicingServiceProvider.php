@@ -44,7 +44,7 @@ class ElectronicInvoicingServiceProvider extends ServiceProvider
                     $client,
                     $validator,
                     $app->make(ElectronicInvoiceCiiBuilder::class),
-                    config('electronic-invoicing.superpdp.webhook_secret'),
+                    SuperPdpConfig::webhookSecret(),
                 );
             }
 

@@ -24,9 +24,16 @@
             <x-sidebar-nav-link
                 icon="grid"
                 :href="route('super-admin.companies.index')"
-                :active="request()->routeIs('super-admin.*')"
+                :active="request()->routeIs('super-admin.companies.*')"
             >
                 {{ __('messages.super_admin_companies') }}
+            </x-sidebar-nav-link>
+            <x-sidebar-nav-link
+                icon="receipt"
+                :href="route('super-admin.electronic-invoicing.edit')"
+                :active="request()->routeIs('super-admin.electronic-invoicing.*')"
+            >
+                {{ __('messages.super_admin_electronic_invoicing') }}
             </x-sidebar-nav-link>
         @else
             <x-sidebar-nav-link

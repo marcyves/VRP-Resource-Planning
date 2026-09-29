@@ -2,6 +2,11 @@
 
 namespace App\Platforms\SuperPdp;
 
+use App\Models\PlatformSetting;
+use Illuminate\Contracts\Encryption\DecryptException;
+use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\Schema;
+
 class SuperPdpConfig
 {
     /**
@@ -144,13 +149,67 @@ class SuperPdpConfig
     }
 
     /**
+     * HMAC secret used at runtime: UI-stored value first, then optional .env fallback.
+     *
+     * @param  array<string, mixed>|null  $config
+     */
+    public static function webhookSecret(?array $config = null): ?string
+    {
+        return self::storedWebhookSecret() ?? self::envWebhookSecret($config);
+    }
+
+    /**
+     * @param  array<string, mixed>|null  $config
+     */
+    public static function envWebhookSecret(?array $config = null): ?string
+    {
+        $secret = self::superpdpConfig($config)['webhook_secret'] ?? null;
+
+        return is_string($secret) && $secret !== '' ? $secret : null;
+    }
+
+    public static function storedWebhookSecret(): ?string
+    {
+        try {
+            if (! Schema::hasTable('platform_settings')) {
+                return null;
+            }
+
+            $settings = PlatformSetting::query()->first();
+            if ($settings === null) {
+                return null;
+            }
+
+            $secret = $settings->superpdp_webhook_secret;
+
+            return is_string($secret) && $secret !== '' ? $secret : null;
+        } catch (DecryptException|QueryException) {
+            return null;
+        }
+    }
+
+    /**
      * @param  array<string, mixed>|null  $config
      */
     public static function webhookSecretConfigured(?array $config = null): bool
     {
-        $secret = self::superpdpConfig($config)['webhook_secret'] ?? null;
+        return self::webhookSecret($config) !== null;
+    }
 
-        return is_string($secret) && $secret !== '';
+    /**
+     * @param  array<string, mixed>|null  $config
+     */
+    public static function webhookSecretSource(?array $config = null): string
+    {
+        if (self::storedWebhookSecret() !== null) {
+            return 'ui';
+        }
+
+        if (self::envWebhookSecret($config) !== null) {
+            return 'env';
+        }
+
+        return 'none';
     }
 
     /**

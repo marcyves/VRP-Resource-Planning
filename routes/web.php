@@ -1,24 +1,24 @@
 <?php
 
+use App\Http\Controllers\BankController;
 use App\Http\Controllers\BillingController;
 use App\Http\Controllers\BillingNavController;
-use App\Http\Controllers\ElectronicInvoiceWebhookController;
 use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\CalendarFileController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\DateSelectionController;
 use App\Http\Controllers\DocumentController;
+use App\Http\Controllers\ElectronicInvoiceWebhookController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\PlanningController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProgramController;
 use App\Http\Controllers\SchoolController;
-use App\Http\Controllers\BankController;
 use App\Http\Controllers\TreasuryController;
-use App\Models\BankStatementImport;
 use App\Http\Middleware\SetTerminologyLocale;
+use App\Models\BankStatementImport;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -58,6 +58,8 @@ Route::middleware(['auth', 'superadmin'])->prefix('super-admin')->name('super-ad
     Route::patch('/companies/{company}', [\App\Http\Controllers\SuperAdmin\CompanyController::class, 'update'])->name('companies.update');
     Route::delete('/companies/{company}', [\App\Http\Controllers\SuperAdmin\CompanyController::class, 'destroy'])->name('companies.destroy');
     Route::post('/companies/{company}/users', [\App\Http\Controllers\SuperAdmin\CompanyUserController::class, 'store'])->name('companies.users.store');
+    Route::get('/electronic-invoicing', [\App\Http\Controllers\SuperAdmin\ElectronicInvoicingSettingsController::class, 'edit'])->name('electronic-invoicing.edit');
+    Route::patch('/electronic-invoicing', [\App\Http\Controllers\SuperAdmin\ElectronicInvoicingSettingsController::class, 'update'])->name('electronic-invoicing.update');
 });
 
 Route::post('/webhooks/e-invoice/{platform}', ElectronicInvoiceWebhookController::class)
@@ -86,7 +88,6 @@ Route::middleware(['auth', 'tenant', SetTerminologyLocale::class])->group(functi
     Route::get('/school/year', [SchoolController::class, 'dashboard'])->name('school.default_year');
     Route::get('/school/dashboard', [SchoolController::class, 'dashboard'])->name('school.dashboard');
     Route::resource('/school', SchoolController::class);
-
 
     Route::get('/course/{school_id}/create', [CourseController::class, 'create'])->name('course.create');
     Route::post('/course/{school_id}', [CourseController::class, 'store'])->name('course.store');
