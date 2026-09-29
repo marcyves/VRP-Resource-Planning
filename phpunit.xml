@@ -35,5 +35,7 @@
         <env name="SUPERPDP_SANDBOX_CLIENT_SECRET" value=""/>
         <env name="SUPERPDP_ACCESS_TOKEN" value=""/>
         <env name="SUPERPDP_WEBHOOK_SECRET" value=""/>
+        <env name="E_INVOICE_ALERT_EMAIL" value=""/>
+        <env name="E_INVOICE_REQUIRE_HTTPS_WEBHOOKS" value="false"/>
     </php>
 </phpunit>

@@ -20,7 +20,15 @@ class UpdateCompanyRequest extends FormRequest
     {
         return [
             'terminology_profile' => ['required', Rule::in(Company::terminologyProfileValues())],
+            'electronic_invoicing_enabled' => ['boolean'],
         ];
+    }
+
+    protected function prepareForValidation(): void
+    {
+        $this->merge([
+            'electronic_invoicing_enabled' => $this->boolean('electronic_invoicing_enabled'),
+        ]);
     }
 
     /**
@@ -30,6 +38,7 @@ class UpdateCompanyRequest extends FormRequest
     {
         return [
             'terminology_profile' => __('messages.terminology_profile'),
+            'electronic_invoicing_enabled' => __('messages.electronic_invoicing_enabled'),
         ];
     }
 }

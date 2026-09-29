@@ -30,6 +30,10 @@ class SuperPdpTestCommand extends Command
             $this->line("Credentials VRP : {$credentialEnv} (SUPERPDP_ENV={$configuredEnv})");
             $this->line('Verrou production : '.(SuperPdpConfig::allowProduction() ? 'ouvert (E_INVOICE_ALLOW_PRODUCTION=true)' : 'fermé'));
 
+            $this->line('URL webhook à déclarer chez SuperPDP : '.SuperPdpConfig::publicWebhookUrl());
+            $this->line('Webhook HTTPS : '.(SuperPdpConfig::webhookUrlIsHttps() ? 'oui' : 'NON — corriger APP_URL'));
+            $this->line('Secret webhook : '.(SuperPdpConfig::webhookSecretConfigured() ? 'présent' : 'ABSENT (callbacks 401)'));
+
             if (SuperPdpConfig::isProductionBlocked()) {
                 $this->warn(__('messages.electronic_invoice_production_blocked'));
             }

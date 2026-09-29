@@ -11,6 +11,7 @@ use App\Exceptions\ElectronicInvoiceException;
 use App\Models\Company;
 use App\Models\Invoice;
 use App\Models\School;
+use App\Services\ElectronicInvoicing\ElectronicInvoiceMonitor;
 use App\Services\ElectronicInvoicing\ElectronicInvoiceService;
 use App\Services\ElectronicInvoicing\ElectronicInvoiceValidator;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -32,6 +33,7 @@ class ElectronicInvoiceServiceTest extends TestCase
             'city' => 'Paris',
             'zip' => '75001',
             'bill_prefix' => 'XDM',
+            'electronic_invoicing_enabled' => true,
         ]);
 
         $school = School::query()->create([
@@ -61,7 +63,7 @@ class ElectronicInvoiceServiceTest extends TestCase
             ->once()
             ->andReturn(new PlatformSubmission(pdpReference: '42', rawResponse: ['id' => 42]));
 
-        $service = new ElectronicInvoiceService($platform, new ElectronicInvoiceValidator);
+        $service = new ElectronicInvoiceService($platform, new ElectronicInvoiceValidator, new ElectronicInvoiceMonitor);
 
         $updated = $service->submit($invoice);
 
@@ -81,12 +83,31 @@ class ElectronicInvoiceServiceTest extends TestCase
         $platform->shouldReceive('isConfigured')->never();
         $platform->shouldReceive('submitOutbound')->never();
 
-        $service = new ElectronicInvoiceService($platform, new ElectronicInvoiceValidator);
+        $service = new ElectronicInvoiceService($platform, new ElectronicInvoiceValidator, new ElectronicInvoiceMonitor);
 
         $this->expectException(ElectronicInvoiceException::class);
         $this->expectExceptionMessage(__('messages.electronic_invoice_production_blocked'));
 
         $service->submit(new Invoice);
+    }
+
+    public function test_submit_is_blocked_when_company_flag_is_off(): void
+    {
+        Storage::fake('local');
+        $invoice = $this->makeReadyInvoice();
+        $invoice->company->electronic_invoicing_enabled = false;
+        $invoice->company->save();
+
+        $platform = Mockery::mock(ElectronicInvoicePlatform::class);
+        $platform->shouldReceive('isConfigured')->andReturn(true);
+        $platform->shouldReceive('submitOutbound')->never();
+
+        $service = new ElectronicInvoiceService($platform, new ElectronicInvoiceValidator, new ElectronicInvoiceMonitor);
+
+        $this->expectException(ElectronicInvoiceException::class);
+        $this->expectExceptionMessage(__('messages.electronic_invoice_company_disabled'));
+
+        $service->submit($invoice);
     }
 
     public function test_apply_event_marks_accepted_and_rejected(): void
@@ -97,7 +118,7 @@ class ElectronicInvoiceServiceTest extends TestCase
         $invoice->save();
 
         $platform = Mockery::mock(ElectronicInvoicePlatform::class);
-        $service = new ElectronicInvoiceService($platform, new ElectronicInvoiceValidator);
+        $service = new ElectronicInvoiceService($platform, new ElectronicInvoiceValidator, new ElectronicInvoiceMonitor);
 
         $accepted = $service->applyEvent(new PlatformEvent(
             type: PlatformEventType::OutboundAccepted,
@@ -119,7 +140,7 @@ class ElectronicInvoiceServiceTest extends TestCase
     public function test_apply_event_returns_null_when_invoice_is_unknown(): void
     {
         $platform = Mockery::mock(ElectronicInvoicePlatform::class);
-        $service = new ElectronicInvoiceService($platform, new ElectronicInvoiceValidator);
+        $service = new ElectronicInvoiceService($platform, new ElectronicInvoiceValidator, new ElectronicInvoiceMonitor);
 
         $this->assertNull($service->applyEvent(new PlatformEvent(
             type: PlatformEventType::OutboundAccepted,
@@ -135,6 +156,7 @@ class ElectronicInvoiceServiceTest extends TestCase
             'city' => 'Paris',
             'zip' => '75001',
             'bill_prefix' => 'XDM',
+            'electronic_invoicing_enabled' => true,
         ]);
 
         $school = School::query()->create([

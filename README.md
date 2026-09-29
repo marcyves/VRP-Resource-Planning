@@ -257,7 +257,7 @@ Credential information is povided there.
 
 **POC (not in production — go-live prep):** **[SuperPDP](https://www.superpdp.tech/)** adapter — structured **CII → Factur-X** (not the TCPDF PDF). Leave `E_INVOICE_PLATFORM` unset on live tenants. Sandbox: `E_INVOICE_PLATFORM=superpdp`, `SUPERPDP_ENV=sandbox` (default), `E_INVOICE_ALLOW_PRODUCTION=false`. Live PA stays locked until `E_INVOICE_ALLOW_PRODUCTION=true` is set **explicitly**.
 
-Operational runbook: [electronic-invoicing.md](documentation/en/electronic-invoicing.md) · [facturation-electronique.md](documentation/fr/facturation-electronique.md).
+Operational runbook: [electronic-invoicing.md](documentation/en/electronic-invoicing.md) · [facturation-electronique.md](documentation/fr/facturation-electronique.md). Production cut-over (server `.env` only): [electronic-invoicing-go-live.md](documentation/en/electronic-invoicing-go-live.md).
 
 Full docs (integration spec, phases, code layout):
 

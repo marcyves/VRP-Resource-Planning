@@ -255,7 +255,7 @@ Les informations de connexion sont disponibles en ligne.
 
 **POC (pas en production — préparation go-live) :** adaptateur **[SuperPDP](https://www.superpdp.tech/)** — **CII → Factur-X** structuré (pas le PDF TCPDF). Laisser `E_INVOICE_PLATFORM` absent sur les locataires live. Sandbox : `E_INVOICE_PLATFORM=superpdp`, `SUPERPDP_ENV=sandbox` (défaut), `E_INVOICE_ALLOW_PRODUCTION=false`. La PA live reste verrouillée tant que `E_INVOICE_ALLOW_PRODUCTION=true` n’est pas posé **explicitement**.
 
-Runbook opérationnel : [facturation-electronique.md](documentation/fr/facturation-electronique.md) · [electronic-invoicing.md](documentation/en/electronic-invoicing.md).
+Runbook opérationnel : [facturation-electronique.md](documentation/fr/facturation-electronique.md) · [electronic-invoicing.md](documentation/en/electronic-invoicing.md). Cut-over production (`.env` serveur seulement) : [facturation-electronique-go-live.md](documentation/fr/facturation-electronique-go-live.md).
 
 Documentation complète (spec d’intégration, phases, structure de code) :
 

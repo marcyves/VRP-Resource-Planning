@@ -143,7 +143,7 @@ class TreasuryController extends Controller
             'payment' => $request->input('payment'),
         ], fn ($value) => filled($value));
 
-        $electronicInvoicingEnabled = $electronicInvoiceService->platformConfigured();
+        $electronicInvoicingEnabled = $electronicInvoiceService->enabledForCompany($user->company);
 
         return view('treasury.invoices', compact(
             'bills',

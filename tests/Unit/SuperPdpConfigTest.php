@@ -68,4 +68,18 @@ class SuperPdpConfigTest extends TestCase
         $this->assertFalse(SuperPdpConfig::isProductionBlocked());
         $this->assertTrue(SuperPdpConfig::outboundAllowed());
     }
+
+    public function test_public_webhook_url_uses_app_url_and_https_check(): void
+    {
+        config(['app.url' => 'https://vrp.xdm-consulting.fr']);
+
+        $this->assertSame(
+            'https://vrp.xdm-consulting.fr/webhooks/e-invoice/superpdp',
+            SuperPdpConfig::publicWebhookUrl(),
+        );
+        $this->assertTrue(SuperPdpConfig::webhookUrlIsHttps());
+
+        config(['electronic-invoicing.webhook_url' => 'http://localhost/webhooks/e-invoice/superpdp']);
+        $this->assertFalse(SuperPdpConfig::webhookUrlIsHttps());
+    }
 }

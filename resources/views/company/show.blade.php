@@ -62,6 +62,9 @@
                 @if($company->legalFooterLine())
                     <li>{{ $company->legalFooterLine() }}</li>
                 @endif
+                <li>{{ __('messages.electronic_invoicing_enabled') }}:
+                    {{ $company->allowsElectronicInvoicing() ? __('messages.yes') : __('messages.no') }}
+                </li>
             </ul>
         </article>
 
