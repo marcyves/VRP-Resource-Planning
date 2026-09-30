@@ -43,7 +43,7 @@ Drivers : `null` (défaut si `E_INVOICE_PLATFORM` absent/autre) ou `superpdp`. B
 
 **Verrou production :** `E_INVOICE_ALLOW_PRODUCTION` vaut `false` par défaut. `SUPERPDP_ENV` vaut `sandbox` par défaut. Si `SUPERPDP_ENV=production` sans le flag, `isConfigured()` est faux (bouton masqué ; `superpdp:send-test` refusé). `superpdp:test` peut encore vérifier l’OAuth et affiche un avertissement.
 
-**Interrupteur locataire :** `companies.electronic_invoicing_enabled` vaut **false** par défaut. Le bouton Trésorerie exige la PA process **et** ce flag. Runbook go-live : [facturation-electronique-go-live.md](facturation-electronique-go-live.md).
+**Interrupteur locataire :** `companies.electronic_invoicing_enabled` vaut **false** par défaut. Le bouton **e** (Trésorerie et fiche école) exige la PA process **et** ce flag. Runbook go-live : [facturation-electronique-go-live.md](facturation-electronique-go-live.md).
 
 ## Configuration
 
@@ -90,8 +90,8 @@ Commandes utiles :
 
 1. Créer une facture → statut **`ready`** (`InvoiceController::store`).
 2. PDF présent sur disque (`invoices/{bill_prefix}{id}.pdf`). Absent = blocage.
-3. **Trésorerie → Factures** : le bouton e-facture n’apparaît que si la PA est configurée, **l’opt-in société est on**, et le statut est `ready`.
-4. `POST invoice.submitElectronic` valide puis soumet.
+3. Bouton **e** (mode **Édition** uniquement) sur **Trésorerie → Factures** et **fiche école** (`school/show`) si la PA est configurée **et** l’opt-in société est on, que la facture est **impayée**, et que le statut est **`ready`**. Masqué si brouillon, payée, `transmitted`, `accepted` ou `rejected`.
+4. `POST invoice.submitElectronic` valide puis soumet. Pas de promotion automatique `draft` → `ready`.
 5. Succès : statut **`transmitted`**, `pdp_reference` renseigné, `rejection_reason` effacé.
 
 ### Règles de validation (bloquantes)

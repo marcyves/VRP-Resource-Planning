@@ -43,7 +43,7 @@ Drivers: `null` (default when `E_INVOICE_PLATFORM` is unset/other) or `superpdp`
 
 **Production lock:** `E_INVOICE_ALLOW_PRODUCTION` defaults to `false`. `SUPERPDP_ENV` defaults to `sandbox`. If `SUPERPDP_ENV=production` without the allow flag, `isConfigured()` is false (submit button hidden; `superpdp:send-test` refused). `superpdp:test` may still check OAuth and prints a warning.
 
-**Per-tenant switch:** `companies.electronic_invoicing_enabled` defaults **false**. The Treasury e-button requires the process platform **and** this flag. Go-live runbook: [electronic-invoicing-go-live.md](electronic-invoicing-go-live.md).
+**Per-tenant switch:** `companies.electronic_invoicing_enabled` defaults **false**. The **e** button (Treasury and school show) requires the process platform **and** this flag. Go-live runbook: [electronic-invoicing-go-live.md](electronic-invoicing-go-live.md).
 
 ## Configuration
 
@@ -90,8 +90,8 @@ Optional helpers:
 
 1. Create an invoice → status set to **`ready`** (`InvoiceController::store`).
 2. Ensure PDF exists on disk (`invoices/{bill_prefix}{id}.pdf`). Missing PDF blocks submit.
-3. Open **Treasury → Invoices**. The e-invoice button appears only when the platform is configured, **the company opt-in is on**, and status is `ready`.
-4. `POST invoice.submitElectronic` validates then submits.
+3. The **e** button (Edit mode only) appears on **Treasury → Invoices** and **school show** (`school/show`) when the platform is configured **and** the company opt-in is on, the invoice is **unpaid**, and status is **`ready`**. Hidden for draft, paid, `transmitted`, `accepted`, or `rejected`.
+4. `POST invoice.submitElectronic` validates then submits. No automatic `draft` → `ready` promotion.
 5. On success: status **`transmitted`**, `pdp_reference` set, `rejection_reason` cleared.
 
 ### Validation rules (blocking)

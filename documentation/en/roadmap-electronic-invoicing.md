@@ -258,7 +258,7 @@ routes/web.php
 | Phase | Screen | Action |
 |-------|--------|--------|
 | 1 | Invoice list | E-invoice status column (existing) |
-| 2 | Detail / list | **Issue e-invoice** button if `ready` |
+| 2 | Detail / list | **Issue e-invoice** button if `ready`, unpaid, Edit mode (Treasury + school show) |
 | 2 | Detail | Show `pdp_reference`, rejection reason |
 | 2 | Treasury | **Received invoices** tab (PA inbound) |
 | 3 | My company | PA onboarding state (connected / incomplete) |

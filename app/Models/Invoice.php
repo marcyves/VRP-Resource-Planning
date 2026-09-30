@@ -81,6 +81,12 @@ class Invoice extends Model
             ?? ElectronicInvoiceStatus::Draft->label();
     }
 
+    public function canSubmitElectronic(): bool
+    {
+        return $this->paid_at === null
+            && $this->electronic_invoice_status === ElectronicInvoiceStatus::Ready;
+    }
+
     /** @var array<string, float|null> */
     protected static array $planningTotalHtCache = [];
 

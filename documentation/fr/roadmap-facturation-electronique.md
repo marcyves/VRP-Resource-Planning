@@ -269,7 +269,7 @@ routes/web.php                           # webhook
 | Phase | Écran | Action |
 |-------|-------|--------|
 | 1 | Liste factures | Colonne statut e-facture (existant) |
-| 2 | Détail / liste | Bouton **Émettre e-facture** si `ready` |
+| 2 | Détail / liste | Bouton **Émettre e-facture** si `ready`, impayée, mode Édition (Trésorerie + fiche école) |
 | 2 | Détail | Afficher `pdp_reference`, motif rejet |
 | 2 | Trésorerie | Onglet **Factures reçues** (inbound PA) |
 | 3 | Mon entreprise | État onboarding PA (connecté / incomplet) |

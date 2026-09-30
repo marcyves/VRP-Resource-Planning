@@ -24,6 +24,25 @@ class ElectronicInvoiceValidatorTest extends TestCase
         $this->assertSame([], (new ElectronicInvoiceValidator)->validate($invoice));
     }
 
+    public function test_rejects_draft_and_rejected_status(): void
+    {
+        Storage::fake('local');
+        $invoice = $this->makeInvoice();
+        Storage::put('invoices/XDM26001.pdf', '%PDF-1.4 test');
+
+        $invoice->electronic_invoice_status = ElectronicInvoiceStatus::Draft;
+        $this->assertContains(
+            __('messages.electronic_invoice_submit_status_invalid'),
+            (new ElectronicInvoiceValidator)->validate($invoice),
+        );
+
+        $invoice->electronic_invoice_status = ElectronicInvoiceStatus::Rejected;
+        $this->assertContains(
+            __('messages.electronic_invoice_submit_status_invalid'),
+            (new ElectronicInvoiceValidator)->validate($invoice),
+        );
+    }
+
     public function test_rejects_invalid_status_paid_amount_and_identifiers(): void
     {
         Storage::fake('local');
@@ -61,7 +80,7 @@ class ElectronicInvoiceValidatorTest extends TestCase
         $errors = (new ElectronicInvoiceValidator)->validate($invoice);
 
         $this->assertNotEmpty($errors);
-        $this->assertTrue(collect($errors)->contains(fn (string $message) => str_contains($message, 'Ready') || str_contains($message, 'Prête')));
+        $this->assertContains(__('messages.electronic_invoice_submit_status_invalid'), $errors);
         $this->assertTrue(collect($errors)->contains(fn (string $message) => str_contains($message, 'SIREN')));
         $this->assertTrue(collect($errors)->contains(fn (string $message) => str_contains($message, 'SIRET')));
     }
