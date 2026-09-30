@@ -678,7 +678,7 @@ return [
     'landing_pricing_included_locales' => 'Interfaces FR / EN / IT',
     'landing_pricing_cta' => 'Commencer votre mois gratuit',
     'landing_about_title' => 'À propos',
-    'landing_about_lead' => 'VRP Plan s\'adresse aux formateurs, aux indépendants et aux cabinets. Un seul espace pour planifier les interventions, préparer la facturation et suivre la trésorerie, avec le vocabulaire de votre métier.',
+    'landing_about_lead' => 'VRP Plan est conçu pour les formateurs, les indépendants et les cabinets. Un seul espace pour planifier les interventions, préparer la facturation et suivre la trésorerie, avec le vocabulaire de votre métier.',
     'landing_cta_title' => 'Prêt à simplifier votre quotidien ?',
     'landing_cta_lead' => 'Décrivez votre besoin : nous ouvrons votre espace et créons le compte administrateur.',
     'landing_footer_tagline' => 'Solution éditée par XDM Consulting',

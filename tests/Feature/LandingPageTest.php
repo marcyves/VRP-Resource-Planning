@@ -17,9 +17,10 @@ class LandingPageTest extends TestCase
             ->assertSee(__('messages.landing_title'), false)
             ->assertSee(__('messages.landing_skip_content'), false)
             ->assertSee('btn btn-primary', false)
+            ->assertSee('marketing-brand__name', false)
+            ->assertSee('images/VRP-login.jpg', false)
             ->assertDontSee('marketing-brand__logo', false)
-            ->assertDontSee(__('messages.landing_eyebrow'), false)
-            ->assertDontSee('images/VRP.jpeg', false);
+            ->assertDontSee(__('messages.landing_eyebrow'), false);
     }
 
     public function test_root_url_shows_landing_page(): void
