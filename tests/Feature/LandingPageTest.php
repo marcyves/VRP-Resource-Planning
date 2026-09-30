@@ -25,6 +25,24 @@ class LandingPageTest extends TestCase
             ->assertDontSee(__('messages.landing_eyebrow'), false);
     }
 
+    public function test_welcome_page_starts_with_illustration_hero(): void
+    {
+        $html = $this->get(route('welcome'))->assertOk()->getContent();
+
+        $this->assertMatchesRegularExpression(
+            '/id="main-content"[^>]*>\s*<section class="marketing-hero"/',
+            $html
+        );
+
+        preg_match('/<section class="marketing-hero".*?(?=<section )/s', $html, $hero);
+        $this->assertNotEmpty($hero);
+        $this->assertStringContainsString('images/VRP-login.jpg', $hero[0]);
+        $this->assertStringContainsString(__('messages.landing_title'), $hero[0]);
+        $this->assertStringContainsString(__('messages.landing_trial_cta'), $hero[0]);
+        $this->assertStringNotContainsString('landing-agenda.jpg', $hero[0]);
+        $this->assertStringNotContainsString('landing-treasury.jpg', $hero[0]);
+    }
+
     public function test_root_url_shows_landing_page(): void
     {
         $this->get('/')

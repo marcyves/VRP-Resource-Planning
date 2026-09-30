@@ -315,13 +315,13 @@ body.marketing-page--narrow .marketing-main {
 }
 
 .marketing-hero__content {
-    animation: marketing-rise 0.65s ease both;
+    animation: marketing-rise 0.65s ease;
 }
 
 .marketing-hero__visual {
     display: flex;
     justify-content: center;
-    animation: marketing-rise 0.8s ease 0.08s both;
+    animation: marketing-rise 0.8s ease 0.08s;
 }
 
 .marketing-hero__title {
