@@ -57,6 +57,7 @@ html[data-theme="dark"] body.marketing-page {
     }
 
     .marketing-hero__content,
+    .marketing-hero__visual,
     .marketing-product-stage,
     .marketing-feature-card,
     .marketing-pricing__offer,
@@ -307,14 +308,20 @@ body.marketing-page--narrow .marketing-main {
 
 @media (min-width: 900px) {
     .marketing-hero {
-        grid-template-columns: 1.02fr 0.98fr;
-        gap: var(--spacing-12);
+        grid-template-columns: 1.05fr 0.95fr;
+        gap: var(--spacing-10);
         padding: var(--spacing-12) var(--spacing-4) var(--spacing-12);
     }
 }
 
 .marketing-hero__content {
     animation: marketing-rise 0.65s ease both;
+}
+
+.marketing-hero__visual {
+    display: flex;
+    justify-content: center;
+    animation: marketing-rise 0.8s ease 0.08s both;
 }
 
 .marketing-hero__title {
@@ -374,9 +381,8 @@ html[data-theme="dark"] body.marketing-page .marketing-hero .btn-secondary:hover
 }
 
 .marketing-product-stage {
-    width: min(100%, 38rem);
+    width: min(100%, 48rem);
     margin-inline: auto;
-    animation: marketing-rise 0.8s ease 0.08s both;
 }
 
 .marketing-product-stage__tabs {
@@ -427,6 +433,17 @@ html[data-theme="dark"] body.marketing-page .marketing-hero .btn-secondary:hover
 }
 
 .marketing-hero__image {
+    width: min(100%, 32rem);
+    height: auto;
+    aspect-ratio: 520 / 360;
+    object-fit: cover;
+    border-radius: var(--rounded-lg);
+    box-shadow: var(--shadow-lg);
+    border: 1px solid var(--marketing-image-border);
+    display: block;
+}
+
+.marketing-product-stage__image {
     width: 100%;
     height: auto;
     aspect-ratio: 1476 / 1100;
@@ -435,7 +452,7 @@ html[data-theme="dark"] body.marketing-page .marketing-hero .btn-secondary:hover
     display: block;
 }
 
-.marketing-hero__image[hidden] {
+.marketing-product-stage__image[hidden] {
     display: none;
 }
 
@@ -528,6 +545,15 @@ html[data-theme="dark"] body.marketing-page .marketing-hero .btn-secondary:hover
     color: var(--marketing-text-subtle);
     font-size: 0.9375rem;
     line-height: 1.55;
+}
+
+.marketing-screens {
+    padding: var(--spacing-4) 0 var(--spacing-12);
+    scroll-margin-top: 4.5rem;
+}
+
+.marketing-screens .marketing-section-header {
+    margin-bottom: var(--spacing-8);
 }
 
 /* Pricing — paper offer sheet, distinct from glass feature cards */

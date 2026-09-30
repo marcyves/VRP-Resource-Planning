@@ -636,6 +636,8 @@ return [
     'landing_stage_caption' => 'Screenshots of the agenda and treasury in VRP Plan.',
     'landing_hero_agenda_alt' => 'VRP Plan agenda: monthly sessions, earnings and hourly rate.',
     'landing_hero_treasury_alt' => 'VRP Plan treasury: invoices, budget and yearly histogram.',
+    'landing_screens_title' => 'Agenda and treasury captures',
+    'landing_screens_lead' => 'This is the agenda and treasury as they appear in VRP Plan, with no staging.',
     'landing_nav_features' => 'Features',
     'landing_nav_pricing' => 'Pricing',
     'landing_nav_about' => 'About',

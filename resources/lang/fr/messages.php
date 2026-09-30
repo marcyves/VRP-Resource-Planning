@@ -652,6 +652,8 @@ return [
     'landing_stage_caption' => 'Captures de l\'agenda et de la trésorerie dans VRP Plan.',
     'landing_hero_agenda_alt' => 'Agenda VRP Plan : sessions du mois, gains et taux horaire.',
     'landing_hero_treasury_alt' => 'Trésorerie VRP Plan : factures, budget et histogramme annuel.',
+    'landing_screens_title' => 'Captures agenda et trésorerie',
+    'landing_screens_lead' => 'Voici l\'agenda et la trésorerie tels qu\'ils apparaissent dans VRP Plan, sans mise en scène.',
     'landing_nav_features' => 'Fonctionnalités',
     'landing_nav_pricing' => 'Tarifs',
     'landing_nav_about' => 'À propos',

@@ -18,9 +18,9 @@ class LandingPageTest extends TestCase
             ->assertSee(__('messages.landing_skip_content'), false)
             ->assertSee('btn btn-primary', false)
             ->assertSee('marketing-brand__name', false)
+            ->assertSee('images/VRP-login.jpg', false)
             ->assertSee('images/landing-agenda.jpg', false)
             ->assertSee('images/landing-treasury.jpg', false)
-            ->assertDontSee('images/VRP-login.jpg', false)
             ->assertDontSee('marketing-brand__logo', false)
             ->assertDontSee(__('messages.landing_eyebrow'), false);
     }
@@ -37,6 +37,7 @@ class LandingPageTest extends TestCase
         $this->get(route('welcome'))
             ->assertOk()
             ->assertSee('id="fonctionnalites"', false)
+            ->assertSee('id="captures"', false)
             ->assertSee('id="tarifs"', false)
             ->assertSee('id="a-propos"', false)
             ->assertSee(__('messages.landing_nav_features'), false)
@@ -46,6 +47,7 @@ class LandingPageTest extends TestCase
             ->assertSee(__('messages.landing_discover_features'), false)
             ->assertSee(__('messages.landing_stage_agenda'), false)
             ->assertSee(__('messages.landing_stage_treasury'), false)
+            ->assertSee(__('messages.landing_screens_title'), false)
             ->assertSee('marketing-pricing__offer', false)
             ->assertSee(__('messages.landing_pricing_title'), false)
             ->assertSee(__('messages.landing_pricing_trial_price'), false)
@@ -67,7 +69,7 @@ class LandingPageTest extends TestCase
             $this->assertNotSame('messages.landing_title', __('messages.landing_title'));
             $this->assertNotSame('messages.landing_trial_cta', __('messages.landing_trial_cta'));
             $this->assertNotSame('messages.landing_pricing_cta', __('messages.landing_pricing_cta'));
-            $this->assertNotSame('messages.landing_about_lead', __('messages.landing_about_lead'));
+            $this->assertNotSame('messages.landing_screens_title', __('messages.landing_screens_title'));
             $this->assertStringContainsString('0 €', __('messages.landing_pricing_trial_price'));
             $this->assertStringContainsString('10 €', __('messages.landing_pricing_monthly_price'));
 

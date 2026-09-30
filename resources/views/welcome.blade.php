@@ -17,10 +17,52 @@
             </div>
         </div>
 
-        <figure
-            class="marketing-product-stage"
-            x-data="{ view: 'agenda' }"
-        >
+        <div class="marketing-hero__visual" aria-hidden="true">
+            <img
+                src="{{ asset('images/VRP-login.jpg') }}"
+                alt=""
+                width="520"
+                height="360"
+                class="marketing-hero__image"
+                decoding="async"
+                fetchpriority="high"
+            >
+        </div>
+    </section>
+
+    <section id="fonctionnalites" class="marketing-features" aria-labelledby="features-title">
+        <header class="marketing-section-header">
+            <h2 id="features-title">{{ __('messages.landing_features_title') }}</h2>
+            <p>{{ __('messages.landing_features_lead') }}</p>
+        </header>
+
+        <ul class="marketing-features__grid">
+            @foreach ([
+                ['icon' => 'calendar-range', 'title' => 'landing_feature_planning_title', 'text' => 'landing_feature_planning_text'],
+                ['icon' => 'grid', 'title' => 'landing_feature_workload_title', 'text' => 'landing_feature_workload_text'],
+                ['icon' => 'wallet', 'title' => 'landing_feature_billing_title', 'text' => 'landing_feature_billing_text'],
+                ['icon' => 'coins', 'title' => 'landing_feature_treasury_title', 'text' => 'landing_feature_treasury_text'],
+                ['icon' => 'layers', 'title' => 'landing_feature_profiles_title', 'text' => 'landing_feature_profiles_text'],
+                ['icon' => 'building', 'title' => 'landing_feature_secure_title', 'text' => 'landing_feature_secure_text'],
+            ] as $feature)
+                <li class="marketing-feature-card">
+                    <span class="marketing-feature-card__icon" aria-hidden="true">
+                        <x-module-tab-icon :name="$feature['icon']" />
+                    </span>
+                    <h3>{{ __('messages.' . $feature['title']) }}</h3>
+                    <p>{{ __('messages.' . $feature['text']) }}</p>
+                </li>
+            @endforeach
+        </ul>
+    </section>
+
+    <section id="captures" class="marketing-screens" aria-labelledby="screens-title">
+        <header class="marketing-section-header">
+            <h2 id="screens-title">{{ __('messages.landing_screens_title') }}</h2>
+            <p>{{ __('messages.landing_screens_lead') }}</p>
+        </header>
+
+        <figure class="marketing-product-stage" x-data="{ view: 'agenda' }">
             <div
                 class="marketing-product-stage__tabs"
                 role="tablist"
@@ -58,9 +100,8 @@
                     alt="{{ __('messages.landing_hero_agenda_alt') }}"
                     width="1476"
                     height="1228"
-                    class="marketing-hero__image"
+                    class="marketing-product-stage__image"
                     decoding="async"
-                    fetchpriority="high"
                     :hidden="view !== 'agenda'"
                 >
                 <img
@@ -68,7 +109,7 @@
                     alt="{{ __('messages.landing_hero_treasury_alt') }}"
                     width="1476"
                     height="1032"
-                    class="marketing-hero__image"
+                    class="marketing-product-stage__image"
                     decoding="async"
                     hidden
                     :hidden="view !== 'treasury'"
@@ -76,32 +117,6 @@
             </div>
             <figcaption class="marketing-product-stage__caption">{{ __('messages.landing_stage_caption') }}</figcaption>
         </figure>
-    </section>
-
-    <section id="fonctionnalites" class="marketing-features" aria-labelledby="features-title">
-        <header class="marketing-section-header">
-            <h2 id="features-title">{{ __('messages.landing_features_title') }}</h2>
-            <p>{{ __('messages.landing_features_lead') }}</p>
-        </header>
-
-        <ul class="marketing-features__grid">
-            @foreach ([
-                ['icon' => 'calendar-range', 'title' => 'landing_feature_planning_title', 'text' => 'landing_feature_planning_text'],
-                ['icon' => 'grid', 'title' => 'landing_feature_workload_title', 'text' => 'landing_feature_workload_text'],
-                ['icon' => 'wallet', 'title' => 'landing_feature_billing_title', 'text' => 'landing_feature_billing_text'],
-                ['icon' => 'coins', 'title' => 'landing_feature_treasury_title', 'text' => 'landing_feature_treasury_text'],
-                ['icon' => 'layers', 'title' => 'landing_feature_profiles_title', 'text' => 'landing_feature_profiles_text'],
-                ['icon' => 'building', 'title' => 'landing_feature_secure_title', 'text' => 'landing_feature_secure_text'],
-            ] as $feature)
-                <li class="marketing-feature-card">
-                    <span class="marketing-feature-card__icon" aria-hidden="true">
-                        <x-module-tab-icon :name="$feature['icon']" />
-                    </span>
-                    <h3>{{ __('messages.' . $feature['title']) }}</h3>
-                    <p>{{ __('messages.' . $feature['text']) }}</p>
-                </li>
-            @endforeach
-        </ul>
     </section>
 
     <section id="tarifs" class="marketing-pricing" aria-labelledby="pricing-title">

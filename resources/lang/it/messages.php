@@ -296,6 +296,8 @@ return array (
   'landing_stage_caption' => 'Catture dell\'agenda e della tesoreria in VRP Plan.',
   'landing_hero_agenda_alt' => 'Agenda VRP Plan: sessioni del mese, guadagni e tariffa oraria.',
   'landing_hero_treasury_alt' => 'Tesoreria VRP Plan: fatture, budget e istogramma annuale.',
+  'landing_screens_title' => 'Catture agenda e tesoreria',
+  'landing_screens_lead' => 'Ecco agenda e tesoreria come appaiono in VRP Plan, senza messinscena.',
   'landing_nav_features' => 'Funzionalità',
   'landing_nav_pricing' => 'Tariffe',
   'landing_nav_about' => 'Chi siamo',
