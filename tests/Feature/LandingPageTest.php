@@ -18,7 +18,9 @@ class LandingPageTest extends TestCase
             ->assertSee(__('messages.landing_skip_content'), false)
             ->assertSee('btn btn-primary', false)
             ->assertSee('marketing-brand__name', false)
-            ->assertSee('images/VRP-login.jpg', false)
+            ->assertSee('images/landing-agenda.jpg', false)
+            ->assertSee('images/landing-treasury.jpg', false)
+            ->assertDontSee('images/VRP-login.jpg', false)
             ->assertDontSee('marketing-brand__logo', false)
             ->assertDontSee(__('messages.landing_eyebrow'), false);
     }
@@ -42,6 +44,9 @@ class LandingPageTest extends TestCase
             ->assertSee(__('messages.landing_nav_about'), false)
             ->assertSee(__('messages.landing_trial_cta'), false)
             ->assertSee(__('messages.landing_discover_features'), false)
+            ->assertSee(__('messages.landing_stage_agenda'), false)
+            ->assertSee(__('messages.landing_stage_treasury'), false)
+            ->assertSee('marketing-pricing__offer', false)
             ->assertSee(__('messages.landing_pricing_title'), false)
             ->assertSee(__('messages.landing_pricing_trial_price'), false)
             ->assertSee(__('messages.landing_pricing_monthly_price'), false)
