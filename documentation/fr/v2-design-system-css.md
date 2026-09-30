@@ -90,7 +90,7 @@ Un visiteur déjà connecté sur `/` est redirigé par `WelcomeController` vers 
 | Thème partagé | La bascule d’en-tête marketing utilise la même clé `vrp-theme` que la coque connectée |
 | Inversion canvas | En thème sombre, les primaires header/hero passent papier-sur-encre ; la bande CTA finale reste clair-sur-navy **dans tous les thèmes** |
 | Régions isolées | `body.marketing-page .marketing-main > section` ne doit pas hériter du chrome panneaux/listes de l’app |
-| Copie | Uniquement `messages.landing_*` — pas de témoignages, tarifs ou logos clients inventés |
+| Copie | Uniquement `messages.landing_*` — bloc tarif dédié (0 € le premier mois, puis 10 € / mois) ; pas de témoignages ni logos clients inventés |
 | Illustration hero | `public/images/VRP-login.jpg` est une image, pas une marque (`aria-hidden`) |
 | Aperçu social résiduel | `x-metas` pointe encore itemprop / twitter:image vers `http://vrp.xdm-consulting.fr/images/VRP.jpeg`. Ce n’est **pas** le chrome d’en-tête |
 | Layout guest inutilisé | `resources/views/layouts/guest.blade.php` embarque encore `VRP.jpeg` ; les pages invitées en prod utilisent `layouts/marketing.blade.php` |

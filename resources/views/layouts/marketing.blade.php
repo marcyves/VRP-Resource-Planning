@@ -26,7 +26,7 @@
         </script>
 
         <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=inter:400,500,600,700&display=swap" rel="stylesheet" />
+        <link href="https://fonts.bunny.net/css?family=inter:400,500,600,700,800&display=swap" rel="stylesheet" />
 
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
@@ -40,6 +40,14 @@
             <a href="{{ route('welcome') }}" class="marketing-brand">
                 <span class="marketing-brand__name">{{ config('app.name') }}</span>
             </a>
+
+            @if (request()->routeIs('welcome'))
+                <nav class="marketing-menu" aria-label="{{ __('messages.landing_menu') }}">
+                    <a href="#fonctionnalites" class="marketing-nav__link">{{ __('messages.landing_nav_features') }}</a>
+                    <a href="#tarifs" class="marketing-nav__link">{{ __('messages.landing_nav_pricing') }}</a>
+                    <a href="#a-propos" class="marketing-nav__link">{{ __('messages.landing_nav_about') }}</a>
+                </nav>
+            @endif
 
             <nav class="marketing-nav" aria-label="{{ __('messages.landing_nav') }}">
                 <button

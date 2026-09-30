@@ -17,8 +17,30 @@ class LandingPageTest extends TestCase
             ->assertSee(__('messages.landing_title'), false)
             ->assertSee(__('messages.landing_skip_content'), false)
             ->assertSee('btn btn-primary', false)
+            ->assertSee('marketing-brand__name', false)
+            ->assertSee('images/VRP-login.jpg', false)
+            ->assertSee('images/landing-agenda.jpg', false)
+            ->assertSee('images/landing-treasury.jpg', false)
             ->assertDontSee('marketing-brand__logo', false)
             ->assertDontSee(__('messages.landing_eyebrow'), false);
+    }
+
+    public function test_welcome_page_starts_with_illustration_hero(): void
+    {
+        $html = $this->get(route('welcome'))->assertOk()->getContent();
+
+        $this->assertMatchesRegularExpression(
+            '/id="main-content"[^>]*>\s*<section class="marketing-hero"/',
+            $html
+        );
+
+        preg_match('/<section class="marketing-hero".*?(?=<section )/s', $html, $hero);
+        $this->assertNotEmpty($hero);
+        $this->assertStringContainsString('images/VRP-login.jpg', $hero[0]);
+        $this->assertStringContainsString(__('messages.landing_title'), $hero[0]);
+        $this->assertStringContainsString(__('messages.landing_trial_cta'), $hero[0]);
+        $this->assertStringNotContainsString('landing-agenda.jpg', $hero[0]);
+        $this->assertStringNotContainsString('landing-treasury.jpg', $hero[0]);
     }
 
     public function test_root_url_shows_landing_page(): void
@@ -26,6 +48,61 @@ class LandingPageTest extends TestCase
         $this->get('/')
             ->assertOk()
             ->assertSee(__('messages.landing_request_access'), false);
+    }
+
+    public function test_welcome_page_uses_commercial_structure(): void
+    {
+        $this->get(route('welcome'))
+            ->assertOk()
+            ->assertSee('id="fonctionnalites"', false)
+            ->assertSee('id="captures"', false)
+            ->assertSee('id="tarifs"', false)
+            ->assertSee('id="a-propos"', false)
+            ->assertSee(__('messages.landing_nav_features'), false)
+            ->assertSee(__('messages.landing_nav_pricing'), false)
+            ->assertSee(__('messages.landing_nav_about'), false)
+            ->assertSee(__('messages.landing_trial_cta'), false)
+            ->assertSee(__('messages.landing_discover_features'), false)
+            ->assertSee(__('messages.landing_stage_agenda'), false)
+            ->assertSee(__('messages.landing_stage_treasury'), false)
+            ->assertSee(__('messages.landing_screens_title'), false)
+            ->assertSeeText(__('messages.landing_feature_planning_title'))
+            ->assertSeeText(__('messages.landing_feature_workload_title'))
+            ->assertSeeText(__('messages.landing_feature_billing_title'))
+            ->assertSeeText(__('messages.landing_feature_treasury_title'))
+            ->assertSeeText(__('messages.landing_feature_profiles_title'))
+            ->assertSeeText(__('messages.landing_feature_secure_title'))
+            ->assertSee('marketing-features__grid', false)
+            ->assertSee('marketing-pricing__offer', false)
+            ->assertSee(__('messages.landing_pricing_title'), false)
+            ->assertSee(__('messages.landing_pricing_trial_price'), false)
+            ->assertSee(__('messages.landing_pricing_monthly_price'), false)
+            ->assertSee(__('messages.landing_pricing_cta'), false)
+            ->assertSee(__('messages.landing_about_title'), false)
+            ->assertSee(__('messages.landing_about_lead'), false)
+            ->assertSee(route('login', absolute: false), false)
+            ->assertSee(route('account-request.create', absolute: false), false)
+            ->assertDontSee('href="'.url('/register').'"', false)
+            ->assertDontSee('href="/register"', false);
+    }
+
+    public function test_welcome_page_copy_is_translated_for_supported_locales(): void
+    {
+        foreach (['fr', 'en', 'it'] as $locale) {
+            $this->app->setLocale($locale);
+
+            $this->assertNotSame('messages.landing_title', __('messages.landing_title'));
+            $this->assertNotSame('messages.landing_trial_cta', __('messages.landing_trial_cta'));
+            $this->assertNotSame('messages.landing_pricing_cta', __('messages.landing_pricing_cta'));
+            $this->assertNotSame('messages.landing_screens_title', __('messages.landing_screens_title'));
+            $this->assertStringContainsString('0 €', __('messages.landing_pricing_trial_price'));
+            $this->assertStringContainsString('10 €', __('messages.landing_pricing_monthly_price'));
+
+            $this->get(route('welcome'))
+                ->assertOk()
+                ->assertSee(__('messages.landing_title'), false)
+                ->assertSee(__('messages.landing_pricing_title'), false);
+        }
     }
 
     public function test_login_page_can_be_rendered(): void
