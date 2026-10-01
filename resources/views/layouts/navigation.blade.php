@@ -35,6 +35,13 @@
             >
                 {{ __('messages.super_admin_electronic_invoicing') }}
             </x-sidebar-nav-link>
+            <x-sidebar-nav-link
+                icon="shield"
+                :href="route('super-admin.login-stats.index')"
+                :active="request()->routeIs('super-admin.login-stats.*')"
+            >
+                {{ __('messages.login_stats') }}
+            </x-sidebar-nav-link>
         @else
             <x-sidebar-nav-link
                 icon="calendar-range"
@@ -73,6 +80,16 @@
             </x-sidebar-nav-link>
 
             <div class="sidebar-nav-separator" role="separator" aria-hidden="true"></div>
+
+            @if (Auth::user()->isAdmin())
+                <x-sidebar-nav-link
+                    icon="shield"
+                    :href="route('login-stats.index')"
+                    :active="request()->routeIs('login-stats.*')"
+                >
+                    {{ __('messages.login_stats') }}
+                </x-sidebar-nav-link>
+            @endif
 
             <x-sidebar-nav-group :active="request()->routeIs('program.*', 'group.*')" />
         @endif

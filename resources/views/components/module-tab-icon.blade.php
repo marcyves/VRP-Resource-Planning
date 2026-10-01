@@ -23,6 +23,7 @@ $iconPaths = [
     'moon' => '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>',
     'panel-left-close' => '<rect x="3" y="3" width="18" height="18" rx="2"></rect><path d="M9 3v18"></path><path d="m14 9-3 3 3 3"></path>',
     'panel-left-open' => '<rect x="3" y="3" width="18" height="18" rx="2"></rect><path d="M9 3v18"></path><path d="m10 9 3 3-3 3"></path>',
+    'shield' => '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><path d="M12 8v4"></path><path d="M12 16h.01"></path>',
     'dot' => '<circle cx="12" cy="12" r="1.5" fill="currentColor" stroke="none"></circle>',
 ];
 

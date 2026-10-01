@@ -16,6 +16,10 @@
 | `E_INVOICE_REQUIRE_HTTPS_WEBHOOKS` | `false` | Rejeter `POST /webhooks/e-invoice/*` en HTTP (400). Activer sur IONOS après TLS + `TRUSTED_PROXIES` |
 | `E_INVOICE_ALERT_EMAIL` | *(absent)* | Mail ops optionnel si émission/webhook en échec |
 | `TRUSTED_PROXIES` | *(absent)* | `*` sur IONOS pour que Laravel voie le HTTPS |
+| `LOGIN_STATS_GEO_MMDB` | `storage/app/geoip/GeoLite2-City.mmdb` | Fichier MaxMind GeoLite2 City (optionnel, ~60 Mo, **ne pas committer**). Compte gratuit MaxMind → télécharger GeoLite2-City → coller le `.mmdb` à cet emplacement. Absent = repli HTTP ou « géoloc inconnue » |
+| `LOGIN_STATS_GEO_HTTP` | `true` | Repli HTTPS sans clé (`ipwho.is`) si le MMDB est absent. Timeout court ; n'interrompt jamais le login |
+| `LOGIN_STATS_GEO_HTTP_URL` | `https://ipwho.is/{ip}` | Modèle d'URL sans clé API. `{ip}` est remplacé |
+| `LOGIN_STATS_GEO_HTTP_TIMEOUT` | `1.5` | Secondes |
 | `SUPERPDP_ENV` | `sandbox` | `sandbox` ou `production` (choix des credentials OAuth) |
 | `SUPERPDP_CLIENT_ID` / `SUPERPDP_CLIENT_SECRET` | — | OAuth production (`client_credentials`) |
 | `SUPERPDP_SANDBOX_CLIENT_ID` / `SUPERPDP_SANDBOX_CLIENT_SECRET` | — | OAuth sandbox si `SUPERPDP_ENV=sandbox` |
@@ -65,7 +69,7 @@ Runbook détaillé : [Administration plateforme](administration-plateforme.md).
 
 ## Fichiers
 
-- `config/terminology.php`, `config/app.php`, `config/vrp.php`, `config/electronic-invoicing.php`, `.env.example`
+- `config/terminology.php`, `config/app.php`, `config/vrp.php`, `config/electronic-invoicing.php`, `config/login_stats.php`, `.env.example`
 
 ## Liens
 

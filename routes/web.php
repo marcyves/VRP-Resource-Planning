@@ -12,6 +12,7 @@ use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\ElectronicInvoiceWebhookController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\InvoiceController;
+use App\Http\Controllers\LoginStatisticsController;
 use App\Http\Controllers\PlanningController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProgramController;
@@ -60,6 +61,7 @@ Route::middleware(['auth', 'superadmin'])->prefix('super-admin')->name('super-ad
     Route::post('/companies/{company}/users', [\App\Http\Controllers\SuperAdmin\CompanyUserController::class, 'store'])->name('companies.users.store');
     Route::get('/electronic-invoicing', [\App\Http\Controllers\SuperAdmin\ElectronicInvoicingSettingsController::class, 'edit'])->name('electronic-invoicing.edit');
     Route::patch('/electronic-invoicing', [\App\Http\Controllers\SuperAdmin\ElectronicInvoicingSettingsController::class, 'update'])->name('electronic-invoicing.update');
+    Route::get('/login-stats', [LoginStatisticsController::class, 'index'])->name('login-stats.index');
 });
 
 Route::post('/webhooks/e-invoice/{platform}', ElectronicInvoiceWebhookController::class)
@@ -67,6 +69,7 @@ Route::post('/webhooks/e-invoice/{platform}', ElectronicInvoiceWebhookController
 
 Route::middleware(['auth', 'tenant', SetTerminologyLocale::class])->group(function () {
     Route::get('/nav/billing', BillingNavController::class)->name('nav.billing');
+    Route::get('/admin/login-stats', [LoginStatisticsController::class, 'index'])->name('login-stats.index');
 
     //    Route::get('/calendar/import/{calendar_id}', [CalendarController::class, 'readICSFile'])->name('ics.read');
     Route::prefix('admin/calendars')->middleware(['auth'])->group(function () {

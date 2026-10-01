@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Services\GeoLocator;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
@@ -15,6 +16,7 @@ class AppServiceProvider extends ServiceProvider
     {
         // Ensure e-invoicing bindings even if bootstrap/cache/services.php is stale on FTP hosts.
         $this->app->register(\App\Providers\ElectronicInvoicingServiceProvider::class);
+        $this->app->singleton(GeoLocator::class);
     }
 
     /**
@@ -50,11 +52,9 @@ class AppServiceProvider extends ServiceProvider
             return "<?php echo number_format($value*1.2, 2); ?>€";
         });
 
-
         Blade::directive('formatDate', function ($value) {
             return "<?php echo ($value) ? \\Carbon\Carbon::parse($value)->format('d/m/Y') : ''; ?>";
         });
-
 
         Blade::directive('monthName', function ($value) {
             return "<?php echo ucfirst(\\Carbon\\Carbon::parse(mktime(0, 0, 0, (int) {$value}, 1, date('Y')))->locale(\\App\\Support\\TerminologyLocale::normalizeBaseLocale(app()->getLocale()))->translatedFormat('F')); ?>";

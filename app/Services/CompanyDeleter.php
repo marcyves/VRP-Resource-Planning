@@ -57,6 +57,7 @@ class CompanyDeleter
 
             DB::table('invoices')->where('company_id', $companyId)->delete();
             DB::table('programs')->where('company_id', $companyId)->delete();
+            DB::table('login_events')->where('company_id', $companyId)->delete();
 
             $userIds = DB::table('users')->where('company_id', $companyId)->pluck('id');
             if ($userIds->isNotEmpty()) {

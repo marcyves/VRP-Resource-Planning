@@ -1,0 +1,70 @@
+.login-stats-chart,
+.login-stats-filters {
+    margin-bottom: var(--spacing-6);
+}
+
+.login-stats-chart {
+    --login-stats-success: var(--feedback-success, #15803d);
+    --login-stats-failed: var(--feedback-danger, #b91c1c);
+}
+
+.login-stats-swatch--success {
+    background-color: var(--login-stats-success);
+}
+
+.login-stats-swatch--failed {
+    background-color: var(--login-stats-failed);
+}
+
+.login-stats-filter-form {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+    gap: var(--spacing-3) var(--spacing-4);
+    align-items: end;
+}
+
+.login-stats-filter-form .form-group {
+    margin-bottom: 0;
+}
+
+.login-stats-filter-form__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-2);
+    align-items: center;
+}
+
+.login-stats-table__title {
+    margin: 0 0 var(--spacing-3);
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text-heading);
+}
+
+.login-stats-outcome {
+    display: inline-block;
+    padding: 0.2rem 0.5rem;
+    border-radius: var(--rounded-md);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+}
+
+.login-stats-outcome--success {
+    background: var(--chip-success-bg, #dcfce7);
+    color: var(--chip-success-text, #15803d);
+}
+
+.login-stats-outcome--failed {
+    background: var(--chip-danger-bg, #fee2e2);
+    color: var(--chip-danger-text, #b91c1c);
+}
+
+.login-stats-table code {
+    font-size: 0.8125rem;
+    color: var(--text-heading);
+}
+
+.pagination-container {
+    margin-top: var(--spacing-4);
+}
