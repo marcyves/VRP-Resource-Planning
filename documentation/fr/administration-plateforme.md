@@ -20,7 +20,8 @@ L'inscription publique est désactivée par défaut et ne provisionne pas d'entr
 | Acteur | Données requises | Zone autorisée | Comportement frontière |
 |--------|------------------|----------------|------------------------|
 | Super admin | `status_id` résout vers `super admin`, `company_id = null` | `/super-admin/companies` | Les routes tenant redirigent vers la liste des entreprises |
-| Admin/éditeur/lecteur tenant | `company_id` renseigné, rôle `admin`, `éditeur` ou `rédacteur` | `/home` et modules métier | `/super-admin/*` renvoie 403 |
+| Admin tenant | `company_id` renseigné, rôle `admin` | `/home`, modules métier, `/admin/login-stats` | `/super-admin/*` renvoie 403 ; les stats de connexion sont limitées à l'entreprise |
+| Éditeur/lecteur tenant | `company_id` renseigné, rôle `éditeur` ou `rédacteur` | `/home` et modules métier | `/admin/login-stats` et `/super-admin/*` renvoient 403 |
 | Utilisateur connecté sans entreprise | Pas super admin et pas de `company_id` | Aucune | Le middleware tenant renvoie 403 |
 
 Les frontières de routes sont dans `routes/web.php` :
@@ -162,6 +163,18 @@ Couverture : `tests/Feature/LandingPageTest.php`.
 - Ne pas rattacher de données métier à un super admin. Le compte plateforme a volontairement `company_id = null`.
 - Choisir les préfixes facture avec soin. Ils sont uniques, mis en majuscules et utilisés pour associer d'anciens identifiants facture de planning.
 - Exécuter les migrations avant de créer le premier super admin ; sinon le statut requis et `users.company_id` nullable peuvent manquer.
+
+## Statistiques de connexion
+
+Les événements `Login`, `Failed` et `Lockout` sont enregistrés dans `login_events` (IP, identifiant tenté, horodatage, géolocalisation, `company_id` si connu).
+
+| Acteur | Écran | Périmètre |
+|--------|-------|-----------|
+| Super admin | `/super-admin/login-stats` | Tous les événements, y compris les échecs sans entreprise |
+| Admin d'entreprise | `/admin/login-stats` | Événements de son `company_id` (succès et échecs rattachés à ses utilisateurs) |
+| Éditeur / rédacteur | — | 403 |
+
+Géolocalisation : fichier local GeoLite2-City si présent, sinon HTTP sans clé (`ipwho.is`) avec timeout court et cache. Une absence de géoloc n'empêche jamais la connexion. Voir [Configuration](configuration.md).
 
 ## Voir aussi
 

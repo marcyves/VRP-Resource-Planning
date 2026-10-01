@@ -20,7 +20,8 @@ Public self-registration is disabled by default and does not provision a company
 | Actor | Required data | Allowed area | Boundary behavior |
 |-------|---------------|--------------|-------------------|
 | Super admin | `status_id` resolves to `super admin`, `company_id = null` | `/super-admin/companies` | Tenant routes redirect to the company admin list |
-| Tenant admin/editor/reader | `company_id` set, role `Status::ADMIN`, `Status::EDITOR`, or `Status::READER` | `/home` and tenant modules | `/super-admin/*` returns 403 |
+| Tenant admin | `company_id` set, role `Status::ADMIN` | `/home`, tenant modules, `/admin/login-stats` | `/super-admin/*` returns 403; login stats are company-scoped |
+| Tenant editor/reader | `company_id` set, role `Status::EDITOR` or `Status::READER` | `/home` and tenant modules | `/admin/login-stats` and `/super-admin/*` return 403 |
 | Authenticated user without company | Not a super admin and no `company_id` | None | Tenant middleware aborts 403 |
 
 Route boundaries are defined in `routes/web.php`:
@@ -162,6 +163,18 @@ Coverage: `tests/Feature/LandingPageTest.php`.
 - Do not attach business records to a super admin. The platform account intentionally has `company_id = null`.
 - Choose invoice prefixes carefully. They are unique, uppercased, and used to associate legacy planning invoice identifiers.
 - Run migrations before creating the first super admin; otherwise the required status and nullable `users.company_id` may not exist.
+
+## Login statistics
+
+`Login`, `Failed`, and `Lockout` events are stored in `login_events` (IP, attempted username, timestamp, geolocation, `company_id` when known).
+
+| Actor | Screen | Scope |
+|-------|--------|-------|
+| Super admin | `/super-admin/login-stats` | Every event, including failures with no company |
+| Company admin | `/admin/login-stats` | Events for that `company_id` (successes and failures resolved to the company's users) |
+| Editor / reader | — | 403 |
+
+Geolocation: local GeoLite2-City file when present, otherwise a no-key HTTP lookup (`ipwho.is`) with a short timeout and cache. Missing geolocation never blocks login. See [Configuration](configuration.md).
 
 ## See also
 

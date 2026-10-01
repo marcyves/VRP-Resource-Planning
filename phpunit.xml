@@ -37,5 +37,6 @@
         <env name="SUPERPDP_WEBHOOK_SECRET" value=""/>
         <env name="E_INVOICE_ALERT_EMAIL" value=""/>
         <env name="E_INVOICE_REQUIRE_HTTPS_WEBHOOKS" value="false"/>
+        <env name="LOGIN_STATS_GEO_HTTP" value="false"/>
     </php>
 </phpunit>

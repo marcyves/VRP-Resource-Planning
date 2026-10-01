@@ -16,6 +16,10 @@
 | `E_INVOICE_REQUIRE_HTTPS_WEBHOOKS` | `false` | Reject `POST /webhooks/e-invoice/*` over HTTP (400). Enable on IONOS after TLS + `TRUSTED_PROXIES` |
 | `E_INVOICE_ALERT_EMAIL` | *(unset)* | Optional ops mail on submit/webhook failure |
 | `TRUSTED_PROXIES` | *(unset)* | `*` on IONOS so HTTPS is visible to Laravel |
+| `LOGIN_STATS_GEO_MMDB` | `storage/app/geoip/GeoLite2-City.mmdb` | Optional MaxMind GeoLite2 City file (~60 MB, **do not commit**). Free MaxMind account → download GeoLite2-City → place the `.mmdb` there. Missing file falls back to HTTP or “unknown location” |
+| `LOGIN_STATS_GEO_HTTP` | `true` | No-key HTTPS fallback (`ipwho.is`) when the MMDB is absent. Short timeout; never blocks login |
+| `LOGIN_STATS_GEO_HTTP_URL` | `https://ipwho.is/{ip}` | No-key URL template; `{ip}` is substituted |
+| `LOGIN_STATS_GEO_HTTP_TIMEOUT` | `1.5` | Seconds |
 | `SUPERPDP_ENV` | `sandbox` | `sandbox` or `production` (selects OAuth credentials) |
 | `SUPERPDP_CLIENT_ID` / `SUPERPDP_CLIENT_SECRET` | — | Production OAuth (`client_credentials`) |
 | `SUPERPDP_SANDBOX_CLIENT_ID` / `SUPERPDP_SANDBOX_CLIENT_SECRET` | — | Sandbox OAuth when `SUPERPDP_ENV=sandbox` |
@@ -63,7 +67,7 @@ The super admin has no company attached; tenant users require a `company_id`.
 
 ## Files
 
-- `config/terminology.php`, `config/app.php`, `config/vrp.php`, `config/electronic-invoicing.php`, `.env.example`
+- `config/terminology.php`, `config/app.php`, `config/vrp.php`, `config/electronic-invoicing.php`, `config/login_stats.php`, `.env.example`
 
 ## Links
 
