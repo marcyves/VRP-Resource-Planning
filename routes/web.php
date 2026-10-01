@@ -11,6 +11,7 @@ use App\Http\Controllers\DateSelectionController;
 use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\ElectronicInvoiceWebhookController;
 use App\Http\Controllers\GroupController;
+use App\Http\Controllers\GroupFollowUpController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\LoginStatisticsController;
 use App\Http\Controllers\PlanningController;
@@ -70,6 +71,7 @@ Route::post('/webhooks/e-invoice/{platform}', ElectronicInvoiceWebhookController
 Route::middleware(['auth', 'tenant', SetTerminologyLocale::class])->group(function () {
     Route::get('/nav/billing', BillingNavController::class)->name('nav.billing');
     Route::get('/admin/login-stats', [LoginStatisticsController::class, 'index'])->name('login-stats.index');
+    Route::get('/group-follow-up', [GroupFollowUpController::class, 'index'])->name('group-follow-up.index');
 
     //    Route::get('/calendar/import/{calendar_id}', [CalendarController::class, 'readICSFile'])->name('ics.read');
     Route::prefix('admin/calendars')->middleware(['auth'])->group(function () {

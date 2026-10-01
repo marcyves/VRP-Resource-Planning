@@ -9,6 +9,7 @@
         ['icon' => 'shield', 'label' => __('messages.login_stats_total'), 'value' => (string) $totalCount, 'variant' => 'info'],
         ['icon' => 'person', 'label' => __('messages.login_stats_success'), 'value' => (string) $successCount, 'variant' => 'success'],
         ['icon' => 'logout', 'label' => __('messages.login_stats_failed'), 'value' => (string) $failedCount, 'variant' => 'warning'],
+        ['icon' => 'users', 'label' => __('messages.login_stats_unique'), 'value' => (string) $uniqueUsernames, 'variant' => 'total'],
     ]" />
 
     <section class="login-stats-chart school-panel" aria-labelledby="login-stats-chart-heading">

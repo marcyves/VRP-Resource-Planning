@@ -77,6 +77,7 @@ return [
     'semester' => 'Période',
     'session_locked_by_invoice' => 'Cette séance est liée à une facture et ne peut plus être modifiée ni supprimée.',
     'students' => 'intervenants',
+    'group_follow_up' => 'Suivi des patients',
     'time' => 'Durée de la séance',
     'terminology_profile' => 'Contexte métier',
     'terminology_profile_education' => 'Formation (écoles, programmes, cours)',

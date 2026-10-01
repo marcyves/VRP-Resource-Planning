@@ -77,6 +77,7 @@ return [
     'semester' => 'Période',
     'session_locked_by_invoice' => 'Cette session est liée à une facture et ne peut plus être modifiée ni supprimée.',
     'students' => 'collaborateurs',
+    'group_follow_up' => 'Suivi des équipes',
     'time' => 'Durée de la phase',
     'terminology_profile' => 'Contexte métier',
     'terminology_profile_education' => 'Formation (écoles, programmes, cours)',

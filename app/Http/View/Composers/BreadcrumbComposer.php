@@ -20,6 +20,7 @@ class BreadcrumbComposer
             'password.confirm',
             'super-admin.*',
             'login-stats.*',
+            'group-follow-up.*',
         )) {
             $view->with('breadcrumbUsesSelectors', false);
 

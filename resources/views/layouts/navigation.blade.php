@@ -90,6 +90,15 @@
                     {{ __('messages.login_stats') }}
                 </x-sidebar-nav-link>
             @endif
+            @if (Auth::user()->canViewGroupFollowUp())
+                <x-sidebar-nav-link
+                    icon="users"
+                    :href="route('group-follow-up.index')"
+                    :active="request()->routeIs('group-follow-up.*')"
+                >
+                    {{ __('messages.group_follow_up') }}
+                </x-sidebar-nav-link>
+            @endif
 
             <x-sidebar-nav-group :active="request()->routeIs('program.*', 'group.*')" />
         @endif

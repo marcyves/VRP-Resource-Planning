@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Models\User;
+use App\Models\Company;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -18,8 +18,8 @@ class SchoolFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => 'School: '.rand(1,10),
-            'user_id' => fake()->randomElement(User::all()),
+            'name' => 'School: '.rand(1, 10),
+            'company_id' => Company::factory(),
         ];
     }
 }

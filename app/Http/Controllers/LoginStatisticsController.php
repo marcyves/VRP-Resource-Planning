@@ -37,6 +37,7 @@ class LoginStatisticsController extends Controller
         $successCount = (clone $query)->where('success', true)->count();
         $failedCount = (clone $query)->where('success', false)->count();
         $totalCount = $successCount + $failedCount;
+        $uniqueUsernames = (clone $query)->reorder()->distinct()->count('username');
 
         $events = $query->paginate(50)->withQueryString();
 
@@ -52,6 +53,7 @@ class LoginStatisticsController extends Controller
             'successCount' => $successCount,
             'failedCount' => $failedCount,
             'totalCount' => $totalCount,
+            'uniqueUsernames' => $uniqueUsernames,
             'successPercent' => $successPercent,
             'failedPercent' => $failedPercent,
             'companies' => $companies,

@@ -4,7 +4,6 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Http\Utility\Tools;
-use App\Models\Status;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -339,6 +338,29 @@ class User extends Authenticatable
         }
 
         return false;
+    }
+
+    /**
+     * Company admin or editor (formateur): class/group follow-up, not the IP journal.
+     */
+    public function canViewGroupFollowUp(): bool
+    {
+        if ($this->isSuperAdmin() || $this->company_id === null) {
+            return false;
+        }
+
+        return $this->isAdmin() || $this->isEditor();
+    }
+
+    /**
+     * School ids the user is assigned to via school_user.
+     * Empty collection means “whole company” (same as getSchools()).
+     *
+     * @return \Illuminate\Support\Collection<int, int>
+     */
+    public function assignedSchoolIds()
+    {
+        return $this->schools()->pluck('schools.id')->map(fn ($id) => (int) $id)->values();
     }
 
     public function homePath(): string

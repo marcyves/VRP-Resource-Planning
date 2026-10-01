@@ -38,6 +38,7 @@ return [
     'school_no_course' => 'Cliente senza fase',
     'semester' => 'Periodo',
     'students' => 'collaboratori',
+    'group_follow_up' => 'Follow-up dei team',
     'terminology_profile_education' => 'Formazione (scuole, programmi, corsi)',
     'terminology_profile_consulting' => 'Clienti e progetti (clienti, progetti, fasi)',
     'workload_plan' => 'Panoramica attività',

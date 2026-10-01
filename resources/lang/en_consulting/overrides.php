@@ -70,6 +70,7 @@ return [
         'select_school' => '-- Select client --',
         'semester' => 'Period',
         'students' => 'members',
+        'group_follow_up' => 'Team follow-up',
         'time' => 'Phase duration',
         'terminology_profile' => 'Business context',
         'terminology_profile_education' => 'Training (schools, programs, courses)',

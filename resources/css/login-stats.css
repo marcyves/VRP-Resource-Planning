@@ -6,6 +6,7 @@
 .login-stats-chart {
     --login-stats-success: var(--feedback-success, #15803d);
     --login-stats-failed: var(--feedback-danger, #b91c1c);
+    --login-stats-idle: var(--text-subtle, #6b7589);
 }
 
 .login-stats-swatch--success {
@@ -14,6 +15,10 @@
 
 .login-stats-swatch--failed {
     background-color: var(--login-stats-failed);
+}
+
+.login-stats-swatch--idle {
+    background-color: var(--login-stats-idle);
 }
 
 .login-stats-filter-form {
@@ -58,6 +63,11 @@
 .login-stats-outcome--failed {
     background: var(--chip-danger-bg, #fee2e2);
     color: var(--chip-danger-text, #b91c1c);
+}
+
+.login-stats-outcome--idle {
+    background: var(--surface-container-low, #eef2f7);
+    color: var(--text-secondary, #5a6578);
 }
 
 .login-stats-table code {

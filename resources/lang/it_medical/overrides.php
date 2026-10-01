@@ -38,6 +38,7 @@ return [
     'school_no_course' => 'Struttura senza seduta',
     'semester' => 'Periodo',
     'students' => 'operatori',
+    'group_follow_up' => 'Follow-up dei pazienti',
     'terminology_profile_education' => 'Formazione (scuole, programmi, corsi)',
     'terminology_profile_consulting' => 'Clienti e progetti (clienti, progetti, fasi)',
     'terminology_profile_medical' => 'Sanitario e prestazioni (strutture, prestazioni, sedute, pazienti)',

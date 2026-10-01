@@ -128,7 +128,8 @@ class LoginStatisticsTest extends TestCase
             ->assertSee(__('messages.login_stats'), false)
             ->assertSee($admin->email, false)
             ->assertSee('203.0.113.10', false)
-            ->assertSee('Paris, France', false);
+            ->assertSee('Paris, France', false)
+            ->assertSee(__('messages.login_stats_unique'), false);
     }
 
     public function test_company_admin_does_not_see_other_company_or_unscoped_events(): void
