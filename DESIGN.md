@@ -163,9 +163,9 @@ components:
 
 VRP Plan presents as a dusk-harbor desk: a deep navy field, a quiet wordmark, and Inter set with the restraint of an operations brief. The public canvas persuades without theatre — no second brand mark, no decorative kicker, no invented social proof. Paper cards and a single navy voice do the work.
 
-Two surfaces share one system. Marketing (the design-priority surface) is a prospect briefing: sticky frosted chrome, a two-column hero, glass-edged feature cards, and a navy close. The signed-in shell reuses the same navy, Inter, radii, and buttons for daily operation; it is not the surface this system is optimized for.
+Two surfaces share one system. Marketing (the design-priority surface) is a prospect briefing: sticky frosted chrome, a two-column hero, six glass-edged feature cards, a product stage with agenda and treasury captures, one published price, and a navy close. The signed-in shell reuses the same navy, Inter, radii, and buttons for daily operation; it is not the surface this system is optimized for.
 
-The material is professional and slightly maritime — cool paper, mist borders, modest downward shadows — aligned with the EduProf navy lineage. Imagery is documentary (the login photograph as a hero illustration), never a logo.
+The material is professional and slightly maritime — cool paper, mist borders, modest downward shadows — aligned with the EduProf navy lineage. Imagery is documentary (the login photograph as a hero illustration, product screenshots only in the stage below the cards), never a logo.
 
 **Key Characteristics:**
 - One navy voice; paper and frost as the only counter-materials
@@ -240,7 +240,7 @@ Inter is served from fonts.bunny.net at 400 / 500 / 600 / 700. Display asks for 
 
 ## Layout
 
-Marketing content lives in a centered column (`min(72rem, 100%)`) with vertical padding of `{spacing.spacing-6}` / `{spacing.spacing-8}`. The hero is one column until 900px, then a 1.05 / 0.95 split. Feature cards are an auto-fit grid that locks to three columns at 900px. Below 640px, header text links hide and hero actions go full-width.
+Marketing content lives in a centered column (`min(72rem, 100%)`) with vertical padding of `{spacing.spacing-6}` / `{spacing.spacing-8}`. The hero is one column until 900px, then a 1.05 / 0.95 split. Feature cards are an auto-fit grid that locks to three columns at 900px. The product stage under that grid is a centered frame (`min(100%, 48rem)`) with two text tabs (agenda, treasury); it is not part of the hero. Below 640px, header text links hide (including the in-page features / pricing / about links, which exist only on `/`) and hero actions go full-width.
 
 The header is a sticky frosted bar: wordmark left, theme control and actions right, `{spacing.spacing-3}` / `{spacing.spacing-6}` padding. A skip link sits above the fold and appears on focus.
 
@@ -308,7 +308,7 @@ Controls are shared and tactile: a 2.5rem minimum, 600-weight Inter, a 150ms col
 - **Signed-in (lower priority):** Night Dock sidebar, frosted topbar, Night Beacon on the active item.
 
 ### Wordmark
-Public chrome is the product name in Wordmark Inter. No photograph, no crest tile, no secondary logotype. The login photograph may appear only as the hero illustration.
+Public chrome is the product name in Wordmark Inter. No photograph, no crest tile, no secondary logotype. The login photograph may appear only as the hero illustration. Agenda and treasury captures (`landing-agenda.jpg`, `landing-treasury.jpg`) may appear only in the product stage.
 
 ### Theme toggle
 A 2.5rem medium-radius control. Sun and moon are stroke icons; one shows per theme. On marketing chrome it borrows the canvas border and icon-well fill.
@@ -325,13 +325,14 @@ A 2.5rem medium-radius control. Sun and moon are stroke icons; one shows per the
 - **Do** invert header and hero primaries on the dark canvas; keep the CTA-band primary light-on-navy in every theme.
 - **Do** use Inter at 400 / 500 / 600 / 700 from fonts.bunny.net on marketing and app layouts.
 - **Do** treat `VRP-login.jpg` as a hero illustration (large radius, stage lift), never as a mark.
+- **Do** keep agenda and treasury captures in the product stage below the feature grid, never inside the hero.
 - **Do** keep a skip control that moves into view on focus.
 - **Do** isolate marketing regions from signed-in section, list, and header treatments.
 
 ### Don't:
 - **Don't** use `VRP.jpeg` as a header mark, favicon stand-in, or brand tile on public pages.
 - **Don't** place a kicker, eyebrow, or category line above the hero title.
-- **Don't** invent testimonials, customer logos, pricing, or a second brand mark.
+- **Don't** invent testimonials, customer logos, or a second brand mark. The only price is the published offer in `messages.landing_pricing_*` (0 € the first month, then 10 € / month).
 - **Don't** treat the signed-in shell as the design-priority surface.
 - **Don't** introduce a parallel button class beside the shared primary / secondary pair.
 - **Don't** use zero-offset halo shadows or a second display typeface.

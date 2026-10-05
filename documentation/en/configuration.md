@@ -20,6 +20,8 @@
 | `LOGIN_STATS_GEO_HTTP` | `true` | No-key HTTPS fallback (`ipwho.is`) when the MMDB is absent. Short timeout; never blocks login |
 | `LOGIN_STATS_GEO_HTTP_URL` | `https://ipwho.is/{ip}` | No-key URL template; `{ip}` is substituted |
 | `LOGIN_STATS_GEO_HTTP_TIMEOUT` | `1.5` | Seconds |
+| `LOGIN_STATS_GEO_CACHE_TTL` | `2592000` (30 days) | How long a resolved public-IP label stays in cache (`login-stats-geo:{ip}`) |
+| `LOGIN_STATS_GEO_FAILURE_CACHE_TTL` | `3600` | How long a failed lookup is cached, so a dead resolver is not called on every sign-in |
 | `SUPERPDP_ENV` | `sandbox` | `sandbox` or `production` (selects OAuth credentials) |
 | `SUPERPDP_CLIENT_ID` / `SUPERPDP_CLIENT_SECRET` | — | Production OAuth (`client_credentials`) |
 | `SUPERPDP_SANDBOX_CLIENT_ID` / `SUPERPDP_SANDBOX_CLIENT_SECRET` | — | Sandbox OAuth when `SUPERPDP_ENV=sandbox` |
@@ -39,6 +41,8 @@ VRP_ALLOW_REGISTRATION=false
 ```
 
 Electronic invoicing runbook: [electronic-invoicing.md](electronic-invoicing.md).
+
+Login statistics: the HTTP fallback sends the visitor IP to the host in `LOGIN_STATS_GEO_HTTP_URL`. Behaviour, filters, and the `TRUSTED_PROXIES` pitfall: [platform administration](platform-administration.md#login-statistics).
 
 > When signed in, `companies.terminology_profile` **overrides** `TERMINOLOGY_PROFILE`.
 

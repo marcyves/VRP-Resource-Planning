@@ -91,6 +91,10 @@ Un visiteur déjà connecté sur `/` est redirigé par `WelcomeController` vers 
 | Inversion canvas | En thème sombre, les primaires header/hero passent papier-sur-encre ; la bande CTA finale reste clair-sur-navy **dans tous les thèmes** |
 | Régions isolées | `body.marketing-page .marketing-main > section` ne doit pas hériter du chrome panneaux/listes de l’app |
 | Copie | Uniquement `messages.landing_*` — bloc tarif dédié (0 € le premier mois, puis 10 € / mois) ; pas de témoignages ni logos clients inventés |
+| Ordre de page | Le premier bloc est `.marketing-hero` avec `VRP-login.jpg` dedans. Puis `#fonctionnalites` (six cartes), `#captures` (scène agenda / trésorerie), `#tarifs`, `#a-propos`, et la bande `.marketing-cta-band`. `LandingPageTest` exige le hero en premier et interdit les captures dans le hero |
+| Scène produit | Alpine `view` sur `.marketing-product-stage` alterne `public/images/landing-agenda.jpg` et `landing-treasury.jpg`. Cadre au plus 48rem, grand rayon, ombre de scène. Onglet par défaut : agenda. Textes alternatifs : `landing_hero_agenda_alt` / `landing_hero_treasury_alt` |
+| Ancres d'en-tête | Sur `/` seulement : `#fonctionnalites`, `#tarifs`, `#a-propos`. Elles disparaissent avec les autres liens texte sous 640px |
+| Six cartes | Planning, charge, facturation, trésorerie, profils, sécurité — clés `messages.landing_feature_*` |
 | Illustration hero | `public/images/VRP-login.jpg` est une image, pas une marque (`aria-hidden`) |
 | Aperçu social résiduel | `x-metas` pointe encore itemprop / twitter:image vers `http://vrp.xdm-consulting.fr/images/VRP.jpeg`. Ce n’est **pas** le chrome d’en-tête |
 | Layout guest inutilisé | `resources/views/layouts/guest.blade.php` embarque encore `VRP.jpeg` ; les pages invitées en prod utilisent `layouts/marketing.blade.php` |

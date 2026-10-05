@@ -191,6 +191,8 @@ VRP is **multi-tenant**: each customer company has its own users and data. A **s
 
 Public `/register` is **disabled by default** (`VRP_ALLOW_REGISTRATION=false`). Company accounts are created by the super admin or by an existing admin in the classic VRP UI. Guests can **request** an account at `/demande-acces` (mail only — set `VRP_ACCOUNT_REQUEST_EMAIL`).
 
+Company admins and the super admin review sign-in attempts from the sidebar (**Logins**). Failures for an unknown email are visible only to the super admin. Geolocation is optional and never blocks login.
+
 Runbook: [platform-administration.md](documentation/en/platform-administration.md) · [administration-plateforme.md](documentation/fr/administration-plateforme.md).
 
 ---

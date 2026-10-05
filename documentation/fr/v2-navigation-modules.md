@@ -16,12 +16,17 @@
 2. **Écoles** (libellé terminologique) → `home`
 3. **Trésorerie** → `treasury.index`
 4. séparateur
-5. **Référentiel** (sous-menu) → Programmes · Groupes
+5. **Connexions** (`login-stats.index`, bouclier) — **admin d'entreprise seulement**. Les éditeurs et rédacteurs n'ont pas le lien ; l'URL renvoie 403. [Statistiques de connexion](administration-plateforme.md#statistiques-de-connexion)
+6. **Référentiel** (sous-menu) → Programmes · Groupes
 
 Catalogue **Groupes** conservé pour consultation ; **création** depuis la fiche cours (règles formation 1 cours / mentoring multi — [gestion des groupes](gestion-groupes.md)).
 Pas d’entrée sidebar **Facturation** : la préparation reste sur `school.show#billing` (raccourci `nav.billing` conservé pour usage interne).
 
 La sidebar démarre en mode compact sauf si `vrp-sidebar-compact` vaut `false` dans `localStorage`.
+
+### Menu latéral (super admin)
+
+Les super admins ne voient pas les modules métier. Ordre : **Entreprises** → **Facturation électronique** → **Connexions** (`super-admin.login-stats.index`). Le lien de marque va vers la liste des entreprises, pas vers `/home`.
 
 ## Page d’accueil
 
