@@ -20,6 +20,8 @@
 | `LOGIN_STATS_GEO_HTTP` | `true` | Repli HTTPS sans clé (`ipwho.is`) si le MMDB est absent. Timeout court ; n'interrompt jamais le login |
 | `LOGIN_STATS_GEO_HTTP_URL` | `https://ipwho.is/{ip}` | Modèle d'URL sans clé API. `{ip}` est remplacé |
 | `LOGIN_STATS_GEO_HTTP_TIMEOUT` | `1.5` | Secondes |
+| `LOGIN_STATS_GEO_CACHE_TTL` | `2592000` (30 jours) | Durée de cache d'un libellé d'IP publique résolu (`login-stats-geo:{ip}`) |
+| `LOGIN_STATS_GEO_FAILURE_CACHE_TTL` | `3600` | Durée de cache d'une recherche en échec, pour ne pas rappeler un résolveur mort à chaque connexion |
 | `SUPERPDP_ENV` | `sandbox` | `sandbox` ou `production` (choix des credentials OAuth) |
 | `SUPERPDP_CLIENT_ID` / `SUPERPDP_CLIENT_SECRET` | — | OAuth production (`client_credentials`) |
 | `SUPERPDP_SANDBOX_CLIENT_ID` / `SUPERPDP_SANDBOX_CLIENT_SECRET` | — | OAuth sandbox si `SUPERPDP_ENV=sandbox` |
@@ -39,6 +41,8 @@ VRP_ALLOW_REGISTRATION=false
 ```
 
 Runbook facturation électronique : [facturation-electronique.md](facturation-electronique.md).
+
+Statistiques de connexion : le repli HTTP envoie l'IP du visiteur à l'hôte de `LOGIN_STATS_GEO_HTTP_URL`. Comportement, filtres et piège `TRUSTED_PROXIES` : [administration de la plateforme](administration-plateforme.md#statistiques-de-connexion).
 
 > Connecté : `companies.terminology_profile` **prime** sur `TERMINOLOGY_PROFILE`.
 

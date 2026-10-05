@@ -16,12 +16,17 @@
 2. **Schools** (terminology label) → `home`
 3. **Treasury** → `treasury.index`
 4. separator
-5. **Referential** (submenu) → Programs · Groups
+5. **Logins** (`login-stats.index`, shield) — **company admin only**. Editors and readers have no link; the URL returns 403. [Login statistics](platform-administration.md#login-statistics)
+6. **Referential** (submenu) → Programs · Groups
 
 **Groups** catalog kept for browsing; **create** from the course page (training = one course / mentoring = multi — [group management](group-management.md)).
 No top-level **Billing** sidebar item: preparation stays on `school.show#billing` (internal `nav.billing` shortcut kept).
 
 The sidebar starts in compact mode unless `vrp-sidebar-compact` is `false` in `localStorage`.
+
+### Sidebar menu (super admin)
+
+Super admins do not see the tenant modules. Order: **Companies** → **Electronic invoicing** → **Logins** (`super-admin.login-stats.index`). Brand link goes to the company list, not `/home`.
 
 ## Home page
 

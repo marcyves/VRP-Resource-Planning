@@ -91,6 +91,10 @@ Signed-in visitors hitting `/` are redirected by `WelcomeController` to `User::h
 | Canvas invert | Dark-theme header/hero primaries flip to paper-on-ink; the closing CTA band stays light-on-navy in **every** theme |
 | Isolated regions | `body.marketing-page .marketing-main > section` must not inherit signed-in panel/list chrome |
 | Copy | `messages.landing_*` only — dedicated pricing block (0 € first month, then 10 € / month); no invented testimonials or customer logos |
+| Page order | First block is `.marketing-hero` with `VRP-login.jpg` inside it. Then `#fonctionnalites` (six cards), `#captures` (agenda / treasury stage), `#tarifs`, `#a-propos`, and the closing `.marketing-cta-band`. `LandingPageTest` requires the hero first and keeps the capture files out of it |
+| Product stage | Alpine `view` on `.marketing-product-stage` swaps `public/images/landing-agenda.jpg` and `landing-treasury.jpg`. Frame is at most 48rem, large radius, stage shadow. Default tab is agenda. Alt text is `landing_hero_agenda_alt` / `landing_hero_treasury_alt` |
+| Header anchors | On `/` only: `#fonctionnalites`, `#tarifs`, `#a-propos`. They hide with the other text links below 640px |
+| Six cards | Planning, workload, billing, treasury, profiles, secure — keys `messages.landing_feature_*` |
 | Hero illustration | `public/images/VRP-login.jpg` is an image, not a mark (`aria-hidden`) |
 | Social preview leftover | `x-metas` still sets itemprop / twitter:image to `http://vrp.xdm-consulting.fr/images/VRP.jpeg`. That is **not** header chrome |
 | Unused guest layout | `resources/views/layouts/guest.blade.php` still embeds `VRP.jpeg`; live guest pages use `layouts/marketing.blade.php` |

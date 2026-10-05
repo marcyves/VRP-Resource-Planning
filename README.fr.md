@@ -191,6 +191,8 @@ VRP est **multi-tenant** : chaque entreprise cliente a ses utilisateurs et ses d
 
 L’inscription publique `/register` est **désactivée par défaut** (`VRP_ALLOW_REGISTRATION=false`). Les comptes entreprise sont créés par le super admin ou par un admin existant dans l’UI VRP classique. Les invités peuvent **demander** un compte sur `/demande-acces` (e-mail seulement — renseigner `VRP_ACCOUNT_REQUEST_EMAIL`).
 
+Les admins d'entreprise et le super admin consultent les tentatives de connexion depuis la barre latérale (**Connexions**). Les échecs pour un e-mail inconnu ne sont visibles que du super admin. La géolocalisation est optionnelle et ne bloque jamais la connexion.
+
 Runbook détaillé : [documentation/fr/administration-plateforme.md](documentation/fr/administration-plateforme.md) · [documentation/en/platform-administration.md](documentation/en/platform-administration.md).
 
 ---

@@ -134,6 +134,9 @@ Couverture : `tests/Feature/LandingPageTest.php`.
 | Demande de compte OK mais pas d'e-mail | `VRP_ACCOUNT_REQUEST_EMAIL` est vide ; omettre la clé pour retomber sur `MAIL_FROM_ADDRESS`, ou renseigner une vraie boîte |
 | POST `/demande-acces` en 429 | Limiteur `5,1` sur `account-request.store` |
 | Un utilisateur connecté voit encore la landing | `WelcomeController` doit rediriger vers `User::homePath()` ; vérifier la session |
+| Toutes les connexions sont dans la ville du proxy | `TRUSTED_PROXIES` est absent devant l'hôte. La production pose `TRUSTED_PROXIES=*` |
+| Les IP publiques restent « lieu inconnu » | Fichier GeoLite2 absent et repli HTTP coupé, en timeout, ou mis en cache comme échec (`login_stats.geo_*` dans le journal) |
+| L'admin d'entreprise ne trouve pas un e-mail inconnu | Attendu : cet échec a `company_id = null` ; seul le super admin le voit |
 
 ## Fichiers clés
 
@@ -155,6 +158,8 @@ Couverture : `tests/Feature/LandingPageTest.php`.
 | `tests/Feature/SuperAdmin/*` | Couverture routes plateforme et provisioning |
 | `tests/Feature/LandingPageTest.php` | Accueil + demande de compte |
 | `tests/Feature/ProgramCompanyScopeTest.php` | Isolation tenant des programmes |
+| `app/Listeners/RecordLoginStatistics.php` | `Login` / `Failed` / `Lockout` → `login_events` |
+| `tests/Feature/LoginStatisticsTest.php` | Enregistrement, périmètre admin, filtre d'issue |
 
 ## Pièges fréquents
 
@@ -166,15 +171,67 @@ Couverture : `tests/Feature/LandingPageTest.php`.
 
 ## Statistiques de connexion
 
-Les événements `Login`, `Failed` et `Lockout` sont enregistrés dans `login_events` (IP, identifiant tenté, horodatage, géolocalisation, `company_id` si connu).
+Journal des tentatives de connexion, réservé aux admins (libellé sidebar **Connexions**). L'enregistrement ne bloque jamais l'authentification : `RecordLoginStatistics` avale ses erreurs (`login_stats.record_failed`), et un échec de géolocalisation enregistre quand même la ligne avec un lieu vide.
 
-| Acteur | Écran | Périmètre |
-|--------|-------|-----------|
-| Super admin | `/super-admin/login-stats` | Tous les événements, y compris les échecs sans entreprise |
-| Admin d'entreprise | `/admin/login-stats` | Événements de son `company_id` (succès et échecs rattachés à ses utilisateurs) |
-| Éditeur / rédacteur | — | 403 |
+### Où ça s'affiche
 
-Géolocalisation : fichier local GeoLite2-City si présent, sinon HTTP sans clé (`ipwho.is`) avec timeout court et cache. Une absence de géoloc n'empêche jamais la connexion. Voir [Configuration](configuration.md).
+| Acteur | Sidebar | Route | Périmètre |
+|--------|---------|-------|-----------|
+| Super admin | Icône bouclier après Entreprises et Facturation électronique | `GET /super-admin/login-stats` (`super-admin.login-stats.index`) | Toutes les lignes, y compris les échecs sans entreprise |
+| Admin d'entreprise (`Status::ADMIN`) | Icône bouclier après le séparateur Trésorerie, avant Référentiel | `GET /admin/login-stats` (`login-stats.index`) | Lignes dont le `company_id` est celui de l'admin |
+| Éditeur / rédacteur | Pas de lien | Même URL tenant | 403 (`User::isAdmin()`) |
+
+Un admin d'entreprise qui ouvre l'URL super admin reçoit 403 du middleware `superadmin`.
+
+### Ce qui est stocké
+
+Table `login_events` (migration `2026_10_01_100000_create_login_events_table`). Pas de `created_at` / `updated_at`. Le mot de passe n'est jamais écrit.
+
+| Colonne | Source |
+|---------|--------|
+| `username` | E-mail de la tentative, trimé. Les succès utilisent `$user->email` |
+| `user_id` | Utilisateur reconnu, ou null |
+| `company_id` | Entreprise de cet utilisateur, ou null |
+| `ip` | `$request->ip()`, ou `0.0.0.0` si vide. Dépend de `TRUSTED_PROXIES` |
+| `geo_label` | Voir [Géolocalisation](#géolocalisation) |
+| `success` / `locked_out` | Issue |
+| `occurred_at` | `now()` à l'écriture |
+
+`EventServiceProvider` abonne `RecordLoginStatistics`, qui appelle `LoginEventRecorder`.
+
+| Événement auth | Ligne |
+|----------------|-------|
+| `Login` | `success = true`, `locked_out = false` |
+| `Failed` | `success = false`, `locked_out = false`. Un e-mail connu est rattaché à l'utilisateur et à l'entreprise même si le mot de passe est faux |
+| `Lockout` | `success = false`, `locked_out = true`. `Auth::attempt` n'est pas appelé : cette requête n'écrit pas en plus une ligne `Failed` |
+
+`LoginRequest` autorise **5** échecs par `transliterate(e-mail en minuscules)|ip`. La tentative suivante déclenche `Lockout`, et chaque tentative ultérieure tant que le limiteur tient ajoute une ligne de verrouillage. Le tableau distingue le verrouillage ; le filtre **Échec** inclut quand même ces lignes (`success = false`).
+
+Les e-mails inconnus restent `company_id = null` : l'admin d'entreprise ne les voit pas. Supprimer une entreprise cascade ses événements. Supprimer un utilisateur met `user_id` à null et conserve l'identifiant. Il n'y a pas de commande de purge ; la table grossit jusqu'à suppression avec l'entreprise ou à la main.
+
+### Écran
+
+`resources/views/login-stats/index.blade.php`, styles dans `resources/css/login-stats.css`.
+
+- Les compteurs et la barre succès/échec portent sur le jeu **filtré**. Ce n'est pas une série temporelle.
+- Filtres GET, conservés d'une page à l'autre : `outcome` = `all` \| `success` \| `failed` ; `from` / `to` sont des jours calendaires inclusifs sur `occurred_at` (`00:00:00` à `23:59:59`) ; `q` est une sous-chaîne sur `username`, `ip` et le `geo_label` stocké (max 255). Les super admins ont aussi `company_id` : vide = toutes les entreprises, `none` = `company_id` null, sinon un id d'entreprise. Les admins tenant ignorent `company_id`.
+- Tableau de 50 lignes, `occurred_at` puis `id` décroissants. Les heures s'affichent dans `config('app.timezone')`.
+- Texte du lieu : `local` stocké devient `messages.login_stats_geo_local` (« Réseau local ») ; null ou vide devient le libellé inconnu ; toute autre valeur est affichée telle quelle.
+
+### Géolocalisation
+
+`App\Services\GeoLocator`. Les adresses privées ou réservées (loopback, `0.0.0.0`, autres plages non publiques) sont stockées comme le littéral `local` et ne sont pas interrogées.
+
+Les IP publiques passent par GeoLite2-City (`geoip2/geoip2`) quand `LOGIN_STATS_GEO_MMDB` est lisible. Le libellé est `ville, subdivision, pays`. En cas d'échec et si `LOGIN_STATS_GEO_HTTP` vaut true, l'app fait un GET sur `LOGIN_STATS_GEO_HTTP_URL` (défaut `https://ipwho.is/{ip}`) avec `LOGIN_STATS_GEO_HTTP_TIMEOUT` (1,5 s). Cette requête envoie l'IP du client à ipwho.is. `LOGIN_STATS_GEO_HTTP=false` limite la recherche au fichier local.
+
+Clé de cache `login-stats-geo:{ip}` : un libellé dure `LOGIN_STATS_GEO_CACHE_TTL` (défaut 30 jours) ; un échec dure `LOGIN_STATS_GEO_FAILURE_CACHE_TTL` (défaut 1 heure). Liste des variables : [Configuration](configuration.md).
+
+### Pièges
+
+- Sans `TRUSTED_PROXIES` devant l'hôte, chaque ligne est l'adresse du proxy et est géolocalisée comme ce proxy. Le déploiement production pose `TRUSTED_PROXIES=*`.
+- Sail et un navigateur local enregistrent `local`, pas une ville. Chercher « Réseau local » ne trouve pas la valeur stockée `local`.
+- Un `.mmdb` absent ou illisible, ou l'absence de la classe `GeoIp2\Database\Reader`, saute le fichier. Le HTTP part ensuite, sauf s'il est désactivé. Ne pas committer la base (~60 Mo).
+- `phpunit.xml` pose `LOGIN_STATS_GEO_HTTP=false`. Couverture : `tests/Feature/LoginStatisticsTest.php`, `tests/Unit/GeoLocatorTest.php`.
 
 ## Voir aussi
 
