@@ -31,14 +31,15 @@ class PlanningUpdateTest extends TestCase
         $response->assertSee('data-planning-duplicate-open', false);
         $response->assertSee('planning-duplicate-dialog', false);
 
-        $updatePos = strpos($response->getContent(), 'planning.update');
-        $duplicatePos = strpos($response->getContent(), 'planning-duplicate-actions');
-        $formClosePos = strpos($response->getContent(), '</form>');
+        $html = $response->getContent();
+        $sessionFormPos = strpos($html, 'planning-session-form');
+        $sessionFormClose = strpos($html, '</form>', (int) $sessionFormPos);
+        $duplicatePos = strpos($html, 'planning-duplicate-actions');
 
-        $this->assertNotFalse($updatePos);
+        $this->assertNotFalse($sessionFormPos);
+        $this->assertNotFalse($sessionFormClose);
         $this->assertNotFalse($duplicatePos);
-        $this->assertNotFalse($formClosePos);
-        $this->assertLessThan($formClosePos, $duplicatePos, 'Duplicate actions must be outside the update form.');
+        $this->assertGreaterThan($sessionFormClose, $duplicatePos, 'Duplicate actions must be outside the update form.');
     }
 
     public function test_planning_edit_form_renders_when_billing_and_assignment_rows_in_order(): void
@@ -88,7 +89,7 @@ class PlanningUpdateTest extends TestCase
 
     public function test_planning_update_persists_changes(): void
     {
-        [$user, $planning, $group, $course] = $this->makePlanningContext();
+        [$user, $planning, $group, $course, $school] = $this->makePlanningContext();
 
         $this->actingAs($user)
             ->put(route('planning.update', $planning->id), [
@@ -103,7 +104,7 @@ class PlanningUpdateTest extends TestCase
                 'course_id' => $course->id,
                 'billable_rate' => 150,
             ])
-            ->assertRedirect(route('planning.index'));
+            ->assertRedirect(route('school.show', $school->id).'#billing');
 
         $planning->refresh();
 
@@ -114,7 +115,7 @@ class PlanningUpdateTest extends TestCase
 
     /**
      * @param  array{rate?: float, billable_rate?: int|float, terminology_profile?: string}  $options
-     * @return array{0: User, 1: Planning, 2: Group, 3: Course}
+     * @return array{0: User, 1: Planning, 2: Group, 3: Course, 4: School}
      */
     private function makePlanningContext(array $options = []): array
     {
@@ -126,14 +127,26 @@ class PlanningUpdateTest extends TestCase
             ]);
         }
 
-        $school = School::factory()->create(['company_id' => $user->company_id]);
+        $school = School::query()->create([
+            'name' => 'School test',
+            'company_id' => $user->company_id,
+        ]);
         $program = Program::factory()->create(['company_id' => $user->company_id]);
         $course = Course::factory()->create([
             'school_id' => $school->id,
             'program_id' => $program->id,
+            'name' => 'Course test',
+            'short_name' => 'CT',
             'rate' => $options['rate'] ?? 87.5,
         ]);
-        $group = Group::factory()->create(['company_id' => $user->company_id]);
+        $group = Group::query()->create([
+            'name' => 'Group test',
+            'short_name' => 'GT',
+            'company_id' => $user->company_id,
+            'size' => 15,
+            'active' => true,
+            'year' => 2026,
+        ]);
 
         $planning = Planning::create([
             'begin' => '2026-06-22 10:00:00',
@@ -144,6 +157,6 @@ class PlanningUpdateTest extends TestCase
             'billable_rate' => $options['billable_rate'] ?? 120,
         ]);
 
-        return [$user, $planning, $group, $course];
+        return [$user, $planning, $group, $course, $school];
     }
 }
