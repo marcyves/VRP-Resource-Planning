@@ -402,11 +402,28 @@ class PlanningController extends Controller
         }
         $courses = Auth::user()->getCourses();
 
+        $courseRates = $courses
+            ->mapWithKeys(fn (Course $item) => [(string) $item->id => (float) $item->rate])
+            ->all();
+        $courseRates[(string) $course->id] = (float) $course->rate;
+        $hourlyRate = (float) $course->rate;
+        $billedAmount = Tools::planningGain($planning->begin, $planning->end, $hourlyRate, $planning->billable_rate);
+
         $months = Tools::getMonthNames();
         $beginYear = (int) Carbon::parse($planning->begin)->year;
         $years = range($beginYear - 2, $beginYear + 2);
 
-        return view('planning.edit', compact('planning', 'current_group', 'groups', 'courses', 'months', 'years'));
+        return view('planning.edit', compact(
+            'planning',
+            'current_group',
+            'groups',
+            'courses',
+            'months',
+            'years',
+            'courseRates',
+            'hourlyRate',
+            'billedAmount',
+        ));
     }
 
     /**

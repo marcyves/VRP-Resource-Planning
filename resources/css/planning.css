@@ -109,6 +109,16 @@ main form.group-form fieldset {
     flex: 0 0 auto;
 }
 
+form.planning-session-form.nice-form {
+    max-width: 54rem;
+}
+
+.planning-session-form__fields {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-4);
+}
+
 .planning-session-form .planning-date-fields .form-input {
     width: auto;
 }
@@ -128,39 +138,51 @@ main form.group-form fieldset {
     flex: 0 0 auto;
 }
 
-.planning-time-row {
+.planning-session-form__row {
     display: grid;
-    grid-template-columns: auto auto auto;
     grid-template-rows: auto auto;
     column-gap: 1rem;
     row-gap: var(--spacing-1);
+    align-items: start;
 }
 
-.planning-time-slot {
+.planning-session-form__row--when {
+    grid-template-columns: minmax(12rem, 1.5fr) auto auto;
+}
+
+.planning-session-form__row--billing {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.planning-session-form__row--assignments {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+}
+
+.planning-session-create-form__assignments {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 1rem;
+    align-items: start;
+}
+
+.planning-session-form__field {
     display: grid;
     grid-template-rows: subgrid;
     grid-row: span 2;
+    margin-bottom: 0;
+    min-width: 0;
 }
 
-.planning-time-slot__label {
-    font-size: 0.6875rem;
-    font-weight: 600;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: var(--text-secondary);
-    line-height: 1.2;
-    align-self: end;
-    white-space: nowrap;
-}
-
-.planning-duration__value-wrap {
+.planning-session-form__readonly {
     display: flex;
     align-items: center;
     align-self: stretch;
+    min-height: 2.5rem;
     padding: 0 0.25rem;
 }
 
-.planning-duration__value {
+.planning-duration__value,
+.planning-session-form__value {
     font-size: 0.9375rem;
     font-weight: 600;
     line-height: 1.4;
@@ -173,24 +195,15 @@ main form.group-form fieldset {
 }
 
 .planning-session-form__rate {
-    max-width: 7rem;
+    max-width: none;
 }
 
 .planning-session-form__rate-input {
-    width: auto;
-    min-width: 5rem;
+    width: 100%;
+    min-width: 0;
     max-width: 7rem;
 }
 
-.planning-session-form__assignments,
-.planning-session-create-form__assignments {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    gap: 1rem;
-    align-items: start;
-}
-
-.planning-session-form__assignment,
 .planning-session-create-form__assignment {
     margin-bottom: 0;
 }
@@ -254,18 +267,27 @@ main form.planning-session-create-form {
     flex: 0 0 auto;
 }
 
+@media (max-width: 900px) {
+    .planning-session-form__row--when,
+    .planning-session-form__row--billing {
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    }
+}
+
 @media (max-width: 640px) {
-    .planning-session-form__assignments,
+    .planning-session-form__row--when,
+    .planning-session-form__row--billing,
+    .planning-session-form__row--assignments,
     .planning-session-create-form__assignments {
         grid-template-columns: 1fr;
     }
 
-    .planning-session-form__assignment,
+    .planning-session-form__field,
     .planning-session-create-form__assignment {
         margin-bottom: var(--spacing-4);
     }
 
-    .planning-session-form__assignment:last-child,
+    .planning-session-form__row .planning-session-form__field:last-child,
     .planning-session-create-form__assignment:last-child {
         margin-bottom: 0;
     }

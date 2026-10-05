@@ -172,6 +172,8 @@ return [
     'bank_code' => 'Code banque',
     'begin' => 'Début',
     'duration_indicative' => 'Durée indicative',
+    'hourly_rate' => 'Taux horaire',
+    'billed_amount' => 'Montant facturé',
     'bic_code' => 'Code BIC/SWIFT',
     'bill' => 'Facture',
     'bill_create' => 'Créer une facture',
