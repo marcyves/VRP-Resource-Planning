@@ -154,6 +154,10 @@ form.planning-session-form.nice-form {
     grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 
+.planning-session-form__row--billing-create {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
 .planning-session-form__row--assignments {
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
 }
@@ -204,6 +208,25 @@ form.planning-session-form.nice-form {
     max-width: 7rem;
 }
 
+.planning-session-form__duration {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.planning-session-form__duration-input {
+    width: 100%;
+    min-width: 0;
+    max-width: 7rem;
+}
+
+.planning-session-form__duration-unit {
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--text-heading);
+    white-space: nowrap;
+}
+
 .planning-session-create-form__assignment {
     margin-bottom: 0;
 }
@@ -213,7 +236,7 @@ main form.planning-session-create-form {
     flex-wrap: nowrap;
     align-items: stretch;
     width: 100%;
-    max-width: 42rem;
+    max-width: 54rem;
 }
 
 .planning-session-create-form__fields {
@@ -269,7 +292,8 @@ main form.planning-session-create-form {
 
 @media (max-width: 900px) {
     .planning-session-form__row--when,
-    .planning-session-form__row--billing {
+    .planning-session-form__row--billing,
+    .planning-session-form__row--billing-create {
         grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     }
 }
@@ -277,6 +301,7 @@ main form.planning-session-create-form {
 @media (max-width: 640px) {
     .planning-session-form__row--when,
     .planning-session-form__row--billing,
+    .planning-session-form__row--billing-create,
     .planning-session-form__row--assignments,
     .planning-session-create-form__assignments {
         grid-template-columns: 1fr;
