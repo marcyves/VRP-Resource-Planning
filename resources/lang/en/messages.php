@@ -106,6 +106,8 @@ return [
     'bank_code' => 'Bank code',
     'begin' => 'Begin',
     'duration_indicative' => 'Estimated duration',
+    'hourly_rate' => 'Hourly rate',
+    'billed_amount' => 'Billed amount',
     'bic_code' => 'BIC/SWIFT code',
     'bill' => 'Bill',
     'billable_rate' => 'Billable rate',
