@@ -252,6 +252,32 @@ class Tools
         return intval((strtotime($end) - strtotime($begin)) / 60) / 60;
     }
 
+    public static function parseSessionLengthHours(mixed $value): float
+    {
+        if (is_string($value)) {
+            $value = str_replace(',', '.', trim($value));
+        }
+
+        if (! is_numeric($value)) {
+            return 0.0;
+        }
+
+        return max(0.0, (float) $value);
+    }
+
+    public static function planningEndFromSessionLength(string $date, int|string $hour, int|string $minutes, mixed $sessionLength): Carbon
+    {
+        $begin = Carbon::createFromFormat(
+            'Y-m-d H:i:s',
+            sprintf('%s %02d:%02d:00', $date, (int) $hour, (int) $minutes)
+        );
+
+        $minutesToAdd = (int) round(self::parseSessionLengthHours($sessionLength) * 60);
+        $minutesToAdd = (int) (round($minutesToAdd / 5) * 5);
+
+        return $begin->copy()->addMinutes($minutesToAdd);
+    }
+
     public static function billableMultiplier(float $billableRate, float $courseRate): float
     {
         $multiplier = $billableRate <= 0 ? 1.0 : $billableRate;
