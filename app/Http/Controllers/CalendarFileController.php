@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\CalendarService;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Auth;
-use App\Models\CalendarSource;
 use App\Models\CalendarMapping;
+use App\Models\CalendarSource;
 use App\Models\Course;
 use App\Models\Group;
+use App\Services\CalendarService;
+use App\Support\SchoolCourseOptions;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class CalendarFileController extends Controller
 {
@@ -26,7 +27,7 @@ class CalendarFileController extends Controller
         $files = Storage::files('calendars');
         /** @var \App\Models\User $user */
         $user = Auth::user();
-        $schools = $user->getSchools();
+        $schools = SchoolCourseOptions::schoolsFor($user);
         $sources = CalendarSource::with('school')->latest()->get();
 
         return view('calendar.manage', compact('files', 'schools', 'sources'));
@@ -36,8 +37,8 @@ class CalendarFileController extends Controller
     {
         $request->validate([
             'school_id' => 'required|exists:schools,id',
-            'ics_file'  => 'nullable|file',
-            'ics_url'   => 'nullable|url',
+            'ics_file' => 'nullable|file',
+            'ics_url' => 'nullable|url',
         ]);
 
         $path = null;
@@ -50,14 +51,14 @@ class CalendarFileController extends Controller
         } elseif ($request->ics_url) {
             $storagePath = null;
             $url = $request->ics_url;
-            $originalName = 'Flux distant: ' . parse_url($url, PHP_URL_HOST);
+            $originalName = 'Flux distant: '.parse_url($url, PHP_URL_HOST);
         }
 
         $source = CalendarSource::create([
             'school_id' => $request->school_id,
-            'filename'  => $originalName, // Nom lisible
+            'filename' => $originalName, // Nom lisible
             'storage_path' => $storagePath, // Chemin réel pour Storage::get()
-            'url'       => $url
+            'url' => $url,
         ]);
 
         // On passe l'objet complet au service
@@ -74,7 +75,7 @@ class CalendarFileController extends Controller
         $icsFields = [
             'summary' => 'Titre (Summary)',
             'description' => 'Description',
-            'location' => 'Lieu (Location)'
+            'location' => 'Lieu (Location)',
         ];
         // Par défaut, on extrait les labels depuis le 'summary'
         // Mais l'utilisateur pourra changer ce choix sur l'écran suivant
@@ -83,14 +84,17 @@ class CalendarFileController extends Controller
         // 4. Redirection vers la vue de mapping en passant l'ID de la source
         /** @var \App\Models\User $user */
         $user = Auth::user();
+
         return view('calendar.mapping', [
-            'source'   => $source,
-            'labels'   => $labels,
+            'source' => $source,
+            'labels' => $labels,
             'exampleEvent' => $exampleEvent,
             'icsFields' => $icsFields,
             'existingMappings' => $existingMappings,
-            'courses'  => Course::where('school_id', $source->school_id)->get(),
-            'groups'   => $user->getGroups(),
+            'courses' => $source->school
+                ? SchoolCourseOptions::coursesForSchool($source->school, $user)
+                : collect(),
+            'groups' => $user->getGroups(),
         ]);
     }
 
@@ -100,13 +104,15 @@ class CalendarFileController extends Controller
         $sourceField = $request->ics_source_field; // 'summary' ou 'description'
 
         foreach ($request->mappings as $label => $ids) {
-            if (empty($ids['course_id']) && empty($ids['group_id'])) continue;
+            if (empty($ids['course_id']) && empty($ids['group_id'])) {
+                continue;
+            }
 
             // On enregistre le mapping (on peut adapter pour stocker les deux IDs)
             CalendarMapping::updateOrCreate(
                 ['school_id' => $source->school_id, 'ics_label' => $label],
                 [
-                    'mappable_type' => !empty($ids['course_id']) ? Course::class : (!empty($ids['group_id']) ? Group::class : null),
+                    'mappable_type' => ! empty($ids['course_id']) ? Course::class : (! empty($ids['group_id']) ? Group::class : null),
                     'mappable_id' => $ids['course_id'] ?: ($ids['group_id'] ?: null),
                 ]
             );
@@ -130,7 +136,7 @@ class CalendarFileController extends Controller
         foreach ($mappingsRecords as $record) {
             $mappings[$record->ics_label] = [
                 'course_id' => $record->mappable_type === Course::class ? $record->mappable_id : null,
-                'group_id'  => $record->mappable_type === Group::class ? $record->mappable_id : null,
+                'group_id' => $record->mappable_type === Group::class ? $record->mappable_id : null,
             ];
         }
 
@@ -149,7 +155,7 @@ class CalendarFileController extends Controller
         // 1. Validation de base
         $request->validate([
             'source_id' => 'required|exists:calendar_sources,id',
-            'mappings'  => 'required|array'
+            'mappings' => 'required|array',
         ]);
 
         // 2. Récupération de la source (le fichier et l'école)
@@ -158,22 +164,24 @@ class CalendarFileController extends Controller
         // 3. Extraction et sauvegarde des mappings pour le futur
         // On boucle sur les choix de l'utilisateur pour enrichir la table 'calendar_mappings'
         foreach ($request->mappings as $label => $mappingValue) {
-            if (empty($mappingValue)) continue;
+            if (empty($mappingValue)) {
+                continue;
+            }
 
             // On décompose "Course:5" ou "Group:12"
             [$type, $id] = explode(':', $mappingValue);
-            $modelClass = "App\\Models\\" . $type;
+            $modelClass = 'App\\Models\\'.$type;
 
-            // On enregistre ce lien : la prochaine fois que ce label apparaît pour cette école, 
+            // On enregistre ce lien : la prochaine fois que ce label apparaît pour cette école,
             // on pourra pré-remplir le formulaire ou automatiser.
             \App\Models\CalendarMapping::updateOrCreate(
                 [
                     'school_id' => $source->school_id,
-                    'ics_label' => $label
+                    'ics_label' => $label,
                 ],
                 [
                     'mappable_type' => $modelClass,
-                    'mappable_id'   => $id
+                    'mappable_id' => $id,
                 ]
             );
         }
@@ -186,17 +194,16 @@ class CalendarFileController extends Controller
                 ->with('success', "L'importation du fichier [{$source->filename}] a été réalisée avec succès.");
         } catch (\Exception $e) {
             return redirect()->back()
-                ->with('error', "Une erreur est survenue lors de l'insertion en base : " . $e->getMessage());
+                ->with('error', "Une erreur est survenue lors de l'insertion en base : ".$e->getMessage());
         }
     }
-
 
     public function destroy(CalendarSource $source)
     {
         try {
             // 1. Suppression du fichier physique
-            if (Storage::exists('calendars/' . $source->filename)) {
-                Storage::delete('calendars/' . $source->filename);
+            if (Storage::exists('calendars/'.$source->filename)) {
+                Storage::delete('calendars/'.$source->filename);
             }
 
             // 2. Suppression de l'entrée en base
@@ -210,7 +217,7 @@ class CalendarFileController extends Controller
             return redirect()->back()->with('error', 'La suppression a échoué en base de données.');
         } catch (\Exception $e) {
             return redirect()->back()
-                ->with('error', 'Erreur lors de la suppression : ' . $e->getMessage());
+                ->with('error', 'Erreur lors de la suppression : '.$e->getMessage());
         }
     }
 }

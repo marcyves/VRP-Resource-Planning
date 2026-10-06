@@ -69,6 +69,52 @@ class PlanningUpdateTest extends TestCase
         $response->assertDontSee('name="billed_amount"', false);
     }
 
+    public function test_planning_edit_course_dropdown_omits_archived_and_empty_school_courses(): void
+    {
+        [$user, $planning, , $course, $school] = $this->makePlanningContext();
+        $program = $course->program;
+
+        $sortedLater = Course::factory()->create([
+            'school_id' => $school->id,
+            'program_id' => $program->id,
+            'year' => '2027',
+            'semester' => '1',
+            'name' => 'Later Live Course',
+            'short_name' => 'LLC',
+        ]);
+        Course::factory()->archived()->create([
+            'school_id' => $school->id,
+            'program_id' => $program->id,
+            'name' => 'Archived Edit Course',
+            'short_name' => 'AEC',
+        ]);
+        $emptySchool = School::query()->create([
+            'name' => 'Empty Dropdown School',
+            'company_id' => $user->company_id,
+        ]);
+
+        $html = $this->actingAs($user)
+            ->get(route('planning.edit', $planning->id))
+            ->assertOk()
+            ->getContent();
+
+        $this->assertTrue(
+            (bool) preg_match('/<select[^>]*id="course_id"[^>]*>(.*?)<\/select>/s', $html, $select),
+            'Missing course dropdown on planning edit'
+        );
+
+        $this->assertStringContainsString('value="'.$course->id.'"', $select[1]);
+        $this->assertStringContainsString('value="'.$sortedLater->id.'"', $select[1]);
+        $this->assertStringContainsString('Course test', $select[1]);
+        $this->assertStringContainsString('Later Live Course', $select[1]);
+        $this->assertStringNotContainsString('Archived Edit Course', $select[1]);
+        $this->assertStringNotContainsString('Empty Dropdown School', $select[1]);
+
+        preg_match_all('/<option[^>]*>(.*?)<\/option>/s', $select[1], $options);
+        $labels = array_map(fn (string $label) => trim(strip_tags($label)), $options[1]);
+        $this->assertSame(['Course test', 'Later Live Course'], $labels);
+    }
+
     public function test_planning_edit_form_uses_terminology_profile_for_group_and_course(): void
     {
         [$user, $planning] = $this->makePlanningContext([

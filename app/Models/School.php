@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Http\Utility\Tools;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -10,7 +11,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Support\Facades\DB;
-use App\Http\Utility\Tools;
 
 class School extends Model
 {
@@ -101,29 +101,23 @@ class School extends Model
     public function getCourses(string $year = 'all')
     {
         if ($year == 'all') {
-            return Course::where('school_id', $this->id)
-                ->select(Course::PROGRAM_SCHOOL_SELECT)
-                ->leftJoin('programs', 'courses.program_id', '=', 'programs.id')
-                ->leftJoin('schools', 'courses.school_id', '=', 'schools.id')
-                ->withCount('groups')
-                ->orderBy('year', 'asc')
-                ->orderBy('semester', 'asc')
-                ->orderBy('school_name', 'asc')
-                ->orderBy('program_name', 'asc')
-                ->orderBy('name', 'asc')
-                ->get();
+            return Course::applyListOrder(
+                Course::where('school_id', $this->id)
+                    ->select(Course::PROGRAM_SCHOOL_SELECT)
+                    ->leftJoin('programs', 'courses.program_id', '=', 'programs.id')
+                    ->leftJoin('schools', 'courses.school_id', '=', 'schools.id')
+                    ->withCount('groups')
+            )->get();
         } else {
-            return Course::where('school_id', $this->id)
-                ->select(Course::PROGRAM_SCHOOL_SELECT)
-                ->leftJoin('programs', 'courses.program_id', '=', 'programs.id')
-                ->leftJoin('schools', 'courses.school_id', '=', 'schools.id')
-                ->withCount('groups')
-                ->where('year', '=', $year)
-                ->orderBy('semester', 'asc')
-                ->orderBy('school_name', 'asc')
-                ->orderBy('program_name', 'asc')
-                ->orderBy('name', 'asc')
-                ->get();
+            return Course::applyListOrder(
+                Course::where('school_id', $this->id)
+                    ->select(Course::PROGRAM_SCHOOL_SELECT)
+                    ->leftJoin('programs', 'courses.program_id', '=', 'programs.id')
+                    ->leftJoin('schools', 'courses.school_id', '=', 'schools.id')
+                    ->withCount('groups')
+                    ->where('year', '=', $year),
+                byYear: false
+            )->get();
         }
     }
 

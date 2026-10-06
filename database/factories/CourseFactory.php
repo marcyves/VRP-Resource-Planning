@@ -2,7 +2,6 @@
 
 namespace Database\Factories;
 
-use App\Models\Course;
 use App\Models\Program;
 use App\Models\School;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -20,14 +19,23 @@ class CourseFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => 'Course: '.rand(1,10),
+            'name' => 'Course: '.rand(1, 10),
             'school_id' => fake()->randomElement(School::all()),
             'sessions' => 8,
             'session_length' => 2.0,
             'year' => '2023',
             'semester' => 'S1',
             'program_id' => fake()->randomElement(Program::all()),
-            'rate' => 87.50
+            'rate' => 87.50,
+            'short_name' => 'CRS',
+            'active' => true,
         ];
+    }
+
+    public function archived(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'active' => false,
+        ]);
     }
 }
