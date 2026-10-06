@@ -275,11 +275,45 @@ class PlanningController extends Controller
         session()->put('school_id', $school->id);
 
         $groups = $course->getLinkedGroups(true);
-        $session_length = $course->session_length;
-        $hour = (int) $request->session()->get('planning_create_hour', 8);
-        $minutes = (int) $request->session()->get('planning_create_minutes', 0);
+        $session_length = Tools::parseSessionLengthHours(old('session_length', $course->session_length));
+        $hour = (int) old('hour', $request->session()->get('planning_create_hour', 8));
+        $minutes = (int) old('minutes', $request->session()->get('planning_create_minutes', 0));
 
-        return view('planning.create', compact('date', 'groups', 'session_length', 'course', 'hour', 'minutes'));
+        if (old('end_hour') !== null && old('end_hour') !== '') {
+            $end = Carbon::createFromFormat(
+                'Y-m-d H:i:s',
+                sprintf('%s %02d:%02d:00', $date, (int) old('end_hour'), (int) old('end_minutes', 0))
+            );
+        } else {
+            $end = Tools::planningEndFromSessionLength($date, $hour, $minutes, $session_length);
+        }
+
+        $end_hour = (int) $end->format('G');
+        $end_minutes = (int) $end->format('i');
+        $hourlyRate = (float) $course->rate;
+        $begin = Carbon::createFromFormat(
+            'Y-m-d H:i:s',
+            sprintf('%s %02d:%02d:00', $date, $hour, $minutes)
+        );
+        $billedAmount = Tools::planningGain(
+            $begin->format('Y-m-d H:i:s'),
+            $end->format('Y-m-d H:i:s'),
+            $hourlyRate,
+            1.0
+        );
+
+        return view('planning.create', compact(
+            'date',
+            'groups',
+            'session_length',
+            'course',
+            'hour',
+            'minutes',
+            'end_hour',
+            'end_minutes',
+            'hourlyRate',
+            'billedAmount',
+        ));
     }
 
     /**
@@ -298,15 +332,19 @@ class PlanningController extends Controller
             'date' => 'required|date',
             'hour' => 'required',
             'minutes' => 'required',
+            'end_hour' => 'required',
+            'end_minutes' => 'required',
             'session_length' => 'required',
             'course' => 'required|exists:courses,id',
         ]);
 
         $course_id = (int) $planningFields['course'];
-        $session_length = $planningFields['session_length'];
+        $session_length = Tools::parseSessionLengthHours($planningFields['session_length']);
         $date = $planningFields['date'];
         $hour = $planningFields['hour'];
         $minutes = $planningFields['minutes'];
+        $end_hour = $planningFields['end_hour'];
+        $end_minutes = $planningFields['end_minutes'];
 
         if ($group_id === 0) {
             $groupFields = $request->validate([
@@ -351,10 +389,12 @@ class PlanningController extends Controller
         session(['current_day' => substr($date, -2)]);
 
         $begin = date('Y-m-d H:i:s', strtotime("$date $hour:$minutes:0"));
-        //TODO session length is bugged
-        $add_hours = intval($session_length);
-        $add_minutes = ($session_length - $add_hours) * 60;
-        $end = date('Y-m-d H:i:s', strtotime("$date $hour:$minutes:0 +$add_hours hours +$add_minutes minutes"));
+        $end = date('Y-m-d H:i:s', strtotime("$date $end_hour:$end_minutes:0"));
+
+        if (strtotime($end) <= strtotime($begin)) {
+            $end = Tools::planningEndFromSessionLength($date, $hour, $minutes, $session_length)
+                ->format('Y-m-d H:i:s');
+        }
 
         session()->remove('course');
         session()->remove('course_id');

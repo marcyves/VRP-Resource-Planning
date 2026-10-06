@@ -203,4 +203,43 @@ class PlanningViewTest extends TestCase
         $this->assertSame(14, session('planning_create_hour'));
         $this->assertSame(0, session('planning_create_minutes'));
     }
+
+    public function test_create_form_computes_default_end_from_course_session_length(): void
+    {
+        $user = User::factory()->create();
+        $school = School::query()->create([
+            'name' => 'School week',
+            'company_id' => $user->company_id,
+        ]);
+        $program = Program::factory()->create(['company_id' => $user->company_id]);
+        $course = Course::factory()->create([
+            'school_id' => $school->id,
+            'program_id' => $program->id,
+            'name' => 'Week create course',
+            'short_name' => 'WCC',
+            'session_length' => 2.0,
+            'rate' => 80,
+        ]);
+
+        $this->actingAs($user)
+            ->withSession(['course_id' => $course->id])
+            ->post(route('planning.create.start'), [
+                'date' => '2026-08-18',
+                'hour' => 14,
+                'minutes' => 0,
+                'course' => $course->id,
+            ])
+            ->assertRedirect(route('planning.create'));
+
+        $html = $this->actingAs($user)
+            ->get(route('planning.create'))
+            ->assertOk()
+            ->assertSee(__('messages.duration_standard'), false)
+            ->assertSee(__('messages.end'), false)
+            ->assertSee('80,00 €/h', false)
+            ->getContent();
+
+        $this->assertMatchesRegularExpression('/id="end"[^>]*>[\s\S]*<option value="16"\s+selected/', $html);
+        $this->assertMatchesRegularExpression('/name="end_minutes"[^>]*>[\s\S]*<option value="0"\s+selected/', $html);
+    }
 }
