@@ -6,8 +6,6 @@ use App\Models\Course;
 use App\Models\Program;
 use App\Models\School;
 use App\Models\User;
-use Database\Seeders\CompanySeeder;
-use Database\Seeders\StatusSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -15,21 +13,11 @@ class BreadcrumbCourseSelectorTest extends TestCase
 {
     use RefreshDatabase;
 
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->seed([
-            StatusSeeder::class,
-            CompanySeeder::class,
-        ]);
-    }
-
     public function test_planning_breadcrumb_lists_courses_regardless_of_agenda_year(): void
     {
-        $user = User::factory()->create(['company_id' => 2]);
-        $school = School::factory()->create(['company_id' => 2, 'name' => 'Test School']);
-        $program = Program::factory()->create(['company_id' => 2]);
+        $user = User::factory()->create();
+        $school = $this->makeSchool($user, 'Test School');
+        $program = Program::factory()->create(['company_id' => $user->company_id]);
 
         $course = Course::factory()->create([
             'school_id' => $school->id,
@@ -54,12 +42,12 @@ class BreadcrumbCourseSelectorTest extends TestCase
 
     public function test_planning_breadcrumb_omits_schools_without_usable_courses(): void
     {
-        $user = User::factory()->create(['company_id' => 2]);
-        $program = Program::factory()->create(['company_id' => 2]);
+        $user = User::factory()->create();
+        $program = Program::factory()->create(['company_id' => $user->company_id]);
 
-        $usable = School::factory()->create(['company_id' => 2, 'name' => 'Usable Client']);
-        $empty = School::factory()->create(['company_id' => 2, 'name' => 'Empty Client']);
-        $archivedOnly = School::factory()->create(['company_id' => 2, 'name' => 'Archived Client']);
+        $usable = $this->makeSchool($user, 'Usable Client');
+        $this->makeSchool($user, 'Empty Client');
+        $archivedOnly = $this->makeSchool($user, 'Archived Client');
 
         Course::factory()->create([
             'school_id' => $usable->id,
@@ -90,10 +78,18 @@ class BreadcrumbCourseSelectorTest extends TestCase
 
     public function test_planning_breadcrumb_omits_archived_courses_and_sorts_the_rest(): void
     {
-        $user = User::factory()->create(['company_id' => 2]);
-        $school = School::factory()->create(['company_id' => 2, 'name' => 'Sort School']);
-        $programA = Program::factory()->create(['company_id' => 2, 'name' => 'Program A', 'short_description' => 'PA']);
-        $programB = Program::factory()->create(['company_id' => 2, 'name' => 'Program B', 'short_description' => 'PB']);
+        $user = User::factory()->create();
+        $school = $this->makeSchool($user, 'Sort School');
+        $programA = Program::factory()->create([
+            'company_id' => $user->company_id,
+            'name' => 'Program A',
+            'short_description' => 'PA',
+        ]);
+        $programB = Program::factory()->create([
+            'company_id' => $user->company_id,
+            'name' => 'Program B',
+            'short_description' => 'PB',
+        ]);
 
         Course::factory()->create([
             'school_id' => $school->id,
@@ -149,9 +145,9 @@ class BreadcrumbCourseSelectorTest extends TestCase
 
     public function test_school_page_still_lists_archived_courses(): void
     {
-        $user = User::factory()->create(['company_id' => 2]);
-        $school = School::factory()->create(['company_id' => 2, 'name' => 'Archive Admin School']);
-        $program = Program::factory()->create(['company_id' => 2]);
+        $user = User::factory()->create();
+        $school = $this->makeSchool($user, 'Archive Admin School');
+        $program = Program::factory()->create(['company_id' => $user->company_id]);
 
         Course::factory()->archived()->create([
             'school_id' => $school->id,
@@ -165,6 +161,14 @@ class BreadcrumbCourseSelectorTest extends TestCase
             ->get(route('school.show', $school))
             ->assertOk()
             ->assertSee('Archived On School Page', false);
+    }
+
+    private function makeSchool(User $user, string $name): School
+    {
+        return School::query()->create([
+            'name' => $name,
+            'company_id' => $user->company_id,
+        ]);
     }
 
     /**

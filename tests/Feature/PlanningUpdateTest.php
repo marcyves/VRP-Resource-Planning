@@ -80,11 +80,13 @@ class PlanningUpdateTest extends TestCase
             'year' => '2027',
             'semester' => '1',
             'name' => 'Later Live Course',
+            'short_name' => 'LLC',
         ]);
         Course::factory()->archived()->create([
             'school_id' => $school->id,
             'program_id' => $program->id,
             'name' => 'Archived Edit Course',
+            'short_name' => 'AEC',
         ]);
         $emptySchool = School::query()->create([
             'name' => 'Empty Dropdown School',

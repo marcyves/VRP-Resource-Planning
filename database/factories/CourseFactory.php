@@ -27,6 +27,7 @@ class CourseFactory extends Factory
             'semester' => 'S1',
             'program_id' => fake()->randomElement(Program::all()),
             'rate' => 87.50,
+            'short_name' => 'CRS',
             'active' => true,
         ];
     }
