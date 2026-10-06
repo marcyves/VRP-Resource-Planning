@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -21,11 +22,45 @@ class Course extends Model
     ];
 
     public $timestamps = false;
-    public $fillable = ['name', 'short_name', 'sessions', 'session_length', 'school_id', 'program_id', 'year', 'semester', 'rate'];
+
+    public $fillable = ['name', 'short_name', 'sessions', 'session_length', 'school_id', 'program_id', 'year', 'semester', 'rate', 'active'];
 
     protected $withCount = [
         'groups',
     ];
+
+    protected $casts = [
+        'active' => 'boolean',
+    ];
+
+    public function scopeActive(Builder $query): Builder
+    {
+        return $query->where($query->qualifyColumn('active'), true);
+    }
+
+    public function scopeArchived(Builder $query): Builder
+    {
+        return $query->where($query->qualifyColumn('active'), false);
+    }
+
+    /**
+     * Shared list order: year, semester, school, program, then course name.
+     */
+    public static function applyListOrder(Builder $query, bool $byYear = true, bool $bySemester = true): Builder
+    {
+        if ($byYear) {
+            $query->orderBy('year', 'asc');
+        }
+
+        if ($bySemester) {
+            $query->orderBy('semester', 'asc');
+        }
+
+        return $query
+            ->orderBy('school_name', 'asc')
+            ->orderBy('program_name', 'asc')
+            ->orderBy('courses.name', 'asc');
+    }
 
     public function groups(): HasMany
     {
@@ -47,6 +82,7 @@ class Course extends Model
 
         return School::find($this->school_id);
     }
+
     /**
      * Groups linked to this course via group_course.
      *
@@ -94,15 +130,14 @@ class Course extends Model
             ->get();
     }
 
-
-    public static function getCourseDetails(String $course_id)
+    public static function getCourseDetails(string $course_id)
     {
         return Course::select([
-                'courses.*',
-                'programs.id as program_id',
-                'programs.name as program_name',
-                'programs.short_description as program_short_description',
-            ])
+            'courses.*',
+            'programs.id as program_id',
+            'programs.name as program_name',
+            'programs.short_description as program_short_description',
+        ])
             ->join('programs', 'courses.program_id', '=', 'programs.id')
             ->where('courses.id', '=', $course_id)
             ->get()[0];
@@ -116,16 +151,15 @@ class Course extends Model
         );
     }
 
-    public static function getCoursesForSchool(String $school_id)
+    public static function getCoursesForSchool(string $school_id)
     {
         return Course::select('courses.*')
             ->join('schools', 'courses.school_id', '=', 'schools.id')
             ->where('schools.id', '=', $school_id)
-            ->get()[0]
-        ;
+            ->get()[0];
     }
 
-    public static function getProgramCoursesForCompany(String $program_id)
+    public static function getProgramCoursesForCompany(string $program_id)
     {
         $company = Auth::user()->company;
 
@@ -133,7 +167,6 @@ class Course extends Model
             ->join('schools', 'courses.school_id', '=', 'schools.id')
             ->where('schools.company_id', '=', $company->id)
             ->where('program_id', '=', $program_id)
-            ->get()
-        ;
+            ->get();
     }
 }

@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\School;
+use App\Http\Utility\Tools;
 use App\Models\Course;
 use App\Models\Group;
 use App\Models\GroupCourse;
 use App\Models\Planning;
+use App\Models\School;
+use App\Support\SchoolCourseOptions;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Carbon\Carbon;
-use App\Http\Utility\Tools;
 
 class PlanningController extends Controller
 {
@@ -36,7 +37,8 @@ class PlanningController extends Controller
             'school_id' => 'required|exists:schools,id',
         ]);
 
-        $school = Auth::user()->getSchools()->firstWhere('id', (int) $validated['school_id']);
+        $school = SchoolCourseOptions::schoolsFor(Auth::user())
+            ->firstWhere('id', (int) $validated['school_id']);
 
         if (! $school) {
             abort(403);
@@ -64,12 +66,10 @@ class PlanningController extends Controller
             return redirect()->to($this->planningContextRedirectUrl($request));
         }
 
-        $course = Course::findOrFail($validated['course_id']);
-        $courseSchool = $course->getSchool();
-
-        if ($courseSchool->company_id !== Auth::user()->company_id) {
-            abort(403);
-        }
+        $course = Course::query()
+            ->active()
+            ->whereHas('school', fn ($query) => $query->where('company_id', Auth::user()->company_id))
+            ->findOrFail($validated['course_id']);
 
         $this->syncPlanningBreadcrumbContext($course);
 
@@ -185,8 +185,8 @@ class PlanningController extends Controller
             ->sortByDesc(fn (array $school) => [$school['unbilled_sessions'], $school['unbilled_amount_ht'], $school['hours']])
             ->values();
 
-        $months = Tools::getMonthNames();         //generate month names according to the current locale
-        $weekdays = collect(Carbon::getDays())->map(fn($dayName) => ucfirst(Carbon::create($dayName)->dayName)); //generate day names according to the current locale
+        $months = Tools::getMonthNames();         // generate month names according to the current locale
+        $weekdays = collect(Carbon::getDays())->map(fn ($dayName) => ucfirst(Carbon::create($dayName)->dayName)); // generate day names according to the current locale
         $weekdays->push($weekdays[0]);         // Week starts on Monday
         $weekdays->shift();
 
@@ -351,7 +351,7 @@ class PlanningController extends Controller
         session(['current_day' => substr($date, -2)]);
 
         $begin = date('Y-m-d H:i:s', strtotime("$date $hour:$minutes:0"));
-        //TODO session length is bugged
+        // TODO session length is bugged
         $add_hours = intval($session_length);
         $add_minutes = ($session_length - $add_hours) * 60;
         $end = date('Y-m-d H:i:s', strtotime("$date $hour:$minutes:0 +$add_hours hours +$add_minutes minutes"));
@@ -378,7 +378,6 @@ class PlanningController extends Controller
         }
     }
 
-
     /**
      * Display the specified resource.
      */
@@ -390,7 +389,7 @@ class PlanningController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(String $id)
+    public function edit(string $id)
     {
         $planning = Planning::findOrFail($id);
         $current_group = Group::find($planning->group_id);
@@ -400,7 +399,10 @@ class PlanningController extends Controller
         if ($current_group && $groups->where('id', $current_group->id)->isEmpty()) {
             $groups = $groups->push($current_group);
         }
-        $courses = Auth::user()->getCourses();
+        $courses = SchoolCourseOptions::coursesForCompany(
+            Auth::user(),
+            (int) $planning->course_id
+        );
 
         $courseRates = $courses
             ->mapWithKeys(fn (Course $item) => [(string) $item->id => (float) $item->rate])
@@ -429,7 +431,7 @@ class PlanningController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Int $id)
+    public function update(Request $request, int $id)
     {
         try {
             $planning = Planning::findOrFail($id);
@@ -454,7 +456,7 @@ class PlanningController extends Controller
             $end_minutes = $request->end_minutes;
 
             $begin = date('Y-m-d H:i:s', strtotime("$date $hour:$minutes:0"));
-            //TODO session length is bugged
+            // TODO session length is bugged
             $end = date('Y-m-d H:i:s', strtotime("$date $end_hour:$end_minutes:0"));
 
             $planning->begin = $begin;
@@ -470,7 +472,8 @@ class PlanningController extends Controller
             session()->flash('success', __('messages.planning_session_updated_success'));
         } catch (\Exception $e) {
             session()->flash('danger', __('messages.planning_session_update_error'));
-            //session()->flash('danger', $e->getMessage());
+
+            // session()->flash('danger', $e->getMessage());
             return redirect()->back();
         }
         $schoolId = session('school_id');
@@ -569,7 +572,8 @@ class PlanningController extends Controller
             session()->flash('success', __('messages.planning_session_deleted_success'));
         } catch (\Exception $e) {
             session()->flash('danger', __('messages.planning_session_delete_error'));
-            //session()->flash('danger', $e->getMessage());
+
+            // session()->flash('danger', $e->getMessage());
             return redirect()->back();
         }
 

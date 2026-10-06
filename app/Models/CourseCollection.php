@@ -7,164 +7,157 @@ use Illuminate\Database\Eloquent\Collection;
 
 class CourseCollection extends Collection
 {
-    public function getBillingPlanning(String $year, String $month)
+    public function getBillingPlanning(string $year, string $month)
     {
-        $list = $this->map(function(School $school){
+        $list = $this->map(function (School $school) {
             return $school->id;
         });
-       
-        $start_date =  trim($year)."-".substr("0".trim($month),-2)."-0 00:00:00";
+
+        $start_date = trim($year).'-'.substr('0'.trim($month), -2).'-0 00:00:00';
         $month++;
         $end_year = $year;
-        if($month == "13"){
-            $month = "01";
+        if ($month == '13') {
+            $month = '01';
             $end_year++;
         }
-        $end_date   =  trim($end_year)."-".substr("0".trim($month),-2)."-0 00:00:00";
-        
+        $end_date = trim($end_year).'-'.substr('0'.trim($month), -2).'-0 00:00:00';
 
-        $plannings =  Course::whereIn('school_id', $list)
-        ->select([
-            'plannings.id as planning_id',
-            'schools.id as school_id',
-            'schools.name as school_name',
-            'courses.name as course_name',
-            'courses.id as course_id',
-            'courses.short_name as short_name',
-            'rate',
-            'begin',
-            'end',
-            'billable_rate',
-            'invoice_id',
-            'location',
-            'session_length',
-            'groups.name as group_name',
-            'groups.short_name as group_short_name'
+        $plannings = Course::whereIn('school_id', $list)
+            ->select([
+                'plannings.id as planning_id',
+                'schools.id as school_id',
+                'schools.name as school_name',
+                'courses.name as course_name',
+                'courses.id as course_id',
+                'courses.short_name as short_name',
+                'rate',
+                'begin',
+                'end',
+                'billable_rate',
+                'invoice_id',
+                'location',
+                'session_length',
+                'groups.name as group_name',
+                'groups.short_name as group_short_name',
             ])
-        ->join('plannings', 'plannings.course_id', '=', 'courses.id')
-        ->join('groups', 'plannings.group_id', '=', 'groups.id')
-        ->join('schools', 'schools.id', '=', 'school_id')
-        ->where('begin', '>', $start_date)
-        ->where('end', '<', $end_date)
-        ->orderBy('school_name', 'asc')
-        ->orderBy('course_name', 'asc')
-        ->orderBy('group_name', 'asc')
-        ->orderBy('begin', 'asc')
-        ->get();
+            ->join('plannings', 'plannings.course_id', '=', 'courses.id')
+            ->join('groups', 'plannings.group_id', '=', 'groups.id')
+            ->join('schools', 'schools.id', '=', 'school_id')
+            ->where('begin', '>', $start_date)
+            ->where('end', '<', $end_date)
+            ->orderBy('school_name', 'asc')
+            ->orderBy('course_name', 'asc')
+            ->orderBy('group_name', 'asc')
+            ->orderBy('begin', 'asc')
+            ->get();
 
-        if (count($plannings)){
+        if (count($plannings)) {
             return $plannings;
-        }else{
+        } else {
             return false;
         }
-        
 
     }
-    public function getPlanning(String $year, String $month)
+
+    public function getPlanning(string $year, string $month)
     {
-        $list = $this->map(function(School $school){
+        $list = $this->map(function (School $school) {
             return $school->id;
         });
-       
-        $start_date =  trim($year)."-".substr("0".trim($month),-2)."-0 00:00:00";
+
+        $start_date = trim($year).'-'.substr('0'.trim($month), -2).'-0 00:00:00';
         $month++;
         $end_year = $year;
-        if($month == "13"){
-            $month = "01";
+        if ($month == '13') {
+            $month = '01';
             $end_year++;
         }
-        $end_date   =  trim($end_year)."-".substr("0".trim($month),-2)."-0 00:00:00";
-        
+        $end_date = trim($end_year).'-'.substr('0'.trim($month), -2).'-0 00:00:00';
 
         return Course::whereIn('school_id', $list)
-        ->select([
-            'plannings.id as id',
-            'schools.name as school_name',
-            'begin',
-            'end',
-            'billable_rate',
-            'location',
-            'courses.name as course_name',
-            'courses.short_name as short_name',
-            'rate',
-            'session_length',
-            'invoice_id',
-            'groups.name as group_name',
-            'groups.short_name as group_short_name'
+            ->select([
+                'plannings.id as id',
+                'schools.name as school_name',
+                'begin',
+                'end',
+                'billable_rate',
+                'location',
+                'courses.name as course_name',
+                'courses.short_name as short_name',
+                'rate',
+                'session_length',
+                'invoice_id',
+                'groups.name as group_name',
+                'groups.short_name as group_short_name',
             ])
-        ->join('group_course', 'courses.id', '=', 'group_course.course_id')
-        ->join('groups', 'groups.id', '=', 'group_course.group_id')
-        ->join('plannings', 'plannings.group_id', '=', 'groups.id')
-        ->join('schools', 'schools.id', '=', 'school_id')
-        ->where('plannings.course_id', '=', 'courses.id')
-        ->where('begin', '>', $start_date)
-        ->where('end', '<', $end_date)
-        ->orderBy('begin', 'asc')
-        ->get();
+            ->join('group_course', 'courses.id', '=', 'group_course.course_id')
+            ->join('groups', 'groups.id', '=', 'group_course.group_id')
+            ->join('plannings', 'plannings.group_id', '=', 'groups.id')
+            ->join('schools', 'schools.id', '=', 'school_id')
+            ->where('plannings.course_id', '=', 'courses.id')
+            ->where('begin', '>', $start_date)
+            ->where('end', '<', $end_date)
+            ->orderBy('begin', 'asc')
+            ->get();
     }
 
-    public function getCourses(String $year = 'all', String $semester = 'all')
+    public function getCourses(string $year = 'all', string $semester = 'all')
     {
-        $list = $this->map(function(School $school){
+        $list = $this->map(function (School $school) {
             return $school->id;
         });
 
-        if ($year == 'all'){
-            if ($semester == 'all'){
-                return Course::whereIn('school_id', $list)
-            ->select(Course::PROGRAM_SCHOOL_SELECT)
-            ->leftJoin('programs', 'courses.program_id', '=', 'programs.id')
-            ->leftJoin('schools', 'courses.school_id', '=', 'schools.id')
-            ->withCount('groups')
-            ->orderBy('year', 'asc')
-            ->orderBy('semester', 'asc')
-            ->orderBy('school_name', 'asc')
-            ->orderBy('program_name', 'asc')
-            ->orderBy('name', 'asc')
-            ->get();
-            }else{
-                return Course::whereIn('school_id', $list)
-                ->select(Course::PROGRAM_SCHOOL_SELECT)
-                ->leftJoin('programs', 'courses.program_id', '=', 'programs.id')
-                ->leftJoin('schools', 'courses.school_id', '=', 'schools.id')
-                ->withCount('groups')
-                ->where(['semester' => $semester])
-                ->orderBy('school_name', 'asc')
-                ->orderBy('program_name', 'asc')
-                ->orderBy('name', 'asc')
-                ->get();
+        if ($year == 'all') {
+            if ($semester == 'all') {
+                return Course::applyListOrder(
+                    Course::whereIn('school_id', $list)
+                        ->select(Course::PROGRAM_SCHOOL_SELECT)
+                        ->leftJoin('programs', 'courses.program_id', '=', 'programs.id')
+                        ->leftJoin('schools', 'courses.school_id', '=', 'schools.id')
+                        ->withCount('groups')
+                )->get();
+            } else {
+                return Course::applyListOrder(
+                    Course::whereIn('school_id', $list)
+                        ->select(Course::PROGRAM_SCHOOL_SELECT)
+                        ->leftJoin('programs', 'courses.program_id', '=', 'programs.id')
+                        ->leftJoin('schools', 'courses.school_id', '=', 'schools.id')
+                        ->withCount('groups')
+                        ->where(['semester' => $semester]),
+                    byYear: false,
+                    bySemester: false
+                )->get();
             }
-        }else{
-            if ($semester == 'all'){
-                return Course::whereIn('school_id', $list)
-                ->select(Course::PROGRAM_SCHOOL_SELECT)
-                ->leftJoin('programs', 'courses.program_id', '=', 'programs.id')
-                ->leftJoin('schools', 'courses.school_id', '=', 'schools.id')
-                ->withCount('groups')
-                ->where(['year' => $year])
-                ->orderBy('semester', 'asc')
-                ->orderBy('school_name', 'asc')
-                ->orderBy('program_name', 'asc')
-                ->orderBy('name', 'asc')
-                ->get();
-            }else{
-                return Course::whereIn('school_id', $list)
-                ->select(Course::PROGRAM_SCHOOL_SELECT)
-                ->leftJoin('programs', 'courses.program_id', '=', 'programs.id')
-                ->leftJoin('schools', 'courses.school_id', '=', 'schools.id')
-                ->withCount('groups')
-                ->where(['semester' => $semester])
-                ->where(['year' => $year])
-                ->orderBy('school_name', 'asc')
-                ->orderBy('program_name', 'asc')
-                ->get();
+        } else {
+            if ($semester == 'all') {
+                return Course::applyListOrder(
+                    Course::whereIn('school_id', $list)
+                        ->select(Course::PROGRAM_SCHOOL_SELECT)
+                        ->leftJoin('programs', 'courses.program_id', '=', 'programs.id')
+                        ->leftJoin('schools', 'courses.school_id', '=', 'schools.id')
+                        ->withCount('groups')
+                        ->where(['year' => $year]),
+                    byYear: false
+                )->get();
+            } else {
+                return Course::applyListOrder(
+                    Course::whereIn('school_id', $list)
+                        ->select(Course::PROGRAM_SCHOOL_SELECT)
+                        ->leftJoin('programs', 'courses.program_id', '=', 'programs.id')
+                        ->leftJoin('schools', 'courses.school_id', '=', 'schools.id')
+                        ->withCount('groups')
+                        ->where(['semester' => $semester])
+                        ->where(['year' => $year]),
+                    byYear: false,
+                    bySemester: false
+                )->get();
             }
         }
     }
 
     public function getNoCourse($year = 'all')
     {
-        $list = $this->map(function(School $school){
+        $list = $this->map(function (School $school) {
             return $school->id;
         });
 
@@ -179,10 +172,10 @@ class CourseCollection extends Collection
 
         return $schools_without_course;
     }
-        
+
     public function getYears()
     {
-        $list = $this->map(function(School $school){
+        $list = $this->map(function (School $school) {
             return $school->id;
         });
 
@@ -195,12 +188,12 @@ class CourseCollection extends Collection
         $currentYear = date('Y');
         $nextYear = $currentYear + 1;
 
-        if (!$years->contains('year', $currentYear)) {
-            $years->push((object)['year' => $currentYear]);
+        if (! $years->contains('year', $currentYear)) {
+            $years->push((object) ['year' => $currentYear]);
         }
 
-        if (!$years->contains('year', $nextYear)) {
-            $years->push((object)['year' => $nextYear]);
+        if (! $years->contains('year', $nextYear)) {
+            $years->push((object) ['year' => $nextYear]);
         }
 
         return $years->sortBy('year')->unique('year');

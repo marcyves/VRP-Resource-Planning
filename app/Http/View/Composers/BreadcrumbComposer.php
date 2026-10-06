@@ -3,6 +3,7 @@
 namespace App\Http\View\Composers;
 
 use App\Models\School;
+use App\Support\SchoolCourseOptions;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
@@ -29,7 +30,11 @@ class BreadcrumbComposer
         $isInvoice = request()->routeIs('invoice.*', 'treasury.invoices.*');
         $isPlanning = request()->routeIs('planning.*');
 
-        $breadcrumbSchools = Auth::user()->getSchools();
+        // Invoice school filter keeps every client (billing). Planning / workload
+        // dropdowns omit schools with no usable courses.
+        $breadcrumbSchools = $isInvoice
+            ? Auth::user()->getSchools()
+            : SchoolCourseOptions::schoolsFor(Auth::user());
         $breadcrumbCourses = collect();
 
         if ($isPlanning && ($schoolId = session('school_id'))) {
@@ -40,9 +45,14 @@ class BreadcrumbComposer
                     ->first();
 
             if ($school) {
-                // List every course for the school — not session current_year, which tracks
+                // Usable courses for the school — not session current_year, which tracks
                 // calendar navigation in the agenda and would hide e.g. a 2026 course in 2027.
-                $breadcrumbCourses = $school->getCourses('all');
+                $includeCourseId = session('course_id') ? (int) session('course_id') : null;
+                $breadcrumbCourses = SchoolCourseOptions::coursesForSchool(
+                    $school,
+                    Auth::user(),
+                    $includeCourseId
+                );
             }
         }
 
