@@ -55,7 +55,7 @@ Table d’historique : date, école, nom de fichier ou lien « flux distant », 
 |---------|--------------|
 | Extraction des libellés | Valeurs uniques du **SUMMARY** ICS (`CalendarService::getUniqueLabelsFromIcs`) |
 | Lookup à l’import | `$event[$ics_source_field]` (défaut formulaire : summary ; options : description, location) |
-| UI de mapping | Cours = cours de l’école ; groupes = `$user->getGroups()` (groupes de l’entreprise, pas filtrés par école) |
+| UI de mapping | Cours = `SchoolCourseOptions::coursesForSchool` (cours actifs de l’école, même ordre que l’agenda). Groupes = `$user->getGroups()` (groupes de l’entreprise, pas filtrés par école). La liste d’écoles de l’upload est `schoolsFor` (écoles avec au moins un cours actif). |
 | Mapping stocké | Un morph par `(school_id, ics_label)` : **cours s’il est renseigné, sinon groupe** (`CalendarMapping`) |
 | Premier import | Utilise les tableaux du formulaire (`course_id` + `group_id`) donc les deux IDs peuvent s’appliquer ensemble |
 | Réimport | Reconstruit les mappings depuis `CalendarMapping` seulement, et force le champ `summary` |
@@ -78,6 +78,7 @@ Parseur : `u01jmg3/ics-parser` (`ICal`), fuseau **Europe/Paris**, `defaultSpan` 
 
 ## Contraintes et pièges
 
+- Les écoles sans cours actif, et les cours archivés (`courses.active = false`), sont absents de ces listes. La fiche école les affiche toujours. Voir [menus déroulants](v2-navigation-modules.md#menus-déroulants-école-et-cours).
 - **Cours et groupe** sont tous les deux requis pour insérer une ligne de planning. L’UI libelle le groupe « optionnel » ; l’importeur ignore pourtant les lignes cours seul.
 - **Réimporter après un mapping cours** (le morph stocké privilégie le cours) ignore en pratique tous les événements, faute de `group_id`. Le réimport n’est fiable que si le morph stocké est un **groupe** (le premier cours lié est alors déduit).
 - Passer le **champ ICS** sur description/location alors que les lignes de mapping viennent des **SUMMARY** fait rater les clés → tout est ignoré.

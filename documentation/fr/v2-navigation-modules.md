@@ -77,7 +77,61 @@ Le formulaire caché `#planning-create-form` poste vers `planning.create.start` 
 
 `startCreate` stocke `planning_create_date`, `planning_create_course_id`, heure et minutes, puis redirige vers `planning.create` (PRG). L’heure est validée `8–19`.
 
-Le sélecteur de cours du fil d’Ariane liste **tous les cours de l’école** (`School::getCourses('all')` dans `BreadcrumbComposer`) — il ne filtre pas sur l’année calendaire de l’agenda, donc un cours 2026 reste sélectionnable en naviguant 2027.
+### Menus déroulants école et cours
+
+`App\Support\SchoolCourseOptions` alimente le fil d’Ariane de l’agenda, la sélection d’école du planning, la liste de cours à l’édition d’une séance, et les sélecteurs école/cours de l’import calendrier. Un cours est utilisable quand `courses.active` est vrai (`Course::scopeActive`).
+
+| Surface | Méthode | Exclus |
+|---------|---------|--------|
+| Écoles du fil d’Ariane agenda et plan de charge | `schoolsFor` | Écoles sans cours actif, tri par nom. Le fil **facture** garde `User::getSchools()` (tous les clients). |
+| Cours du fil d’Ariane agenda | `coursesForSchool` | Cours archivés de l’école choisie. La liste **ne suit pas** `current_year` de l’agenda : un cours 2026 reste sélectionnable en 2027. |
+| Édition de séance | `coursesForCompany` | Cours archivés, toute l’entreprise. |
+| Import calendrier | `schoolsFor`, `coursesForSchool` | Mêmes filtres. Les groupes restent `$user->getGroups()`. |
+
+Tri : `Course::applyListOrder` — année, semestre, nom d’école, nom de programme, nom de cours. Le fil d’Ariane affiche `(libellé programme) nom du cours` (`Course::programListLabel()`, description courte si elle existe). Le formulaire d’édition n’affiche que le nom du cours.
+
+`PlanningController::selectSchool` répond **403** si l’école n’est pas dans `schoolsFor`. `selectCourse` charge un cours **actif** de l’entreprise (`findOrFail` : un id archivé est un **404**).
+
+L’id courant reste dans la liste même s’il est archivé : `session('course_id')` dans le fil d’Ariane, `planning.course_id` à l’édition. Reposter cet id archivé vers `planning.selectCourse` reste un 404 — la requête POST n’a pas d’exception.
+
+Les tableaux de cours (`School::getCourses`) ne filtrent pas : un cours archivé reste sur `school.show`. La fiche cours ne propose pas le flag (`CourseController::courseRules()`). La migration `2026_10_06_120000_add_active_flag_to_courses_table` ajoute `courses.active`, booléen, défaut **true**.
+
+### Formulaire nouvelle séance
+
+`GET planning.create` (`resources/views/planning/create.blade.php`) exige `planning_create_date` et `planning_create_course_id`. L’un des deux manque → retour à l’agenda.
+
+Trois rangées (`planning-session-form__row--when`, `--billing-create`, `--assignments`) :
+
+| Rangée | Champs | Persisté |
+|--------|--------|----------|
+| Quand | Date (lecture seule), début, fin | `plannings.begin` / `end` |
+| Facturation | Durée standard (éditable), tarif horaire, montant de l’intervention | Rien. La durée n’est écrite ni sur le cours ni sur la séance. `billable_rate` n’est pas posté (défaut de colonne **1**). |
+| Affectation | Groupe, nom du cours (lecture seule) | `group_id`, `course_id`. `location` vaut `na`. |
+
+- La durée standard part de `courses.session_length` (virgule ou point). Changer le début ou la durée recalcule la fin ; changer la fin recalcule le champ durée (Alpine sur le fieldset).
+- Préremplissage serveur : `Tools::planningEndFromSessionLength` — heures × 60, arrondi au multiple de 5 minutes le plus proche. Exemple : 10:00 et `2,5` → 12:30.
+- `store` garde la fin soumise si elle est **strictement après** le début. Si fin ≤ début, repli sur le même helper avec la `session_length` soumise. `courses.session_length` n’est pas mis à jour.
+- Heures de début **8–21**, heures de fin **8–23**, minutes par pas de 5.
+- Le tarif horaire est `courses.rate` (stocké **HT**). Le montant d’intervention est `Tools::planningGain(begin, end, rate, 1)` — durée × tarif. Les cartes KPI de l’agenda restent en TTC (`gain × 1,2`) ; ce formulaire non.
+- Groupes : liens actifs du cours (`getLinkedGroups(true)`). La valeur `0` crée un groupe et une ligne `group_course` depuis les champs inline.
+- Les libellés suivent le profil de terminologie.
+- Un enregistrement réussi efface `course` / `course_id` du fil d’Ariane et renvoie vers `planning.index`.
+
+### Formulaire d’édition
+
+`planning.edit` reprend les trois rangées (`--when`, `--billing`, `--assignments`).
+
+| Rangée | Champs | Notes |
+|--------|--------|-------|
+| Quand | Jour, mois, année, début, fin | Années = année de la séance ± 2. Heures de début et de fin **8–21** (la création autorise une fin à 22–23). |
+| Facturation | Durée indicative, tarif horaire, taux facturable, montant facturé | Durée, tarif et montant en lecture seule. Seul `billable_rate` est posté. |
+| Affectation | Groupe, cours | Cours utilisables de toute l’entreprise ; le cours courant reste s’il est archivé. |
+
+- Le navigateur recalcule durée et montant quand l’horaire, le cours ou le taux change. Montant = heures × tarif du cours choisi × `Tools::billableMultiplier(billable_rate, rate)`. Un taux ≤ 0 compte pour **1**. Une valeur égale au tarif horaire du cours compte pour **1** (anciennes lignes d’import). Toute autre valeur **> 1** est un pourcentage (`/ 100`).
+- `update` écrit `begin`, `end`, `group_id`, `course_id` et `billable_rate`. Il ne reconstruit pas la fin depuis une durée standard, et il ne refuse pas fin ≤ début.
+- Un `invoice_id` désactive le fieldset et bloque l’enregistrement (`session_locked_by_invoice`). Les actions de duplication sont masquées.
+- Les groupes sont les liens actifs du cours chargé pour ce GET, plus le groupe courant s’il est inactif. Changer le cours ne met à jour que l’aperçu du tarif ; la liste des groupes n’est pas rechargée.
+- Succès : `school.show#billing` si `school_id` est en session, sinon `planning.index`.
 
 ### Duplication de session
 
@@ -109,7 +163,10 @@ La date libre utilise la boîte de dialogue native `#planning-duplicate-dialog` 
 - `resources/views/components/planning-view-toggle.blade.php` — bascule mois / semaine
 - `resources/views/components/planning-week-agenda.blade.php` — grille horaire + création sur créneau
 - `resources/js/planning-calendar.js` — heure de création, dialogues natifs duplication/suppression
-- `app/Http/View/Composers/BreadcrumbComposer.php` — liste complète des cours sur l’agenda
+- `app/Support/SchoolCourseOptions.php` — listes d’écoles et de cours utilisables
+- `app/Http/View/Composers/BreadcrumbComposer.php` — cours de l’agenda (actifs, quelle que soit l’année catalogue)
+- `resources/views/planning/create.blade.php`, `edit.blade.php` — formulaires de séance en trois rangées
+- `app/Http/Utility/Tools.php` — `planningEndFromSessionLength`, `planningGain`
 - `resources/js/sidebar.js` — persistance de la sidebar compacte
 
 ## Voir aussi

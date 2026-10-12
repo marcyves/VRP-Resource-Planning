@@ -39,7 +39,7 @@ Les invités commencent sur la **landing** `/` (ou `/demande-acces`). Un utilisa
 2. Consulter **facturé TTC** et **non facturé** par établissement
 3. Ouvrir une **école** → cours, adresse, factures, documents, **préparation facturation**
 4. Naviguer mois par mois ou **sauter aux sessions non facturées** (retour arrière)
-5. **Agenda** (menu latéral) pour saisir / modifier les sessions — vue **mois** ou **semaine**, clic sur un jour ou un créneau, duplication vers demain / la semaine suivante ; onglet **Calendrier** pour importer un `.ics` ou une URL ([import-calendrier.md](import-calendrier.md))
+5. **Agenda** (menu latéral) pour saisir / modifier les sessions — vue **mois** ou **semaine**, clic sur un jour ou un créneau (fin préremplie depuis la durée standard du cours), duplication vers demain / la semaine suivante ; onglet **Calendrier** pour importer un `.ics` ou une URL ([import-calendrier.md](import-calendrier.md), [formulaires de séance](v2-navigation-modules.md#formulaire-nouvelle-séance))
 6. **Trésorerie** (menu latéral) pour les factures (émission e-facture si SuperPDP est configuré), le rapprochement bancaire, les dépenses et le suivi financier global
 
 ## Compatibilité

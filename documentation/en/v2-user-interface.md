@@ -39,7 +39,7 @@ Guests start on the **landing** `/` (or `/demande-acces`). Signed-in users hitti
 2. Review **invoiced incl. VAT** and **unbilled** per school
 3. Open a **school** → courses, address, invoices, documents, **billing preparation**
 4. Browse by month or **jump to unbilled sessions** (backwards in time)
-5. **Scheduling** (sidebar) to create / edit sessions — **month** or **week** view, click a day or week slot, duplicate to tomorrow / next week; **Calendar** tab to import an `.ics` file or URL ([calendar-import.md](calendar-import.md))
+5. **Scheduling** (sidebar) to create / edit sessions — **month** or **week** view, click a day or week slot (end time prefilled from the course standard duration), duplicate to tomorrow / next week; **Calendar** tab to import an `.ics` file or URL ([calendar-import.md](calendar-import.md), [session forms](v2-navigation-modules.md#new-session-form))
 6. **Treasury** (sidebar) for invoices (including e-invoice submit when SuperPDP is configured), bank reconciliation, expenses, and global financial tracking
 
 ## Compatibility
