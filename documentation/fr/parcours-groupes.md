@@ -64,7 +64,7 @@ L’index groupes, la fiche groupe et le panneau **groupes** de l’école liste
 - Création : toujours `active = true` (plus de groupe « inactif » à la création depuis un cours).
 - Fiche cours : groupes actifs / archivés liés séparés ; textes d’aide (`groups_course_help`, etc.).
 - Groupes disponibles : uniquement groupes **actifs** non encore liés au cours.
-- Planning : liste déroulante limitée aux groupes **actifs** liés au cours (`getLinkedGroups(true)`).
+- Planning : liste des groupes limitée aux groupes **actifs** liés au cours (`getLinkedGroups(true)`). Les listes école et cours suivent `courses.active` — [menus déroulants](v2-navigation-modules.md#menus-déroulants-école-et-cours).
 - Index groupes : sessions affichées aussi pour les groupes inactifs paginés.
 - Sécurité : accès limité aux groupes et cours de la même entreprise.
 

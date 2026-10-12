@@ -64,7 +64,7 @@ Group index, group detail, and the school **groups** panel list occurrences with
 - Creation always sets `active = true`.
 - Course page splits active vs archived linked groups with inline help.
 - Available groups: active company groups not yet linked to the course.
-- Planning dropdown: active linked groups only (`getLinkedGroups(true)`).
+- Planning group dropdown: active linked groups only (`getLinkedGroups(true)`). School and course dropdowns use `courses.active` instead — [school and course dropdowns](v2-navigation-modules.md#school-and-course-dropdowns).
 - Group index: planning counts include paginated inactive groups.
 - Access scoped to the user’s company for groups and courses.
 

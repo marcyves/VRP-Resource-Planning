@@ -55,7 +55,7 @@ History table: date, school, file name or remote-feed link, plus reimport / dele
 |-------|----------|
 | Label extraction | Unique values of ICS **SUMMARY** (`CalendarService::getUniqueLabelsFromIcs`) |
 | Lookup at import | `$event[$ics_source_field]` (form default: summary; options: description, location) |
-| Mapping UI | Course select = courses of that school; group select = `$user->getGroups()` (company groups, not school-filtered) |
+| Mapping UI | Course select = `SchoolCourseOptions::coursesForSchool` (active courses of that school, same list order as the agenda). Group select = `$user->getGroups()` (company groups, not school-filtered). The upload school list is `schoolsFor` (schools with at least one active course). |
 | Stored mapping | One morph per `(school_id, ics_label)`: **course if set, otherwise group** (`CalendarMapping`) |
 | First import | Uses the form arrays (`course_id` + `group_id`) so both IDs can be applied together |
 | Reimport | Rebuilds mappings from `CalendarMapping` only, and always uses field `summary` |
@@ -78,6 +78,7 @@ Parser: `u01jmg3/ics-parser` (`ICal`), timezone **Europe/Paris**, `defaultSpan` 
 
 ## Constraints and pitfalls
 
+- Schools with no active course, and archived courses (`courses.active = false`), are absent from these selects. The school page still lists those courses. See [school and course dropdowns](v2-navigation-modules.md#school-and-course-dropdowns).
 - **Both course and group** are required to insert a planning row. The mapping column is labelled “group (optional)” in the UI; the importer still skips course-only rows.
 - **Reimport after mapping a course** (the stored morph prefers course) typically skips every event, because the rebuilt mapping has no `group_id`. Reimport is reliable only when the stored morph is a **group** (then the first linked course is inferred).
 - Changing **ICS source field** to description/location while mapping rows were built from **summaries** makes lookup keys miss → all skipped.
