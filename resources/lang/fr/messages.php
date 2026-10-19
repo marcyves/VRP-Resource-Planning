@@ -72,7 +72,7 @@ return [
     'invoice_create' => 'Créer une facture',
     'invoice_create_requires_school' => 'Sélectionnez une école dans le fil d’Ariane pour créer une facture.',
     'invoice_create_all_month' => 'Facturer tout le mois',
-    'invoice_create_this_course' => 'Facturer :name',
+    'invoice_create_this_course' => 'Facturer',
     'invoice_scope' => 'Périmètre',
     'invoice_scope_all_month' => 'Tout le mois',
     'invoice_comment' => 'Commentaire',

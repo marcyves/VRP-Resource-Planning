@@ -38,7 +38,7 @@ return array (
   'invoices_by_school' => 'Fatture per scuola',
   'invoice_create' => 'Crea fattura',
   'invoice_create_all_month' => 'Fattura l\'intero mese',
-  'invoice_create_this_course' => 'Fattura :name',
+  'invoice_create_this_course' => 'Fattura',
   'invoice_scope' => 'Ambito',
   'invoice_scope_all_month' => 'Intero mese',
   'invoice_comment' => 'Commento',

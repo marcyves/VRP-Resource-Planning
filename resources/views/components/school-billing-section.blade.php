@@ -73,7 +73,7 @@
                                 <input type="hidden" name="year" value="{{ $currentYear }}">
                                 <input type="hidden" name="cmd" value="detailed">
                                 <x-text-input type="date" name="bill_date" value="{{ date('Y-m-d') }}" />
-                                <x-button-primary type="submit">{{ __('messages.invoice_create_this_course', ['name' => $schedules['course_name']]) }}</x-button-primary>
+                                <x-button-primary type="submit">{{ __('messages.invoice_create_this_course') }}</x-button-primary>
                             </form>
                         @else
                             <span class="billing-invoice-assigned">{{ __('messages.invoice_already_assigned') }}</span>

@@ -34,7 +34,7 @@ return [
     'invoice_create' => 'Create invoice',
     'invoice_create_requires_school' => 'Select a school in the breadcrumb to create an invoice.',
     'invoice_create_all_month' => 'Invoice entire month',
-    'invoice_create_this_course' => 'Invoice :name',
+    'invoice_create_this_course' => 'Invoice',
     'invoice_scope' => 'Scope',
     'invoice_scope_all_month' => 'Entire month',
     'invoice_comment' => 'Comment',

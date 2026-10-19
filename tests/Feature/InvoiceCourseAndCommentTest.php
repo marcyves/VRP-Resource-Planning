@@ -214,17 +214,21 @@ class InvoiceCourseAndCommentTest extends TestCase
     {
         $context = $this->makeBillingContext();
 
-        $this->actingAs($context['admin'])
+        $response = $this->actingAs($context['admin'])
             ->withSession([
                 'billing_year' => 2026,
                 'current_month' => 3,
                 'current_year' => 2026,
             ])
-            ->get(route('school.show', $context['school']))
-            ->assertOk()
-            ->assertSee(__('messages.invoice_create_this_course', ['name' => $context['courseAlpha']->name]), false)
-            ->assertSee(__('messages.invoice_create_this_course', ['name' => $context['courseBeta']->name]), false)
-            ->assertSee(__('messages.invoice_create_all_month'), false);
+            ->get(route('school.show', $context['school']));
+
+        $response->assertOk()
+            ->assertSee('<h4 class="billing-course-title">'.$context['courseAlpha']->name.'</h4>', false)
+            ->assertSee('<h4 class="billing-course-title">'.$context['courseBeta']->name.'</h4>', false)
+            ->assertSee(__('messages.invoice_create_this_course'), false)
+            ->assertSee(__('messages.invoice_create_all_month'), false)
+            ->assertDontSee(__('messages.invoice_create_this_course').' '.$context['courseAlpha']->name, false)
+            ->assertDontSee(__('messages.invoice_create_this_course').' '.$context['courseBeta']->name, false);
     }
 
     /**

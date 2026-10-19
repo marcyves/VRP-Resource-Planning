@@ -253,19 +253,38 @@
 
 .billing-course-header {
    display: flex;
-   flex-wrap: wrap;
+   flex-direction: row;
+   flex-wrap: nowrap;
    align-items: center;
    justify-content: space-between;
-   gap: var(--spacing-2);
+   gap: var(--spacing-3);
    margin-bottom: var(--spacing-3);
+   width: 100%;
 }
 
 .billing-course-title {
    margin: 0;
+   min-width: 0;
+   flex: 1 1 auto;
+   overflow: hidden;
+   text-overflow: ellipsis;
+   white-space: nowrap;
+   text-align: left;
    color: var(--text-heading);
    font-size: 1.1rem;
    font-weight: 800;
    line-height: 1.25;
+}
+
+.billing-course-header .billing-assign-form {
+   flex: 0 0 auto;
+   flex-direction: row;
+   flex-wrap: nowrap;
+}
+
+.billing-course-header .billing-invoice-assigned {
+   flex: 0 0 auto;
+   white-space: nowrap;
 }
 
 .billing-group-title {
