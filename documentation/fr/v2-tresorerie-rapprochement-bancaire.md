@@ -32,8 +32,10 @@ Les factures stockent leur `amount` principal comme montant TTC dans les parcour
 L'action PDF (`GET /invoice/{invoice}`) résiste aux fichiers manquants : `InvoiceController@show` appelle `InvoiceService::ensurePdfOnDisk()` avant de retourner `Storage::download()`. Si le fichier attendu (`invoices/{préfixe facture entreprise}{id facture}.pdf`) est absent, le service le reconstruit depuis la base :
 
 1. lignes de planning déjà rattachées au numéro de facture ;
-2. détails de planning du mois de `bill_date` et de l'école de la facture ;
+2. détails de planning du mois de `bill_date`, de l'école, et du `invoices.course_id` éventuel ;
 3. ligne manuelle de secours avec la description et le montant HT de la facture.
+
+La liste des factures affiche `invoices.comment` sous la description. Périmètre, commentaire PDF dans **Désignation** et note CII : [Facturation par école](v2-facturation-par-ecole.md#périmètre--un-cours-ou-tout-le-mois).
 
 ## Parcours d'import bancaire
 
