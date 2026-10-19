@@ -32,8 +32,10 @@ Invoices store their primary `amount` as the TTC amount for current create and e
 The invoice PDF action (`GET /invoice/{invoice}`) is resilient to missing files: `InvoiceController@show` calls `InvoiceService::ensurePdfOnDisk()` before returning `Storage::download()`. If the expected file (`invoices/{company bill prefix}{invoice id}.pdf`) is absent, the service rebuilds it from the database:
 
 1. linked planning rows already attached to the invoice number;
-2. planning details for the invoice `bill_date` month and school;
+2. planning details for the invoice `bill_date` month, school, and optional `invoices.course_id`;
 3. a fallback manual line using the invoice description and HT amount.
+
+The invoice list prints `invoices.comment` under the description. Scope rules, the PDF **Désignation** comment, and the CII note are in [Billing per school](v2-billing-per-school.md#invoice-scope-one-course-or-the-whole-month).
 
 ## Bank import workflow
 

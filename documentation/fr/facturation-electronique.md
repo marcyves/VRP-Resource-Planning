@@ -112,7 +112,9 @@ Le suivi **payée** (`paid_at`) reste indépendant du statut e-facture.
 
 L’envoi utilise **CII XML → Factur-X** via l’API convert SuperPDP. Le PDF TCPDF reste pour l’affichage VRP ; ce n’est **pas** le payload structuré.
 
-Les lignes viennent de `Tools::getInvoiceDetails()` (lignes planning de type `T`). Si aucune ne qualifie, le builder retombe sur `invoice.amount / 1.2` en une ligne C62. La TVA du builder CII est actuellement **fixe à 20 %**. L’échéance CII est **date d’émission + 1 jour**.
+Les lignes viennent de `InvoiceService::resolveLines()` (lignes de type `T`) : planning déjà rattaché d’abord, sinon `Tools::getInvoiceDetails()` pour le mois, l’école et le `invoices.course_id` éventuel. Si aucune ne qualifie, le builder retombe sur `invoice.amount / 1.2` en une ligne C62. La TVA du builder CII est actuellement **fixe à 20 %**. L’échéance CII est **date d’émission + 1 jour**.
+
+Un `invoices.comment` non vide est une `IncludedNote` supplémentaire, code sujet **`AAI`**, après les mentions fixes `PMT`, `PMD` et `AAB`. Ce n’est pas une ligne tarifée. Placement PDF : [Facturation par école — commentaire](v2-facturation-par-ecole.md#commentaire-de-facture).
 
 En sandbox, sans `electronic_address` sur l’école, un routage par défaut (`SUPERPDP_SANDBOX_BUYER_*`) peut être injecté. Sinon l’adresse électronique de l’école est utilisée (`CiiTradeParty::fromSchool`).
 

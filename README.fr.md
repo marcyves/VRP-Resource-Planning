@@ -61,7 +61,7 @@ La **v2** apporte une refonte de l’interface (2025–2026) : coque sidebar + t
 | --------------- | -------------------------------------------------------------------- |
 | **Accueil**     | `/home` — liste des écoles (facturé TTC, non facturé TTC + heures)   |
 | **Logo**        | Retour à l’accueil (`home`)                                          |
-| **Facturation** | Préparation déplacée du module Agenda vers **chaque fiche école**    |
+| **Facturation** | Sur chaque fiche école (`#billing`) : **Facturer** un cours, ou tout le mois tant qu’aucune session n’est facturée |
 | **Agenda**      | Planning + calendrier uniquement                                     |
 | **CSS**         | Tokens `theme.css`, tableaux `.data-table`, formulaires `.nice-form` |
 

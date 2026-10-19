@@ -46,7 +46,7 @@ Post-login constant: `RouteServiceProvider::HOME = '/home'`.
 | `referential-module-tabs` | Referential | Programs · Groups |
 | `settings-module-tabs` | Settings | Company · profile |
 
-**Create invoice** / **Create expense** are in-page buttons, not tabs.  
+**Create invoice** / **Create expense** are in-page buttons, not tabs. School billing uses **Invoice** per course and **Invoice entire month** only when the month is fully unbilled — see [Billing per school](v2-billing-per-school.md#invoice-scope-one-course-or-the-whole-month).  
 `workload-module-tabs` is no longer used on the daily path (annual workload link from `/home`).
 
 ## Agenda views (month / week)
