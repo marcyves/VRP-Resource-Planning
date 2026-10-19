@@ -42,9 +42,44 @@
             {{ __('messages.no_hours_logged_this_month') }}
         </div>
     @else
+        @php
+            $monthHasUnbilled = collect($billingData['courses'])->contains(function ($courseSchedules) {
+                return collect($courseSchedules['schedule'])->contains(
+                    fn ($schedule) => ($schedule['bill'] ?? '') === ''
+                );
+            });
+            $monthFullyUnbilled = collect($billingData['courses'])->every(function ($courseSchedules) {
+                return collect($courseSchedules['schedule'])->every(
+                    fn ($schedule) => ($schedule['bill'] ?? '') === ''
+                );
+            });
+        @endphp
         @foreach ($billingData['courses'] as $courseId => $schedules)
+            @php
+                $courseHasUnbilled = collect($schedules['schedule'])->contains(
+                    fn ($schedule) => ($schedule['bill'] ?? '') === ''
+                );
+            @endphp
             <section class="billing-course-box">
-                <h4 class="billing-course-title">{{ $schedules['course_name'] }}</h4>
+                <header class="billing-course-header">
+                    <h4 class="billing-course-title">{{ $schedules['course_name'] }}</h4>
+                    @if (Auth::user()->getMode() == 'Edit')
+                        @if ($courseHasUnbilled)
+                            <form action="{{ route('invoice.create') }}" class="billing-assign-form" method="get">
+                                <input type="hidden" name="from_school_billing" value="1">
+                                <input type="hidden" name="school_id" value="{{ $school->id }}">
+                                <input type="hidden" name="course_id" value="{{ $courseId }}">
+                                <input type="hidden" name="month" value="{{ $currentMonth }}">
+                                <input type="hidden" name="year" value="{{ $currentYear }}">
+                                <input type="hidden" name="cmd" value="detailed">
+                                <x-text-input type="date" name="bill_date" value="{{ date('Y-m-d') }}" />
+                                <x-button-primary type="submit">{{ __('messages.invoice_create_this_course', ['name' => $schedules['course_name']]) }}</x-button-primary>
+                            </form>
+                        @else
+                            <span class="billing-invoice-assigned">{{ __('messages.invoice_already_assigned') }}</span>
+                        @endif
+                    @endif
+                </header>
 
                 <div class="data-table data-table--flat billing-sessions-table">
                     <table>
@@ -109,21 +144,11 @@
 
             @if (Auth::user()->getMode() == 'Edit')
                 <div class="billing-school-footer__actions">
-                    @php
-                        $lastSchedule = null;
-                        foreach ($billingData['courses'] as $courseSchedules) {
-                            foreach ($courseSchedules['schedule'] as $schedule) {
-                                $lastSchedule = $schedule;
-                            }
-                        }
-                    @endphp
-                    @if ($lastSchedule && ($lastSchedule['bill'] ?? '') != '')
+                    @if (! $monthHasUnbilled)
                         <span class="billing-invoice-assigned">{{ __('messages.invoice_already_assigned') }}</span>
-                    @else
-                        @php $courseId = array_key_first($billingData['courses']); @endphp
+                    @elseif ($monthFullyUnbilled)
                         <form action="{{ route('school.billing.setBill', $school) }}" class="billing-assign-form" method="post">
                             @csrf
-                            <input type="hidden" name="course_id" value="{{ $courseId }}">
                             <input type="hidden" name="month" value="{{ $currentMonth }}">
                             <input type="hidden" name="year" value="{{ $currentYear }}">
                             <label class="billing-assign-form__label" for="invoice_id_{{ $school->id }}">{{ __('messages.assign') }}</label>
@@ -135,15 +160,13 @@
                             <x-button-secondary type="submit">{{ __('messages.save') }}</x-button-secondary>
                         </form>
                         <form action="{{ route('invoice.create') }}" class="billing-assign-form" method="get">
-                            @csrf
                             <input type="hidden" name="from_school_billing" value="1">
                             <input type="hidden" name="school_id" value="{{ $school->id }}">
-                            <input type="hidden" name="course_id" value="{{ $courseId }}">
                             <input type="hidden" name="month" value="{{ $currentMonth }}">
                             <input type="hidden" name="year" value="{{ $currentYear }}">
                             <input type="hidden" name="cmd" value="detailed">
                             <x-text-input type="date" name="bill_date" value="{{ date('Y-m-d') }}" />
-                            <x-button-primary type="submit">{{ __('messages.create') }}</x-button-primary>
+                            <x-button-primary type="submit">{{ __('messages.invoice_create_all_month') }}</x-button-primary>
                         </form>
                     @endif
                 </div>

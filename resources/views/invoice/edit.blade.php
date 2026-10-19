@@ -22,6 +22,13 @@
             </div>
 
             <div class="form-group">
+                <x-input-label for="comment">{{ __('messages.invoice_comment') }}</x-input-label>
+                <textarea id="comment" name="comment" rows="3" class="form-input" maxlength="2000">{{ old('comment', $invoice->comment) }}</textarea>
+                <p class="form-hint">{{ __('messages.invoice_comment_help') }}</p>
+                <x-input-error :messages="$errors->get('comment')" />
+            </div>
+
+            <div class="form-group">
                 <x-input-label for="amount">{{ __('messages.amount') }} {{ __('messages.amount_ht') }}</x-input-label>
                 <x-text-input type="text" name="amount" id="amount" value="{{ $invoice->amountHt() }}" />
             </div>

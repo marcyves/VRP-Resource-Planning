@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Enums\ElectronicInvoiceStatus;
 use App\Exceptions\ElectronicInvoiceException;
 use App\Http\Utility\Tools;
+use App\Models\Course;
 use App\Models\Invoice;
 use App\Models\Planning;
 use App\Models\School;
@@ -95,6 +96,8 @@ class InvoiceController extends Controller
      */
     public function create(Request $request)
     {
+        $this->authorizeInvoiceEditor();
+
         $school_id = $request->school_id ?? session('school_id');
 
         if (! $school_id) {
@@ -109,7 +112,9 @@ class InvoiceController extends Controller
             abort(403);
         }
 
-        $course_id = $request->course_id;
+        $selectedCourse = $this->resolveCourseForSchool($request->course_id, $school);
+        $courseId = $selectedCourse?->id;
+        $courses = $school->courses()->orderBy('name')->get();
         $bill_date = date('d/m/Y', strtotime($request->bill_date ?? 'now'));
         $month = $request->month ?? date('m');
         $year = $request->year ?? date('Y');
@@ -122,7 +127,7 @@ class InvoiceController extends Controller
         $company = $user->company->load('billingBankAccount.bank');
 
         if ($cmd == 'detailed') {
-            [$items, $total_amount] = Tools::getInvoiceDetails($school->id, $month, $year, $invoice_id, false);
+            [$items, $total_amount] = Tools::getInvoiceDetails($school->id, $month, $year, $invoice_id, false, $courseId);
         } else {
             $items = [];
             $total_amount = 0;
@@ -130,7 +135,21 @@ class InvoiceController extends Controller
 
         $fromSchoolBilling = $request->boolean('from_school_billing');
 
-        return view('invoice.create', compact('invoice_id', 'bill_number', 'company', 'school', 'items', 'month', 'year', 'bill_date', 'total_amount', 'fromSchoolBilling'));
+        return view('invoice.create', compact(
+            'invoice_id',
+            'bill_number',
+            'company',
+            'school',
+            'courses',
+            'courseId',
+            'selectedCourse',
+            'items',
+            'month',
+            'year',
+            'bill_date',
+            'total_amount',
+            'fromSchoolBilling'
+        ));
     }
 
     /**
@@ -138,27 +157,38 @@ class InvoiceController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorizeInvoiceEditor();
+
         $validated = $request->validate([
             'invoice_id' => 'required',
             'description' => 'required',
+            'comment' => 'nullable|string|max:2000',
             'amount' => 'nullable|numeric',
             'month' => 'required|numeric',
             'year' => 'required|numeric',
             'bill_date' => 'required|date_format:d/m/Y',
+            'school_id' => 'required|exists:schools,id',
+            'course_id' => 'nullable|exists:courses,id',
         ]);
 
         $month = $request->month;
-        $day = $request->day;
         $year = $request->year;
         $bill_date = $request->bill_date;
 
         $company = Auth::user()->company;
         $invoice_id = $request->invoice_id;                           // This is the numeric part only
         $invoice_name = $company->bill_prefix.$invoice_id;     // This is the full ID with the company prefix
-        $school = School::find($request->school_id);
+        $school = Auth::user()->getSchools()->firstWhere('id', (int) $request->school_id);
+
+        if (! $school) {
+            abort(403);
+        }
+
+        $selectedCourse = $this->resolveCourseForSchool($request->course_id, $school);
+        $courseId = $selectedCourse?->id;
 
         // 1. Always fetch planning details first to see if this constitutes a valid agenda invoice
-        [$items, $calculated_amount] = Tools::getInvoiceDetails($school->id, $month, $year, $invoice_name);
+        [$items, $calculated_amount] = Tools::getInvoiceDetails($school->id, $month, $year, $invoice_name, false, $courseId);
 
         // 2. If planning items exist, we prefer them (Agenda Invoice)
         // If NO planning items exist, but we have a manual amount, we use that (Manual Invoice)
@@ -183,9 +213,11 @@ class InvoiceController extends Controller
             $invoice = Invoice::create([
                 'id' => $invoice_id,
                 'description' => $request->description,
+                'comment' => $request->input('comment') ?: null,
                 'bill_date' => Carbon::createFromFormat('d/m/Y', $bill_date)->format('Y-m-d'),
                 'company_id' => $company->id,
-                'school_id' => $request->school_id,
+                'school_id' => $school->id,
+                'course_id' => $courseId,
                 'amount' => $amountTtc,
                 'electronic_invoice_status' => ElectronicInvoiceStatus::Ready,
                 'electronic_status_at' => Carbon::now(),
@@ -197,10 +229,11 @@ class InvoiceController extends Controller
 
             // 4. Lier les sessions de planning à cette facture
             $this->invoiceService->linkPlanningToInvoice(
-                $request->school_id,
+                $school->id,
                 $request->month,
                 $request->year,
-                $invoice->id
+                $invoice->id,
+                $courseId
             );
 
             session()->flash('success', __('messages.invoice_saved_success', ['name' => $invoice_name]));
@@ -245,6 +278,9 @@ class InvoiceController extends Controller
      */
     public function edit(Invoice $invoice)
     {
+        $this->authorizeInvoiceEditor();
+        $this->authorizeInvoice($invoice);
+
         if ($invoice->paid_at) {
             session()->flash('danger', __('messages.invoice_paid_locked'));
 
@@ -259,6 +295,9 @@ class InvoiceController extends Controller
      */
     public function update(Request $request, Invoice $invoice)
     {
+        $this->authorizeInvoiceEditor();
+        $this->authorizeInvoice($invoice);
+
         if ($invoice->paid_at) {
             session()->flash('danger', __('messages.invoice_paid_locked'));
 
@@ -268,15 +307,19 @@ class InvoiceController extends Controller
         $validated = $request->validate([
             'id' => 'required',
             'description' => 'required',
+            'comment' => 'nullable|string|max:2000',
         ]);
 
         try {
             $invoice->description = $request->description;
+            $invoice->comment = $request->input('comment') ?: null;
             $invoice->amount = round((float) $request->amount * 1.2, 2);
             $invoice->created_at = $request->created_at;
             $invoice->paid_at = $request->paid_at;
 
             $invoice->save();
+
+            $this->invoiceService->saveToDisk($invoice, $this->invoiceService->resolveLines($invoice));
 
             session()->flash('success', __('messages.invoice_updated_success', ['id' => $request->id]));
 
@@ -356,11 +399,41 @@ class InvoiceController extends Controller
         }
     }
 
+    private function authorizeInvoiceEditor(): void
+    {
+        $user = Auth::user();
+
+        if (! $user->isAdmin() && ! $user->isEditor()) {
+            abort(403);
+        }
+    }
+
+    private function resolveCourseForSchool(mixed $courseId, School $school): ?Course
+    {
+        if ($courseId === null || $courseId === '') {
+            return null;
+        }
+
+        $course = Course::query()
+            ->where('id', (int) $courseId)
+            ->where('school_id', $school->id)
+            ->first();
+
+        if (! $course) {
+            abort(403);
+        }
+
+        return $course;
+    }
+
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(Invoice $invoice)
     {
+        $this->authorizeInvoiceEditor();
+        $this->authorizeInvoice($invoice);
+
         try {
             if ($invoice->paid_at) {
                 session()->flash('danger', __('messages.invoice_paid_locked'));

@@ -12,6 +12,12 @@
 
             <p class="form-hint invoice-create-form__meta">
                 {{ __('messages.invoice_id') }}: {{ $invoice_id }} · {{ __('messages.date') }}: {{ $bill_date }}
+                · {{ __('messages.invoice_scope') }}:
+                @if ($selectedCourse ?? null)
+                    {{ $selectedCourse->name }}
+                @else
+                    {{ __('messages.invoice_scope_all_month') }}
+                @endif
             </p>
 
             <div class="company-show-grid invoice-create-preview">
@@ -55,7 +61,7 @@
                     <ul class="invoice-create-items">
                         @foreach ($items as $item)
                             <li class="invoice-create-items__row">
-                                @if ($item[4] == 'T')
+                                @if (($item[5] ?? $item[4] ?? '') == 'T')
                                     <strong>{{ htmlspecialchars($item[0]) }}</strong>
                                     <span class="invoice-create-items__meta">{{ __('messages.rate') }}: @money($item[2])€ · {{ __('messages.hours') }}: @money($item[3])</span>
                                 @else
@@ -81,6 +87,7 @@
             <input type="hidden" name="school_id" value="{{ $school->id }}">
             @if ($fromSchoolBilling ?? false)
                 <input type="hidden" name="from_school_billing" value="1">
+                <input type="hidden" name="course_id" value="{{ $courseId ?? '' }}">
             @endif
 
             <div class="invoice-create-fields">
@@ -104,9 +111,28 @@
                     <x-text-input type="number" name="year" id="year" value="{{ $year }}" />
                 </div>
 
+                @if (! ($fromSchoolBilling ?? false))
+                <div class="form-group invoice-create-fields__description">
+                    <x-input-label for="course_id">{{ __('messages.invoice_scope') }}</x-input-label>
+                    <select name="course_id" id="course_id" class="form-input">
+                        <option value="">{{ __('messages.invoice_scope_all_month') }}</option>
+                        @foreach ($courses ?? [] as $courseOption)
+                            <option value="{{ $courseOption->id }}" @selected(($courseId ?? null) == $courseOption->id)>{{ $courseOption->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                @endif
+
                 <div class="form-group invoice-create-fields__description">
                     <x-input-label for="description">{{ __('messages.description') }}</x-input-label>
-                    <x-text-input type="text" name="description" id="description" placeholder="{{ __('messages.description') }}" />
+                    <x-text-input type="text" name="description" id="description" value="{{ old('description', $selectedCourse?->name ?? '') }}" placeholder="{{ __('messages.description') }}" />
+                </div>
+
+                <div class="form-group invoice-create-fields__comment">
+                    <x-input-label for="comment">{{ __('messages.invoice_comment') }}</x-input-label>
+                    <textarea id="comment" name="comment" rows="3" class="form-input" maxlength="2000">{{ old('comment') }}</textarea>
+                    <p class="form-hint">{{ __('messages.invoice_comment_help') }}</p>
+                    <x-input-error :messages="$errors->get('comment')" />
                 </div>
             </div>
 

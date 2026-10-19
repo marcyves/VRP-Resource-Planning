@@ -415,7 +415,7 @@ class Tools
         return [$schools, $monthly_gain, $monthly_hours];
     }
 
-    public static function getInvoiceDetails($school_id, $month, $year, $invoice_id, $store = false)
+    public static function getInvoiceDetails($school_id, $month, $year, $invoice_id, $store = false, $course_id = null)
     {
         $start_date =  trim($year) . "-" . substr("0" . trim($month), -2) . "-0 00:00:00";
         $month++;
@@ -428,7 +428,7 @@ class Tools
 
         $end_date   =  trim($end_year) . "-" . substr("0" . trim($month), -2) . "-0 00:00:00";
 
-        $planning_list = Planning::getPlanningBySchoolAndDate($school_id, $start_date, $end_date);
+        $planning_list = Planning::getPlanningBySchoolAndDate($school_id, $start_date, $end_date, $course_id);
 
         $course_name = "";
         $group_name = "";

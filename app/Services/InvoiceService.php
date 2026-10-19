@@ -72,7 +72,8 @@ class InvoiceService
                 (int) $date->month,
                 (int) $date->year,
                 $invoiceName,
-                false
+                false,
+                $invoice->course_id ? (int) $invoice->course_id : null
             );
             if ($items !== []) {
                 return $items;
@@ -170,9 +171,9 @@ class InvoiceService
     /**
      * Associe les sessions de planning à une facture pour une période donnée.
      */
-    public function linkPlanningToInvoice(string $schoolId, int $month, int $year, string $invoiceId)
+    public function linkPlanningToInvoice(string $schoolId, int $month, int $year, string $invoiceId, ?int $courseId = null)
     {
-        $startDate = sprintf("%04d-%02d-01 00:00:00", $year, $month);
+        $startDate = sprintf('%04d-%02d-01 00:00:00', $year, $month);
 
         // Calcul du mois suivant pour la date de fin
         $endMonth = $month + 1;
@@ -181,14 +182,14 @@ class InvoiceService
             $endMonth = 1;
             $endYear++;
         }
-        $endDate = sprintf("%04d-%02d-01 00:00:00", $endYear, $endMonth);
+        $endDate = sprintf('%04d-%02d-01 00:00:00', $endYear, $endMonth);
 
-        $planningList = Planning::getPlanningBySchoolAndDate($schoolId, $startDate, $endDate);
+        $planningList = Planning::getPlanningBySchoolAndDate($schoolId, $startDate, $endDate, $courseId);
 
         foreach ($planningList as $item) {
             $planning = Planning::find($item['id']);
             if ($planning) {
-                $planning->invoice_id = Auth::user()->company->bill_prefix . $invoiceId;
+                $planning->invoice_id = Auth::user()->company->bill_prefix.$invoiceId;
                 $planning->save();
             }
         }
@@ -210,15 +211,15 @@ class InvoiceService
 
         if ($bills->isEmpty()) {
             // Première facture de l'année courante : YY001
-            return substr(Carbon::now()->year, -2) . "001";
+            return substr(Carbon::now()->year, -2).'001';
         }
 
         $last_bill = $bills->last();
-        // L'ID est stocké généralement comme "25123" (string) dans la colonne ID, 
-        // ou alors le préfixe est séparé ? 
-        // D'après InvoiceController: $invoice_id = $user->company->bill_prefix . $bill_number; 
+        // L'ID est stocké généralement comme "25123" (string) dans la colonne ID,
+        // ou alors le préfixe est séparé ?
+        // D'après InvoiceController: $invoice_id = $user->company->bill_prefix . $bill_number;
         // et Invoice::create(['id' => $invoice_id ...])
-        // MAIS dans InvoiceController store: 
+        // MAIS dans InvoiceController store:
         // $invoice_id = $request->invoice_id; // Numeric part only ??
         // $invoice_name = $company->bill_prefix . $invoice_id;
         // Invoice::create(['id' => $invoice_id ...])
@@ -235,9 +236,9 @@ class InvoiceService
 
         // Incrémenter la séquence globale
         // On suppose que l'ID est numérique (string numeric)
-        $next_sequence = (int)$last_id + 1; // 25124
+        $next_sequence = (int) $last_id + 1; // 25124
 
-        $next_sequence_str = (string)$next_sequence;
+        $next_sequence_str = (string) $next_sequence;
 
         // Remplacer les 2 premiers chiffres par l'année courante
         $current_year_prefix = substr(Carbon::now()->year, -2);
@@ -251,7 +252,7 @@ class InvoiceService
         // On veut 26124.
 
         // On prend la partie "séquence" (tout sauf les 2 premiers chiffres)
-        // ATTENTION: Si l'utilisateur a des factures < 100 ? "2501" ? 
+        // ATTENTION: Si l'utilisateur a des factures < 100 ? "2501" ?
         // La convention semble être YY + 3 digits minimum ?
         // index() fait substr(..., -3).
 
@@ -263,7 +264,7 @@ class InvoiceService
 
         // Remplacement du préfixe
         // On assume que le préfixe fait toujours 2 caractères (YY)
-        $new_id = $current_year_prefix . substr($next_id_str, 2);
+        $new_id = $current_year_prefix.substr($next_id_str, 2);
 
         return $new_id;
     }

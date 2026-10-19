@@ -59,7 +59,12 @@
             <tr>
                 <td>{{ Auth::user()->company->bill_prefix }}{{ $bill->id }}</td>
                 <td>{{ $bill->school }}</td>
-                <td>{{ $bill->description }}</td>
+                <td>
+                    {{ $bill->description }}
+                    @if ($bill->comment)
+                        <div class="invoice-table__comment">{{ $bill->comment }}</div>
+                    @endif
+                </td>
                 <td class="money">@money($bill->amount/1.2) €</td>
                 <td class="money">@money($bill->amount) €</td>
                 <td class="date">

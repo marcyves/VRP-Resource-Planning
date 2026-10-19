@@ -3,10 +3,10 @@
 namespace App\Services\ElectronicInvoicing;
 
 use App\DTO\ElectronicInvoice\CiiTradeParty;
-use App\Http\Utility\Tools;
 use App\Models\Company;
 use App\Models\Invoice;
 use App\Models\School;
+use App\Services\InvoiceService;
 use Carbon\Carbon;
 
 /**
@@ -61,7 +61,7 @@ class ElectronicInvoiceCiiBuilder
         $this->text($doc, self::NS_RAM, 'TypeCode', '380', $document);
         $issueDateTime = $this->element($doc, self::NS_RAM, 'IssueDateTime', $document);
         $this->dateTime($doc, $issueDate, $issueDateTime);
-        $this->appendFrenchLegalNotes($doc, $document);
+        $this->appendFrenchLegalNotes($doc, $document, $invoice);
 
         $transaction = $this->element($doc, self::NS_RSM, 'SupplyChainTradeTransaction', $root);
 
@@ -108,15 +108,8 @@ class ElectronicInvoiceCiiBuilder
      */
     private function resolveLines(Invoice $invoice): array
     {
-        $issueDate = Carbon::parse($invoice->bill_date);
-
         try {
-            [$items] = Tools::getInvoiceDetails(
-                (string) $invoice->school_id,
-                (int) $issueDate->format('m'),
-                (int) $issueDate->format('Y'),
-                $invoice->company->bill_prefix.$invoice->id,
-            );
+            $items = app(InvoiceService::class)->resolveLines($invoice);
         } catch (\Throwable) {
             $items = [];
         }
@@ -161,7 +154,7 @@ class ElectronicInvoiceCiiBuilder
         ]];
     }
 
-    private function appendFrenchLegalNotes(\DOMDocument $doc, \DOMElement $document): void
+    private function appendFrenchLegalNotes(\DOMDocument $doc, \DOMElement $document, Invoice $invoice): void
     {
         $notes = [
             ['PMT', 'L’indemnité forfaitaire légale pour frais de recouvrement est de 40 €.'],
@@ -173,6 +166,13 @@ class ElectronicInvoiceCiiBuilder
             $note = $this->element($doc, self::NS_RAM, 'IncludedNote', $document);
             $this->text($doc, self::NS_RAM, 'Content', $content, $note);
             $this->text($doc, self::NS_RAM, 'SubjectCode', $code, $note);
+        }
+
+        $comment = trim((string) ($invoice->comment ?? ''));
+        if ($comment !== '') {
+            $note = $this->element($doc, self::NS_RAM, 'IncludedNote', $document);
+            $this->text($doc, self::NS_RAM, 'Content', $comment, $note);
+            $this->text($doc, self::NS_RAM, 'SubjectCode', 'AAI', $note);
         }
     }
 

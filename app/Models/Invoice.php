@@ -38,11 +38,13 @@ class Invoice extends Model
     protected $fillable = [
         'id',
         'description',
+        'comment',
         'bill_date',
         'amount',
         'paid_at',
         'company_id',
         'school_id',
+        'course_id',
         'electronic_invoice_status',
         'pdp_reference',
         'electronic_status_at',
@@ -57,6 +59,11 @@ class Invoice extends Model
     public function school(): BelongsTo
     {
         return $this->belongsTo(School::class);
+    }
+
+    public function course(): BelongsTo
+    {
+        return $this->belongsTo(Course::class);
     }
 
     public function company(): BelongsTo
@@ -157,7 +164,8 @@ class Invoice extends Model
             $date->month,
             $date->year,
             $invoiceName,
-            false
+            false,
+            $this->course_id ? (int) $this->course_id : null
         );
 
         $ht = round((float) $ht, 2);
