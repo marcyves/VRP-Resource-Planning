@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Utility\Tools;
 use App\Models\Planning;
 use App\Models\School;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-
-use App\Http\Utility\Tools;
 
 class BillingController extends Controller
 {
@@ -72,6 +71,10 @@ class BillingController extends Controller
 
     public function setBill(Request $request, School $school)
     {
+        if ($school->company_id !== Auth::user()->company_id) {
+            abort(403);
+        }
+
         $month = $request->month;
         $year = $request->year;
 
@@ -86,7 +89,15 @@ class BillingController extends Controller
 
         $end_date = trim($end_year).'-'.substr('0'.trim($month), -2).'-0 00:00:00';
 
-        $planning_list = Planning::getPlanningBySchoolAndDate($school->id, $start_date, $end_date);
+        $courseId = $request->filled('course_id') ? (int) $request->course_id : null;
+        if ($courseId) {
+            $courseBelongsToSchool = $school->courses()->where('id', $courseId)->exists();
+            if (! $courseBelongsToSchool) {
+                abort(403);
+            }
+        }
+
+        $planning_list = Planning::getPlanningBySchoolAndDate($school->id, $start_date, $end_date, $courseId);
 
         foreach ($planning_list as $id) {
             $planning = Planning::find($id['id']);

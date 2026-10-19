@@ -251,8 +251,17 @@
    background: var(--surface-container);
 }
 
+.billing-course-header {
+   display: flex;
+   flex-wrap: wrap;
+   align-items: center;
+   justify-content: space-between;
+   gap: var(--spacing-2);
+   margin-bottom: var(--spacing-3);
+}
+
 .billing-course-title {
-   margin: 0 0 var(--spacing-3);
+   margin: 0;
    color: var(--text-heading);
    font-size: 1.1rem;
    font-weight: 800;
@@ -423,6 +432,14 @@ form.company-edit-form {
    border-top: var(--border-standard);
 }
 
-.invoice-create-fields__description {
+.invoice-create-fields__description,
+.invoice-create-fields__comment {
    grid-column: 1 / -1;
+}
+
+.invoice-table__comment {
+   margin-top: 0.25rem;
+   font-size: 0.8125rem;
+   color: var(--text-muted);
+   white-space: pre-wrap;
 }

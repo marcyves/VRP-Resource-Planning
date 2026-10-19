@@ -2,11 +2,11 @@
 
 namespace Tests\Unit;
 
+use App\Enums\ElectronicInvoiceStatus;
 use App\Models\Company;
 use App\Models\Invoice;
 use App\Models\School;
 use App\Services\ElectronicInvoicing\ElectronicInvoiceCiiBuilder;
-use App\Enums\ElectronicInvoiceStatus;
 use Tests\TestCase;
 
 class ElectronicInvoiceCiiBuilderTest extends TestCase
@@ -62,5 +62,48 @@ class ElectronicInvoiceCiiBuilderTest extends TestCase
         $this->assertStringContainsString('schemeID="0225"', $xml);
         $this->assertStringContainsString('schemeID="VA"', $xml);
         $this->assertStringContainsString('ApplicableHeaderTradeDelivery', $xml);
+        $this->assertStringNotContainsString('>AAI<', $xml);
+    }
+
+    public function test_builds_included_note_for_invoice_comment(): void
+    {
+        $company = new Company([
+            'name' => 'XDM Consulting',
+            'bill_prefix' => 'XDM',
+            'siren' => '823053699',
+            'address' => '237 Bis avenue des Pins',
+            'city' => 'Pessac',
+            'zip' => '33600',
+            'country' => 'France',
+        ]);
+
+        $school = new School([
+            'name' => 'ELUV',
+            'siren' => '356000000',
+            'address' => 'Clos belle vue',
+            'city' => 'Chancelade',
+            'zip' => '24650',
+            'country' => 'France',
+        ]);
+        $school->id = 31;
+
+        $invoice = new Invoice([
+            'id' => '26001',
+            'description' => 'Formation test',
+            'comment' => 'Bonne continuation — PO-99',
+            'bill_date' => '2026-05-15',
+            'amount' => 1200,
+            'company_id' => 1,
+            'school_id' => 31,
+            'electronic_invoice_status' => ElectronicInvoiceStatus::Ready,
+        ]);
+        $invoice->setRelation('company', $company);
+        $invoice->setRelation('school', $school);
+
+        $xml = (new ElectronicInvoiceCiiBuilder)->build($invoice);
+
+        $this->assertStringContainsString('Bonne continuation — PO-99', $xml);
+        $this->assertStringContainsString('>AAI<', $xml);
+        $this->assertStringContainsString('>PMT<', $xml);
     }
 }

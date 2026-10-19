@@ -69,8 +69,31 @@ class InvoiceGenerator extends TCPDF
         $y = $y + $h;
         $y = $this->drawInvoiceDetailsTable($x, $y, $lineHeight, $lines);
 
+        $y = $this->drawComment($y);
+
         // Draw RIB
         $this->drawRIB($y - 4, $company);
+    }
+
+    protected function drawComment(float $y): float
+    {
+        $comment = trim((string) ($this->invoice->comment ?? ''));
+        if ($comment === '') {
+            return $y;
+        }
+
+        $x = 10;
+        $lineHeight = 4;
+        $y += 2;
+
+        $this->SetFont('helvetica', 'B', 8);
+        $y = $this->writeLine($x, $y, $lineHeight, __('messages.invoice_comment').':', 'L');
+
+        $this->SetFont('helvetica', '', 8);
+        $this->SetXY($x, $y);
+        $this->MultiCell(185, $lineHeight, $comment, 0, 'L', false, 1);
+
+        return $this->GetY() + 2;
     }
 
     protected function drawCompanyBox($x, $y, $lineHeight, $h, $company)
