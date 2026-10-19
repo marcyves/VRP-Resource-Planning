@@ -145,6 +145,54 @@ class InvoiceCourseAndCommentTest extends TestCase
         $this->assertStringContainsString($updated, $pdf->Output('', 'S'));
     }
 
+    public function test_pdf_comment_starts_just_below_payment_terms(): void
+    {
+        $context = $this->makeBillingContext();
+        $comment = 'Mention PO-42 pour le client';
+
+        $this->actingAs($context['admin'])
+            ->post(route('invoice.store'), $this->storePayload($context, [
+                'description' => 'Avec commentaire',
+                'comment' => $comment,
+                'course_id' => $context['courseAlpha']->id,
+            ]))
+            ->assertRedirect(route('treasury.invoices.index'));
+
+        $fresh = Invoice::query()->first()->load(['company', 'school']);
+
+        $pdf = new class($fresh) extends InvoiceGenerator
+        {
+            public float $commentAt = 0.0;
+
+            public float $belowPaymentTermsY = 0.0;
+
+            public float $afterTotalsY = 0.0;
+
+            protected function drawInvoiceDetailsTable($x, $y, $lineHeight, $lines)
+            {
+                [$afterTotalsY, $belowPaymentTermsY] = parent::drawInvoiceDetailsTable($x, $y, $lineHeight, $lines);
+                $this->afterTotalsY = $afterTotalsY;
+                $this->belowPaymentTermsY = $belowPaymentTermsY;
+
+                return [$afterTotalsY, $belowPaymentTermsY];
+            }
+
+            protected function drawComment(float $y): float
+            {
+                $this->commentAt = $y;
+
+                return parent::drawComment($y);
+            }
+        };
+        $pdf->setCompression(false);
+        $pdf->AddPage();
+        $pdf->drawInvoiceContent($fresh->company, $fresh->school, app(InvoiceService::class)->resolveLines($fresh));
+
+        $this->assertSame($pdf->belowPaymentTermsY, $pdf->commentAt);
+        $this->assertLessThan($pdf->afterTotalsY, $pdf->commentAt);
+        $this->assertStringContainsString($comment, $pdf->Output('', 'S'));
+    }
+
     public function test_reader_cannot_create_or_store_invoice(): void
     {
         $context = $this->makeBillingContext();
