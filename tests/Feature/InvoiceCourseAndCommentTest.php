@@ -145,7 +145,7 @@ class InvoiceCourseAndCommentTest extends TestCase
         $this->assertStringContainsString($updated, $pdf->Output('', 'S'));
     }
 
-    public function test_pdf_comment_starts_just_below_payment_terms(): void
+    public function test_pdf_comment_appears_in_designation_at_title_font_size(): void
     {
         $context = $this->makeBillingContext();
         $comment = 'Mention PO-42 pour le client';
@@ -159,38 +159,107 @@ class InvoiceCourseAndCommentTest extends TestCase
             ->assertRedirect(route('treasury.invoices.index'));
 
         $fresh = Invoice::query()->first()->load(['company', 'school']);
+        $courseTitle = $context['courseAlpha']->name;
 
         $pdf = new class($fresh) extends InvoiceGenerator
         {
-            public float $commentAt = 0.0;
+            public string $expectedTitle = '';
 
-            public float $belowPaymentTermsY = 0.0;
+            public string $expectedComment = '';
 
-            public float $afterTotalsY = 0.0;
+            public ?float $titleY = null;
 
-            protected function drawInvoiceDetailsTable($x, $y, $lineHeight, $lines)
+            public ?float $titleFontPt = null;
+
+            public ?float $commentY = null;
+
+            public ?float $commentFontPt = null;
+
+            public ?float $commentWidth = null;
+
+            public ?float $paymentTermsY = null;
+
+            public int $commentDrawCount = 0;
+
+            public function Cell($w, $h = 0, $txt = '', $border = 0, $ln = 0, $align = '', $fill = false, $link = '', $stretch = 0, $ignore_min_height = false, $calign = 'T', $valign = 'M')
             {
-                [$afterTotalsY, $belowPaymentTermsY] = parent::drawInvoiceDetailsTable($x, $y, $lineHeight, $lines);
-                $this->afterTotalsY = $afterTotalsY;
-                $this->belowPaymentTermsY = $belowPaymentTermsY;
+                if ($this->titleY === null && $txt === $this->expectedTitle) {
+                    $this->titleY = $this->GetY();
+                    $this->titleFontPt = $this->GetFontSizePt();
+                }
+                if (is_string($txt) && str_contains($txt, 'Conditions de règlement')) {
+                    $this->paymentTermsY = $this->GetY();
+                }
 
-                return [$afterTotalsY, $belowPaymentTermsY];
+                return parent::Cell($w, $h, $txt, $border, $ln, $align, $fill, $link, $stretch, $ignore_min_height, $calign, $valign);
             }
 
-            protected function drawComment(float $y): float
+            public function MultiCell($w, $h, $txt, $border = 0, $align = 'J', $fill = false, $ln = 1, $x = null, $y = null, $reseth = true, $stretch = 0, $ishtml = false, $autopadding = true, $maxh = 0, $valign = 'T', $fitcell = false)
             {
-                $this->commentAt = $y;
+                if ($txt === $this->expectedComment) {
+                    $this->commentDrawCount++;
+                    $this->commentY = $this->GetY();
+                    $this->commentFontPt = $this->GetFontSizePt();
+                    $this->commentWidth = $w;
+                }
 
-                return parent::drawComment($y);
+                return parent::MultiCell($w, $h, $txt, $border, $align, $fill, $ln, $x, $y, $reseth, $stretch, $ishtml, $autopadding, $maxh, $valign, $fitcell);
+            }
+        };
+        $pdf->expectedTitle = $courseTitle;
+        $pdf->expectedComment = $comment;
+        $pdf->setCompression(false);
+        $pdf->AddPage();
+        $pdf->drawInvoiceContent($fresh->company, $fresh->school, app(InvoiceService::class)->resolveLines($fresh));
+
+        $this->assertSame(1, $pdf->commentDrawCount);
+        $this->assertNotNull($pdf->titleY);
+        $this->assertNotNull($pdf->commentY);
+        $this->assertNotNull($pdf->paymentTermsY);
+        $this->assertGreaterThan($pdf->titleY, $pdf->commentY);
+        $this->assertLessThan($pdf->paymentTermsY, $pdf->commentY);
+        $this->assertSame($pdf->titleFontPt, $pdf->commentFontPt);
+        $this->assertEqualsWithDelta(12.0, (float) $pdf->commentFontPt, 0.01);
+        $this->assertEqualsWithDelta(108.0, (float) $pdf->commentWidth, 0.01);
+        $this->assertStringContainsString($comment, $pdf->Output('', 'S'));
+        $this->assertStringContainsString($courseTitle, $pdf->Output('', 'S'));
+    }
+
+    public function test_pdf_comment_is_drawn_once_on_monthly_invoice(): void
+    {
+        $context = $this->makeBillingContext();
+        $comment = 'Mention PO-42 pour le client';
+
+        $this->actingAs($context['admin'])
+            ->post(route('invoice.store'), $this->storePayload($context, [
+                'description' => 'Mois complet',
+                'comment' => $comment,
+            ]))
+            ->assertRedirect(route('treasury.invoices.index'));
+
+        $fresh = Invoice::query()->first()->load(['company', 'school']);
+
+        $pdf = new class($fresh) extends InvoiceGenerator
+        {
+            public int $commentDrawCount = 0;
+
+            public function MultiCell($w, $h, $txt, $border = 0, $align = 'J', $fill = false, $ln = 1, $x = null, $y = null, $reseth = true, $stretch = 0, $ishtml = false, $autopadding = true, $maxh = 0, $valign = 'T', $fitcell = false)
+            {
+                if ($txt === 'Mention PO-42 pour le client') {
+                    $this->commentDrawCount++;
+                }
+
+                return parent::MultiCell($w, $h, $txt, $border, $align, $fill, $ln, $x, $y, $reseth, $stretch, $ishtml, $autopadding, $maxh, $valign, $fitcell);
             }
         };
         $pdf->setCompression(false);
         $pdf->AddPage();
         $pdf->drawInvoiceContent($fresh->company, $fresh->school, app(InvoiceService::class)->resolveLines($fresh));
 
-        $this->assertSame($pdf->belowPaymentTermsY, $pdf->commentAt);
-        $this->assertLessThan($pdf->afterTotalsY, $pdf->commentAt);
+        $this->assertSame(1, $pdf->commentDrawCount);
         $this->assertStringContainsString($comment, $pdf->Output('', 'S'));
+        $this->assertStringContainsString($context['courseAlpha']->name, $pdf->Output('', 'S'));
+        $this->assertStringContainsString($context['courseBeta']->name, $pdf->Output('', 'S'));
     }
 
     public function test_reader_cannot_create_or_store_invoice(): void
