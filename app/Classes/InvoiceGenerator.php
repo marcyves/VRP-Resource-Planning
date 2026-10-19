@@ -67,42 +67,23 @@ class InvoiceGenerator extends TCPDF
 
         // Draw the invoice details table
         $y = $y + $h;
-        [$afterTotalsY, $belowPaymentTermsY] = $this->drawInvoiceDetailsTable($x, $y, $lineHeight, $lines);
+        $y = $this->drawInvoiceDetailsTable($x, $y, $lineHeight, $lines);
 
-        $afterCommentY = $this->drawComment($belowPaymentTermsY);
-
-        // Keep the RIB tucked beside the TTC line when there is no comment.
-        // With a comment, start the RIB below both the totals and the comment.
-        $ribY = $afterCommentY > $belowPaymentTermsY
-            ? max($afterTotalsY, $afterCommentY)
-            : $afterTotalsY - 4;
-        $this->drawRIB($ribY, $company);
+        // Comment lives in the Désignation column (same size as the course title).
+        // RIB stays tucked beside the TTC line.
+        $this->drawRIB($y - 4, $company);
     }
 
     /**
-     * Comment block in the left column, immediately under "Conditions de règlement".
-     * Width stays left of the totals so the two columns do not overlap.
+     * Comment in the Désignation column, using the course-title type size.
      */
-    protected function drawComment(float $y): float
+    protected function drawDesignationComment(float $x, float $y, string $comment): float
     {
-        $comment = trim((string) ($this->invoice->comment ?? ''));
-        if ($comment === '') {
-            return $y;
-        }
-
-        $x = 10;
-        $width = 110;
-        $lineHeight = 4;
-
-        $this->SetFont('helvetica', 'B', 8);
+        $lineHeight = $this->setTitleFont();
         $this->SetXY($x, $y);
-        $this->Cell($width, $lineHeight, __('messages.invoice_comment').':', 0, 2, 'L', false);
+        $this->MultiCell(108, $lineHeight, $comment, 0, 'L', false, 1);
 
-        $this->SetFont('helvetica', '', 8);
-        $this->SetXY($x, $this->GetY());
-        $this->MultiCell($width, $lineHeight, $comment, 0, 'L', false, 1);
-
-        return $this->GetY() + 2;
+        return $this->GetY();
     }
 
     protected function drawCompanyBox($x, $y, $lineHeight, $h, $company)
@@ -242,6 +223,8 @@ class InvoiceGenerator extends TCPDF
         $invoiceY = $currentY + 1; // Move down for the first item
         $total_invoice = 0;
         $invoice_line = 0;
+        $comment = trim((string) ($this->invoice->comment ?? ''));
+        $commentDrawn = false;
         foreach ($lines as $item) {
             $invoice_line++;
             switch ($item[5]) {
@@ -284,6 +267,15 @@ class InvoiceGenerator extends TCPDF
 
             $this->Cell(20, $lineHeight, $total, 0, 1, 'R', false);
             $invoiceY += $lineHeight;
+
+            if (! $commentDrawn && ($item[5] ?? '') === 'T' && $comment !== '') {
+                $invoiceY = $this->drawDesignationComment($x + 2, $invoiceY, $comment);
+                $commentDrawn = true;
+            }
+        }
+
+        if (! $commentDrawn && $comment !== '') {
+            $this->drawDesignationComment($x + 2, $invoiceY, $comment);
         }
 
         $currentY += $invoice_lines * $lineHeight + 2;
@@ -296,14 +288,13 @@ class InvoiceGenerator extends TCPDF
         $this->writeLine($x + 120, $currentY, $lineHeight, 'Total HT', 'L');
         $total_ht = $this->invoice->amount / 1.2;
         $currentY = $this->writeLine($x + 140, $currentY, $lineHeight, number_format($total_ht, 2), 'R');
-        $belowPaymentTermsY = $currentY;
         $this->writeLine($x + 120, $currentY, $lineHeight, 'Total TVA 20%', 'L');
         $currentY = $this->writeLine($x + 140, $currentY, $lineHeight, number_format($total_ht * 0.2, 2), 'R');
         $this->Rect($x + 120, $currentY, 60, $lineHeight, 'F'); // 'F' = fill
         $this->writeLine($x + 120, $currentY, $lineHeight, 'Total TTC', 'L');
         $currentY = $this->writeLine($x + 140, $currentY, $lineHeight, number_format($this->invoice->amount, 2), 'R');
 
-        return [$currentY, $belowPaymentTermsY];
+        return $currentY;
     }
 
     protected function drawRIB($y, Company $company)
