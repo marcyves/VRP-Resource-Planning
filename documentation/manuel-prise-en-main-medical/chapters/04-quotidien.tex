@@ -18,12 +18,18 @@ Chaque créneau planifié alimente le montant \textbf{non facturé TTC} visible 
 La facturation se fait \textbf{sur la fiche \structure{}}, pas dans l'agenda.
 
 \begin{workflowstep}[Facturation mensuelle]
-  Accueil → cliquez sur la \structure{} → section \textbf{Facturation} (\texttt{\#billing}). Naviguez mois par mois. Vérifiez les \seance{}s, \patient{}s et montants HT/TTC de chaque ligne. Créez ou rattachez une facture (mode Édition).
+  Accueil → cliquez sur la \structure{} → section \textbf{Facturation} (\texttt{\#billing}). Naviguez mois par mois. Vérifiez les créneaux, \patient{}s et montants HT/TTC. En mode Édition, \menu{Facturer} émet la facture d'une \seance{} (date sur la même ligne que son nom). \menu{Facturer tout le mois} et \menu{Assigner} n'apparaissent que si aucune ligne du mois n'a encore de n°.
 \end{workflowstep}
 
-\screenshot[keepaspectratio]{06-facturation-structure.png}{Préparation facturation sur la fiche structure}
+\screenshot[keepaspectratio]{06-facturation-structure.png}{Préparation facturation — la capture précède le bouton Facturer par séance}
 
 Bouton utile~: \menu{Sauter aux sessions non facturées} pour retrouver le dernier mois en attente.
+
+Le commentaire (2\,000 caractères au plus) est facultatif. Il s'affiche sous la description dans \menu{Trésorerie → Factures}, et une seule fois sur le PDF, sous le premier titre de la colonne Désignation. Une facture payée ne se modifie plus.
+
+\begin{avertissement}
+  \menu{Facturer} une \seance{} qui mélange des créneaux déjà facturés et des créneaux sans n° recopie le nouveau n° sur \textbf{tous} les créneaux de cette \seance{} pour le mois.
+\end{avertissement}
 
 \subsection{Suivre les encaissements}
 

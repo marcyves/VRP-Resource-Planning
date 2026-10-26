@@ -21,12 +21,12 @@ La barre \textbf{planifiée} utilise la couleur d'accent \emph{pending} (orange)
 
 \begin{description}[style=nextline, leftmargin=2.5cm]
   \item[Synthèse] Histogramme et totaux TTC.
-  \item[Factures] Liste filtrable, statut payé/impayé, PDF, bouton \textbf{Émettre e-facture} si SuperPDP est configuré.
+  \item[Factures] Liste filtrable (la recherche porte sur la description, pas sur le commentaire), statut payé/impayé, PDF, bouton \textbf{Émettre e-facture} si SuperPDP est configuré. Le commentaire, s'il existe, s'affiche sous la description. Une facture payée ne s'édite plus.
   \item[Banque] Banques, comptes, imports de relevés \texttt{.xlsx}.
   \item[Dépenses] Notes de frais et charges autonomes (ancre \texttt{\#expense-reports}).
 \end{description}
 
-\menu{Créer facture} et \menu{Créer dépense} sont des boutons dans la page, pas des onglets. L'émission hors contexte école reste possible depuis Factures.
+\menu{Créer facture} et \menu{Créer dépense} sont des boutons dans la page, pas des onglets. Créer une facture depuis cet onglet exige une école déjà ouverte~; sinon le bouton renvoie vers la préparation sur la fiche école (\texttt{\#billing}). Le \menu{Périmètre} (tout le mois ou un cours) est décrit au chapitre~\ref{ch:facturation}.
 
 \section{Import bancaire}
 
