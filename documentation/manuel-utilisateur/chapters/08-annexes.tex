@@ -66,6 +66,9 @@ Pour les détails d'implémentation, consultez le dossier \texttt{documentation/
     Import bancaire refusé & Fichier \texttt{.xlsx} avec colonnes attendues, $<$ 10\,Mo. \\
     Pas de suggestion rapprochement & Facture déjà rapprochée ou montant hors tolérance 0{,}02\,€. \\
     Bouton e-facture absent & \texttt{E\_INVOICE\_PLATFORM=superpdp} et credentials OAuth~; statut facture «~Prête~». \\
+    \menu{Facturer tout le mois} absent & Une session du mois a déjà un n°. Utilisez \menu{Facturer} sur chaque cours encore ouvert. \\
+    Sessions basculées sur une autre facture & \menu{Facturer} un cours partiellement facturé réassigne toutes les sessions de ce cours pour le mois. \\
+    Commentaire introuvable sous le règlement & Il est dans la colonne Désignation, sous le premier titre de cours. Le filtre Trésorerie ne le cherche pas. \\
     \bottomrule
   \end{tabular}
 \end{table}
