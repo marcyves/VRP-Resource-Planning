@@ -23,7 +23,7 @@ La barre \textbf{planifiée} utilise la couleur d'accent \emph{pending} (orange)
   \item[Synthèse] Histogramme et totaux TTC.
   \item[Factures] Liste filtrable (la recherche porte sur la description, pas sur le commentaire), statut payé/impayé, PDF, bouton \textbf{Émettre e-facture} si SuperPDP est configuré. Le commentaire, s'il existe, s'affiche sous la description. Une facture payée ne s'édite plus.
   \item[Banque] Banques, comptes, imports de relevés \texttt{.xlsx}.
-  \item[Dépenses] Notes de frais et charges autonomes (ancre \texttt{\#expense-reports}).
+  \item[Dépenses] Notes de frais mensuelles (\texttt{\#expense-reports}) et dépenses hors note (\texttt{\#standalone-expenses}).
 \end{description}
 
 \menu{Créer facture} et \menu{Créer dépense} sont des boutons dans la page, pas des onglets. Créer une facture depuis cet onglet exige une école déjà ouverte~; sinon le bouton renvoie vers la préparation sur la fiche école (\texttt{\#billing}). Le \menu{Périmètre} (tout le mois ou un cours) est décrit au chapitre~\ref{ch:facturation}.
@@ -51,6 +51,26 @@ Pour chaque ligne non lettrée~:
 \begin{avertissement}
   Le \textbf{dérapprochement} supprime le lien mais ne remet pas automatiquement à zéro les dates de paiement~; corrigez manuellement si nécessaire.
 \end{avertissement}
+
+\section{Dépenses et notes de frais}
+
+En mode \textbf{Édition}, \menu{Créer une dépense} est sur la synthèse (\texttt{/treasury}). La case \menu{Inclure dans une note de frais mensuelle} est \textbf{cochée par défaut}~: la ligne rejoint la note du mois de la date (créée s'il n'en existe pas). Une seule note par mois. Décochez la case pour une dépense hors note~; la date de paiement n'apparaît que dans ce cas.
+
+Le montant saisi est le \textbf{TTC}. Le champ \menu{TVA \%} est un pourcentage (20 si vous le laissez vide), pas un montant d'impôt. Le HT affiché est déduit de ce pourcentage.
+
+\begin{description}[style=nextline, leftmargin=2.5cm]
+  \item[Brouillon] Lignes modifiables. Sur la carte de solde, ce total est libellé \menu{Soumises}.
+  \item[Validée] Lignes figées. Vous pouvez annuler la validation pour revenir au brouillon.
+  \item[Payée] Renseignez une date de paiement. Annuler le paiement revient au statut validé.
+\end{description}
+
+Une dépense \menu{récurrente} (mensuelle ou annuelle, avec une date de fin) crée \textbf{une ligne par période}. Modifier une ligne ensuite ne recrée pas la série.
+
+\begin{avertissement}
+  Enregistrer une dépense sur un mois qui a déjà une note l'ajoute à cette note, y compris si la note n'est plus en brouillon. Les lignes d'une note validée ou payée ne se modifient plus depuis la note. Décocher «~inclure dans une note~» sur une ligne déjà rattachée ne la détache pas.
+\end{avertissement}
+
+Le PDF de la note (\texttt{note-de-frais-AAAA-MM.pdf}) indique comme bénéficiaire le nom de l'utilisateur connecté. Le rapprochement d'un débit peut marquer la note payée~; le dérapprochement ne revient pas sur ce statut.
 
 \section{Checklist opérationnelle}
 
