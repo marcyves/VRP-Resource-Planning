@@ -12,7 +12,7 @@ Manuel « book report » au format PDF, orienté **parcours nouvel utilisateur**
 | 4 | Mise en place (programmes → école → cours → groupes) |
 | 5 | Agenda et planning |
 | 6 | Facturation par école (`#billing`) : facture par cours ou mois entier, commentaire PDF |
-| 7 | Trésorerie et rapprochement |
+| 7 | Trésorerie, notes de frais et rapprochement |
 | 8 | Annexes (captures, compilation, dépannage) |
 
 ## Prérequis
