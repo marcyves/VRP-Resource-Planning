@@ -21,7 +21,7 @@
                     x-data=""
                     x-on:click.prevent="$store.programDelete.request(@js(route('program.destroy', $program->id)), @js($program->name))"
                 >
-                    <img src="{{ asset('icons/trash.svg') }}" alt="" width="18" height="18" decoding="async">
+                    <x-rune-icon name="trash" :size="18" />
                 </button>
             </div>
         @endif

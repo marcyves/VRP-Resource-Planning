@@ -31,36 +31,21 @@
                 @endif
                 <div class="treasury-report-actions">
                     <a class="icon icon--pdf-download" href="{{ route('treasury.reports.pdf', $expenseReport) }}" aria-label="{{ __('messages.download_pdf') }}" title="{{ __('messages.download_pdf') }}">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
-                            <path d="M7 3.75h6.25L18 8.5v11.75H7z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>
-                            <path d="M13.25 3.75V8.5H18" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>
-                            <path d="M12 11.25v5.25" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
-                            <path d="m9.75 14.5 2.25 2.25 2.25-2.25" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
+                        <x-rune-icon name="pdf-download" :size="18" />
                     </a>
                     @if(Auth::user()->getMode() == "Edit")
                         @if($expenseReport->status === 'draft' || $expenseReport->status === 'validated')
                         <form method="post" action="{{ route('treasury.reports.validate', $expenseReport) }}">
                             @csrf
                             <button class="icon {{ $expenseReport->status === 'validated' ? 'icon--validate-cancel' : 'icon--validate' }}" type="submit" aria-label="{{ $expenseReport->status === 'validated' ? __('messages.cancel_validation') : __('messages.validate') }}" title="{{ $expenseReport->status === 'validated' ? __('messages.cancel_validation') : __('messages.validate') }}">
-                                @if($expenseReport->status === 'validated')
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
-                                    <path d="M6.5 8.5h8.25a4.75 4.75 0 1 1 0 9.5H9" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
-                                    <path d="M9.25 5.75 6.5 8.5l2.75 2.75" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
-                                    <path d="M11 13.5 13 15.5 16.75 11.75" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
-                                </svg>
-                                @else
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
-                                    <path d="M5 12.5 9.25 17 19 7" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/>
-                                </svg>
-                                @endif
+                                <x-rune-icon :name="$expenseReport->status === 'validated' ? 'validate-cancel' : 'validate'" :size="18" />
                             </button>
                         </form>
                         @endif
                         @if($expenseReport->status === 'validated' || $expenseReport->status === 'paid')
                             @if($expenseReport->status === 'validated')
                                 <button class="icon icon--payed" type="submit" form="treasury-report-payment-form" aria-label="{{ __('messages.mark_as_paid') }}" title="{{ __('messages.mark_as_paid') }}">
-                                    <img src="{{ asset('icons/payed.svg') }}" alt="" width="20" height="20" decoding="async">
+                                    <x-rune-icon name="payed" :size="20" />
                                 </button>
                             @else
                                 <form method="post" action="{{ route('treasury.reports.pay', $expenseReport) }}">
@@ -71,7 +56,7 @@
                         @endif
                         @if($expenseReport->status === 'draft')
                         <a class="icon icon--add" href="{{ route('treasury.expenses.create', ['report_id' => $expenseReport->id]) }}" aria-label="{{ __('messages.add_expense_to_report') }}" title="{{ __('messages.add_expense_to_report') }}">
-                            <img src="{{ asset('icons/add-circle-svgrepo-com.svg') }}" alt="" width="20" height="20" decoding="async">
+                            <x-rune-icon name="add" :size="20" />
                         </a>
                         @endif
                     @endif
@@ -80,7 +65,7 @@
         </header>
 
         @if($expenseReport->expenses->isEmpty())
-            <p class="treasury-empty">{{ __('messages.no_expense_report') }}</p>
+            <p class="treasury-empty"><x-empty-state>{{ __('messages.no_expense_report') }}</x-empty-state></p>
         @else
             <div class="data-table">
             <table>

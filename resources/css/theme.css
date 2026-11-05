@@ -3,6 +3,9 @@
 html[data-theme="dark"] {
     color-scheme: dark;
 
+    --rune-duotone-primary: #90a8ff;
+    --rune-duotone-secondary: #c5d0f0;
+
     --brand-primary: #90a8ff;
     --brand-secondary: #1e3a8a;
     --brand-accent: #90a8ff;

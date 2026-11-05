@@ -1,0 +1,13 @@
+VRP Plan UI icons
+==================
+
+This product includes icons from Rune Icons (https://www.runeicons.com/),
+package `runeicons`, licensed under the Apache License, Version 2.0.
+See the accompanying LICENSE file in this directory.
+
+Copyright of the Rune Icons authors.
+
+The duotone SVGs shipped in App\Support\RuneIconCatalog were generated
+with buildSvg(id, "duotone", size) and recolored from the library's
+fixed greys (#A4A5A6, #DDDDDD) to VRP navy (#00236f / #4059aa) via CSS
+variables --rune-duotone-primary and --rune-duotone-secondary.

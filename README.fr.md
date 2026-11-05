@@ -304,6 +304,8 @@ Les suggestions et *pull requests* sont les bienvenues :
 
 Distribué sous **GNU GPLv3** — voir le fichier `[LICENSE](./LICENSE)`.
 
+Les icônes d’interface sont [Rune Icons](https://www.runeicons.com/) (licence Apache 2.0, style duotone, teintées navy VRP). Voir `third-party/runeicons/` (LICENSE Apache + NOTICE). Régénérer le catalogue avec `npm run icons:rune`.
+
 ---
 
 

@@ -24,7 +24,7 @@
                         <td class="card-actions">
                             <form action="{{ route('group.link', $group->id) }}" method="get">
                                 <x-button-secondary type="submit" title="{{ __('messages.add') }}">
-                                    <img src="/icons/arrow-up.svg" alt="{{ __('messages.add') }}">
+                                    <x-rune-icon name="arrow-up" :size="18" />
                                 </x-button-secondary>
                             </form>
                         </td>
@@ -32,7 +32,7 @@
                 </tr>
             @empty
                 <tr>
-                    <td colspan="{{ Auth::user()->getMode() == 'Edit' ? 5 : 4 }}" class="group-table__empty">{{ __('messages.no_available_group') }}</td>
+                    <td colspan="{{ Auth::user()->getMode() == 'Edit' ? 5 : 4 }}" class="group-table__empty"><x-empty-state>{{ __('messages.no_available_group') }}</x-empty-state></td>
                 </tr>
             @endforelse
         </tbody>

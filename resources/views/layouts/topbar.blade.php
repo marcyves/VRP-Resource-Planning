@@ -1,7 +1,9 @@
 <header class="app-topbar">
     <div class="app-topbar__main">
         <label for="sidebar-toggle" class="app-topbar__menu-btn" aria-label="{{ __('messages.nav_menu') }}">
-            <span class="app-topbar__menu-icon" aria-hidden="true"></span>
+            <span class="app-topbar__menu-icon" aria-hidden="true">
+                <x-rune-icon name="menu" :size="18" />
+            </span>
         </label>
 
         @isset($pageHeader)

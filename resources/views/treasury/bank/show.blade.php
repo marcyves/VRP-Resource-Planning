@@ -234,7 +234,7 @@
                     @empty
                         <tr>
                             <td colspan="{{ Auth::user()->getMode() == 'Edit' ? 6 : 5 }}" class="treasury-empty">
-                                {{ __('messages.bank_reconciliation_no_lines') }}
+                                <x-empty-state icon="banknote">{{ __('messages.bank_reconciliation_no_lines') }}</x-empty-state>
                             </td>
                         </tr>
                     @endforelse

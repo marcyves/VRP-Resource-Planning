@@ -179,8 +179,11 @@ nav.breadcrumb ul > li[aria-hidden="true"] {
     outline-offset: 1px;
 }
 
-.breadcrumb__add img {
+.breadcrumb__add img,
+.breadcrumb__add svg {
     display: block;
+    width: 1.125rem;
+    height: 1.125rem;
 }
 
 nav.breadcrumb .breadcrumb__select {
@@ -296,22 +299,20 @@ nav.breadcrumb .breadcrumb__select:focus {
 .icon.icon--duplicate img,
 .icon.icon--add img,
 .icon.icon--payed img,
-.icon.icon--invoice-manual img {
-    width: 1.125rem;
-    height: 1.125rem;
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: contain;
-    display: block;
-    filter: var(--icon-action-img-filter);
-}
-
+.icon.icon--invoice-manual img,
+.icon.icon--edit svg,
+.icon.icon--delete svg,
+.icon.icon--duplicate svg,
+.icon.icon--add svg,
+.icon.icon--payed svg,
+.icon.icon--invoice-manual svg,
 .icon.icon--payment-restore svg,
 .icon.icon--validate svg,
 .icon.icon--validate-cancel svg,
 .icon.icon--pdf-download svg,
 .icon.icon--pdf-view svg,
-.icon.icon--archive svg {
+.icon.icon--archive svg,
+.icon.icon--e-invoice svg {
     width: 1.125rem;
     height: 1.125rem;
     max-width: 100%;
@@ -319,6 +320,7 @@ nav.breadcrumb .breadcrumb__select:focus {
     object-fit: contain;
     display: block;
     color: var(--icon-action-fg);
+    filter: var(--icon-action-img-filter);
 }
 
 .icon.icon--disabled,
@@ -331,10 +333,32 @@ nav.breadcrumb .breadcrumb__select:focus {
 }
 
 .icon.icon--e-invoice {
-    font-size: 0.75rem;
-    font-weight: 700;
-    letter-spacing: -0.02em;
     color: var(--icon-action-fg);
+}
+
+.rune-icon {
+    display: block;
+    width: 100%;
+    height: 100%;
+    flex-shrink: 0;
+}
+
+.empty-state {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: inherit;
+}
+
+.empty-state__icon {
+    display: inline-flex;
+    flex-shrink: 0;
+    width: 1.125rem;
+    height: 1.125rem;
+}
+
+.empty-state__text {
+    min-width: 0;
 }
 
 /* Animations / Transitions Utilities */

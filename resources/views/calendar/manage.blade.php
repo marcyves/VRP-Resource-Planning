@@ -88,7 +88,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="{{ Auth::user()->getMode() == 'Edit' ? 4 : 3 }}" class="calendar-history-empty">{{ __('messages.no_imported_file') }}</td>
+                            <td colspan="{{ Auth::user()->getMode() == 'Edit' ? 4 : 3 }}" class="calendar-history-empty"><x-empty-state icon="import">{{ __('messages.no_imported_file') }}</x-empty-state></td>
                         </tr>
                     @endforelse
                 </tbody>

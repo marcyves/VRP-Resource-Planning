@@ -92,7 +92,7 @@
                 <p class="form-hint">{{ __('messages.billing_bank_account_help') }}</p>
 
                 @if ($bankAccounts->isEmpty())
-                    <p class="treasury-empty">{{ __('messages.billing_bank_account_empty') }}</p>
+                    <p class="treasury-empty"><x-empty-state icon="banknote">{{ __('messages.billing_bank_account_empty') }}</x-empty-state></p>
                     <p>
                         <a class="btn btn-secondary btn--compact" href="{{ route('treasury.bank.index') }}">{{ __('messages.manage_bank_accounts') }}</a>
                     </p>

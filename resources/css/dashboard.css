@@ -32,7 +32,8 @@
     color: var(--kpi-icon-color, var(--brand-accent));
 }
 
-.kpi-card__icon .module-tab__icon-svg {
+.kpi-card__icon .module-tab__icon-svg,
+.kpi-card__icon .rune-icon {
     width: 1.25rem;
     height: 1.25rem;
 }
