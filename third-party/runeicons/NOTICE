@@ -11,3 +11,6 @@ The duotone SVGs shipped in App\Support\RuneIconCatalog were generated
 with buildSvg(id, "duotone", size) and recolored from the library's
 fixed greys (#A4A5A6, #DDDDDD) to VRP navy (#00236f / #4059aa) via CSS
 variables --rune-duotone-primary and --rune-duotone-secondary.
+
+schedule-calendar is the same official outline, with the stock full-body
+fill replaced by a header-band fill so the agenda glyph stays readable.

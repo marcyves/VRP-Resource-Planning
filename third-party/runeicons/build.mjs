@@ -77,6 +77,24 @@ function recolor(svg) {
         .replace(GREY_SECONDARY, SECONDARY);
 }
 
+/**
+ * Stock `schedule-calendar` duotone fills the whole body (rings + header
+ * line closed with Z), so at nav size it reads as a solid blob.
+ * Rebuild from the official outline paths: secondary fill on the header
+ * band only, primary stroke on the empty frame — same geometry, emptier.
+ */
+function openCalendarDuotone(size = 24) {
+    const headerBand =
+        "M5 4H19C20.1046 4 21 4.89543 21 6V10H3V6C3 4.89543 3.89543 4 5 4Z";
+    const frame =
+        "M8 2V6M16 2V6M5 4H19C20.1046 4 21 4.89543 21 6V20C21 21.1046 20.1046 22 19 22H5C3.89543 22 3 21.1046 3 20V6C3 4.89543 3.89543 4 5 4Z";
+    const headerLine = "M3 10H21";
+
+    return `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 24 24" aria-hidden="true"><g fill="none"><path d="${headerBand}" fill="${SECONDARY}"/>
+<path d="${frame}" stroke="${PRIMARY}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="${headerLine}" stroke="${PRIMARY}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></g></svg>`;
+}
+
 function phpString(value) {
     return JSON.stringify(value);
 }
@@ -91,7 +109,7 @@ for (const id of runeIds) {
         missing.push(id);
         continue;
     }
-    const svg = buildSvg(id, "duotone", 24);
+    const svg = id === "schedule-calendar" ? openCalendarDuotone(24) : buildSvg(id, "duotone", 24);
     if (!svg) {
         missing.push(id);
         continue;
@@ -159,6 +177,9 @@ The duotone SVGs shipped in App\\Support\\RuneIconCatalog were generated
 with buildSvg(id, "duotone", size) and recolored from the library's
 fixed greys (#A4A5A6, #DDDDDD) to VRP navy (#00236f / #4059aa) via CSS
 variables --rune-duotone-primary and --rune-duotone-secondary.
+
+schedule-calendar is the same official outline, with the stock full-body
+fill replaced by a header-band fill so the agenda glyph stays readable.
 `,
 );
 console.log("Wrote third-party/runeicons/ LICENSE and NOTICE");

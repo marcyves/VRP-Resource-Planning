@@ -17,11 +17,15 @@ class RuneIconsTest extends TestCase
         $this->assertStringNotContainsString('#A4A5A6', $svg);
         $this->assertStringNotContainsString('#DDDDDD', $svg);
         $this->assertStringContainsString('width="24"', $svg);
+        $this->assertStringContainsString('M5 4H19C20.1046 4 21 4.89543 21 6V10H3V6', $svg);
+        $this->assertStringNotContainsString('M8 2V6Z', $svg);
     }
 
     public function test_aliases_resolve_to_known_rune_ids(): void
     {
         $this->assertSame('layouts-grid-2x2', RuneIcons::resolve('grid'));
+        $this->assertSame('schedule-calendar', RuneIcons::resolve('calendar-range'));
+        $this->assertSame('schedule-calendar', RuneIcons::resolve('calendar'));
         $this->assertSame('tools-trash', RuneIcons::resolve('trash'));
         $this->assertSame('tools-pencil', RuneIcons::resolve('edit'));
         $this->assertSame('messaging-send', RuneIcons::resolve('e-invoice'));
