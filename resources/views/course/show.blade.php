@@ -58,7 +58,7 @@
         <p class="form-hint">@schoolMsg('groups_course_help')</p>
 
         @if ($groups->isEmpty())
-            <p class="program-empty" role="status">@schoolMsg('no_group')</p>
+            <p class="program-empty" role="status"><x-empty-state icon="users">@schoolMsg('no_group')</x-empty-state></p>
         @else
             <x-course-groups-table :groups="$groups" :occurences="$occurences" :show-archive="true" />
         @endif

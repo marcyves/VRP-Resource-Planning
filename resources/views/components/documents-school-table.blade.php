@@ -1,7 +1,7 @@
 @props(['documents'])
 
 @if ($documents->isEmpty())
-    <p class="documents-school-empty" role="status">{{ __('messages.documents_empty') }}</p>
+    <p class="documents-school-empty" role="status"><x-empty-state>{{ __('messages.documents_empty') }}</x-empty-state></p>
 @else
     <div class="data-table">
         <table>
@@ -39,7 +39,7 @@
                                     x-data=""
                                     x-on:click.prevent="$store.documentDelete.request(@js(route('documents.destroy', $document->id)), @js($document->description))"
                                 >
-                                    <img src="{{ asset('icons/trash.svg') }}" alt="" width="18" height="18" decoding="async">
+                                    <x-rune-icon name="trash" :size="18" />
                                 </button>
                             </td>
                         @endif

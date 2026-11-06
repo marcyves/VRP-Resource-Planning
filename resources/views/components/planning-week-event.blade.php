@@ -43,7 +43,7 @@
                 data-delete-label="{{ e($eventLabel) }}"
                 data-delete-date="{{ e($eventDate) }}"
             >
-                <img src="{{ asset('icons/trash.svg') }}" alt="" width="16" height="16" decoding="async">
+                <x-rune-icon name="trash" :size="16" />
             </button>
         </div>
     @else

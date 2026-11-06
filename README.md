@@ -306,6 +306,8 @@ Suggestions and pull requests are welcome:
 
 Distributed under **GNU GPLv3** — see `[LICENSE](./LICENSE)`.
 
+UI icons are [Rune Icons](https://www.runeicons.com/) (Apache License 2.0, duotone style, tinted VRP navy). See `third-party/runeicons/` (Apache LICENSE + NOTICE). Regenerate the catalog with `npm run icons:rune`.
+
 ---
 
 

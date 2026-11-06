@@ -14,7 +14,7 @@
 
 <x-module-tabs :tabs="[
     ['href' => route('treasury.index'), 'label' => __('messages.summary'), 'active' => $activeTab === 'summary', 'icon' => 'chart'],
-    ['href' => route('treasury.invoices.index'), 'label' => __('messages.invoices'), 'active' => $activeTab === 'invoices', 'icon' => 'receipt'],
+    ['href' => route('treasury.invoices.index'), 'label' => __('messages.invoices'), 'active' => $activeTab === 'invoices', 'icon' => 'coins'],
     ['href' => route('treasury.bank.index'), 'label' => __('messages.bank'), 'active' => $activeTab === 'bank', 'icon' => 'banknote'],
-    ['href' => route('treasury.index').'#expense-reports', 'label' => __('messages.expenses'), 'active' => $activeTab === 'expenses', 'icon' => 'coins'],
+    ['href' => route('treasury.index').'#expense-reports', 'label' => __('messages.expenses'), 'active' => $activeTab === 'expenses', 'icon' => 'cart'],
 ]" />

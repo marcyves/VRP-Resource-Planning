@@ -24,7 +24,7 @@
                         aria-label="{{ __('messages.school_create') }}"
                         title="{{ __('messages.school_create') }}"
                     >
-                        <img src="{{ asset('icons/add-circle-svgrepo-com.svg') }}" alt="" width="18" height="18" decoding="async">
+                        <x-rune-icon name="add" :size="18" />
                     </a>
                 @endif
             </li>
@@ -80,7 +80,7 @@
                             aria-label="{{ __('messages.course_create') }}"
                             title="{{ __('messages.course_create') }}"
                         >
-                            <img src="{{ asset('icons/add-circle-svgrepo-com.svg') }}" alt="" width="18" height="18" decoding="async">
+                            <x-rune-icon name="add" :size="18" />
                         </a>
                     @endif
                 </li>

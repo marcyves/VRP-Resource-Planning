@@ -54,6 +54,8 @@ html[data-sidebar-compact="true"] {
     border-right: 1px solid var(--nav-border);
     box-shadow: 4px 0 24px #0a12200f;
     transition: width 0.2s ease;
+    --rune-duotone-primary: var(--sidebar-fg);
+    --rune-duotone-secondary: var(--sidebar-accent);
 }
 
 .app-sidebar__brand {
@@ -94,12 +96,13 @@ html[data-sidebar-compact="true"] {
     background: var(--brand-logo-bg);
     color: #ffffff;
     flex-shrink: 0;
+    --rune-duotone-primary: #ffffff;
+    --rune-duotone-secondary: #c5d4ea;
 }
 
 .app-sidebar__logo svg {
     width: 1.35rem;
     height: 1.35rem;
-    stroke: currentColor;
 }
 
 .app-sidebar__brand-text {
@@ -199,6 +202,8 @@ html[data-sidebar-compact="true"] {
 .sidebar-link:hover {
     color: var(--sidebar-link-hover-text);
     background: var(--nav-bg-hover);
+    --rune-duotone-primary: #ffffff;
+    --rune-duotone-secondary: var(--sidebar-accent);
 }
 
 .sidebar-link:focus-visible {
@@ -212,6 +217,8 @@ html[data-sidebar-compact="true"] {
     background: var(--sidebar-link-active-bg);
     border-color: #3d5f8f66;
     box-shadow: inset 3px 0 0 var(--sidebar-accent);
+    --rune-duotone-primary: var(--sidebar-accent);
+    --rune-duotone-secondary: #dbe7f8;
 }
 
 .sidebar-link--button {
@@ -437,13 +444,16 @@ html[data-sidebar-compact="true"] .sidebar-compact-toggle__label--expand {
 }
 
 .app-topbar__menu-icon {
-    position: relative;
-    display: block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     width: 1.125rem;
-    height: 0.125rem;
-    background: currentColor;
-    border-radius: 1px;
-    box-shadow: 0 -0.35rem 0 currentColor, 0 0.35rem 0 currentColor;
+    height: 1.125rem;
+}
+
+.app-topbar__menu-icon svg {
+    width: 100%;
+    height: 100%;
 }
 
 

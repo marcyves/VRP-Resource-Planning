@@ -15,6 +15,8 @@ body.marketing-page {
     --marketing-card-border: #ffffff1f;
     --marketing-icon-bg: #ffffff1a;
     --marketing-icon-fg: #ffffff;
+    --rune-duotone-primary: #ffffff;
+    --rune-duotone-secondary: #c5d4ea;
     --marketing-image-border: #ffffff26;
 
     display: flex;
@@ -42,6 +44,8 @@ html[data-theme="light"] body.marketing-page {
     --marketing-card-border: var(--border-subtle);
     --marketing-icon-bg: var(--surface-accent-soft);
     --marketing-icon-fg: var(--brand-primary);
+    --rune-duotone-primary: var(--brand-primary);
+    --rune-duotone-secondary: var(--brand-accent);
     --marketing-image-border: var(--border-subtle);
 }
 
@@ -528,7 +532,8 @@ html[data-theme="dark"] body.marketing-page .marketing-hero .btn-secondary:hover
     color: var(--marketing-icon-fg);
 }
 
-.marketing-feature-card__icon .module-tab__icon-svg {
+.marketing-feature-card__icon .module-tab__icon-svg,
+.marketing-feature-card__icon .rune-icon {
     width: 1.35rem;
     height: 1.35rem;
 }

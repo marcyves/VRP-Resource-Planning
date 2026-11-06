@@ -4,6 +4,7 @@
     'direction' => 'desc',
     'filters' => [],
     'electronicInvoicingEnabled' => false,
+    'emptyIcon' => 'inbox',
 ])
 
 @php
@@ -97,17 +98,17 @@
                         </form>
                         @if ($isPaid)
                             <button class="icon icon--edit icon--disabled" type="button" aria-label="{{ __('messages.invoice_paid_locked') }}" disabled>
-                                <img src="{{ asset('icons/edit.svg') }}" alt="" width="18" height="18" decoding="async">
+                                <x-rune-icon name="edit" :size="18" />
                             </button>
                             <button class="icon icon--delete icon--disabled" type="button" aria-label="{{ __('messages.invoice_paid_locked') }}" disabled>
-                                <img src="{{ asset('icons/trash.svg') }}" alt="" width="18" height="18" decoding="async">
+                                <x-rune-icon name="trash" :size="18" />
                             </button>
                         @else
                             @if ($electronicInvoicingEnabled && $bill->canSubmitElectronic())
                                 <form class="inline-form" action="{{ route('invoice.submitElectronic', $bill->id) }}" method="post">
                                     @csrf
                                     <button type="submit" class="icon icon--e-invoice" title="{{ __('messages.electronic_invoice_submit') }}" aria-label="{{ __('messages.electronic_invoice_submit') }}">
-                                        <span aria-hidden="true">e</span>
+                                        <x-rune-icon name="e-invoice" :size="18" />
                                     </button>
                                 </form>
                             @endif
@@ -125,7 +126,7 @@
             </tr>
             @empty
             <tr>
-                <td colspan="9" class="invoice-table__empty">{{ __('messages.invoice_list_empty') }}</td>
+                <td colspan="9" class="invoice-table__empty"><x-empty-state :icon="$emptyIcon">{{ __('messages.invoice_list_empty') }}</x-empty-state></td>
             </tr>
             @endforelse
         </tbody>

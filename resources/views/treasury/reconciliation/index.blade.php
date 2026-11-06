@@ -36,7 +36,7 @@
         </header>
 
         @if ($imports->isEmpty())
-            <p class="treasury-empty">{{ __('messages.bank_import_empty') }}</p>
+            <p class="treasury-empty"><x-empty-state icon="import">{{ __('messages.bank_import_empty') }}</x-empty-state></p>
         @else
             <div class="data-table">
                 <table>

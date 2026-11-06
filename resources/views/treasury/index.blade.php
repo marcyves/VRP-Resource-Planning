@@ -61,7 +61,7 @@
         </header>
 
         @if($reports->isEmpty())
-            <p class="treasury-empty">{{ __('messages.no_expense_report') }}</p>
+            <p class="treasury-empty"><x-empty-state icon="cart">{{ __('messages.no_expense_report') }}</x-empty-state></p>
         @else
             <div class="treasury-report-list">
                 @foreach($reports as $report)
@@ -88,7 +88,7 @@
         </header>
 
         @if($standaloneExpenses->isEmpty())
-            <p class="treasury-empty">{{ __('messages.no_standalone_expense') }}</p>
+            <p class="treasury-empty"><x-empty-state icon="cart">{{ __('messages.no_standalone_expense') }}</x-empty-state></p>
         @else
             <div class="data-table">
             <table>

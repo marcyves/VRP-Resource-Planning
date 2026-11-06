@@ -138,6 +138,10 @@
     --icon-action-fg: var(--brand-primary);
     --icon-action-img-filter: none;
 
+    /* Rune Icons duotone — greys remapped to VRP navy */
+    --rune-duotone-primary: var(--brand-primary);
+    --rune-duotone-secondary: var(--brand-accent);
+
     /* Extended surfaces & components */
     --surface-glass-border: #ffffff66;
     --surface-muted: #eef2f8b3;

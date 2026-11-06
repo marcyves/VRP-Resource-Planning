@@ -17,7 +17,7 @@
                 <h3 id="login-stats-chart-heading" class="school-panel__title">{{ __('messages.login_stats_chart_title') }}</h3>
             </header>
             @if ($totalCount === 0)
-                <p role="status">{{ __('messages.login_stats_empty') }}</p>
+                <p role="status"><x-empty-state icon="shield">{{ __('messages.login_stats_empty') }}</x-empty-state></p>
             @else
                 @php
                     $successLabel = number_format($successPercent, 1, ',', ' ');
@@ -109,7 +109,7 @@
     <section class="login-stats-table" aria-labelledby="login-stats-table-heading">
         <h3 id="login-stats-table-heading" class="login-stats-table__title">{{ __('messages.login_stats_table') }}</h3>
         @if ($events->isEmpty())
-            <p role="status">{{ __('messages.login_stats_empty') }}</p>
+            <p role="status"><x-empty-state icon="shield">{{ __('messages.login_stats_empty') }}</x-empty-state></p>
         @else
             <div class="data-table">
                 <table>

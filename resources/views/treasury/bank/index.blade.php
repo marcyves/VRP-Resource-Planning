@@ -79,7 +79,7 @@
                                 aria-label="{{ __('messages.bank_edit') }}"
                                 data-bank-dialog-open="bank-edit-dialog-{{ $bank->id }}"
                             >
-                                <img src="{{ asset('icons/edit.svg') }}" alt="" width="18" height="18" decoding="async">
+                                <x-rune-icon name="edit" :size="18" />
                             </button>
                             @if ($bank->accounts->isEmpty())
                                 <form action="{{ route('treasury.bank.banks.destroy', $bank) }}" method="post" onsubmit="return confirm(@js(__('messages.delete_confirm_title')));">
@@ -101,7 +101,7 @@
                         title="{{ __('messages.bank_add') }}"
                         data-bank-dialog-open="bank-add-dialog"
                     >
-                        <img src="{{ asset('icons/add-circle-svgrepo-com.svg') }}" alt="" width="20" height="20" decoding="async">
+                        <x-rune-icon name="add" :size="20" />
                     </button>
                 </article>
             @endif
@@ -230,7 +230,7 @@
                     <div id="bank-billing-panel" x-show="open" x-transition>
                         <p class="form-hint">{{ __('messages.billing_bank_account_help') }}</p>
                         @if ($selectedBank->accounts->isEmpty())
-                            <p class="treasury-empty">{{ __('messages.bank_account_required') }}</p>
+                            <p class="treasury-empty"><x-empty-state icon="banknote">{{ __('messages.bank_account_required') }}</x-empty-state></p>
                         @else
                             <form action="{{ route('treasury.bank.billing-account.update') }}" method="post" class="nice-form nice-form--embedded bank-billing-form">
                                 @csrf
@@ -375,14 +375,14 @@
                                 </div>
                             </form>
                         @else
-                            <p class="treasury-empty">{{ __('messages.bank_account_required') }}</p>
+                            <p class="treasury-empty"><x-empty-state icon="banknote">{{ __('messages.bank_account_required') }}</x-empty-state></p>
                         @endif
                     </div>
                 </div>
             </section>
         @endif
     @elseif ($banks->isNotEmpty())
-        <p class="treasury-empty">{{ __('messages.bank_select_prompt') }}</p>
+        <p class="treasury-empty"><x-empty-state icon="banknote">{{ __('messages.bank_select_prompt') }}</x-empty-state></p>
     @endif
 
     <section>
@@ -394,7 +394,7 @@
         </header>
 
         @if ($imports->isEmpty())
-            <p class="treasury-empty">{{ __('messages.bank_import_empty') }}</p>
+            <p class="treasury-empty"><x-empty-state icon="import">{{ __('messages.bank_import_empty') }}</x-empty-state></p>
         @else
             <div class="data-table">
                 <table>

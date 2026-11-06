@@ -55,7 +55,7 @@
                 </header>
 
                 @if ($groups->isEmpty() && $inactiveGroups->isEmpty())
-                    <p class="program-empty" role="status">@schoolMsg('no_group')</p>
+                    <p class="program-empty" role="status"><x-empty-state icon="users">@schoolMsg('no_group')</x-empty-state></p>
                 @else
                     @if ($groups->isNotEmpty())
                         <x-group-table :groups="$groups" :occurences="$occurences" :active="true" />

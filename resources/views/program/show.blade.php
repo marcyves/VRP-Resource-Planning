@@ -66,7 +66,7 @@
         </header>
 
         @if($courses->isEmpty())
-            <p class="program-empty">{{ __('messages.no_course') }}</p>
+            <p class="program-empty"><x-empty-state>{{ __('messages.no_course') }}</x-empty-state></p>
         @else
             <div class="data-table">
                 <table>
