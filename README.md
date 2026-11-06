@@ -61,7 +61,7 @@ Web app for **scheduling**, **budgeting**, and **invoice tracking** for trainers
 | ----------- | -------------------------------------------------------------------- |
 | **Home**    | `/home` — school list (billed TTC, unbilled TTC + hours)             |
 | **Logo**    | Returns to home                                                      |
-| **Billing** | Preparation moved from Agenda into **each school page** (`#billing`) |
+| **Billing** | On each school page (`#billing`): **Invoice** one course, or the whole month while every session is still unbilled |
 | **Agenda**  | Planning + calendar only                                             |
 | **CSS**     | Tokens in `theme.css`, `.data-table`, `.nice-form`                   |
 

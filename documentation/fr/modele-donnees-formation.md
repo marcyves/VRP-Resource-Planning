@@ -37,6 +37,7 @@ Entreprise (company)
 - **`groups.active`** masque un groupe du planning sans supprimer ses liens ni son historique.
 - **`courses.active`** (booléen, défaut true) est distinct. Il masque un cours des **menus déroulants** agenda, planning et calendrier (`SchoolCourseOptions`, `Course::scopeActive`). Les tableaux de cours de l’école incluent toujours les cours archivés, et la fiche cours n’édite pas le flag. Voir [Navigation — menus déroulants](v2-navigation-modules.md#menus-déroulants-école-et-cours).
 - Les **sessions** de planning (`plannings`) pointent vers `course_id` et `group_id`. La création manuelle enregistre la `end` soumise (préremplie depuis `courses.session_length`) ; cette durée n’est pas une colonne de `plannings`.
+- Les **factures** peuvent pointer vers un cours (`invoices.course_id`, nullable, `nullOnDelete`). `null` signifie le mois entier de l’école. `invoices.comment` (optionnel, max 2000) est un texte libre sur le PDF et la note CII `AAI`. Voir [Facturation par école](v2-facturation-par-ecole.md#périmètre--un-cours-ou-tout-le-mois).
 
 ## Liens
 

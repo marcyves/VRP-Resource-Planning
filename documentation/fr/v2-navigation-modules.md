@@ -46,7 +46,7 @@ Constante post-login : `RouteServiceProvider::HOME = '/home'`.
 | `referential-module-tabs` | Référentiel | Programmes · Groupes |
 | `settings-module-tabs` | Paramètres | Entreprise · profil |
 
-Les actions **Créer facture** / **Créer dépense** sont des boutons dans les pages (plus des onglets).  
+Les actions **Créer facture** / **Créer dépense** sont des boutons dans les pages (plus des onglets). La facturation école propose **Facturer** par cours, et **Facturer tout le mois** seulement si le mois est entièrement non facturé — voir [Facturation par école](v2-facturation-par-ecole.md#périmètre--un-cours-ou-tout-le-mois).  
 `workload-module-tabs` n’est plus utilisé sur le chemin quotidien (lien « plan de charge annuelle » depuis `/home`).
 
 ## Vues agenda (mois / semaine)

@@ -26,7 +26,7 @@ Component: `resources/views/components/school-billing-section.blade.php`
 | **By date** toggle | Chronological vs by-course grouping (`school_billing_by_date` session) |
 | Session tables | Group, schedule, hours, **HT**, **TTC**, invoice # |
 | Totals | Hours and ex-VAT / incl-VAT amounts per course and school |
-| Actions (Edit mode) | Assign existing invoice, create invoice |
+| Actions (Edit mode) | **Invoice** one course, or assign / **Invoice entire month** when the month is fully unbilled |
 
 ### Session line amounts
 
@@ -84,16 +84,43 @@ The footer **monthly gain** / **hour rate** strip under the school totals uses t
 
 Invoices created from the school billing section are listed under **Treasury**. When a credit bank statement line is matched to an invoice, bank reconciliation sets `Invoice::paid_at` to the bank operation date if it was still empty.
 
-### Invoice creation and document recovery
+### Invoice scope: one course or the whole month
 
-The school billing **Create** action opens `InvoiceController@create` with `cmd=detailed`, the selected school, month, year, and billing date. The preview lines come from `Tools::getInvoiceDetails()`. On submit, `InvoiceController@store`:
+Edit mode only. Each course header is one row: course name, billing date, and the action (`bills.css` `.billing-course-header`, `flex-wrap: nowrap`).
 
-1. creates an `Invoice` for the current company and school;
-2. stores the amount as TTC (`amount`), deriving it from planning HT totals when needed;
-3. writes the PDF through `InvoiceService::saveToDisk()`;
-4. links the month's planning rows to the full invoice number (`company bill prefix + invoice id`).
+| Situation | What the screen offers |
+|-----------|------------------------|
+| Course has at least one session with empty `planning.invoice_id` | Date + **Invoice** (`invoice_create_this_course`). GET `invoice.create` with `from_school_billing=1`, `school_id`, `course_id`, `month`, `year`, `cmd=detailed`. |
+| Every session of that course already has an invoice | **Invoice already assigned**. This screen does not open a second invoice for that course. |
+| Every session of the month is unbilled | Footer: assign an existing invoice (`school.billing.setBill`, no `course_id`) and **Invoice entire month** (same create URL, no `course_id`). |
+| Month is mixed | Footer actions stay hidden. Unbilled courses still show **Invoice**. |
 
-If the PDF file later disappears from storage, viewing the invoice regenerates it with `InvoiceService::ensurePdfOnDisk()`. The service first uses the linked planning rows, then falls back to the invoice month/school planning details, and finally emits a single manual line from the invoice description and HT amount.
+`invoices.course_id` (nullable FK to `courses`, `nullOnDelete`, migration `2026_10_19_100000_add_comment_and_course_id_to_invoices_table`) stores the scope. A whole-month invoice keeps it `null`. `Invoice::course()`.
+
+`InvoiceController::resolveCourseForSchool`: a blank `course_id` means the month; a course that is not on that school is **403**. The school must be in `User::getSchools()` or create and store also return **403**. Readers are **403**; admins and editors may create.
+
+Preview lines come from `Tools::getInvoiceDetails(..., $courseId)`. `Planning::getPlanningBySchoolAndDate` filters `plannings.course_id` only when a course is set. On save, `InvoiceService::linkPlanningToInvoice` writes `company bill prefix + invoice id` onto **every** session in that window, including sessions that already had a number. The school screen hides **Invoice entire month** once any session is billed, so a mixed month cannot be restamped in one shot. **Invoice** on a course that is only partly billed still restamps every session of that course for the month. A Treasury create that posts a `course_id` does the same. `BillingController::setBill` overwrites the same way; the assign form is shown only when the month is fully unbilled and it does not send `course_id`.
+
+From school billing, scope is a hidden `course_id`. The hint shows the course name or **Entire month**. Description defaults to the course name. `from_school_billing` redirects to `school.show#billing`.
+
+Outside school billing, create shows a **Scope** select (`invoice_scope`): empty = entire month, otherwise every course of the school (`$school->courses()`, name order, **including archived** — not `SchoolCourseOptions`). The select does not reload the preview. The preview follows the GET `course_id`; `store` links whatever `course_id` is posted. Re-open create with the intended query to change the lines.
+
+Stored `amount`: a filled `amount` is saved as TTC. An empty amount becomes `round(planning HT × 1.2, 2)`. Matching planning rows still drive the PDF. A manual invoice (no sessions, amount filled) stores one flat line and still keeps `course_id` when one was posted.
+
+### Invoice comment
+
+`invoices.comment` is nullable text, validated `nullable|string|max:2000`. A blank value is stored as `null`.
+
+| Surface | Behavior |
+|---------|----------|
+| Create and edit | Textarea. Help text: shown on the invoice screen and on the PDF. Edit does not change `course_id`. A paid invoice (`paid_at` set) cannot be edited. Update regenerates the PDF. |
+| Treasury list | Under the description (`.invoice-table__comment`, `white-space: pre-wrap`). |
+| PDF | Once, in the **Désignation** column, immediately under the first type `T` line (course title). `InvoiceGenerator::drawDesignationComment`: Helvetica Bold **12 pt** (`setTitleFont`), `MultiCell` width **108**. A multi-course invoice does not repeat it under later titles. With no `T` line, it is drawn once after the last line. It is not under the payment terms. |
+| CII | Extra `IncludedNote`, subject code **`AAI`**, after legal notes `PMT`, `PMD`, `AAB`. Whitespace-only comments are omitted. Not a priced line. |
+
+### Document recovery
+
+If the PDF later disappears, viewing the invoice regenerates it with `InvoiceService::ensurePdfOnDisk()`. The service uses linked planning rows first, then `Tools::getInvoiceDetails()` for the invoice month, school, and `course_id`, and finally one manual line from the description and HT amount.
 
 ## « Jump to unbilled sessions » button
 
@@ -106,8 +133,9 @@ If the PDF file later disappears from storage, viewing the invoice regenerates i
 | File | Role |
 |------|------|
 | `app/Http/Controllers/BillingController.php` | Period navigation, setBill, jump unbilled |
-| `app/Http/Controllers/InvoiceController.php` | Invoice creation, download, and paid lock behavior |
-| `app/Services/InvoiceService.php` | PDF creation, missing-file regeneration, planning line reconstruction |
+| `app/Http/Controllers/InvoiceController.php` | Scope, comment, download, and paid lock |
+| `app/Services/InvoiceService.php` | PDF, regeneration, course-scoped planning link |
+| `app/Classes/InvoiceGenerator.php` | Comment in the Désignation column |
 | `app/Http/Controllers/SchoolController.php` | Billing data on `show` |
 | `app/Models/School.php` | `getBillingPlanning()`, unbilled lookup |
 | `app/Models/User.php` | `getUnbilledStatsBySchool()` for the list |

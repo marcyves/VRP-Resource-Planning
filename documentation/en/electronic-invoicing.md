@@ -112,7 +112,9 @@ Paid tracking (`paid_at`) stays independent of e-invoice status.
 
 Outbound uses **CII XML → Factur-X** via SuperPDP convert API. The TCPDF PDF stays for VRP display; it is **not** the structured payload sent as the e-invoice.
 
-Line amounts come from `Tools::getInvoiceDetails()` (planning type `T` rows). If none qualify, the builder falls back to `invoice.amount / 1.2` as a single C62 line. VAT in the CII builder is currently fixed at **20%**. Due date in CII is **issue date + 1 day**.
+Line amounts come from `InvoiceService::resolveLines()` (type `T` rows): linked planning first, otherwise `Tools::getInvoiceDetails()` for the invoice month, school, and optional `invoices.course_id`. If none qualify, the builder falls back to `invoice.amount / 1.2` as a single C62 line. VAT in the CII builder is currently fixed at **20%**. Due date in CII is **issue date + 1 day**.
+
+A non-empty `invoices.comment` is an extra `IncludedNote` with subject code **`AAI`**, after the fixed French notes `PMT`, `PMD`, and `AAB`. It is not a priced line. PDF placement is in [Billing per school — invoice comment](v2-billing-per-school.md#invoice-comment).
 
 Sandbox without a school `electronic_address` can inject default routing (`SUPERPDP_SANDBOX_BUYER_*`). If the school has `electronic_address`, that value is used instead (`CiiTradeParty::fromSchool`).
 

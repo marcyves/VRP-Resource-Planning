@@ -37,6 +37,7 @@ Company
 - **`groups.active`** hides a group from planning without removing links or history.
 - **`courses.active`** (boolean, default true) is separate. It hides a course from agenda, planning, and calendar **dropdowns** (`SchoolCourseOptions`, `Course::scopeActive`). School course tables still include archived courses, and the course form does not edit the flag. See [Navigation — school and course dropdowns](v2-navigation-modules.md#school-and-course-dropdowns).
 - **Planning** sessions (`plannings`) reference `course_id` and `group_id`. Manual create stores the submitted `end` (prefilled from `courses.session_length`); that duration is not a column on `plannings`.
+- **Invoices** may point at one course (`invoices.course_id`, nullable, `nullOnDelete`). `null` means the school’s whole month. Optional `invoices.comment` (max 2000) is free text on the PDF and the CII note `AAI`. See [Billing per school](v2-billing-per-school.md#invoice-scope-one-course-or-the-whole-month).
 
 ## Links
 
