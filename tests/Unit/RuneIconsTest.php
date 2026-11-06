@@ -36,6 +36,15 @@ class RuneIconsTest extends TestCase
         $this->assertSame('money-shopping-cart', RuneIcons::resolve('shopping-cart'));
     }
 
+    public function test_cart_is_open_basket_not_a_filled_blob(): void
+    {
+        $svg = RuneIcons::svg('cart');
+
+        $this->assertStringContainsString('8.71005 16.0498H18.49', $svg);
+        $this->assertStringContainsString('var(--rune-duotone-primary, #00236f)', $svg);
+        $this->assertStringNotContainsString('fill="var(--rune-duotone-primary, #00236f)"', $svg);
+    }
+
     public function test_school_uses_pre_rune_graduation_cap(): void
     {
         $svg = RuneIcons::svg('school');

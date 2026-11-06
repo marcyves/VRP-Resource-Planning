@@ -18,3 +18,6 @@ fill replaced by a header-band fill so the agenda glyph stays readable.
 The school / école glyph (legacy-school) is the pre-Rune inline SVG from
 resources/views/components/module-tab-icon.blade.php, restored at Marc's
 request. It is not a Rune icon.
+
+money-shopping-cart uses the official basket/wheel paths with an open
+basket (no full-body fill) so Dépenses reads as a cart at tab size.
