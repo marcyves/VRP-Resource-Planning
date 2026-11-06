@@ -4,6 +4,7 @@
     'direction' => 'desc',
     'filters' => [],
     'electronicInvoicingEnabled' => false,
+    'emptyIcon' => 'inbox',
 ])
 
 @php
@@ -125,7 +126,7 @@
             </tr>
             @empty
             <tr>
-                <td colspan="9" class="invoice-table__empty"><x-empty-state>{{ __('messages.invoice_list_empty') }}</x-empty-state></td>
+                <td colspan="9" class="invoice-table__empty"><x-empty-state :icon="$emptyIcon">{{ __('messages.invoice_list_empty') }}</x-empty-state></td>
             </tr>
             @endforelse
         </tbody>

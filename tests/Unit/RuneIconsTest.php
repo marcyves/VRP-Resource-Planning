@@ -31,6 +31,9 @@ class RuneIconsTest extends TestCase
         $this->assertSame('tools-pencil', RuneIcons::resolve('edit'));
         $this->assertSame('messaging-send', RuneIcons::resolve('e-invoice'));
         $this->assertSame('documents-import', RuneIcons::resolve('import'));
+        $this->assertSame('money-euro', RuneIcons::resolve('coins'));
+        $this->assertSame('money-shopping-cart', RuneIcons::resolve('cart'));
+        $this->assertSame('money-shopping-cart', RuneIcons::resolve('shopping-cart'));
     }
 
     public function test_school_uses_pre_rune_graduation_cap(): void

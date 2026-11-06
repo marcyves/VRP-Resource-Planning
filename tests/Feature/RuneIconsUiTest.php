@@ -63,12 +63,16 @@ class RuneIconsUiTest extends TestCase
             'mode' => 'Edit',
         ]);
 
-        $this->actingAs($user)
+        $html = $this->actingAs($user)
             ->get(route('treasury.invoices.index'))
             ->assertOk()
             ->assertSee('empty-state', false)
             ->assertSee('rune-icon', false)
             ->assertDontSee('icons/trash.svg', false)
-            ->assertDontSee('icons/edit.svg', false);
+            ->assertDontSee('icons/edit.svg', false)
+            ->getContent();
+
+        $this->assertStringContainsString('M4 14H13', $html);
+        $this->assertStringContainsString('8.71005 16.0498H18.49', $html);
     }
 }

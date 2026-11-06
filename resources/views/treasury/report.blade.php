@@ -65,7 +65,7 @@
         </header>
 
         @if($expenseReport->expenses->isEmpty())
-            <p class="treasury-empty"><x-empty-state>{{ __('messages.no_expense_report') }}</x-empty-state></p>
+            <p class="treasury-empty"><x-empty-state icon="cart">{{ __('messages.no_expense_report') }}</x-empty-state></p>
         @else
             <div class="data-table">
             <table>

@@ -27,6 +27,8 @@ export const ALIASES = {
     folder: "documents-folder",
     wallet: "money-wallet",
     coins: "money-euro",
+    cart: "money-shopping-cart",
+    "shopping-cart": "money-shopping-cart",
     banknote: "money-credit-card",
     plus: "indicators-plus",
     add: "indicators-plus",

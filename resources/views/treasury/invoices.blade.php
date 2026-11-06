@@ -68,6 +68,7 @@
             :direction="$direction"
             :filters="$filters"
             :electronic-invoicing-enabled="$electronicInvoicingEnabled ?? false"
+            empty-icon="coins"
         />
     </section>
 </x-app-layout>
