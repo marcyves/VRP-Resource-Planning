@@ -52,6 +52,7 @@ class RuneIconsUiTest extends TestCase
 
         $this->assertStringContainsString('sidebar-link__icon', $html);
         $this->assertGreaterThan(3, substr_count($html, 'class="rune-icon'));
+        $this->assertStringContainsString('M22 10v6M2 10l10-5 10 5-10 5z', $html);
     }
 
     public function test_treasury_invoice_empty_state_uses_rune_icon(): void

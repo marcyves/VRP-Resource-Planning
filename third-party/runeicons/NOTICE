@@ -14,3 +14,7 @@ variables --rune-duotone-primary and --rune-duotone-secondary.
 
 schedule-calendar is the same official outline, with the stock full-body
 fill replaced by a header-band fill so the agenda glyph stays readable.
+
+The school / école glyph (legacy-school) is the pre-Rune inline SVG from
+resources/views/components/module-tab-icon.blade.php, restored at Marc's
+request. It is not a Rune icon.

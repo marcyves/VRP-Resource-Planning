@@ -16,7 +16,7 @@ const root = join(dirname(fileURLToPath(import.meta.url)), "../..");
 export const ALIASES = {
     grid: "layouts-grid-2x2",
     logo: "layouts-grid-2x2",
-    school: "documents-book-bookmark",
+    school: "legacy-school",
     layers: "layouts-layers-2",
     users: "identity-users",
     "calendar-range": "schedule-calendar",
@@ -99,11 +99,24 @@ function phpString(value) {
     return JSON.stringify(value);
 }
 
+/**
+ * Pre-Rune école / school glyph restored from module-tab-icon
+ * (Lucide-style graduation cap, stroke currentColor). Marc asked to
+ * keep this one exception; everything else stays Rune duotone.
+ */
+const LEGACY_MARKUP = {
+    "legacy-school": `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>`,
+};
+
 const runeIds = [...new Set(Object.values(ALIASES))].sort();
 const markup = {};
 const missing = [];
 
 for (const id of runeIds) {
+    if (LEGACY_MARKUP[id]) {
+        markup[id] = LEGACY_MARKUP[id];
+        continue;
+    }
     const icon = getIconById(id);
     if (!icon?.variants?.duotone) {
         missing.push(id);
@@ -180,6 +193,10 @@ variables --rune-duotone-primary and --rune-duotone-secondary.
 
 schedule-calendar is the same official outline, with the stock full-body
 fill replaced by a header-band fill so the agenda glyph stays readable.
+
+The school / école glyph (legacy-school) is the pre-Rune inline SVG from
+resources/views/components/module-tab-icon.blade.php, restored at Marc's
+request. It is not a Rune icon.
 `,
 );
 console.log("Wrote third-party/runeicons/ LICENSE and NOTICE");
