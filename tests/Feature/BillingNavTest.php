@@ -69,7 +69,10 @@ class BillingNavTest extends TestCase
             ->assertSee(__('messages.programs'), false)
             ->assertSee(__('messages.invoices'), false)
             ->assertSee(__('messages.expenses'), false)
-            ->assertSee(__('messages.bank'), false);
+            ->assertSee(__('messages.bank'), false)
+            ->assertSee(__('messages.nav_more'), false)
+            ->assertSee(__('messages.my_company'), false)
+            ->assertSee(__('messages.profile'), false);
     }
 
     public function test_sidebar_groups_activity_then_finance_before_more(): void
@@ -88,6 +91,7 @@ class BillingNavTest extends TestCase
         $expenses = strpos($html, 'href="'.e(route('treasury.expenses.index')).'"');
         $bank = strpos($html, 'href="'.e(route('treasury.bank.index')).'"');
         $more = strpos($html, __('messages.nav_more'));
+        $company = strpos($html, __('messages.my_company'));
 
         $this->assertNotFalse($activity);
         $this->assertNotFalse($programs);
@@ -96,8 +100,10 @@ class BillingNavTest extends TestCase
         $this->assertNotFalse($expenses);
         $this->assertNotFalse($bank);
         $this->assertNotFalse($more);
+        $this->assertNotFalse($company);
         $this->assertTrue($activity < $programs && $programs < $finance, 'Programme belongs in Activité, before Finance');
         $this->assertTrue($finance < $invoices && $invoices < $expenses && $expenses < $bank, 'Finance lists Factures, Dépenses, then Banque');
-        $this->assertTrue($bank < $more, 'Banque is in Finance, not under Plus');
+        $this->assertTrue($bank < $more && $more < $company, 'Plus is its own section after Finance, not a fourth Finance link');
+        $this->assertStringNotContainsString('data-sidebar-group-toggle', $html);
     }
 }

@@ -29,7 +29,11 @@
 7. **Dépenses** → `treasury.expenses.index`
 8. **Banque** → `treasury.bank.index`
 
-**Plus** (replié) : Entreprise, Profil, Connexions (admin).
+**Plus**
+
+9. **Entreprise** → `company.show`
+10. **Profil** → `profile.edit`
+11. **Connexions** (admin) → `login-stats.index`
 
 `nav.billing` redirige vers `billing.prepare`. La sidebar est dépliée par défaut ; le mode compact n’est actif que si `vrp-sidebar-compact` vaut `true` dans `localStorage`. Sous ~800 px, le bouton menu ouvre cette même liste.
 

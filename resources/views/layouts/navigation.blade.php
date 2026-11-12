@@ -63,9 +63,7 @@
                 );
                 $onBank = request()->routeIs('treasury.index', 'treasury.bank.*', 'treasury.reconciliation.*');
                 $onPrograms = request()->routeIs('program.*');
-                $onSettings = request()->routeIs('company.*', 'profile.edit', 'profile.update', 'profile.destroy');
                 $onLogins = request()->routeIs('login-stats.*');
-                $moreOpen = $onSettings || $onLogins;
             @endphp
 
             <p class="sidebar-nav-section__label">{{ __('messages.nav_daily') }}</p>
@@ -98,37 +96,18 @@
                 {{ __('messages.bank') }}
             </x-sidebar-nav-link>
 
-            <div
-                class="sidebar-nav-group {{ $moreOpen ? 'sidebar-nav-group--open' : '' }}"
-                data-sidebar-group
-            >
-                <button
-                    type="button"
-                    class="sidebar-link sidebar-link--button sidebar-nav-group__toggle {{ $moreOpen ? 'sidebar-link--active' : '' }}"
-                    aria-expanded="{{ $moreOpen ? 'true' : 'false' }}"
-                    data-sidebar-group-toggle
-                    title="{{ __('messages.nav_more') }}"
-                    aria-label="{{ __('messages.nav_more') }}"
-                >
-                    <span class="sidebar-link__icon" aria-hidden="true">
-                        <x-module-tab-icon name="folder" />
-                    </span>
-                    <span class="sidebar-link__label">{{ __('messages.nav_more') }}</span>
-                </button>
-                <div class="sidebar-nav-group__items" @if (! $moreOpen) hidden @endif data-sidebar-group-panel>
-                    <x-sidebar-nav-link icon="building" :href="route('company.show')" :active="request()->routeIs('company.*')" class="sidebar-link--nested">
-                        {{ __('messages.my_company') }}
-                    </x-sidebar-nav-link>
-                    <x-sidebar-nav-link icon="person" :href="route('profile.edit')" :active="request()->routeIs('profile.edit', 'profile.update', 'profile.destroy')" class="sidebar-link--nested">
-                        {{ __('messages.profile') }}
-                    </x-sidebar-nav-link>
-                    @if (Auth::user()->isAdmin())
-                        <x-sidebar-nav-link icon="shield" :href="route('login-stats.index')" :active="$onLogins" class="sidebar-link--nested">
-                            {{ __('messages.login_stats') }}
-                        </x-sidebar-nav-link>
-                    @endif
-                </div>
-            </div>
+            <p class="sidebar-nav-section__label">{{ __('messages.nav_more') }}</p>
+            <x-sidebar-nav-link icon="building" :href="route('company.show')" :active="request()->routeIs('company.*')">
+                {{ __('messages.my_company') }}
+            </x-sidebar-nav-link>
+            <x-sidebar-nav-link icon="person" :href="route('profile.edit')" :active="request()->routeIs('profile.edit', 'profile.update', 'profile.destroy')">
+                {{ __('messages.profile') }}
+            </x-sidebar-nav-link>
+            @if (Auth::user()->isAdmin())
+                <x-sidebar-nav-link icon="shield" :href="route('login-stats.index')" :active="$onLogins">
+                    {{ __('messages.login_stats') }}
+                </x-sidebar-nav-link>
+            @endif
         @endif
     </nav>
 
@@ -182,18 +161,6 @@
                 const toggle = document.getElementById('sidebar-toggle');
                 if (toggle) {
                     toggle.checked = false;
-                }
-            });
-        });
-
-        document.querySelectorAll('[data-sidebar-group]').forEach((group) => {
-            const toggle = group.querySelector('[data-sidebar-group-toggle]');
-            const panel = group.querySelector('[data-sidebar-group-panel]');
-            toggle?.addEventListener('click', () => {
-                const open = group.classList.toggle('sidebar-nav-group--open');
-                toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
-                if (panel) {
-                    panel.hidden = !open;
                 }
             });
         });

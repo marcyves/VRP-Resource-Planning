@@ -29,7 +29,11 @@
 7. **Expenses** → `treasury.expenses.index`
 8. **Bank** → `treasury.bank.index`
 
-**More** (collapsed): Company, Profile, Connections (admin).
+**More**
+
+9. **Company** → `company.show`
+10. **Profile** → `profile.edit`
+11. **Connections** (admin) → `login-stats.index`
 
 `nav.billing` redirects to `billing.prepare`. The sidebar starts expanded; compact mode applies only when `vrp-sidebar-compact` is `true` in `localStorage`. Under ~800 px the menu button opens this same list.
 
