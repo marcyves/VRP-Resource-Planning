@@ -480,6 +480,7 @@ return [
     'nav_referential' => 'Référentiel',
     'nav_daily' => 'Quotidien',
     'nav_activity' => 'Activité',
+    'nav_finance' => 'Finance',
     'nav_more' => 'Plus',
     'nav_invoice' => 'Facturer',
     'planning_unbilled_link' => ':count :schools à facturer · :amount €',

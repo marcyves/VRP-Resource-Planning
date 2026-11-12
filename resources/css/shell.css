@@ -262,6 +262,10 @@ html[data-sidebar-compact="true"] .sidebar-nav-section__label {
     padding-left: 0.5rem;
 }
 
+.sidebar-nav-group__items[hidden] {
+    display: none;
+}
+
 .sidebar-link--nested {
     padding-left: 1.5rem;
     font-size: 0.8125rem;

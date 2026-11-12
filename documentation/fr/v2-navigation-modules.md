@@ -16,15 +16,20 @@
 
 1. **Agenda** → `planning.index` — calendrier mois / semaine, ligne d’heures et de montant, lien vers Facturer s’il reste du non facturé. Import ICS : action **Importer un calendrier** (`calendar.index`) — [import-calendrier.md](import-calendrier.md)
 2. **Facturer** → `billing.prepare` — clients avec séances non facturées du mois, puis section de préparation (`school.show?panel=billing`)
-3. **Factures** → `treasury.invoices.index`
-4. **Dépenses** → `treasury.expenses.index`
 
 **Activité**
 
-5. **Écoles** (libellé terminologique) → `home`
-6. **Groupes** → `group.index` (catalogue). Les groupes d’une école restent l’onglet de sa fiche. La création se fait depuis la fiche cours (formation 1 cours / mentoring multi — [gestion des groupes](gestion-groupes.md)).
+3. **Écoles** (libellé terminologique) → `home`
+4. **Groupes** → `group.index` (catalogue). Les groupes d’une école restent l’onglet de sa fiche. La création se fait depuis la fiche cours (formation 1 cours / mentoring multi — [gestion des groupes](gestion-groupes.md)).
+5. **Programmes** (libellé terminologique) → `program.index`
 
-**Plus** (replié) : Banque (`treasury.bank.index`), Programmes, Entreprise, Profil, Connexions (admin).
+**Finance**
+
+6. **Factures** → `treasury.invoices.index`
+7. **Dépenses** → `treasury.expenses.index`
+8. **Banque** → `treasury.bank.index`
+
+**Plus** (replié) : Entreprise, Profil, Connexions (admin).
 
 `nav.billing` redirige vers `billing.prepare`. La sidebar est dépliée par défaut ; le mode compact n’est actif que si `vrp-sidebar-compact` vaut `true` dans `localStorage`. Sous ~800 px, le bouton menu ouvre cette même liste.
 

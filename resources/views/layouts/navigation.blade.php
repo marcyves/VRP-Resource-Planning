@@ -65,7 +65,7 @@
                 $onPrograms = request()->routeIs('program.*');
                 $onSettings = request()->routeIs('company.*', 'profile.edit', 'profile.update', 'profile.destroy');
                 $onLogins = request()->routeIs('login-stats.*');
-                $moreOpen = $onBank || $onPrograms || $onSettings || $onLogins;
+                $moreOpen = $onSettings || $onLogins;
             @endphp
 
             <p class="sidebar-nav-section__label">{{ __('messages.nav_daily') }}</p>
@@ -75,12 +75,6 @@
             <x-sidebar-nav-link icon="receipt" :href="route('billing.prepare')" :active="$onBilling">
                 {{ __('messages.nav_invoice') }}
             </x-sidebar-nav-link>
-            <x-sidebar-nav-link icon="wallet" :href="route('treasury.invoices.index')" :active="$onInvoices">
-                {{ __('messages.invoices') }}
-            </x-sidebar-nav-link>
-            <x-sidebar-nav-link icon="cart" :href="route('treasury.expenses.index')" :active="$onExpenses">
-                {{ __('messages.expenses') }}
-            </x-sidebar-nav-link>
 
             <p class="sidebar-nav-section__label">{{ __('messages.nav_activity') }}</p>
             <x-sidebar-nav-link icon="school" :href="route('home')" :active="$onSchools">
@@ -88,6 +82,20 @@
             </x-sidebar-nav-link>
             <x-sidebar-nav-link icon="users" :href="route('group.index')" :active="request()->routeIs('group.*')">
                 {{ __('messages.groups') }}
+            </x-sidebar-nav-link>
+            <x-sidebar-nav-link icon="layers" :href="route('program.index')" :active="$onPrograms">
+                {{ __('messages.programs') }}
+            </x-sidebar-nav-link>
+
+            <p class="sidebar-nav-section__label">{{ __('messages.nav_finance') }}</p>
+            <x-sidebar-nav-link icon="wallet" :href="route('treasury.invoices.index')" :active="$onInvoices">
+                {{ __('messages.invoices') }}
+            </x-sidebar-nav-link>
+            <x-sidebar-nav-link icon="cart" :href="route('treasury.expenses.index')" :active="$onExpenses">
+                {{ __('messages.expenses') }}
+            </x-sidebar-nav-link>
+            <x-sidebar-nav-link icon="banknote" :href="route('treasury.bank.index')" :active="$onBank">
+                {{ __('messages.bank') }}
             </x-sidebar-nav-link>
 
             <div
@@ -108,12 +116,6 @@
                     <span class="sidebar-link__label">{{ __('messages.nav_more') }}</span>
                 </button>
                 <div class="sidebar-nav-group__items" @if (! $moreOpen) hidden @endif data-sidebar-group-panel>
-                    <x-sidebar-nav-link icon="banknote" :href="route('treasury.bank.index')" :active="$onBank" class="sidebar-link--nested">
-                        {{ __('messages.bank') }}
-                    </x-sidebar-nav-link>
-                    <x-sidebar-nav-link icon="layers" :href="route('program.index')" :active="$onPrograms" class="sidebar-link--nested">
-                        {{ __('messages.programs') }}
-                    </x-sidebar-nav-link>
                     <x-sidebar-nav-link icon="building" :href="route('company.show')" :active="request()->routeIs('company.*')" class="sidebar-link--nested">
                         {{ __('messages.my_company') }}
                     </x-sidebar-nav-link>

@@ -464,6 +464,7 @@ return [
     'nav_referential' => 'Referential',
     'nav_daily' => 'Today',
     'nav_activity' => 'Activity',
+    'nav_finance' => 'Finance',
     'nav_more' => 'More',
     'nav_invoice' => 'Invoice',
     'planning_unbilled_link' => ':count :schools to invoice · :amount €',
