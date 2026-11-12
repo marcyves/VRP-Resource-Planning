@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\Company;
 use App\Models\User;
 use Database\Seeders\CompanySeeder;
 use Database\Seeders\StatusSeeder;
@@ -22,9 +23,16 @@ class BillingNavTest extends TestCase
         ]);
     }
 
+    private function companyUser(): User
+    {
+        return User::factory()->create([
+            'company_id' => Company::query()->where('bill_prefix', 'XDM')->value('id'),
+        ]);
+    }
+
     public function test_legacy_billing_nav_opens_the_prepare_list(): void
     {
-        $user = User::factory()->create(['company_id' => 2]);
+        $user = $this->companyUser();
 
         $this->actingAs($user)
             ->get(route('nav.billing'))
@@ -33,7 +41,7 @@ class BillingNavTest extends TestCase
 
     public function test_prepare_list_renders_without_a_school_in_session(): void
     {
-        $user = User::factory()->create(['company_id' => 2]);
+        $user = $this->companyUser();
 
         $this->actingAs($user)
             ->get(route('billing.prepare'))
@@ -43,7 +51,7 @@ class BillingNavTest extends TestCase
 
     public function test_daily_sidebar_links_schools_and_groups(): void
     {
-        $user = User::factory()->create(['company_id' => 2]);
+        $user = $this->companyUser();
 
         $this->actingAs($user)
             ->get(route('planning.index'))
@@ -51,9 +59,51 @@ class BillingNavTest extends TestCase
             ->assertSee(route('billing.prepare'), false)
             ->assertSee(route('treasury.invoices.index'), false)
             ->assertSee(route('treasury.expenses.index'), false)
+            ->assertSee(route('treasury.bank.index'), false)
             ->assertSee(route('home'), false)
             ->assertSee(route('group.index'), false)
+            ->assertSee(route('program.index'), false)
             ->assertSee(__('messages.nav_daily'), false)
-            ->assertSee(__('messages.nav_activity'), false);
+            ->assertSee(__('messages.nav_activity'), false)
+            ->assertSee(__('messages.nav_finance'), false)
+            ->assertSee(__('messages.programs'), false)
+            ->assertSee(__('messages.invoices'), false)
+            ->assertSee(__('messages.expenses'), false)
+            ->assertSee(__('messages.bank'), false)
+            ->assertSee(__('messages.nav_more'), false)
+            ->assertSee(__('messages.my_company'), false)
+            ->assertSee(__('messages.profile'), false);
+    }
+
+    public function test_sidebar_groups_activity_then_finance_before_more(): void
+    {
+        $user = $this->companyUser();
+
+        $html = $this->actingAs($user)
+            ->get(route('planning.index'))
+            ->assertOk()
+            ->getContent();
+
+        $activity = strpos($html, __('messages.nav_activity'));
+        $programs = strpos($html, 'href="'.e(route('program.index')).'"');
+        $finance = strpos($html, __('messages.nav_finance'));
+        $invoices = strpos($html, 'href="'.e(route('treasury.invoices.index')).'"');
+        $expenses = strpos($html, 'href="'.e(route('treasury.expenses.index')).'"');
+        $bank = strpos($html, 'href="'.e(route('treasury.bank.index')).'"');
+        $more = strpos($html, __('messages.nav_more'));
+        $company = strpos($html, __('messages.my_company'));
+
+        $this->assertNotFalse($activity);
+        $this->assertNotFalse($programs);
+        $this->assertNotFalse($finance);
+        $this->assertNotFalse($invoices);
+        $this->assertNotFalse($expenses);
+        $this->assertNotFalse($bank);
+        $this->assertNotFalse($more);
+        $this->assertNotFalse($company);
+        $this->assertTrue($activity < $programs && $programs < $finance, 'Programme belongs in Activité, before Finance');
+        $this->assertTrue($finance < $invoices && $invoices < $expenses && $expenses < $bank, 'Finance lists Factures, Dépenses, then Banque');
+        $this->assertTrue($bank < $more && $more < $company, 'Plus is its own section after Finance, not a fourth Finance link');
+        $this->assertStringNotContainsString('data-sidebar-group-toggle', $html);
     }
 }

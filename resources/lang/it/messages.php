@@ -290,6 +290,7 @@ return array (
   'module_navigation' => 'Navigazione modulo',
   'nav_daily' => 'Quotidiano',
   'nav_activity' => 'Attività',
+  'nav_finance' => 'Finanza',
   'nav_more' => 'Altro',
   'nav_invoice' => 'Fatturare',
   'planning_unbilled_link' => ':count :schools da fatturare · :amount €',

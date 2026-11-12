@@ -10,7 +10,7 @@ web
 
 **Primary (confirmed):** the unauthenticated prospect on the public home (`/`) who decides whether to request an account. Design work for that person: landing, hero, login, and “Demander un compte”.
 
-The signed-in practitioner is also a design surface for the daily shell: Agenda, Facturer, Factures, Dépenses, plus Écoles and Groupes. Do not treat that shell as out of scope.
+The signed-in practitioner is also a design surface for the signed-in shell: Agenda and Facturer (Quotidien); Écoles, Groupes and Programmes (Activité); Factures, Dépenses and Banque (Finance). Do not treat that shell as out of scope.
 
 ## Product Purpose
 
@@ -61,7 +61,7 @@ Undecided: no product-specific accessibility standard (e.g. RGAA) was confirmed.
 
 ## Product Principles
 
-1. **The public prospect and the signed-in daily shell are both design surfaces.** Landing stays for the prospect; Agenda, Facturer, Factures and Dépenses stay for the practitioner.
+1. **The public prospect and the signed-in shell are both design surfaces.** Landing stays for the prospect; Quotidien, Activité and Finance stay for the practitioner.
 2. **One company, one vocabulary** — labels follow the tenant profile; data stays the same.
 3. **Billing lives on the client**, not as a detached afterthought.
 4. **Tenants are provisioned, not self-served** unless registration is explicitly turned on.

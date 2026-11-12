@@ -16,15 +16,24 @@
 
 1. **Agenda** → `planning.index` — month / week calendar, one hours-and-amount line, and a link to Invoice when work is still unbilled. ICS import is the secondary action **Import a calendar** (`calendar.index`) — [calendar-import.md](calendar-import.md)
 2. **Invoice** → `billing.prepare` — clients with unbilled sessions this month, then the preparation section (`school.show?panel=billing`)
-3. **Invoices** → `treasury.invoices.index`
-4. **Expenses** → `treasury.expenses.index`
 
 **Activity**
 
-5. **Schools** (terminology label) → `home`
-6. **Groups** → `group.index` (catalog). A school’s groups stay on that school’s Groups tab. Create a group from the course page (training = one course / mentoring = multi — [group management](group-management.md)).
+3. **Schools** (terminology label) → `home`
+4. **Groups** → `group.index` (catalog). A school’s groups stay on that school’s Groups tab. Create a group from the course page (training = one course / mentoring = multi — [group management](group-management.md)).
+5. **Programs** (terminology label) → `program.index`
 
-**More** (collapsed): Bank (`treasury.bank.index`), Programs, Company, Profile, Connections (admin).
+**Finance**
+
+6. **Invoices** → `treasury.invoices.index`
+7. **Expenses** → `treasury.expenses.index`
+8. **Bank** → `treasury.bank.index`
+
+**More**
+
+9. **Company** → `company.show`
+10. **Profile** → `profile.edit`
+11. **Connections** (admin) → `login-stats.index`
 
 `nav.billing` redirects to `billing.prepare`. The sidebar starts expanded; compact mode applies only when `vrp-sidebar-compact` is `true` in `localStorage`. Under ~800 px the menu button opens this same list.
 
