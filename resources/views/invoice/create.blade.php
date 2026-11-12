@@ -3,8 +3,6 @@
         <h2>{{ __('messages.invoice_create') }}</h2>
     </x-slot>
 
-    <x-treasury-module-tabs active="invoices" />
-
     @if (Auth::user()->getMode() == 'Edit')
     <section class="bills-container">
         <form action="{{ route('invoice.store') }}" method="post" class="group-form nice-form nice-form--wide invoice-create-form">
@@ -137,7 +135,7 @@
             </div>
 
             <div class="form-actions">
-                <a class="btn btn-secondary" href="{{ ($fromSchoolBilling ?? false) ? route('school.show', $school).'#billing' : route('treasury.invoices.index') }}">{{ __('messages.cancel') }}</a>
+                <a class="btn btn-secondary" href="{{ ($fromSchoolBilling ?? false) ? route('school.show', ['school' => $school, 'panel' => 'billing']) : route('treasury.invoices.index') }}">{{ __('messages.cancel') }}</a>
                 <x-button-primary>{{ __('messages.bill_create') }}</x-button-primary>
             </div>
         </form>

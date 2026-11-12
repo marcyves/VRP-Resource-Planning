@@ -3,19 +3,19 @@
         <h2>{{ __('messages.invoices') }} @if($current_year !== 'all'){{ $current_year }}@endif</h2>
     </x-slot>
 
-    <x-treasury-module-tabs active="invoices" />
-
-    @if (Auth::user()->getMode() == 'Edit')
-        <p class="form-hint" style="margin-bottom: 1rem;">
-            @php $createSchoolId = session('school_id') ?? session('last_school_id'); @endphp
-            @if ($createSchoolId)
-                <a class="btn btn-primary" href="{{ route('invoice.create', ['school_id' => $createSchoolId]) }}">{{ __('messages.invoice_create') }}</a>
-            @else
-                <a class="btn btn-secondary" href="{{ route('nav.billing') }}">{{ __('messages.invoice_create') }}</a>
-                <span class="form-hint">{{ __('messages.billing_needs_school_hint') }}</span>
-            @endif
-        </p>
-    @endif
+    <section class="page-toolbar">
+        <x-year-filter />
+        @if (Auth::user()->getMode() == 'Edit')
+            <div class="page-toolbar__actions">
+                @php $createSchoolId = session('school_id') ?? session('last_school_id'); @endphp
+                @if ($createSchoolId)
+                    <a class="btn btn-primary" href="{{ route('invoice.create', ['school_id' => $createSchoolId]) }}">{{ __('messages.invoice_create') }}</a>
+                @else
+                    <a class="btn btn-secondary" href="{{ route('billing.prepare') }}">{{ __('messages.nav_invoice') }}</a>
+                @endif
+            </div>
+        @endif
+    </section>
 
     <section class="bills-container">
         <form method="get" action="{{ route('treasury.invoices.index') }}" class="invoice-list-filters">

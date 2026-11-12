@@ -236,6 +236,19 @@ html[data-sidebar-compact="true"] {
     background: var(--nav-border);
 }
 
+.sidebar-nav-section__label {
+    margin: 0.85rem 0.875rem 0.15rem;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--sidebar-fg-muted);
+}
+
+html[data-sidebar-compact="true"] .sidebar-nav-section__label {
+    display: none;
+}
+
 .sidebar-nav-group {
     display: flex;
     flex-direction: column;

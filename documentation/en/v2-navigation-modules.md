@@ -7,21 +7,26 @@
 | Element | Files | Role |
 |---------|-------|------|
 | Sidebar | `resources/views/layouts/navigation.blade.php`, `resources/js/sidebar.js`, `resources/css/shell.css`, `navigation.css` | Main menu, compact mode, logo, sign out |
-| Topbar | `resources/views/layouts/topbar.blade.php` | Page title, breadcrumbs, Edit/Browse toggle, theme |
+| Topbar | `resources/views/layouts/topbar.blade.php` | Page title, theme, profile menu (Edit/Browse toggle) |
 | Layout | `resources/views/layouts/app.blade.php` | Sidebar + content grid |
 
 ### Sidebar menu (order — company user)
 
-1. **Agenda** → `planning.index` (+ **Calendar** tab `calendar.index`) — **month** / **week** views · **Invoice this month’s work** panel (schools with sessions, unbilled first). ICS import: [calendar-import.md](calendar-import.md)
-2. **Schools** (terminology label) → `home`
-3. **Treasury** → `treasury.index`
-4. separator
-5. **Referential** (submenu) → Programs · Groups
+**Today**
 
-**Groups** catalog kept for browsing; **create** from the course page (training = one course / mentoring = multi — [group management](group-management.md)).
-No top-level **Billing** sidebar item: preparation stays on `school.show#billing` (internal `nav.billing` shortcut kept).
+1. **Agenda** → `planning.index` — month / week calendar, one hours-and-amount line, and a link to Invoice when work is still unbilled. ICS import is the secondary action **Import a calendar** (`calendar.index`) — [calendar-import.md](calendar-import.md)
+2. **Invoice** → `billing.prepare` — clients with unbilled sessions this month, then the preparation section (`school.show?panel=billing`)
+3. **Invoices** → `treasury.invoices.index`
+4. **Expenses** → `treasury.expenses.index`
 
-The sidebar starts in compact mode unless `vrp-sidebar-compact` is `false` in `localStorage`.
+**Activity**
+
+5. **Schools** (terminology label) → `home`
+6. **Groups** → `group.index` (catalog). A school’s groups stay on that school’s Groups tab. Create a group from the course page (training = one course / mentoring = multi — [group management](group-management.md)).
+
+**More** (collapsed): Bank (`treasury.bank.index`), Programs, Company, Profile, Connections (admin).
+
+`nav.billing` redirects to `billing.prepare`. The sidebar starts expanded; compact mode applies only when `vrp-sidebar-compact` is `true` in `localStorage`. Under ~800 px the menu button opens this same list.
 
 ## Home page
 
@@ -30,7 +35,7 @@ The sidebar starts in compact mode unless `vrp-sidebar-compact` is `false` in `l
 | `/home` | `home` | `SchoolController@index` | School list, billing stats, chart, link to annual workload |
 | `/dashboard` | `dashboard` | redirect | Alias → `home` |
 
-Post-login constant: `RouteServiceProvider::HOME = '/home'`.
+Post-login constant: `RouteServiceProvider::HOME = '/planning'` (agenda). `/home` remains the school list.
 
 ### Per-school indicators (list)
 
@@ -41,8 +46,7 @@ Post-login constant: `RouteServiceProvider::HOME = '/home'`.
 
 | Component | Module | Tabs |
 |-----------|--------|------|
-| `scheduling-module-tabs` | Scheduling | Planning · Calendar (`/admin/calendars` — ICS import) |
-| `treasury-module-tabs` | Treasury | Summary · Invoices · Bank · Expenses |
+| `treasury-module-tabs` | Bank | Summary · Bank (off the daily path) |
 | `referential-module-tabs` | Referential | Programs · Groups |
 | `settings-module-tabs` | Settings | Company · profile |
 
@@ -60,7 +64,7 @@ Post-login constant: `RouteServiceProvider::HOME = '/home'`.
 
 Prev / next (`planning.previous` / `planning.next`) call `Tools::shiftPlanningPeriod()`: **±1 week** in week view (month/year follow the Monday), **±1 month** in month view. Week start is stored in `planning_week_start`; changing the month selector resets it to the first Monday of that month (or today if the displayed month is current).
 
-KPI cards reuse the **visible period** (week or month). Amounts display TTC (`gain × 1.2`). Events outside 08:00–20:00 are clamped / hidden (`Tools::weekEventPosition()`). Days that belong to the adjacent month get `--outside` styling.
+Visible-period totals (week or month) sit on one line under the title, in TTC (`gain × 1.2`). When work is still unbilled, one line links to Invoice. Events outside 08:00–20:00 are clamped / hidden (`Tools::weekEventPosition()`). Days that belong to the adjacent month get `--outside` styling.
 
 Agenda lists sessions by **session date**, not by `courses.year`. A 2026 course with a January 2027 session still appears when browsing January 2027.
 
@@ -112,7 +116,7 @@ Three rows (`planning-session-form__row--when`, `--billing-create`, `--assignmen
 - Server prefill is `Tools::planningEndFromSessionLength`: hours × 60, then rounded to the nearest 5 minutes. Example: 10:00 and `2,5` → 12:30.
 - `store` keeps the submitted end when it is **strictly after** begin. If end ≤ begin, it falls back to that helper with the submitted `session_length`. It does not update `courses.session_length`.
 - Begin hours **8–21**, end hours **8–23**, minutes in steps of 5.
-- Hourly rate is `courses.rate` (stored **HT**). Intervention amount is `Tools::planningGain(begin, end, rate, 1)` — duration × rate. Agenda KPI cards still show TTC (`gain × 1.2`); this form does not.
+- Hourly rate is `courses.rate` (stored **HT**). Intervention amount is `Tools::planningGain(begin, end, rate, 1)` — duration × rate. The agenda line still shows TTC (`gain × 1.2`); this form does not.
 - Groups are the active links of that course (`getLinkedGroups(true)`). Value `0` creates a group and a `group_course` row from the inline fields.
 - Labels follow the company terminology profile.
 - A successful save clears breadcrumb `course` / `course_id` and returns to `planning.index`.
@@ -131,7 +135,7 @@ Three rows (`planning-session-form__row--when`, `--billing-create`, `--assignmen
 - `update` writes `begin`, `end`, `group_id`, `course_id`, and `billable_rate`. It does not rebuild end from a standard duration, and it does not reject end ≤ begin.
 - `invoice_id` disables the fieldset and blocks save (`session_locked_by_invoice`). Duplicate actions are hidden.
 - Group options are the active links of the course loaded on this GET, plus the current group if it is inactive. Changing the course select updates the rate preview only; it does not reload groups.
-- Success goes to `school.show#billing` when `school_id` is in session, otherwise `planning.index`.
+- Success goes to `school.show?panel=billing` when `school_id` is in session, otherwise `planning.index`.
 
 ### Session duplication
 

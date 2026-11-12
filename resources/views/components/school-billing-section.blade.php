@@ -23,6 +23,7 @@
             :current_month="$currentMonth"
             route="school.billing"
             :school="$school"
+            panel="billing"
             :by_date="$byDate"
         />
 

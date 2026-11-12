@@ -3,8 +3,6 @@
         <h2>{{ $expense->exists ? __('messages.expense_edit') : __('messages.expense_create') }}</h2>
     </x-slot>
 
-    <x-treasury-module-tabs active="expenses" />
-
     <section>
         @php
             $includeInReport = old('include_in_expense_report', (bool) $expense->expense_report_id || !request('standalone'));
@@ -106,7 +104,7 @@
             </div>
 
             <div class="form-actions">
-                <a class="btn btn-secondary" href="{{ route('treasury.index') }}">{{ __('messages.cancel') }}</a>
+                <a class="btn btn-secondary" href="{{ route('treasury.expenses.index') }}">{{ __('messages.cancel') }}</a>
                 <x-button-primary>{{ __('messages.save') }}</x-button-primary>
             </div>
         </form>

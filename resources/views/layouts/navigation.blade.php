@@ -4,13 +4,13 @@
 
 <aside class="app-sidebar" aria-label="{{ __('messages.nav_menu') }}">
     <div class="app-sidebar__brand">
-        <a href="{{ Auth::user()->isSuperAdmin() ? route('super-admin.companies.index') : route('home') }}" class="app-sidebar__brand-logo" aria-label="{{ config('app.name') }}">
+        <a href="{{ Auth::user()->isSuperAdmin() ? route('super-admin.companies.index') : route('planning.index') }}" class="app-sidebar__brand-logo" aria-label="{{ config('app.name') }}">
             <span class="app-sidebar__logo">
                 <x-application-logo />
             </span>
         </a>
         <div class="app-sidebar__brand-text">
-            <a href="{{ Auth::user()->isSuperAdmin() ? route('super-admin.companies.index') : route('home') }}" class="app-sidebar__app-name">{{ config('app.name') }}</a>
+            <a href="{{ Auth::user()->isSuperAdmin() ? route('super-admin.companies.index') : route('planning.index') }}" class="app-sidebar__app-name">{{ config('app.name') }}</a>
             @if (Auth::user()->isSuperAdmin())
                 <span class="app-sidebar__app-tag">{{ __('messages.super_admin_platform') }}</span>
             @elseif (Auth::user()->company)
@@ -43,18 +43,13 @@
                 {{ __('messages.login_stats') }}
             </x-sidebar-nav-link>
         @else
-            <x-sidebar-nav-link
-                icon="calendar-range"
-                :href="route('planning.index')"
-                :active="request()->routeIs('planning.*', 'calendar.*')"
-            >
-                {{ __('messages.planning') }}
-            </x-sidebar-nav-link>
-
-            <x-sidebar-nav-link
-                icon="school"
-                :href="route('home')"
-                :active="request()->routeIs(
+            @php
+                $onBilling = request()->routeIs('billing.prepare', 'billing.prepare.*', 'school.billing.*')
+                    || (request()->routeIs('school.show') && request('panel') === 'billing')
+                    || request('focus') === 'billing';
+                $onInvoices = request()->routeIs('treasury.invoices.*', 'invoice.*');
+                $onExpenses = request()->routeIs('treasury.expenses.*', 'treasury.reports.*');
+                $onSchools = ! $onBilling && request()->routeIs(
                     'home',
                     'dashboard',
                     'school.dashboard',
@@ -64,34 +59,74 @@
                     'school.create',
                     'school.edit',
                     'school.add',
-                    'school.billing.*',
                     'course.*'
-                )"
-            >
+                );
+                $onBank = request()->routeIs('treasury.index', 'treasury.bank.*', 'treasury.reconciliation.*');
+                $onPrograms = request()->routeIs('program.*');
+                $onSettings = request()->routeIs('company.*', 'profile.edit', 'profile.update', 'profile.destroy');
+                $onLogins = request()->routeIs('login-stats.*');
+                $moreOpen = $onBank || $onPrograms || $onSettings || $onLogins;
+            @endphp
+
+            <p class="sidebar-nav-section__label">{{ __('messages.nav_daily') }}</p>
+            <x-sidebar-nav-link icon="calendar-range" :href="route('planning.index')" :active="request()->routeIs('planning.*', 'calendar.*')">
+                {{ __('messages.planning') }}
+            </x-sidebar-nav-link>
+            <x-sidebar-nav-link icon="receipt" :href="route('billing.prepare')" :active="$onBilling">
+                {{ __('messages.nav_invoice') }}
+            </x-sidebar-nav-link>
+            <x-sidebar-nav-link icon="wallet" :href="route('treasury.invoices.index')" :active="$onInvoices">
+                {{ __('messages.invoices') }}
+            </x-sidebar-nav-link>
+            <x-sidebar-nav-link icon="cart" :href="route('treasury.expenses.index')" :active="$onExpenses">
+                {{ __('messages.expenses') }}
+            </x-sidebar-nav-link>
+
+            <p class="sidebar-nav-section__label">{{ __('messages.nav_activity') }}</p>
+            <x-sidebar-nav-link icon="school" :href="route('home')" :active="$onSchools">
                 {{ __('messages.schools') }}
             </x-sidebar-nav-link>
-
-            <x-sidebar-nav-link
-                icon="wallet"
-                :href="route('treasury.index')"
-                :active="request()->routeIs('treasury.*', 'invoice.*')"
-            >
-                {{ __('messages.treasury') }}
+            <x-sidebar-nav-link icon="users" :href="route('group.index')" :active="request()->routeIs('group.*')">
+                {{ __('messages.groups') }}
             </x-sidebar-nav-link>
 
-            <div class="sidebar-nav-separator" role="separator" aria-hidden="true"></div>
-
-            @if (Auth::user()->isAdmin())
-                <x-sidebar-nav-link
-                    icon="shield"
-                    :href="route('login-stats.index')"
-                    :active="request()->routeIs('login-stats.*')"
+            <div
+                class="sidebar-nav-group {{ $moreOpen ? 'sidebar-nav-group--open' : '' }}"
+                data-sidebar-group
+            >
+                <button
+                    type="button"
+                    class="sidebar-link sidebar-link--button sidebar-nav-group__toggle {{ $moreOpen ? 'sidebar-link--active' : '' }}"
+                    aria-expanded="{{ $moreOpen ? 'true' : 'false' }}"
+                    data-sidebar-group-toggle
+                    title="{{ __('messages.nav_more') }}"
+                    aria-label="{{ __('messages.nav_more') }}"
                 >
-                    {{ __('messages.login_stats') }}
-                </x-sidebar-nav-link>
-            @endif
-
-            <x-sidebar-nav-group :active="request()->routeIs('program.*', 'group.*')" />
+                    <span class="sidebar-link__icon" aria-hidden="true">
+                        <x-module-tab-icon name="folder" />
+                    </span>
+                    <span class="sidebar-link__label">{{ __('messages.nav_more') }}</span>
+                </button>
+                <div class="sidebar-nav-group__items" @if (! $moreOpen) hidden @endif data-sidebar-group-panel>
+                    <x-sidebar-nav-link icon="banknote" :href="route('treasury.bank.index')" :active="$onBank" class="sidebar-link--nested">
+                        {{ __('messages.bank') }}
+                    </x-sidebar-nav-link>
+                    <x-sidebar-nav-link icon="layers" :href="route('program.index')" :active="$onPrograms" class="sidebar-link--nested">
+                        {{ __('messages.programs') }}
+                    </x-sidebar-nav-link>
+                    <x-sidebar-nav-link icon="building" :href="route('company.show')" :active="request()->routeIs('company.*')" class="sidebar-link--nested">
+                        {{ __('messages.my_company') }}
+                    </x-sidebar-nav-link>
+                    <x-sidebar-nav-link icon="person" :href="route('profile.edit')" :active="request()->routeIs('profile.edit', 'profile.update', 'profile.destroy')" class="sidebar-link--nested">
+                        {{ __('messages.profile') }}
+                    </x-sidebar-nav-link>
+                    @if (Auth::user()->isAdmin())
+                        <x-sidebar-nav-link icon="shield" :href="route('login-stats.index')" :active="$onLogins" class="sidebar-link--nested">
+                            {{ __('messages.login_stats') }}
+                        </x-sidebar-nav-link>
+                    @endif
+                </div>
+            </div>
         @endif
     </nav>
 
@@ -100,11 +135,11 @@
             type="button"
             id="sidebar-compact-toggle"
             class="sidebar-link sidebar-link--button sidebar-compact-toggle"
-            aria-pressed="true"
+            aria-pressed="false"
             data-label-expand="{{ __('messages.sidebar_expand') }}"
             data-label-collapse="{{ __('messages.sidebar_collapse') }}"
-            aria-label="{{ __('messages.sidebar_expand') }}"
-            title="{{ __('messages.sidebar_expand') }}"
+            aria-label="{{ __('messages.sidebar_collapse') }}"
+            title="{{ __('messages.sidebar_collapse') }}"
         >
             <span class="sidebar-link__icon sidebar-compact-toggle__icon sidebar-compact-toggle__icon--expand" aria-hidden="true">
                 <x-module-tab-icon name="panel-left-open" />

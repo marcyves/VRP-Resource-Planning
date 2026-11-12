@@ -3,8 +3,6 @@
         <h2>{{ __('messages.invoice_edit') }}</h2>
     </x-slot>
 
-    <x-treasury-module-tabs active="invoices" />
-
     @if(Auth::user()->getMode() == "Edit")
     <section>
         <form action="{{ route('invoice.update', $invoice) }}" method="post" class="group-form nice-form">

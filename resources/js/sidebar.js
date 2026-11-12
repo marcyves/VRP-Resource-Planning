@@ -2,7 +2,7 @@ const STORAGE_KEY = 'vrp-sidebar-compact';
 
 export function isSidebarCompact() {
     const stored = localStorage.getItem(STORAGE_KEY);
-    return stored !== 'false';
+    return stored === 'true';
 }
 
 export function applySidebarCompact(compact) {

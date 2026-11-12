@@ -5,8 +5,6 @@
         </h2>
     </x-slot>
 
-    <x-referential-module-tabs />
-
     <section>
         <x-program-table :programs="$programs" />
     </section>

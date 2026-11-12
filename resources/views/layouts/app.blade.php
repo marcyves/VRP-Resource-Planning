@@ -20,7 +20,7 @@
 
             var sidebarKey = 'vrp-sidebar-compact';
             var sidebarStored = localStorage.getItem(sidebarKey);
-            document.documentElement.dataset.sidebarCompact = sidebarStored === 'false' ? 'false' : 'true';
+            document.documentElement.dataset.sidebarCompact = sidebarStored === 'true' ? 'true' : 'false';
         })();
     </script>
 

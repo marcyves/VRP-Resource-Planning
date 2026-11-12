@@ -8,15 +8,15 @@ web
 
 ## Users
 
-**Primary (confirmed):** the unauthenticated prospect on the public home (`/`) who decides whether to request an account. Design work is for this person: landing, hero, login, and “Demander un compte”.
+**Primary (confirmed):** the unauthenticated prospect on the public home (`/`) who decides whether to request an account. Design work for that person: landing, hero, login, and “Demander un compte”.
 
-The signed-in practitioner (trainer, consultant, care practice) and the XDM super-admin **exist in the product** but are **out of scope for design priority**. Do not treat `/home`, agenda, or treasury as the surfaces to optimize unless the user explicitly reopens this.
+The signed-in practitioner is also a design surface for the daily shell: Agenda, Facturer, Factures, Dépenses, plus Écoles and Groupes. Do not treat that shell as out of scope.
 
 ## Product Purpose
 
 VRP Plan is a multi-tenant web app for **planning**, **billing**, and **treasury**. It exists so a small professional structure can run its activity in one place: clients (schools / structures), programmes, courses, groups, agenda, PDF invoices, bank reconciliation, and per-client documents.
 
-Success (design): the prospect understands the offer and sends an account request (or signs in if they already have one). Operational success for signed-in users remains a product fact, not a design-priority surface.
+Success (design): the prospect understands the offer and sends an account request (or signs in if they already have one). Signed-in success is opening the agenda and reaching Facturer, Factures, or Dépenses without crossing the school sheet.
 
 ## Positioning
 
@@ -27,7 +27,7 @@ A neighbouring planner or invoicing tool cannot truthfully claim this combinatio
 - Local: Laravel Sail (Docker); production: SFTP IONOS.
 - Default locale `fr`; also `en` and `it`.
 - Guest terminology comes from `TERMINOLOGY_PROFILE`; a signed-in company uses `companies.terminology_profile`.
-- Daily loop: home school list (billed / unbilled TTC) → school sheet (courses, groups, billing, documents) → agenda → treasury.
+- Daily loop: agenda → invoice unbilled work → invoice list → expenses. Schools and groups stay one click away.
 - Account opening: `/demande-acces` (mail), not `/register`.
 - Evidence of work: PDF invoices (TCPDF), ICS import, bank XLSX imports, SuperPDP / Factur-X when configured.
 
@@ -61,7 +61,7 @@ Undecided: no product-specific accessibility standard (e.g. RGAA) was confirmed.
 
 ## Product Principles
 
-1. **Design serves the public prospect.** Signed-in workflows stay functional but are not the visual brief unless reopened.
+1. **The public prospect and the signed-in daily shell are both design surfaces.** Landing stays for the prospect; Agenda, Facturer, Factures and Dépenses stay for the practitioner.
 2. **One company, one vocabulary** — labels follow the tenant profile; data stays the same.
 3. **Billing lives on the client**, not as a detached afterthought.
 4. **Tenants are provisioned, not self-served** unless registration is explicitly turned on.

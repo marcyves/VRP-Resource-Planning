@@ -150,7 +150,7 @@ class PlanningUpdateTest extends TestCase
                 'course_id' => $course->id,
                 'billable_rate' => 150,
             ])
-            ->assertRedirect(route('school.show', $school->id).'#billing');
+            ->assertRedirect(route('school.show', ['school' => $school->id, 'panel' => 'billing']));
 
         $planning->refresh();
 

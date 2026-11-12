@@ -3,12 +3,18 @@
         <h2>{{ __('messages.expenses') }} @if($current_year !== 'all'){{ $year }}@endif</h2>
     </x-slot>
 
+    <section class="page-toolbar">
+        <x-year-filter />
+        @if(Auth::user()->getMode() == "Edit")
+            <div class="page-toolbar__actions">
+                <a class="btn btn-primary" href="{{ route('treasury.expenses.create') }}">{{ __('messages.expense_create') }}</a>
+            </div>
+        @endif
+    </section>
+
     <section id="expense-reports">
         <header class="treasury-section-header">
             <h3>{{ __('messages.expense_reports') }}</h3>
-            @if(Auth::user()->getMode() == "Edit")
-                <a class="btn btn-primary" href="{{ route('treasury.expenses.create') }}">{{ __('messages.expense_create') }}</a>
-            @endif
         </header>
 
         @if($reports->isEmpty())

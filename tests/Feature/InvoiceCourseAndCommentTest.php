@@ -289,7 +289,7 @@ class InvoiceCourseAndCommentTest extends TestCase
                 'current_month' => 3,
                 'current_year' => 2026,
             ])
-            ->get(route('school.show', $context['school']));
+            ->get(route('school.show', ['school' => $context['school'], 'panel' => 'billing']));
 
         $response->assertOk()
             ->assertSee('<h4 class="billing-course-title">'.$context['courseAlpha']->name.'</h4>', false)

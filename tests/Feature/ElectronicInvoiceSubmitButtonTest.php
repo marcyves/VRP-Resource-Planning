@@ -45,6 +45,11 @@ class ElectronicInvoiceSubmitButtonTest extends TestCase
         $this->actingAs($user)
             ->get(route('school.show', $invoice->school_id))
             ->assertOk()
+            ->assertDontSee('icon--e-invoice', false);
+
+        $this->actingAs($user)
+            ->get(route('treasury.invoices.index', ['school_id' => $invoice->school_id]))
+            ->assertOk()
             ->assertSee('icon--e-invoice', false)
             ->assertSee(route('invoice.submitElectronic', $invoice->id), false);
     }

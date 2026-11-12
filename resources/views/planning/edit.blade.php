@@ -3,8 +3,6 @@
         <h2>{{ __('messages.group_planning') }}</h2>
     </x-slot>
 
-    <x-scheduling-module-tabs />
-
     @php
     $begin_date = explode(" ", $planning->begin)[0];
     $begin_day = explode("-", $begin_date)[2];

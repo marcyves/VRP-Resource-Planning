@@ -13,41 +13,25 @@
         $school_id = $school->id;
     @endphp
 
-    <x-school-detail-tabs :school="$school" :panel="$panel" />
+    @if ($panel !== 'billing')
+        <x-school-detail-tabs :school="$school" :panel="$panel" />
+    @endif
 
     <div class="school-details-grid">
         @if ($panel === 'courses')
             <section>
                 <article>
                     <x-school-header :school_name="$school_name" :school_id="$school_id" :show-name="false" />
+                    <p class="page-toolbar__actions">
+                        <a class="btn btn-secondary" href="{{ route('treasury.invoices.index', ['school_id' => $school->id]) }}">{{ __('messages.view_invoices') }}</a>
+                    </p>
                     <x-course-table :courses="$courses" :school_name="$school_name" :school_id="$school_id" />
                 </article>
             </section>
-
-            <section>
-                <h3 class="school-section-header">{{ __('messages.invoices') }}</h3>
-                <div class="bills">
-                    <x-table-invoices
-                        :invoices="$invoices"
-                        :electronic-invoicing-enabled="$electronicInvoicingEnabled ?? false"
-                    />
-                </div>
-            </section>
-
-            <x-school-billing-section
-                :school="$school"
-                :billing-data="$billingData"
-                :monthly-hours="$monthlyHours"
-                :monthly-gain="$monthlyGain"
-                :current-year="$billingYear"
-                :current-month="$currentMonth"
-                :months="$months"
-                :years="$years"
-                :bills="$bills"
-                :by-date="$billingByDate"
-                :has-previous-unbilled="$hasPreviousUnbilled"
-            />
         @elseif ($panel === 'billing')
+            <p class="page-toolbar__actions">
+                <a class="btn btn-secondary" href="{{ route('billing.prepare') }}">{{ __('messages.nav_invoice') }}</a>
+            </p>
             <x-school-billing-section
                 :school="$school"
                 :billing-data="$billingData"

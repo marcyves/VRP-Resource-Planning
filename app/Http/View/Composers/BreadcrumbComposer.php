@@ -27,14 +27,15 @@ class BreadcrumbComposer
             return;
         }
 
-        $isInvoice = request()->routeIs('invoice.*', 'treasury.invoices.*');
         $isPlanning = request()->routeIs('planning.*');
 
-        // Invoice school filter keeps every client (billing). Planning / workload
-        // dropdowns omit schools with no usable courses.
-        $breadcrumbSchools = $isInvoice
-            ? Auth::user()->getSchools()
-            : SchoolCourseOptions::schoolsFor(Auth::user());
+        if (! $isPlanning) {
+            $view->with('breadcrumbUsesSelectors', false);
+
+            return;
+        }
+
+        $breadcrumbSchools = SchoolCourseOptions::schoolsFor(Auth::user());
         $breadcrumbCourses = collect();
 
         if ($isPlanning && ($schoolId = session('school_id'))) {
@@ -56,11 +57,7 @@ class BreadcrumbComposer
             }
         }
 
-        $module = match (true) {
-            $isInvoice => 'invoice',
-            request()->routeIs('planning.*', 'calendar.*') => 'planning',
-            default => 'workload',
-        };
+        $module = 'planning';
 
         $view->with('breadcrumbUsesSelectors', true);
         $view->with('breadcrumbModule', $module);

@@ -3,7 +3,9 @@
         <h2>{{ __('messages.expense_report_detail') }} @monthName($expenseReport->month) {{ $expenseReport->year }}</h2>
     </x-slot>
 
-    <x-treasury-module-tabs active="expenses" />
+    <p class="page-toolbar__actions">
+        <a class="btn btn-secondary" href="{{ route('treasury.expenses.index') }}">{{ __('messages.expenses') }}</a>
+    </p>
 
     <section>
         @php

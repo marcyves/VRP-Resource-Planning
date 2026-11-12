@@ -1,4 +1,4 @@
-@props(['years', 'months', 'current_year', 'current_month', 'route', 'school' => null, 'by_date' => false])
+@props(['years', 'months', 'current_year', 'current_month', 'route', 'school' => null, 'by_date' => false, 'panel' => null])
 
 <div class="period-controls">
     <nav class="period-nav" aria-label="{{ __('messages.planning') }}">
@@ -9,6 +9,9 @@
         @endif
 
         <form class="period-nav__form" action="{{ $school ? route('school.show', $school) : route($route.'.index') }}" method="get">
+            @if ($panel)
+                <input type="hidden" name="panel" value="{{ $panel }}">
+            @endif
             <select
                 id="period-month-{{ $route }}"
                 name="current_month"

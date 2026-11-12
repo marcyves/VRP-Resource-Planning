@@ -3,8 +3,6 @@
         <h2>{{ __('messages.groups_list') }}</h2>
     </x-slot>
 
-    <x-referential-module-tabs />
-
     <p class="form-hint">{{ __('messages.groups_index_help') }}</p>
     @if($sessionCourseId && $sessionCourseName)
         <p class="form-hint form-hint--emphasis">{{ __('messages.group_will_link_session_course', ['name' => $sessionCourseName]) }}</p>

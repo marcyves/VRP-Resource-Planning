@@ -7,21 +7,26 @@
 | Élément | Fichiers | Rôle |
 |---------|----------|------|
 | Sidebar | `resources/views/layouts/navigation.blade.php`, `resources/js/sidebar.js`, `resources/css/shell.css`, `navigation.css` | Menu principal, mode compact, logo, déconnexion |
-| Topbar | `resources/views/layouts/topbar.blade.php` | Titre de page, fil d’Ariane, bascule Edit/Browse, thème |
+| Topbar | `resources/views/layouts/topbar.blade.php` | Titre de page, thème, menu du profil (bascule Edit/Browse) |
 | Layout | `resources/views/layouts/app.blade.php` | Grille sidebar + contenu |
 
 ### Menu latéral (ordre — utilisateur entreprise)
 
-1. **Agenda** → `planning.index` (+ onglet **Calendrier** `calendar.index`) — vues **mois** / **semaine** · panneau **Facturer les interventions du mois** (écoles avec sessions, priorisation non facturé). Import ICS : [import-calendrier.md](import-calendrier.md)
-2. **Écoles** (libellé terminologique) → `home`
-3. **Trésorerie** → `treasury.index`
-4. séparateur
-5. **Référentiel** (sous-menu) → Programmes · Groupes
+**Quotidien**
 
-Catalogue **Groupes** conservé pour consultation ; **création** depuis la fiche cours (règles formation 1 cours / mentoring multi — [gestion des groupes](gestion-groupes.md)).
-Pas d’entrée sidebar **Facturation** : la préparation reste sur `school.show#billing` (raccourci `nav.billing` conservé pour usage interne).
+1. **Agenda** → `planning.index` — calendrier mois / semaine, ligne d’heures et de montant, lien vers Facturer s’il reste du non facturé. Import ICS : action **Importer un calendrier** (`calendar.index`) — [import-calendrier.md](import-calendrier.md)
+2. **Facturer** → `billing.prepare` — clients avec séances non facturées du mois, puis section de préparation (`school.show?panel=billing`)
+3. **Factures** → `treasury.invoices.index`
+4. **Dépenses** → `treasury.expenses.index`
 
-La sidebar démarre en mode compact sauf si `vrp-sidebar-compact` vaut `false` dans `localStorage`.
+**Activité**
+
+5. **Écoles** (libellé terminologique) → `home`
+6. **Groupes** → `group.index` (catalogue). Les groupes d’une école restent l’onglet de sa fiche. La création se fait depuis la fiche cours (formation 1 cours / mentoring multi — [gestion des groupes](gestion-groupes.md)).
+
+**Plus** (replié) : Banque (`treasury.bank.index`), Programmes, Entreprise, Profil, Connexions (admin).
+
+`nav.billing` redirige vers `billing.prepare`. La sidebar est dépliée par défaut ; le mode compact n’est actif que si `vrp-sidebar-compact` vaut `true` dans `localStorage`. Sous ~800 px, le bouton menu ouvre cette même liste.
 
 ## Page d’accueil
 
@@ -30,7 +35,7 @@ La sidebar démarre en mode compact sauf si `vrp-sidebar-compact` vaut `false` d
 | `/home` | `home` | `SchoolController@index` | Liste des écoles, stats facturation, graphique, lien plan de charge annuel |
 | `/dashboard` | `dashboard` | redirect | Alias → `home` |
 
-Constante post-login : `RouteServiceProvider::HOME = '/home'`.
+Constante post-login : `RouteServiceProvider::HOME = '/planning'` (agenda). `/home` reste la liste des écoles.
 
 ### Indicateurs par école (liste)
 
@@ -41,8 +46,7 @@ Constante post-login : `RouteServiceProvider::HOME = '/home'`.
 
 | Composant | Module | Onglets |
 |-----------|--------|---------|
-| `scheduling-module-tabs` | Agenda | Planning · Calendrier (`/admin/calendars` — import ICS) |
-| `treasury-module-tabs` | Trésorerie | Synthèse · Factures · Banque · Dépenses |
+| `treasury-module-tabs` | Banque | Synthèse · Banque (hors chemin quotidien) |
 | `referential-module-tabs` | Référentiel | Programmes · Groupes |
 | `settings-module-tabs` | Paramètres | Entreprise · profil |
 
@@ -60,7 +64,7 @@ Les actions **Créer facture** / **Créer dépense** sont des boutons dans les p
 
 Précédent / suivant (`planning.previous` / `planning.next`) passe par `Tools::shiftPlanningPeriod()` : **±1 semaine** en vue semaine (mois/année suivent le lundi), **±1 mois** en vue mois. Le début de semaine est dans `planning_week_start` ; changer le sélecteur de mois le remet au premier lundi de ce mois (ou aujourd’hui si le mois affiché est le mois courant).
 
-Les KPI portent sur la **période visible** (semaine ou mois). Montants affichés en TTC (`gain × 1,2`). Les événements hors 08:00–20:00 sont clampés / masqués (`Tools::weekEventPosition()`). Les jours du mois adjacent ont le style `--outside`.
+Les totaux de la période visible (semaine ou mois) tiennent sur une ligne sous le titre, en TTC (`gain × 1,2`). S’il reste du non facturé, une ligne mène à Facturer. Les événements hors 08:00–20:00 sont clampés / masqués (`Tools::weekEventPosition()`). Les jours du mois adjacent ont le style `--outside`.
 
 L’agenda liste les sessions par **date de séance**, pas par `courses.year`. Un cours 2026 avec une séance en janvier 2027 apparaît bien en naviguant janvier 2027.
 
@@ -112,7 +116,7 @@ Trois rangées (`planning-session-form__row--when`, `--billing-create`, `--assig
 - Préremplissage serveur : `Tools::planningEndFromSessionLength` — heures × 60, arrondi au multiple de 5 minutes le plus proche. Exemple : 10:00 et `2,5` → 12:30.
 - `store` garde la fin soumise si elle est **strictement après** le début. Si fin ≤ début, repli sur le même helper avec la `session_length` soumise. `courses.session_length` n’est pas mis à jour.
 - Heures de début **8–21**, heures de fin **8–23**, minutes par pas de 5.
-- Le tarif horaire est `courses.rate` (stocké **HT**). Le montant d’intervention est `Tools::planningGain(begin, end, rate, 1)` — durée × tarif. Les cartes KPI de l’agenda restent en TTC (`gain × 1,2`) ; ce formulaire non.
+- Le tarif horaire est `courses.rate` (stocké **HT**). Le montant d’intervention est `Tools::planningGain(begin, end, rate, 1)` — durée × tarif. La ligne de l’agenda reste en TTC (`gain × 1,2`) ; ce formulaire non.
 - Groupes : liens actifs du cours (`getLinkedGroups(true)`). La valeur `0` crée un groupe et une ligne `group_course` depuis les champs inline.
 - Les libellés suivent le profil de terminologie.
 - Un enregistrement réussi efface `course` / `course_id` du fil d’Ariane et renvoie vers `planning.index`.
@@ -131,7 +135,7 @@ Trois rangées (`planning-session-form__row--when`, `--billing-create`, `--assig
 - `update` écrit `begin`, `end`, `group_id`, `course_id` et `billable_rate`. Il ne reconstruit pas la fin depuis une durée standard, et il ne refuse pas fin ≤ début.
 - Un `invoice_id` désactive le fieldset et bloque l’enregistrement (`session_locked_by_invoice`). Les actions de duplication sont masquées.
 - Les groupes sont les liens actifs du cours chargé pour ce GET, plus le groupe courant s’il est inactif. Changer le cours ne met à jour que l’aperçu du tarif ; la liste des groupes n’est pas rechargée.
-- Succès : `school.show#billing` si `school_id` est en session, sinon `planning.index`.
+- Succès : `school.show?panel=billing` si `school_id` est en session, sinon `planning.index`.
 
 ### Duplication de session
 

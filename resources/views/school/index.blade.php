@@ -9,9 +9,10 @@
         </div>
     @endif
 
-    <p class="school-list-toolbar">
+    <section class="page-toolbar">
+        <x-year-filter />
         <a class="btn btn-secondary" href="{{ route('school.dashboard') }}">{{ __('messages.workload_plan') }}</a>
-    </p>
+    </section>
 
     <section>
         <ul class="resource-grid">

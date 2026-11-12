@@ -3,7 +3,9 @@
         <h2>{{ __('messages.ics_calendar_management') }}</h2>
     </x-slot>
 
-    <x-scheduling-module-tabs />
+    <p class="page-toolbar__actions">
+        <a class="btn btn-secondary" href="{{ route('planning.index') }}">{{ __('messages.planning') }}</a>
+    </p>
 
     <section class="calendar-upload-section">
         <header class="program-section-header">

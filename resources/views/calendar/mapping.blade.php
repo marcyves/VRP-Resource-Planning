@@ -3,7 +3,9 @@
         <h2>{{ __('messages.mapping_configuration') }}</h2>
     </x-slot>
 
-    <x-scheduling-module-tabs active="calendar" />
+    <p class="page-toolbar__actions">
+        <a class="btn btn-secondary" href="{{ route('calendar.index') }}">{{ __('messages.planning_import_calendar') }}</a>
+    </p>
 
     <section class="calendar-mapping-meta">
         <div class="company-show-grid">

@@ -3,8 +3,6 @@
         <h2>{{ __('messages.group_planning') }}: {{ old('date', $date) }}</h2>
     </x-slot>
 
-    <x-scheduling-module-tabs />
-
     @php
     $formatMoney = function (float $amount): string {
         return number_format($amount, 2, ',', ' ').' €';
