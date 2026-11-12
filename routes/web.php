@@ -68,7 +68,10 @@ Route::post('/webhooks/e-invoice/{platform}', ElectronicInvoiceWebhookController
     ->name('webhooks.e-invoice');
 
 Route::middleware(['auth', 'tenant', SetTerminologyLocale::class])->group(function () {
-    Route::get('/nav/billing', BillingNavController::class)->name('nav.billing');
+    Route::get('/facturer', [BillingNavController::class, 'index'])->name('billing.prepare');
+    Route::get('/facturer/previous', [BillingNavController::class, 'previous'])->name('billing.prepare.previous');
+    Route::get('/facturer/next', [BillingNavController::class, 'next'])->name('billing.prepare.next');
+    Route::get('/nav/billing', fn () => redirect()->route('billing.prepare'))->name('nav.billing');
     Route::get('/admin/login-stats', [LoginStatisticsController::class, 'index'])->name('login-stats.index');
 
     //    Route::get('/calendar/import/{calendar_id}', [CalendarController::class, 'readICSFile'])->name('ics.read');
@@ -152,6 +155,7 @@ Route::middleware(['auth', 'tenant', SetTerminologyLocale::class])->group(functi
     Route::post('/treasury/reports/{expenseReport}/validate', [TreasuryController::class, 'validateReport'])->name('treasury.reports.validate');
     Route::post('/treasury/reports/{expenseReport}/pay', [TreasuryController::class, 'payReport'])->name('treasury.reports.pay');
     Route::get('/treasury/reports/{expenseReport}/pdf', [TreasuryController::class, 'downloadReportPdf'])->name('treasury.reports.pdf');
+    Route::get('/treasury/expenses', [TreasuryController::class, 'expenses'])->name('treasury.expenses.index');
     Route::get('/treasury/expenses/create', [TreasuryController::class, 'createExpense'])->name('treasury.expenses.create');
     Route::post('/treasury/expenses', [TreasuryController::class, 'storeExpense'])->name('treasury.expenses.store');
     Route::get('/treasury/expenses/{expense}/edit', [TreasuryController::class, 'editExpense'])->name('treasury.expenses.edit');

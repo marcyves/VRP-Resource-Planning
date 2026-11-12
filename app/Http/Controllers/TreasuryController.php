@@ -95,6 +95,34 @@ class TreasuryController extends Controller
         ));
     }
 
+    public function expenses()
+    {
+        $user = Auth::user();
+        $companyId = $user->company_id;
+        $current_year = session('current_year', now()->format('Y'));
+        $year = $current_year === 'all' ? null : (int) $current_year;
+
+        $reports = ExpenseReport::with('expenses')
+            ->where('company_id', $companyId)
+            ->when($year, fn ($query) => $query->where('year', $year))
+            ->orderByDesc('year')
+            ->orderByDesc('month')
+            ->get();
+
+        $standaloneExpenses = Expense::where('company_id', $companyId)
+            ->whereNull('expense_report_id')
+            ->when($year, fn ($query) => $query->whereYear('expense_date', $year))
+            ->orderByDesc('expense_date')
+            ->get();
+
+        return view('treasury.expenses', compact(
+            'current_year',
+            'year',
+            'reports',
+            'standaloneExpenses',
+        ));
+    }
+
     public function invoices(Request $request, ElectronicInvoiceService $electronicInvoiceService)
     {
         $user = Auth::user();
@@ -301,7 +329,7 @@ class TreasuryController extends Controller
 
         return $reportId
             ? redirect()->route('treasury.reports.show', $reportId)
-            : redirect()->route('treasury.index');
+            : redirect()->route('treasury.expenses.index');
     }
 
     private function expenseAttributes(Request $request, ?Carbon $expenseDate = null, ?Carbon $paymentDate = null): array
@@ -432,7 +460,7 @@ class TreasuryController extends Controller
     {
         return $expense->expense_report_id
             ? redirect()->route('treasury.reports.show', $expense->expense_report_id)
-            : redirect()->route('treasury.index');
+            : redirect()->route('treasury.expenses.index');
     }
 
     private function monthlyTreasuryChartData(int $year, $invoices, $expenses, array $plannedAmounts, ?BankAccount $billingBankAccount, TreasuryBalance $treasuryBalance, int $companyId): array

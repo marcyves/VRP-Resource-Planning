@@ -8,6 +8,7 @@ use App\Models\Group;
 use App\Models\GroupCourse;
 use App\Models\Planning;
 use App\Models\School;
+use App\Support\PlanningBillingSummary;
 use App\Support\SchoolCourseOptions;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -145,45 +146,10 @@ class PlanningController extends Controller
             $calendarDays = null;
         }
 
-        $monthly_gain = 0;
-        $monthly_hours = 0;
-        $billingSchools = [];
-        foreach ($planning as $event) {
-            $sessionGain = Tools::planningGain($event->begin, $event->end, $event->rate, $event->billable_rate);
-            $monthly_hours += $event->session_length;
-            $monthly_gain += $sessionGain;
-
-            $schoolId = (int) $event->school_id;
-            if (! isset($billingSchools[$schoolId])) {
-                $billingSchools[$schoolId] = [
-                    'id' => $schoolId,
-                    'name' => $event->school_name,
-                    'sessions' => 0,
-                    'hours' => 0.0,
-                    'amount_ht' => 0.0,
-                    'unbilled_sessions' => 0,
-                    'unbilled_amount_ht' => 0.0,
-                ];
-            }
-            $billingSchools[$schoolId]['sessions']++;
-            $billingSchools[$schoolId]['hours'] += (float) $event->session_length;
-            $billingSchools[$schoolId]['amount_ht'] += $sessionGain;
-            if ($event->invoice_id === null || $event->invoice_id === '') {
-                $billingSchools[$schoolId]['unbilled_sessions']++;
-                $billingSchools[$schoolId]['unbilled_amount_ht'] += $sessionGain;
-            }
-        }
-        $billingSchools = collect($billingSchools)
-            ->map(function (array $school) {
-                $school['amount_ttc'] = round($school['amount_ht'] * 1.2, 2);
-                $school['unbilled_amount_ttc'] = round($school['unbilled_amount_ht'] * 1.2, 2);
-                $school['amount_ht'] = round($school['amount_ht'], 2);
-                $school['unbilled_amount_ht'] = round($school['unbilled_amount_ht'], 2);
-
-                return $school;
-            })
-            ->sortByDesc(fn (array $school) => [$school['unbilled_sessions'], $school['unbilled_amount_ht'], $school['hours']])
-            ->values();
+        $billingSummary = PlanningBillingSummary::fromPlanning($planning);
+        $billingSchools = $billingSummary['schools'];
+        $monthly_hours = $billingSummary['hours'];
+        $monthly_gain = $billingSummary['gain'];
 
         $months = Tools::getMonthNames();         // generate month names according to the current locale
         $weekdays = collect(Carbon::getDays())->map(fn ($dayName) => ucfirst(Carbon::create($dayName)->dayName)); // generate day names according to the current locale
@@ -519,7 +485,7 @@ class PlanningController extends Controller
         $schoolId = session('school_id');
 
         if ($schoolId) {
-            return redirect()->route('school.show', $schoolId)->withFragment('billing');
+            return redirect()->route('school.show', ['school' => $schoolId, 'panel' => 'billing']);
         }
 
         return redirect()->route('planning.index');

@@ -154,25 +154,27 @@ class SchoolController extends Controller
 
         $courses = $school->getCourses($year);
 
-        session()->forget('course');
-        session()->forget('course_id');
+        $panel = $request->query('panel', 'courses');
+        if ($request->query('focus') === 'billing') {
+            $panel = 'billing';
+        }
+        if ($panel === 'address') {
+            $panel = 'details';
+        }
+        if (! in_array($panel, ['courses', 'groups', 'details', 'documents', 'billing'], true)) {
+            $panel = 'courses';
+        }
+
+        if ($panel !== 'billing') {
+            session()->forget('course');
+            session()->forget('course_id');
+        }
 
         session()->put('school', $school->name);
         session()->put('school_id', $school->id);
         session()->put('last_school_id', $school->id);
 
         view()->share('schoolContextSchool', $school);
-
-        $panel = $request->query('panel', 'courses');
-        if ($request->query('focus') === 'billing') {
-            $panel = 'courses';
-        }
-        if ($panel === 'address') {
-            $panel = 'details';
-        }
-        if (! in_array($panel, ['courses', 'groups', 'details', 'documents'], true)) {
-            $panel = 'courses';
-        }
 
         $invoices = collect();
         $documents = collect();
@@ -185,7 +187,7 @@ class SchoolController extends Controller
         $monthlyGain = 0;
         $hasPreviousUnbilled = false;
 
-        if ($panel === 'courses') {
+        if ($panel === 'billing') {
             $invoices = $school->getInvoices($year);
             $bills = $invoices;
 

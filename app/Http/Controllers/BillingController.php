@@ -178,8 +178,6 @@ class BillingController extends Controller
 
     private function redirectToSchoolBilling(School $school): \Illuminate\Http\RedirectResponse
     {
-        return redirect()
-            ->route('school.show', ['school' => $school, 'focus' => 'billing'])
-            ->withFragment('billing');
+        return redirect()->route('school.show', ['school' => $school, 'panel' => 'billing']);
     }
 }
