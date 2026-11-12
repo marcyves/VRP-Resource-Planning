@@ -187,7 +187,7 @@ class SchoolController extends Controller
         $monthlyGain = 0;
         $hasPreviousUnbilled = false;
 
-        if ($panel === 'billing') {
+        if (in_array($panel, ['courses', 'billing'], true)) {
             $invoices = $school->getInvoices($year);
             $bills = $invoices;
 

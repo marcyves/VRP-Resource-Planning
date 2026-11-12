@@ -47,6 +47,20 @@
                 :by-date="$billingByDate"
                 :has-previous-unbilled="$hasPreviousUnbilled"
             />
+        @elseif ($panel === 'billing')
+            <x-school-billing-section
+                :school="$school"
+                :billing-data="$billingData"
+                :monthly-hours="$monthlyHours"
+                :monthly-gain="$monthlyGain"
+                :current-year="$billingYear"
+                :current-month="$currentMonth"
+                :months="$months"
+                :years="$years"
+                :bills="$bills"
+                :by-date="$billingByDate"
+                :has-previous-unbilled="$hasPreviousUnbilled"
+            />
         @elseif ($panel === 'groups')
             <section>
                 <header class="school-section-header-row">
