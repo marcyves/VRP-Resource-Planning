@@ -3,9 +3,12 @@
     $monthPadded = str_pad((string) $month, 2, '0', STR_PAD_LEFT);
     $dayPadded = str_pad((string) $day, 2, '0', STR_PAD_LEFT);
     $isoDate = "{$year}-{$monthPadded}-{$dayPadded}";
+    $cellDate = \Carbon\Carbon::createFromDate((int) $year, (int) $month, (int) $day);
+    $isToday = $cellDate->isToday();
+    $isWeekend = $cellDate->isWeekend();
 @endphp
 
-<div class="calCell calDay{{ $outside ? ' calDay--outside' : '' }}">
+<div class="calCell calDay{{ $outside ? ' calDay--outside' : '' }}{{ $isWeekend ? ' calDay--weekend' : '' }}{{ $isToday ? ' calToday' : '' }}">
     @if (Auth::user()->getMode() == 'Edit' && session('course_id'))
         <button
             type="submit"

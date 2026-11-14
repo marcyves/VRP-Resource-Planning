@@ -20,9 +20,10 @@
     font-weight: 700;
 }
 
-.calToday .planning-date {
-    background: var(--brand-accent);
-    color: var(--btn-primary-fg);
+.calToday .planning-date,
+.week-agenda__day-head--today .planning-date {
+    background: #fff;
+    color: var(--cal-today-date);
 }
 
 button.planning-date--create {

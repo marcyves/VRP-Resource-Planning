@@ -18,6 +18,7 @@
         <div @class([
             'week-agenda__day-head',
             'week-agenda__day-head--outside' => $outside,
+            'week-agenda__day-head--weekend' => $date->isWeekend(),
             'week-agenda__day-head--today' => $date->isToday(),
         ])>
             <span class="week-agenda__weekday">{{ $date->copy()->locale($locale)->translatedFormat('D') }}</span>
@@ -63,6 +64,7 @@
         <div @class([
             'week-agenda__column',
             'week-agenda__column--outside' => $outside,
+            'week-agenda__column--weekend' => $date->isWeekend(),
             'week-agenda__column--today' => $date->isToday(),
         ])>
             <div class="week-agenda__slots">

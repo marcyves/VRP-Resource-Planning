@@ -131,8 +131,12 @@
     margin: 0;
 }
 
+.week-agenda__day-head--weekend {
+    background: var(--cal-weekend-bg);
+}
+
 .week-agenda__day-head--today {
-    background: var(--surface-accent-soft);
+    background: var(--cal-today-bg);
 }
 
 .week-agenda__day-head--outside,
@@ -176,8 +180,12 @@
     border-right: none;
 }
 
+.week-agenda__column--weekend {
+    background: var(--cal-weekend-bg);
+}
+
 .week-agenda__column--today {
-    background: var(--surface-accent-soft);
+    background: var(--cal-today-bg);
 }
 
 .week-agenda__slots {
@@ -632,8 +640,14 @@ main form.planning-create-toolbar .planning-create-toolbar__control:focus {
     background: var(--surface-container-low);
 }
 
-.calToday {
-    background: var(--surface-accent-soft);
+#calWrap .calDay--weekend,
+#calWrap .calRow > .calBlank:nth-child(6),
+#calWrap .calRow > .calBlank:nth-child(7) {
+    background: var(--cal-weekend-bg);
+}
+
+#calWrap .calToday {
+    background: var(--cal-today-bg);
 }
 
 .planning-event-info {

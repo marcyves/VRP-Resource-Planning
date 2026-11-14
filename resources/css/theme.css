@@ -127,8 +127,9 @@ html[data-theme="dark"] {
 
     --cal-day-bg: var(--surface-container-lowest);
     --cal-blank-bg: var(--surface-page);
-    --cal-today-bg: #1e3a8a59;
+    --cal-today-bg: #4a2c32;
     --cal-today-date: #fca5a5;
+    --cal-weekend-bg: #243044;
     --cal-cell-date: var(--text-subtle);
     --cal-shadow: var(--shadow-sm);
     --cal-overlay: var(--backdrop-overlay);
@@ -237,6 +238,11 @@ html[data-theme="dark"] .theme-toggle__icon--sun {
 
 html[data-theme="dark"] .theme-toggle__icon--moon {
     display: none;
+}
+
+html[data-theme="dark"] .calToday .planning-date,
+html[data-theme="dark"] .week-agenda__day-head--today .planning-date {
+    background: var(--surface-container);
 }
 
 html[data-theme="dark"] .bg-white {

@@ -162,8 +162,9 @@
 
     --cal-day-bg: var(--surface-container-lowest);
     --cal-blank-bg: var(--surface-container-low);
-    --cal-today-bg: var(--surface-accent-soft);
+    --cal-today-bg: #fde8e8;
     --cal-today-date: var(--feedback-danger);
+    --cal-weekend-bg: #eceff3;
     --cal-cell-date: var(--text-subtle);
     --cal-shadow: var(--shadow-sm);
     --cal-overlay: var(--backdrop-overlay);
