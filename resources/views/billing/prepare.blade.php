@@ -14,6 +14,7 @@
     @if ($schools->isEmpty())
         <p class="treasury-empty" role="status">{{ __('messages.billing_prepare_empty') }}</p>
     @else
+        <section>
         <ul class="resource-grid">
             @foreach ($schools as $school)
                 @php
@@ -44,5 +45,6 @@
                 </li>
             @endforeach
         </ul>
+        </section>
     @endif
 </x-app-layout>
