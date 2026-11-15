@@ -35,6 +35,10 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [\App\Http\Controllers\WelcomeController::class, 'index'])->name('welcome');
 
+Route::get('/langue/{locale}', [\App\Http\Controllers\WelcomeController::class, 'locale'])
+    ->whereIn('locale', ['fr', 'en', 'it'])
+    ->name('locale.switch');
+
 Route::middleware('guest')->group(function () {
     Route::get('/demande-acces', [\App\Http\Controllers\AccountRequestController::class, 'create'])
         ->name('account-request.create');

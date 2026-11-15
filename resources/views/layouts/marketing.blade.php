@@ -50,6 +50,18 @@
             @endif
 
             <nav class="marketing-nav" aria-label="{{ __('messages.landing_nav') }}">
+                <div class="marketing-locales" role="group" aria-label="{{ __('messages.landing_languages') }}">
+                    @foreach (config('terminology.base_locales', ['fr', 'en', 'it']) as $code)
+                        <a
+                            href="{{ route('locale.switch', $code) }}"
+                            class="marketing-locales__link"
+                            hreflang="{{ $code }}"
+                            lang="{{ $code }}"
+                            @if (app()->getLocale() === $code) aria-current="true" @endif
+                        >{{ strtoupper($code) }}</a>
+                    @endforeach
+                </div>
+
                 <button
                     type="button"
                     id="theme-toggle"

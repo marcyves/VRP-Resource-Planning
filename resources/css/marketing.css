@@ -194,6 +194,35 @@ html[data-theme="light"] body.marketing-page .marketing-feature-card:hover {
     white-space: nowrap;
 }
 
+.marketing-locales {
+    display: inline-flex;
+    align-items: center;
+    flex-shrink: 0;
+    gap: 0.1rem;
+}
+
+.marketing-locales__link {
+    color: var(--marketing-nav-link);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-decoration: none;
+    padding: 0.35rem 0.4rem;
+    border-radius: var(--rounded-md);
+}
+
+.marketing-locales__link:hover,
+.marketing-locales__link[aria-current="true"] {
+    color: var(--marketing-text);
+    background: var(--marketing-nav-link-hover-bg);
+}
+
+.marketing-locales__link:focus-visible {
+    outline: 2px solid var(--marketing-text);
+    outline-offset: 2px;
+    color: var(--marketing-text);
+}
+
 .marketing-nav {
     display: flex;
     align-items: center;

@@ -645,6 +645,8 @@ return [
 
     'landing_skip_content' => 'Skip to main content',
     'landing_nav' => 'Public navigation',
+    'landing_languages' => 'Language',
+    'landing_meta_description' => 'Integrated scheduling and billing system',
     'landing_menu' => 'Page sections',
     'landing_home' => 'Home',
     'landing_eyebrow' => 'Professional activity management',

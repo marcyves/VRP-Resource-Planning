@@ -16,4 +16,13 @@ class WelcomeController extends Controller
 
         return view('welcome');
     }
+
+    public function locale(Request $request, string $locale): RedirectResponse
+    {
+        abort_unless(in_array($locale, config('terminology.base_locales', ['fr', 'en', 'it']), true), 404);
+
+        $request->session()->put('locale', $locale);
+
+        return redirect()->back(fallback: route('welcome'));
+    }
 }

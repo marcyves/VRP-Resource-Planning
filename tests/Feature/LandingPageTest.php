@@ -105,6 +105,30 @@ class LandingPageTest extends TestCase
         }
     }
 
+    public function test_landing_banner_switches_language(): void
+    {
+        $this->get(route('welcome'))
+            ->assertOk()
+            ->assertSee(route('locale.switch', 'fr'), false)
+            ->assertSee(route('locale.switch', 'en'), false)
+            ->assertSee(route('locale.switch', 'it'), false)
+            ->assertSee(__('messages.landing_title'), false);
+
+        $this->get(route('locale.switch', 'en'))
+            ->assertRedirect()
+            ->assertSessionHas('locale', 'en');
+
+        $this->withSession(['locale' => 'en'])
+            ->get(route('welcome'))
+            ->assertOk()
+            ->assertSee('Plan, invoice and run your business with peace of mind', false);
+
+        $this->withSession(['locale' => 'it'])
+            ->get(route('welcome'))
+            ->assertOk()
+            ->assertSee('Pianificate, fatturate e guidate la vostra attività con serenità', false);
+    }
+
     public function test_login_page_can_be_rendered(): void
     {
         $this->get(route('login'))

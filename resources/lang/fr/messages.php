@@ -661,6 +661,8 @@ return [
 
     'landing_skip_content' => 'Aller au contenu',
     'landing_nav' => 'Navigation publique',
+    'landing_languages' => 'Langue',
+    'landing_meta_description' => 'Système intégré de gestion de planning et de facturation',
     'landing_menu' => 'Sections de la page',
     'landing_home' => 'Accueil',
     'landing_eyebrow' => 'Gestion d\'activité professionnelle',
