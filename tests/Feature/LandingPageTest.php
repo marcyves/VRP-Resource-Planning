@@ -14,7 +14,7 @@ class LandingPageTest extends TestCase
     {
         $this->get(route('welcome'))
             ->assertOk()
-            ->assertSee(__('messages.landing_title'), false)
+            ->assertSee(e(__('messages.landing_title')), false)
             ->assertSee(__('messages.landing_skip_content'), false)
             ->assertSee('btn btn-primary', false)
             ->assertSee('marketing-brand__name', false)
@@ -37,7 +37,7 @@ class LandingPageTest extends TestCase
         preg_match('/<section class="marketing-hero".*?(?=<section )/s', $html, $hero);
         $this->assertNotEmpty($hero);
         $this->assertStringContainsString('images/VRP-login.jpg', $hero[0]);
-        $this->assertStringContainsString(__('messages.landing_title'), $hero[0]);
+        $this->assertStringContainsString(e(__('messages.landing_title')), $hero[0]);
         $this->assertStringContainsString(__('messages.landing_trial_cta'), $hero[0]);
         $this->assertStringNotContainsString('landing-agenda.jpg', $hero[0]);
         $this->assertStringNotContainsString('landing-treasury.jpg', $hero[0]);
@@ -65,7 +65,9 @@ class LandingPageTest extends TestCase
             ->assertSee(__('messages.landing_discover_features'), false)
             ->assertSee(__('messages.landing_stage_agenda'), false)
             ->assertSee(__('messages.landing_stage_treasury'), false)
-            ->assertSee(__('messages.landing_screens_title'), false)
+            ->assertSee(e(__('messages.landing_screens_title')), false)
+            ->assertSee(__('messages.landing_compare_title'), false)
+            ->assertSee(__('messages.landing_steps_title'), false)
             ->assertSeeText(__('messages.landing_feature_planning_title'))
             ->assertSeeText(__('messages.landing_feature_workload_title'))
             ->assertSeeText(__('messages.landing_feature_billing_title'))
@@ -74,16 +76,49 @@ class LandingPageTest extends TestCase
             ->assertSeeText(__('messages.landing_feature_secure_title'))
             ->assertSee('marketing-features__grid', false)
             ->assertSee('marketing-pricing__offer', false)
-            ->assertSee(__('messages.landing_pricing_title'), false)
+            ->assertSee('data-landing-cta="register"', false)
+            ->assertSee('data-landing-cta="login"', false)
+            ->assertSee('data-landing-cta="pricing"', false)
+            ->assertSee(e(__('messages.landing_pricing_title')), false)
             ->assertSee(__('messages.landing_pricing_trial_price'), false)
             ->assertSee(__('messages.landing_pricing_monthly_price'), false)
             ->assertSee(__('messages.landing_pricing_cta'), false)
             ->assertSee(__('messages.landing_about_title'), false)
-            ->assertSee(__('messages.landing_about_lead'), false)
+            ->assertSee(e(__('messages.landing_about_lead')), false)
             ->assertSee(route('login', absolute: false), false)
             ->assertSee(route('account-request.create', absolute: false), false)
+            ->assertSee(route('marketing.product', absolute: false), false)
+            ->assertSee(route('marketing.pricing', absolute: false), false)
+            ->assertSee(route('marketing.about', absolute: false), false)
+            ->assertSee(route('marketing.legal', absolute: false), false)
             ->assertDontSee('href="'.url('/register').'"', false)
             ->assertDontSee('href="/register"', false);
+    }
+
+    public function test_public_marketing_routes_can_be_rendered(): void
+    {
+        $this->get(route('marketing.product'))
+            ->assertOk()
+            ->assertSee(__('messages.landing_product_title'), false)
+            ->assertSee(__('messages.landing_module_billing_title'), false)
+            ->assertSee('images/landing-agenda.jpg', false)
+            ->assertSee('data-landing-cta="register"', false);
+
+        $this->get(route('marketing.pricing'))
+            ->assertOk()
+            ->assertSee(e(__('messages.landing_pricing_title')), false)
+            ->assertSee(__('messages.landing_faq_start_q'), false)
+            ->assertSee('data-landing-cta="pricing"', false);
+
+        $this->get(route('marketing.about'))
+            ->assertOk()
+            ->assertSee(__('messages.landing_about_editor_title'), false)
+            ->assertSee('XDM Consulting', false);
+
+        $this->get(route('marketing.legal'))
+            ->assertOk()
+            ->assertSee(__('messages.landing_legal_title'), false)
+            ->assertSee(__('messages.landing_legal_privacy_title'), false);
     }
 
     public function test_welcome_page_copy_is_translated_for_supported_locales(): void
@@ -100,8 +135,8 @@ class LandingPageTest extends TestCase
 
             $this->get(route('welcome'))
                 ->assertOk()
-                ->assertSee(__('messages.landing_title'), false)
-                ->assertSee(__('messages.landing_pricing_title'), false);
+                ->assertSee(e(__('messages.landing_title')), false)
+                ->assertSee(e(__('messages.landing_pricing_title')), false);
         }
     }
 
@@ -112,7 +147,7 @@ class LandingPageTest extends TestCase
             ->assertSee(route('locale.switch', 'fr'), false)
             ->assertSee(route('locale.switch', 'en'), false)
             ->assertSee(route('locale.switch', 'it'), false)
-            ->assertSee(__('messages.landing_title'), false);
+            ->assertSee(e(__('messages.landing_title')), false);
 
         $this->get(route('locale.switch', 'en'))
             ->assertRedirect()
@@ -121,12 +156,12 @@ class LandingPageTest extends TestCase
         $this->withSession(['locale' => 'en'])
             ->get(route('welcome'))
             ->assertOk()
-            ->assertSee('Plan, invoice and run your business with peace of mind', false);
+            ->assertSee('Invoice the work already on the agenda', false);
 
         $this->withSession(['locale' => 'it'])
             ->get(route('welcome'))
             ->assertOk()
-            ->assertSee('Pianificate, fatturate e guidate la vostra attività con serenità', false);
+            ->assertSee(e('Fatturate il lavoro già sull\'agenda'), false);
     }
 
     public function test_login_page_can_be_rendered(): void

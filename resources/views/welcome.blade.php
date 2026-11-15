@@ -4,6 +4,8 @@
             <h1 id="landing-title" class="marketing-hero__title">{{ __('messages.landing_title') }}</h1>
             <p class="marketing-hero__lead">{{ __('messages.landing_lead') }}</p>
 
+            <p class="marketing-hero__trust">{{ __('messages.landing_trust_line') }}</p>
+
             <div class="marketing-hero__actions">
                 <a href="{{ route('account-request.create') }}" class="btn btn-primary marketing-hero__cta" data-landing-cta="register">
                     {{ __('messages.landing_trial_cta') }}
@@ -11,7 +13,7 @@
                 <a href="{{ route('login') }}" class="btn btn-secondary marketing-hero__cta" data-landing-cta="login">
                     {{ __('messages.login') }}
                 </a>
-                <a href="#fonctionnalites" class="btn btn-secondary marketing-hero__cta">
+                <a href="{{ route('marketing.product') }}" class="btn btn-secondary marketing-hero__cta">
                     {{ __('messages.landing_discover_features') }}
                 </a>
             </div>
@@ -30,130 +32,120 @@
         </div>
     </section>
 
+    <section class="marketing-compare" aria-labelledby="compare-title">
+        <header class="marketing-section-header">
+            <h2 id="compare-title">{{ __('messages.landing_compare_title') }}</h2>
+            <p>{{ __('messages.landing_compare_lead') }}</p>
+        </header>
+
+        <div class="marketing-compare__grid">
+            <article class="marketing-compare__card marketing-compare__card--before">
+                <h3>{{ __('messages.landing_compare_before_title') }}</h3>
+                <ul>
+                    <li>{{ __('messages.landing_compare_before_1') }}</li>
+                    <li>{{ __('messages.landing_compare_before_2') }}</li>
+                    <li>{{ __('messages.landing_compare_before_3') }}</li>
+                    <li>{{ __('messages.landing_compare_before_4') }}</li>
+                </ul>
+            </article>
+            <article class="marketing-compare__card marketing-compare__card--after">
+                <h3>{{ __('messages.landing_compare_after_title') }}</h3>
+                <ul>
+                    <li>{{ __('messages.landing_compare_after_1') }}</li>
+                    <li>{{ __('messages.landing_compare_after_2') }}</li>
+                    <li>{{ __('messages.landing_compare_after_3') }}</li>
+                    <li>{{ __('messages.landing_compare_after_4') }}</li>
+                </ul>
+            </article>
+        </div>
+    </section>
+
+    <section class="marketing-steps" aria-labelledby="steps-title">
+        <header class="marketing-section-header">
+            <h2 id="steps-title">{{ __('messages.landing_steps_title') }}</h2>
+            <p>{{ __('messages.landing_steps_lead') }}</p>
+        </header>
+
+        <ol class="marketing-steps__grid">
+            @foreach ([
+                ['icon' => 'calendar-range', 'title' => 'landing_step_1_title', 'text' => 'landing_step_1_text'],
+                ['icon' => 'wallet', 'title' => 'landing_step_2_title', 'text' => 'landing_step_2_text'],
+                ['icon' => 'coins', 'title' => 'landing_step_3_title', 'text' => 'landing_step_3_text'],
+            ] as $index => $step)
+                <li class="marketing-step-card">
+                    <span class="marketing-step-card__index" aria-hidden="true">{{ $index + 1 }}</span>
+                    <span class="marketing-feature-card__icon" aria-hidden="true">
+                        <x-module-tab-icon :name="$step['icon']" />
+                    </span>
+                    <h3>{{ __('messages.' . $step['title']) }}</h3>
+                    <p>{{ __('messages.' . $step['text']) }}</p>
+                </li>
+            @endforeach
+        </ol>
+    </section>
+
+    @include('marketing.partials.screens')
+
     <section id="fonctionnalites" class="marketing-features" aria-labelledby="features-title">
         <header class="marketing-section-header">
             <h2 id="features-title">{{ __('messages.landing_features_title') }}</h2>
             <p>{{ __('messages.landing_features_lead') }}</p>
         </header>
 
-        <ul class="marketing-features__grid">
+        @include('marketing.partials.feature-grid')
+
+        <p class="marketing-section-follow">
+            <a href="{{ route('marketing.product') }}" class="marketing-text-link">{{ __('messages.landing_features_more') }}</a>
+        </p>
+    </section>
+
+    <section class="marketing-sectors" aria-labelledby="sectors-title">
+        <header class="marketing-section-header">
+            <h2 id="sectors-title">{{ __('messages.landing_sectors_title') }}</h2>
+            <p>{{ __('messages.landing_sectors_lead') }}</p>
+        </header>
+
+        <ul class="marketing-sectors__list">
+            <li>{{ __('messages.landing_sector_education') }}</li>
+            <li>{{ __('messages.landing_sector_consulting') }}</li>
+            <li>{{ __('messages.landing_sector_medical') }}</li>
+        </ul>
+    </section>
+
+    <section class="marketing-personas" aria-labelledby="personas-title">
+        <header class="marketing-section-header">
+            <h2 id="personas-title">{{ __('messages.landing_personas_title') }}</h2>
+            <p>{{ __('messages.landing_personas_lead') }}</p>
+        </header>
+
+        <ul class="marketing-personas__grid">
             @foreach ([
-                ['icon' => 'calendar-range', 'title' => 'landing_feature_planning_title', 'text' => 'landing_feature_planning_text'],
-                ['icon' => 'grid', 'title' => 'landing_feature_workload_title', 'text' => 'landing_feature_workload_text'],
-                ['icon' => 'wallet', 'title' => 'landing_feature_billing_title', 'text' => 'landing_feature_billing_text'],
-                ['icon' => 'coins', 'title' => 'landing_feature_treasury_title', 'text' => 'landing_feature_treasury_text'],
-                ['icon' => 'layers', 'title' => 'landing_feature_profiles_title', 'text' => 'landing_feature_profiles_text'],
-                ['icon' => 'building', 'title' => 'landing_feature_secure_title', 'text' => 'landing_feature_secure_text'],
-            ] as $feature)
+                ['icon' => 'school', 'title' => 'landing_persona_trainer_title', 'text' => 'landing_persona_trainer_text'],
+                ['icon' => 'person', 'title' => 'landing_persona_consultant_title', 'text' => 'landing_persona_consultant_text'],
+                ['icon' => 'users', 'title' => 'landing_persona_practice_title', 'text' => 'landing_persona_practice_text'],
+            ] as $persona)
                 <li class="marketing-feature-card">
                     <span class="marketing-feature-card__icon" aria-hidden="true">
-                        <x-module-tab-icon :name="$feature['icon']" />
+                        <x-module-tab-icon :name="$persona['icon']" />
                     </span>
-                    <h3>{{ __('messages.' . $feature['title']) }}</h3>
-                    <p>{{ __('messages.' . $feature['text']) }}</p>
+                    <h3>{{ __('messages.' . $persona['title']) }}</h3>
+                    <p>{{ __('messages.' . $persona['text']) }}</p>
                 </li>
             @endforeach
         </ul>
     </section>
 
-    <section id="captures" class="marketing-screens" aria-labelledby="screens-title">
-        <header class="marketing-section-header">
-            <h2 id="screens-title">{{ __('messages.landing_screens_title') }}</h2>
-            <p>{{ __('messages.landing_screens_lead') }}</p>
-        </header>
-
-        <figure class="marketing-product-stage" x-data="{ view: 'agenda' }">
-            <div
-                class="marketing-product-stage__tabs"
-                role="tablist"
-                aria-label="{{ __('messages.landing_stage_views') }}"
-            >
-                <button
-                    type="button"
-                    class="marketing-product-stage__tab"
-                    role="tab"
-                    id="landing-stage-agenda-tab"
-                    aria-controls="landing-stage-panel"
-                    :aria-selected="view === 'agenda'"
-                    :class="{ 'is-active': view === 'agenda' }"
-                    @click="view = 'agenda'"
-                >
-                    {{ __('messages.landing_stage_agenda') }}
-                </button>
-                <button
-                    type="button"
-                    class="marketing-product-stage__tab"
-                    role="tab"
-                    id="landing-stage-treasury-tab"
-                    aria-controls="landing-stage-panel"
-                    :aria-selected="view === 'treasury'"
-                    :class="{ 'is-active': view === 'treasury' }"
-                    @click="view = 'treasury'"
-                >
-                    {{ __('messages.landing_stage_treasury') }}
-                </button>
-            </div>
-
-            <div id="landing-stage-panel" class="marketing-product-stage__frame" role="tabpanel" aria-labelledby="landing-stage-agenda-tab">
-                <img
-                    src="{{ asset('images/landing-agenda.jpg') }}"
-                    alt="{{ __('messages.landing_hero_agenda_alt') }}"
-                    width="1476"
-                    height="1228"
-                    class="marketing-product-stage__image"
-                    decoding="async"
-                    :hidden="view !== 'agenda'"
-                >
-                <img
-                    src="{{ asset('images/landing-treasury.jpg') }}"
-                    alt="{{ __('messages.landing_hero_treasury_alt') }}"
-                    width="1476"
-                    height="1032"
-                    class="marketing-product-stage__image"
-                    decoding="async"
-                    hidden
-                    :hidden="view !== 'treasury'"
-                >
-            </div>
-            <figcaption class="marketing-product-stage__caption">{{ __('messages.landing_stage_caption') }}</figcaption>
-        </figure>
-    </section>
-
     <section id="tarifs" class="marketing-pricing" aria-labelledby="pricing-title">
         <header class="marketing-section-header">
             <h2 id="pricing-title">{{ __('messages.landing_pricing_title') }}</h2>
+            <p>{{ __('messages.landing_pricing_lead') }}</p>
         </header>
 
-        <article class="marketing-pricing__offer">
-            <div class="marketing-pricing__lead">
-                <p class="marketing-pricing__plan">{{ __('messages.landing_pricing_plan') }}</p>
-                <p class="marketing-pricing__amount">{{ __('messages.landing_pricing_trial_price') }}</p>
-                <p class="marketing-pricing__period">{{ __('messages.landing_pricing_trial_label') }}</p>
-                <p class="marketing-pricing__follow">
-                    {{ __('messages.landing_pricing_then') }}
-                    <strong>{{ __('messages.landing_pricing_monthly_price') }}</strong>
-                    {{ __('messages.landing_pricing_monthly_label') }}
-                </p>
-                <a href="{{ route('account-request.create') }}" class="btn btn-primary marketing-pricing__cta" data-landing-cta="register">
-                    {{ __('messages.landing_pricing_cta') }}
-                </a>
-            </div>
+        @include('marketing.partials.pricing-offer')
 
-            <div class="marketing-pricing__details">
-                <p class="marketing-pricing__included-label">{{ __('messages.landing_pricing_included') }}</p>
-                <ul class="marketing-pricing__included">
-                    @foreach ([
-                        'landing_pricing_included_modules',
-                        'landing_pricing_included_workspace',
-                        'landing_pricing_included_support',
-                        'landing_pricing_included_users',
-                        'landing_pricing_included_locales',
-                    ] as $item)
-                        <li>{{ __('messages.' . $item) }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        </article>
+        <p class="marketing-section-follow">
+            <a href="{{ route('marketing.pricing') }}" class="marketing-text-link" data-landing-cta="pricing">{{ __('messages.landing_pricing_more') }}</a>
+        </p>
     </section>
 
     <section id="a-propos" class="marketing-about" aria-labelledby="about-title">
@@ -161,15 +153,10 @@
             <h2 id="about-title">{{ __('messages.landing_about_title') }}</h2>
             <p>{{ __('messages.landing_about_lead') }}</p>
         </header>
+        <p class="marketing-section-follow">
+            <a href="{{ route('marketing.about') }}" class="marketing-text-link">{{ __('messages.landing_about_more') }}</a>
+        </p>
     </section>
 
-    <section class="marketing-cta-band" aria-labelledby="cta-title">
-        <div class="marketing-cta-band__inner">
-            <h2 id="cta-title">{{ __('messages.landing_cta_title') }}</h2>
-            <p>{{ __('messages.landing_cta_lead') }}</p>
-            <a href="{{ route('account-request.create') }}" class="btn btn-primary" data-landing-cta="register">
-                {{ __('messages.landing_request_access') }}
-            </a>
-        </div>
-    </section>
+    @include('marketing.partials.cta-band')
 </x-marketing-layout>
