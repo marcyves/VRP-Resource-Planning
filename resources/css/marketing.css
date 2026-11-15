@@ -7,7 +7,7 @@ body.marketing-page {
     --marketing-text: #ffffff;
     --marketing-text-muted: #ffffffd9;
     --marketing-text-subtle: #ffffffbf;
-    --marketing-chrome-bg: #0f172a99;
+    --marketing-chrome-bg: #0f172a;
     --marketing-chrome-border: #ffffff1a;
     --marketing-nav-link: #ffffffd9;
     --marketing-nav-link-hover-bg: #ffffff14;
@@ -36,7 +36,7 @@ html[data-theme="light"] body.marketing-page {
     --marketing-text: var(--text-heading);
     --marketing-text-muted: var(--text-body);
     --marketing-text-subtle: var(--text-secondary);
-    --marketing-chrome-bg: #f4f7fbd9;
+    --marketing-chrome-bg: #f4f7fb;
     --marketing-chrome-border: var(--border-subtle);
     --marketing-nav-link: var(--text-secondary);
     --marketing-nav-link-hover-bg: #00236f0f;
@@ -156,11 +156,15 @@ html[data-theme="light"] body.marketing-page .marketing-feature-card:hover {
     gap: var(--spacing-4);
     padding: var(--spacing-4) var(--spacing-6);
     background: var(--marketing-chrome-bg);
-    backdrop-filter: blur(12px);
     border-bottom: 1px solid var(--marketing-chrome-border);
-    position: sticky;
-    top: 0;
-    z-index: 20;
+    /* In-flow chrome: sticky + backdrop-filter was painting this bar over the /tarifs offer. */
+    position: relative;
+    top: auto;
+    z-index: 50;
+    flex: 0 0 auto;
+    width: 100%;
+    box-sizing: border-box;
+    isolation: isolate;
 }
 
 .marketing-menu {
@@ -282,10 +286,13 @@ html[data-theme="light"] body.marketing-page .marketing-nav__link:focus-visible 
 
 .marketing-main {
     flex: 1 1 auto;
+    position: relative;
+    z-index: 0;
+    isolation: isolate;
     width: min(72rem, 100%);
     margin-inline: auto;
     padding: var(--spacing-8) var(--spacing-4) var(--spacing-12);
-    scroll-margin-top: 4.5rem;
+    scroll-margin-top: 0;
 }
 
 .marketing-main:focus {
@@ -638,6 +645,8 @@ html[data-theme="dark"] body.marketing-page .marketing-hero .btn-secondary:hover
     border: 1px solid #d8e0ea;
     box-shadow: var(--shadow-lg);
     animation: marketing-rise 0.7s ease both;
+    position: relative;
+    z-index: 0;
 }
 
 @media (min-width: 800px) {
@@ -798,9 +807,11 @@ html[data-theme="dark"] body.marketing-page .marketing-hero .btn-secondary:hover
 }
 
 .marketing-page-intro {
+    position: relative;
+    z-index: 0;
     max-width: 40rem;
     margin: 0 auto var(--spacing-12);
-    padding: var(--spacing-10) var(--spacing-2) 0;
+    padding: var(--spacing-6) var(--spacing-2) 0;
     text-align: center;
 }
 
