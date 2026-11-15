@@ -2,6 +2,7 @@ import './bootstrap';
 import './theme';
 import './sidebar';
 import './planning-calendar';
+import './landing-traffic';
 
 import Alpine from 'alpinejs';
 import { createDeleteStore } from './delete-store';

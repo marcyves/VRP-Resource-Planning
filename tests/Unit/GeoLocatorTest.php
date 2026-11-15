@@ -60,4 +60,13 @@ class GeoLocatorTest extends TestCase
 
         $this->assertNull(app(GeoLocator::class)->labelFor('8.8.8.8'));
     }
+
+    public function test_country_for_private_ip_is_null_without_http(): void
+    {
+        Http::fake();
+
+        $this->assertNull(app(GeoLocator::class)->countryFor('127.0.0.1'));
+        $this->assertNull(app(GeoLocator::class)->countryFor('192.168.1.10'));
+        Http::assertNothingSent();
+    }
 }

@@ -5,10 +5,10 @@
             <p class="marketing-hero__lead">{{ __('messages.landing_lead') }}</p>
 
             <div class="marketing-hero__actions">
-                <a href="{{ route('account-request.create') }}" class="btn btn-primary marketing-hero__cta">
+                <a href="{{ route('account-request.create') }}" class="btn btn-primary marketing-hero__cta" data-landing-cta="register">
                     {{ __('messages.landing_trial_cta') }}
                 </a>
-                <a href="{{ route('login') }}" class="btn btn-secondary marketing-hero__cta">
+                <a href="{{ route('login') }}" class="btn btn-secondary marketing-hero__cta" data-landing-cta="login">
                     {{ __('messages.login') }}
                 </a>
                 <a href="#fonctionnalites" class="btn btn-secondary marketing-hero__cta">
@@ -134,7 +134,7 @@
                     <strong>{{ __('messages.landing_pricing_monthly_price') }}</strong>
                     {{ __('messages.landing_pricing_monthly_label') }}
                 </p>
-                <a href="{{ route('account-request.create') }}" class="btn btn-primary marketing-pricing__cta">
+                <a href="{{ route('account-request.create') }}" class="btn btn-primary marketing-pricing__cta" data-landing-cta="register">
                     {{ __('messages.landing_pricing_cta') }}
                 </a>
             </div>
@@ -167,7 +167,7 @@
         <div class="marketing-cta-band__inner">
             <h2 id="cta-title">{{ __('messages.landing_cta_title') }}</h2>
             <p>{{ __('messages.landing_cta_lead') }}</p>
-            <a href="{{ route('account-request.create') }}" class="btn btn-primary">
+            <a href="{{ route('account-request.create') }}" class="btn btn-primary" data-landing-cta="register">
                 {{ __('messages.landing_request_access') }}
             </a>
         </div>

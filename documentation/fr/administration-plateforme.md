@@ -176,6 +176,50 @@ Les événements `Login`, `Failed` et `Lockout` sont enregistrés dans `login_ev
 
 Géolocalisation : fichier local GeoLite2-City si présent, sinon HTTP sans clé (`ipwho.is`) avec timeout court et cache. Une absence de géoloc n'empêche jamais la connexion. Voir [Configuration](configuration.md).
 
+## Trafic landing (plateforme)
+
+Visites first-party de la page d’accueil publique (`/`), plus `/login` et `/demande-acces` pour les invités. Super-admin uniquement : `/super-admin/landing-traffic`. Pas de `company_id`. Rien n’est envoyé à Google Analytics ni à un autre tiers. `DNT` / `Sec-GPC` : pas d’enregistrement. L’usage authentifié de l’application n’est pas journalisé. L’IP brute est hachée (`ip_hash`) et jamais affichée. Le pays n’est rempli que depuis le MMDB GeoLite2 local (le même que les stats de connexion) — pas d’appel HTTP de géoloc.
+
+Horodatage stocké en UTC, affiché en `Europe/Rome`.
+
+Si `php artisan migrate` n’est pas disponible sur IONOS :
+
+```sql
+CREATE TABLE `landing_visits` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `visited_at` timestamp NOT NULL,
+  `visitor_id` char(36) NOT NULL,
+  `is_returning` tinyint(1) NOT NULL DEFAULT 0,
+  `page` varchar(32) NOT NULL,
+  `locale` varchar(8) DEFAULT NULL,
+  `accept_language` varchar(255) DEFAULT NULL,
+  `os` varchar(64) DEFAULT NULL,
+  `device_type` varchar(16) DEFAULT NULL,
+  `browser` varchar(64) DEFAULT NULL,
+  `referer_url` text DEFAULT NULL,
+  `referer_host` varchar(255) DEFAULT NULL,
+  `keywords` varchar(255) DEFAULT NULL,
+  `utm_source` varchar(255) DEFAULT NULL,
+  `utm_medium` varchar(255) DEFAULT NULL,
+  `utm_campaign` varchar(255) DEFAULT NULL,
+  `utm_content` varchar(255) DEFAULT NULL,
+  `utm_term` varchar(255) DEFAULT NULL,
+  `landing_path` varchar(255) NOT NULL,
+  `landing_query` text DEFAULT NULL,
+  `country` varchar(64) DEFAULT NULL,
+  `ip_hash` varchar(64) DEFAULT NULL,
+  `cta` varchar(16) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `landing_visits_visited_at_index` (`visited_at`),
+  KEY `landing_visits_visitor_id_index` (`visitor_id`),
+  KEY `landing_visits_referer_host_index` (`referer_host`),
+  KEY `landing_visits_locale_index` (`locale`),
+  KEY `landing_visits_device_type_index` (`device_type`),
+  KEY `landing_visits_utm_source_index` (`utm_source`),
+  KEY `landing_visits_page_index` (`page`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+```
+
 ## Voir aussi
 
 - [Configuration](configuration.md)

@@ -44,6 +44,35 @@ class GeoLocator
         return $label;
     }
 
+    /**
+     * Country name (or ISO code) from the local GeoLite2 MMDB only.
+     * Never calls a third-party HTTP API — used by landing traffic.
+     */
+    public function countryFor(string $ip): ?string
+    {
+        $ip = trim($ip);
+
+        if ($ip === '' || $this->isUnusableIp($ip) || $this->isPrivateOrReserved($ip)) {
+            return null;
+        }
+
+        $cacheKey = 'landing-traffic-country:'.$ip;
+        $cached = Cache::get($cacheKey);
+
+        if ($cached !== null) {
+            return $cached === '' ? null : $cached;
+        }
+
+        $country = $this->lookupCountryMmdb($ip);
+        $ttl = $country === null
+            ? (int) config('login_stats.geo.failure_cache_ttl', 3600)
+            : (int) config('login_stats.geo.cache_ttl', 2592000);
+
+        Cache::put($cacheKey, $country ?? '', $ttl);
+
+        return $country;
+    }
+
     private function lookup(string $ip): ?string
     {
         $fromMmdb = $this->lookupMmdb($ip);
@@ -57,6 +86,33 @@ class GeoLocator
         }
 
         return $this->lookupHttp($ip);
+    }
+
+    private function lookupCountryMmdb(string $ip): ?string
+    {
+        $reader = $this->reader();
+
+        if ($reader === null) {
+            return null;
+        }
+
+        try {
+            $record = $reader->city($ip);
+            $name = $record->country->name;
+            $code = $record->country->isoCode;
+
+            if (is_string($name) && $name !== '') {
+                return $name;
+            }
+
+            return is_string($code) && $code !== '' ? $code : null;
+        } catch (Throwable $e) {
+            Log::debug('landing_traffic.geo_mmdb_miss', [
+                'error' => $e->getMessage(),
+            ]);
+
+            return null;
+        }
     }
 
     private function lookupMmdb(string $ip): ?string
