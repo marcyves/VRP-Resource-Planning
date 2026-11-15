@@ -4,7 +4,6 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Http\Utility\Tools;
-use App\Models\Status;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -104,13 +103,14 @@ class User extends Authenticatable
             ->orderBy('schools.name');
 
         if ($year != 'all') {
-            $query
-                ->addSelect(DB::raw('COALESCE(SUM(invoices.amount), 0) as amount'))
-                ->leftJoin('invoices', function ($join) use ($year) {
-                    $join->on('invoices.school_id', '=', 'schools.id')
-                        ->whereYear('invoices.bill_date', $year);
-                })
-                ->groupBy('schools.id');
+            // Subquery instead of LEFT JOIN + GROUP BY schools.id: MySQL 8
+            // ONLY_FULL_GROUP_BY cannot treat schools.name as dependent after an outer join.
+            $query->addSelect([
+                'amount' => Invoice::query()
+                    ->selectRaw('COALESCE(SUM(invoices.amount), 0)')
+                    ->whereColumn('invoices.school_id', 'schools.id')
+                    ->whereYear('invoices.bill_date', $year),
+            ]);
         }
 
         $schools = $query->get();
