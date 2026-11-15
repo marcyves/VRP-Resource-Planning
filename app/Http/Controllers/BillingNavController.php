@@ -48,6 +48,8 @@ class BillingNavController extends Controller
 
         $planning = Planning::getDetails((string) $year, (string) $month);
         $summary = PlanningBillingSummary::fromPlanning($planning);
+        $monthTotal = round($summary['schools']->sum('amount_ttc'), 2);
+        $monthRemaining = round($summary['schools']->sum('unbilled_amount_ttc'), 2);
         $schools = $summary['schools']
             ->filter(fn (array $school) => ($school['unbilled_sessions'] ?? 0) > 0)
             ->values();
@@ -57,6 +59,9 @@ class BillingNavController extends Controller
 
         return view('billing.prepare', [
             'schools' => $schools,
+            'monthInvoiced' => round($monthTotal - $monthRemaining, 2),
+            'monthRemaining' => $monthRemaining,
+            'monthTotal' => $monthTotal,
             'periodTitle' => $periodTitle,
             'year' => $year,
             'month' => $month,

@@ -321,6 +321,10 @@
     margin: 0;
 }
 
+.billing-prepare-month {
+    margin: 0 0 var(--spacing-4);
+}
+
 .billing-prepare-card {
     display: flex;
     flex-direction: column;

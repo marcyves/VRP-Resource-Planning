@@ -11,6 +11,21 @@
         </nav>
     </section>
 
+    <dl class="school-stats-totals billing-prepare-month">
+        <div class="school-stat school-stat--invoiced">
+            <dt class="school-stat__label">{{ __('messages.billing_prepare_invoiced') }}</dt>
+            <dd class="school-stat__value">@money($monthInvoiced)</dd>
+        </div>
+        <div class="school-stat school-stat--unbilled">
+            <dt class="school-stat__label">{{ __('messages.billing_prepare_remaining') }}</dt>
+            <dd class="school-stat__value">@money($monthRemaining)</dd>
+        </div>
+        <div class="school-stat">
+            <dt class="school-stat__label">{{ __('messages.total') }}</dt>
+            <dd class="school-stat__value">@money($monthTotal)</dd>
+        </div>
+    </dl>
+
     @if ($schools->isEmpty())
         <p class="treasury-empty" role="status">{{ __('messages.billing_prepare_empty') }}</p>
     @else
