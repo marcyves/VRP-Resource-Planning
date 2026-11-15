@@ -7,7 +7,7 @@
 | Element | Files | Role |
 |---------|-------|------|
 | Sidebar | `resources/views/layouts/navigation.blade.php`, `resources/js/sidebar.js`, `resources/css/shell.css`, `navigation.css` | Main menu, compact mode, logo, sign out |
-| Topbar | `resources/views/layouts/topbar.blade.php` | Page title, theme, profile menu (Edit/Browse toggle) |
+| Topbar | `resources/views/layouts/topbar.blade.php` | Page title, theme, Edit/Browse toggle in front of the name (direct link to the profile) |
 | Layout | `resources/views/layouts/app.blade.php` | Sidebar + content grid |
 
 ### Sidebar menu (order — company user)
@@ -55,7 +55,7 @@ Post-login constant: `RouteServiceProvider::HOME = '/planning'` (agenda). `/home
 
 | Component | Module | Tabs |
 |-----------|--------|------|
-| `treasury-module-tabs` | Bank | Summary · Bank (off the daily path) |
+| `treasury-module-tabs` | Invoices | Invoices · Summary |
 | `referential-module-tabs` | Referential | Programs · Groups |
 | `settings-module-tabs` | Settings | Company · profile |
 

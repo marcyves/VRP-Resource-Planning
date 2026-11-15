@@ -321,6 +321,28 @@
     margin: 0;
 }
 
+.billing-prepare-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-3);
+    height: 100%;
+}
+
+.billing-prepare-card__name {
+    margin: 0;
+    font-size: 1.05rem;
+    color: var(--text-heading);
+}
+
+.billing-prepare-card .school-stats {
+    margin: 0;
+}
+
+.billing-prepare-card .btn {
+    margin-top: auto;
+    align-self: flex-start;
+}
+
 .planning-billing-panel__list {
     list-style: none;
     margin: 0;

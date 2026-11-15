@@ -3,8 +3,6 @@
         <h2>{{ __('messages.bank_reconciliation') }}</h2>
     </x-slot>
 
-    <x-treasury-module-tabs active="bank" />
-
     @if (Auth::user()->getMode() == 'Edit')
     <section class="school-panel" x-data="{ open: true }">
         <div class="school-panel__box">

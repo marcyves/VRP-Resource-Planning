@@ -3,8 +3,6 @@
         <h2>{{ __('messages.bank') }}</h2>
     </x-slot>
 
-    <x-treasury-module-tabs active="bank" />
-
     @if (Auth::user()->getMode() == 'Edit')
         <dialog id="bank-add-dialog" class="bank-dialog" @if ($errors->has('name') && ! old('bank_edit_id')) open @endif>
             <form action="{{ route('treasury.bank.banks.store') }}" method="post" class="profile-modal-form nice-form">

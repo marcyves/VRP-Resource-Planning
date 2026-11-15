@@ -3,6 +3,8 @@
         <h2>{{ __('messages.invoices') }} @if($current_year !== 'all'){{ $current_year }}@endif</h2>
     </x-slot>
 
+    <x-treasury-module-tabs active="invoices" />
+
     <section class="page-toolbar">
         <x-year-filter />
         @if (Auth::user()->getMode() == 'Edit')

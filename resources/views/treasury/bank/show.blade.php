@@ -64,8 +64,6 @@
         <h2>{{ __('messages.bank') }} — {{ $import->bankAccount?->displayName() ?? $import->file_name }}</h2>
     </x-slot>
 
-    <x-treasury-module-tabs active="bank" />
-
     <section class="bank-reconciliation-meta">
         <p>
             @if ($import->bankAccount?->bank)

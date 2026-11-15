@@ -28,8 +28,6 @@
         <h2>{{ __('messages.bank_reconciliation') }} — {{ $import->file_name }}</h2>
     </x-slot>
 
-    <x-treasury-module-tabs active="bank" />
-
     <section class="bank-reconciliation-meta">
         <p>
             @if ($import->account_label)

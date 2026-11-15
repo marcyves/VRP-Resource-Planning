@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2>{{ __('messages.nav_invoice') }} {{ $periodTitle }}</h2>
+        <h2>{{ __('messages.nav_invoice') }}</h2>
     </x-slot>
 
     <section class="page-toolbar">
@@ -14,20 +14,27 @@
     @if ($schools->isEmpty())
         <p class="treasury-empty" role="status">{{ __('messages.billing_prepare_empty') }}</p>
     @else
-        <ul class="planning-billing-panel__list">
+        <ul class="resource-grid">
             @foreach ($schools as $school)
-                <li class="planning-billing-card planning-billing-card--unbilled">
-                    <div class="planning-billing-card__main">
-                        <strong class="planning-billing-card__name">{{ $school['name'] }}</strong>
-                        <span class="planning-billing-card__amount">
-                            {{ number_format($school['unbilled_amount_ttc'], 2, ',', ' ') }} € TTC
-                            <span class="planning-billing-card__amount-note">{{ __('messages.planning_billing_unbilled_amount') }}</span>
-                        </span>
-                        <span class="planning-billing-card__meta">
-                            {{ number_format($school['hours'], 1, ',', ' ') }} {{ __('messages.hours') }}
-                            · {{ $school['unbilled_sessions'] }} {{ __('messages.planning_billing_unbilled') }}
-                        </span>
-                    </div>
+                @php
+                    $invoicedTtc = round($school['amount_ttc'] - $school['unbilled_amount_ttc'], 2);
+                @endphp
+                <li class="billing-prepare-card">
+                    <h3 class="billing-prepare-card__name">{{ $school['name'] }}</h3>
+                    <dl class="school-stats">
+                        <div class="school-stat school-stat--invoiced">
+                            <dt class="school-stat__label">{{ __('messages.billing_prepare_invoiced') }}</dt>
+                            <dd class="school-stat__value">@money($invoicedTtc)</dd>
+                        </div>
+                        <div class="school-stat school-stat--unbilled">
+                            <dt class="school-stat__label">{{ __('messages.billing_prepare_remaining') }}</dt>
+                            <dd class="school-stat__value">@money($school['unbilled_amount_ttc'])</dd>
+                        </div>
+                        <div class="school-stat">
+                            <dt class="school-stat__label">{{ __('messages.total') }}</dt>
+                            <dd class="school-stat__value">@money($school['amount_ttc'])</dd>
+                        </div>
+                    </dl>
                     <a
                         class="btn btn-primary"
                         href="{{ route('school.show', ['school' => $school['id'], 'panel' => 'billing']) }}"

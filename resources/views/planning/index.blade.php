@@ -7,15 +7,17 @@
         $unbilledSchools = $billingSchools->filter(fn (array $school) => ($school['unbilled_sessions'] ?? 0) > 0);
     @endphp
     <p class="page-meta">
-        <span>{{ $monthly_hours }} {{ __('messages.hours') }} · {{ number_format($monthly_gain * 1.2, 2, ',', ' ') }} € TTC</span>
         @if ($unbilledSchools->isNotEmpty())
             <a class="planning-unbilled" href="{{ route('billing.prepare') }}">
                 {{ __('messages.planning_unbilled_link', [
+                    'hours' => $monthly_hours,
                     'count' => $unbilledSchools->count(),
                     'schools' => mb_strtolower(__('messages.schools')),
                     'amount' => number_format($unbilledSchools->sum('unbilled_amount_ttc'), 2, ',', ' '),
                 ]) }}
             </a>
+        @else
+            <span>{{ $monthly_hours }} {{ mb_strtolower(__('messages.hours')) }}</span>
         @endif
     </p>
 

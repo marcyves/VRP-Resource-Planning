@@ -47,7 +47,7 @@
                 $onBilling = request()->routeIs('billing.prepare', 'billing.prepare.*', 'school.billing.*')
                     || (request()->routeIs('school.show') && request('panel') === 'billing')
                     || request('focus') === 'billing';
-                $onInvoices = request()->routeIs('treasury.invoices.*', 'invoice.*');
+                $onInvoices = request()->routeIs('treasury.invoices.*', 'invoice.*', 'treasury.index');
                 $onExpenses = request()->routeIs('treasury.expenses.*', 'treasury.reports.*');
                 $onSchools = ! $onBilling && request()->routeIs(
                     'home',
@@ -61,7 +61,7 @@
                     'school.add',
                     'course.*'
                 );
-                $onBank = request()->routeIs('treasury.index', 'treasury.bank.*', 'treasury.reconciliation.*');
+                $onBank = request()->routeIs('treasury.bank.*', 'treasury.reconciliation.*');
                 $onPrograms = request()->routeIs('program.*');
                 $onLogins = request()->routeIs('login-stats.*');
             @endphp
