@@ -35,6 +35,8 @@
 10. **Profile** → `profile.edit`
 11. **Connections** (admin) → `login-stats.index`
 
+Super admin sidebar: companies, electronic invoicing, connections, **Landing traffic** (`super-admin.landing-traffic.index`).
+
 `nav.billing` redirects to `billing.prepare`. The sidebar starts expanded; compact mode applies only when `vrp-sidebar-compact` is `true` in `localStorage`. Under ~800 px the menu button opens this same list.
 
 ## Home page

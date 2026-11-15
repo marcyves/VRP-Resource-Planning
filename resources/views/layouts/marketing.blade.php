@@ -4,6 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
+        <meta name="landing-cta-url" content="{{ route('landing-visits.cta') }}">
         <x-metas/>
         <title>
             @if (! empty($title))
@@ -44,7 +45,7 @@
             @if (request()->routeIs('welcome'))
                 <nav class="marketing-menu" aria-label="{{ __('messages.landing_menu') }}">
                     <a href="#fonctionnalites" class="marketing-nav__link">{{ __('messages.landing_nav_features') }}</a>
-                    <a href="#tarifs" class="marketing-nav__link">{{ __('messages.landing_nav_pricing') }}</a>
+                    <a href="#tarifs" class="marketing-nav__link" data-landing-cta="pricing">{{ __('messages.landing_nav_pricing') }}</a>
                     <a href="#a-propos" class="marketing-nav__link">{{ __('messages.landing_nav_about') }}</a>
                 </nav>
             @endif
@@ -83,11 +84,11 @@
                 @endunless
 
                 @unless (request()->routeIs('login'))
-                    <a href="{{ route('login') }}" class="marketing-nav__link">{{ __('messages.login') }}</a>
+                    <a href="{{ route('login') }}" class="marketing-nav__link" data-landing-cta="login">{{ __('messages.login') }}</a>
                 @endunless
 
                 @unless (request()->routeIs('account-request.*'))
-                    <a href="{{ route('account-request.create') }}" class="btn btn-primary btn--compact marketing-nav__cta">
+                    <a href="{{ route('account-request.create') }}" class="btn btn-primary btn--compact marketing-nav__cta" data-landing-cta="register">
                         {{ __('messages.landing_request_access') }}
                     </a>
                 @endunless

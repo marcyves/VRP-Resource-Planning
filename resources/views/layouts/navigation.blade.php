@@ -42,6 +42,13 @@
             >
                 {{ __('messages.login_stats') }}
             </x-sidebar-nav-link>
+            <x-sidebar-nav-link
+                icon="chart"
+                :href="route('super-admin.landing-traffic.index')"
+                :active="request()->routeIs('super-admin.landing-traffic.*')"
+            >
+                {{ __('messages.landing_traffic') }}
+            </x-sidebar-nav-link>
         @else
             @php
                 $onBilling = request()->routeIs('billing.prepare', 'billing.prepare.*', 'school.billing.*')

@@ -12,6 +12,8 @@ use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\ElectronicInvoiceWebhookController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\InvoiceController;
+use App\Http\Controllers\LandingTrafficController;
+use App\Http\Controllers\LandingVisitCtaController;
 use App\Http\Controllers\LoginStatisticsController;
 use App\Http\Controllers\PlanningController;
 use App\Http\Controllers\ProfileController;
@@ -33,14 +35,21 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', [\App\Http\Controllers\WelcomeController::class, 'index'])->name('welcome');
+Route::get('/', [\App\Http\Controllers\WelcomeController::class, 'index'])
+    ->middleware('landing.traffic')
+    ->name('welcome');
 
 Route::get('/langue/{locale}', [\App\Http\Controllers\WelcomeController::class, 'locale'])
     ->whereIn('locale', ['fr', 'en', 'it'])
     ->name('locale.switch');
 
+Route::post('/landing-visits/cta', [LandingVisitCtaController::class, 'store'])
+    ->middleware('throttle:30,1')
+    ->name('landing-visits.cta');
+
 Route::middleware('guest')->group(function () {
     Route::get('/demande-acces', [\App\Http\Controllers\AccountRequestController::class, 'create'])
+        ->middleware('landing.traffic')
         ->name('account-request.create');
     Route::post('/demande-acces', [\App\Http\Controllers\AccountRequestController::class, 'store'])
         ->middleware('throttle:5,1')
@@ -66,6 +75,7 @@ Route::middleware(['auth', 'superadmin'])->prefix('super-admin')->name('super-ad
     Route::get('/electronic-invoicing', [\App\Http\Controllers\SuperAdmin\ElectronicInvoicingSettingsController::class, 'edit'])->name('electronic-invoicing.edit');
     Route::patch('/electronic-invoicing', [\App\Http\Controllers\SuperAdmin\ElectronicInvoicingSettingsController::class, 'update'])->name('electronic-invoicing.update');
     Route::get('/login-stats', [LoginStatisticsController::class, 'index'])->name('login-stats.index');
+    Route::get('/landing-traffic', [LandingTrafficController::class, 'index'])->name('landing-traffic.index');
 });
 
 Route::post('/webhooks/e-invoice/{platform}', ElectronicInvoiceWebhookController::class)

@@ -68,5 +68,6 @@ class Kernel extends HttpKernel
         'tenant' => \App\Http\Middleware\EnsureTenantUser::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
+        'landing.traffic' => \App\Http\Middleware\RecordLandingVisit::class,
     ];
 }

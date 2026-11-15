@@ -69,7 +69,7 @@ Runbook détaillé : [Administration plateforme](administration-plateforme.md).
 
 ## Fichiers
 
-- `config/terminology.php`, `config/app.php`, `config/vrp.php`, `config/electronic-invoicing.php`, `config/login_stats.php`, `.env.example`
+- `config/terminology.php`, `config/app.php`, `config/vrp.php`, `config/electronic-invoicing.php`, `config/login_stats.php`, `config/landing_traffic.php`, `.env.example`
 
 ## Liens
 
