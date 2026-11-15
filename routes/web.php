@@ -39,6 +39,17 @@ Route::get('/', [\App\Http\Controllers\WelcomeController::class, 'index'])
     ->middleware('landing.traffic')
     ->name('welcome');
 
+Route::middleware('landing.traffic')->group(function () {
+    Route::get('/fonctionnalites', [\App\Http\Controllers\WelcomeController::class, 'product'])
+        ->name('marketing.product');
+    Route::get('/tarifs', [\App\Http\Controllers\WelcomeController::class, 'pricing'])
+        ->name('marketing.pricing');
+    Route::get('/a-propos', [\App\Http\Controllers\WelcomeController::class, 'about'])
+        ->name('marketing.about');
+    Route::get('/mentions-legales', [\App\Http\Controllers\WelcomeController::class, 'legal'])
+        ->name('marketing.legal');
+});
+
 Route::get('/langue/{locale}', [\App\Http\Controllers\WelcomeController::class, 'locale'])
     ->whereIn('locale', ['fr', 'en', 'it'])
     ->name('locale.switch');

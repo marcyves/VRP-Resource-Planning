@@ -85,6 +85,25 @@ class LandingTrafficTest extends TestCase
         $this->assertSame('it', LandingVisit::query()->orderByDesc('id')->value('locale'));
     }
 
+    public function test_marketing_inner_pages_are_recorded_as_landing(): void
+    {
+        $this->withHeaders(['User-Agent' => self::CHROME_UA])
+            ->get(route('marketing.product'))
+            ->assertOk();
+        $this->withHeaders(['User-Agent' => self::CHROME_UA])
+            ->get(route('marketing.pricing'))
+            ->assertOk();
+
+        $this->assertDatabaseHas('landing_visits', [
+            'page' => 'landing',
+            'landing_path' => '/fonctionnalites',
+        ]);
+        $this->assertDatabaseHas('landing_visits', [
+            'page' => 'landing',
+            'landing_path' => '/tarifs',
+        ]);
+    }
+
     public function test_login_and_account_request_pages_are_recorded(): void
     {
         $visitor = (string) Str::uuid();

@@ -8,7 +8,7 @@ web
 
 ## Users
 
-**Primary (confirmed):** the unauthenticated prospect on the public home (`/`) who decides whether to request an account. Design work for that person: landing, hero, login, and “Demander un compte”.
+**Primary (confirmed):** the unauthenticated prospect on the public site who decides whether to request an account. Design work for that person: home (`/`), product (`/fonctionnalites`), pricing (`/tarifs`), about (`/a-propos`), legal (`/mentions-legales`), login, and “Demander un compte”.
 
 The signed-in practitioner is also a design surface for the signed-in shell: Agenda and Facturer (Quotidien); Écoles, Groupes and Programmes (Activité); Factures, Dépenses and Banque (Finance). Do not treat that shell as out of scope.
 
@@ -50,11 +50,11 @@ Undecided: no product-specific accessibility standard (e.g. RGAA) was confirmed.
 - Licence: GPL-3.0.
 - Public chrome: **do not use** `public/images/VRP.jpeg` as the header mark. Wordmark / product name is enough unless a replacement mark is supplied.
 - Landing illustration still on hand: `public/images/VRP-login.jpg` (not a mandatory lock-in for every hero treatment).
-- Voice: professional French (and EN/IT strings); no invented slogans beyond existing `messages.landing_*` copy.
+- Voice: professional French (and EN/IT strings) in `messages.landing_*`. Argument shape may follow neighbouring invoicing products (pain of reconstructing the month → proof on the client record → CTA) without copying their wording, headings, slogans, or examples. Do not invent features, testimonials, or metrics.
 
 ## Evidence on Hand
 
-- Public copy: `resources/views/welcome.blade.php`, `resources/lang/fr/messages.php` (`landing_*`).
+- Public copy: `resources/views/welcome.blade.php`, `resources/views/marketing/`, `resources/lang/{fr,en,it}/messages.php` (`landing_*`).
 - Product wiki: `documentation/fr/`, `documentation/en/`.
 - User manuals (LaTeX): `documentation/manuel-utilisateur/`, `documentation/manuel-prise-en-main-medical/`.
 - Demo mentioned in README; do not fabricate testimonials, customer logos, conversion metrics, or pricing.

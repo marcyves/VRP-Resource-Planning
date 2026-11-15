@@ -42,13 +42,26 @@
                 <span class="marketing-brand__name">{{ config('app.name') }}</span>
             </a>
 
-            @if (request()->routeIs('welcome'))
+            @unless ($narrow ?? false)
                 <nav class="marketing-menu" aria-label="{{ __('messages.landing_menu') }}">
-                    <a href="#fonctionnalites" class="marketing-nav__link">{{ __('messages.landing_nav_features') }}</a>
-                    <a href="#tarifs" class="marketing-nav__link" data-landing-cta="pricing">{{ __('messages.landing_nav_pricing') }}</a>
-                    <a href="#a-propos" class="marketing-nav__link">{{ __('messages.landing_nav_about') }}</a>
+                    <a
+                        href="{{ route('marketing.product') }}"
+                        class="marketing-nav__link"
+                        @if (request()->routeIs('marketing.product')) aria-current="page" @endif
+                    >{{ __('messages.landing_nav_features') }}</a>
+                    <a
+                        href="{{ route('marketing.pricing') }}"
+                        class="marketing-nav__link"
+                        data-landing-cta="pricing"
+                        @if (request()->routeIs('marketing.pricing')) aria-current="page" @endif
+                    >{{ __('messages.landing_nav_pricing') }}</a>
+                    <a
+                        href="{{ route('marketing.about') }}"
+                        class="marketing-nav__link"
+                        @if (request()->routeIs('marketing.about')) aria-current="page" @endif
+                    >{{ __('messages.landing_nav_about') }}</a>
                 </nav>
-            @endif
+            @endunless
 
             <nav class="marketing-nav" aria-label="{{ __('messages.landing_nav') }}">
                 <div class="marketing-locales" role="group" aria-label="{{ __('messages.landing_languages') }}">
@@ -80,7 +93,10 @@
                 </button>
 
                 @unless (request()->routeIs('welcome'))
-                    <a href="{{ route('welcome') }}" class="marketing-nav__link">{{ __('messages.landing_home') }}</a>
+                    <a
+                        href="{{ route('welcome') }}"
+                        class="marketing-nav__link"
+                    >{{ __('messages.landing_home') }}</a>
                 @endunless
 
                 @unless (request()->routeIs('login'))
@@ -104,6 +120,12 @@
                 &copy; {{ date('Y') }} XDM Consulting — Marc Augier
             </p>
             <p class="marketing-footer__tagline">{{ __('messages.landing_footer_tagline') }}</p>
+            <nav class="marketing-footer__nav" aria-label="{{ __('messages.landing_footer_nav') }}">
+                <a href="{{ route('marketing.product') }}">{{ __('messages.landing_nav_features') }}</a>
+                <a href="{{ route('marketing.pricing') }}" data-landing-cta="pricing">{{ __('messages.landing_nav_pricing') }}</a>
+                <a href="{{ route('marketing.about') }}">{{ __('messages.landing_nav_about') }}</a>
+                <a href="{{ route('marketing.legal') }}">{{ __('messages.landing_nav_legal') }}</a>
+            </nav>
         </footer>
     </body>
 </html>
