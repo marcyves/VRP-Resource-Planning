@@ -4,7 +4,7 @@
 
 ## Major change
 
-**Billing preparation** is no longer under the **Scheduling** module (`/billing`). It lives on the **school detail** page (`school/show`), anchored at `#billing`.
+**Billing preparation** for one client lives on the school sheet (`school/show?panel=billing`). Sidebar **Invoice** is the month list in front of that sheet (`/facturer`). The old Scheduling tab (`/billing`) is no longer the entry point.
 
 ### Before (v1)
 
@@ -13,8 +13,38 @@
 
 ### After (v2)
 
-- Scheduling: Planning · Calendar only
-- Preparation: **one school at a time**, with its own monthly navigation
+- Sidebar **Invoice** opens a month list of clients that still have unbilled sessions (`/facturer`).
+- Preparing one client stays on `school/show?panel=billing`.
+- Legacy `/billing*` still redirects to the school in session.
+
+## Monthly list (`/facturer`)
+
+`BillingNavController` (`billing.prepare`). No school is required in session (`BillingNavTest`).
+
+| Route | Name | Effect |
+|-------|------|--------|
+| `GET /facturer` | `billing.prepare` | Month already in the agenda session |
+| `GET /facturer/previous` | `billing.prepare.previous` | −1 month |
+| `GET /facturer/next` | `billing.prepare.next` | +1 month |
+| `GET /nav/billing` | `nav.billing` | Redirect to `billing.prepare` |
+
+Previous and next, and the list itself, write the session keys the agenda already uses: `current_year`, `current_month`, and `billing_year`, all set from that calendar month. Paging Invoice therefore moves the agenda period and the year filter on the school list.
+
+Rows come from `Planning::getDetails` for that month, grouped by `PlanningBillingSummary::fromPlanning`. HT is `Tools::planningGain`. TTC is `round(HT × 1.2, 2)` per school (the class writes the literal `1.2`, the same value as `Tools::VAT_MULTIPLIER`).
+
+The three figures under the period cover **every** school with a session that month, including schools that are fully invoiced:
+
+| Figure | Formula |
+|--------|---------|
+| Already invoiced | `round(monthTotal − monthRemaining, 2)` |
+| Still to invoice | sum of `unbilled_amount_ttc` |
+| Total | sum of `amount_ttc` |
+
+Cards use `.resource-grid` / `.billing-prepare-card` (same grid as schools and groups). A card appears only when `unbilled_sessions > 0`. Sort: unbilled session count, then unbilled HT, then hours (`courses.session_length` on the planning row — sort only, not displayed). The invoiced figure on a card is `amount_ttc − unbilled_amount_ttc`. **Prepare** opens `school.show` with `panel=billing`.
+
+An empty card list still shows the period totals and `messages.billing_prepare_empty`.
+
+The period title uses `TerminologyLocale::normalizeBaseLocale` and Carbon `translatedFormat('F')`, then the year.
 
 ## School detail screen
 
@@ -132,6 +162,8 @@ If the PDF later disappears, viewing the invoice regenerates it with `InvoiceSer
 
 | File | Role |
 |------|------|
+| `app/Http/Controllers/BillingNavController.php` | Monthly Invoice list |
+| `app/Support/PlanningBillingSummary.php` | Per-school HT / TTC for that list |
 | `app/Http/Controllers/BillingController.php` | Period navigation, setBill, jump unbilled |
 | `app/Http/Controllers/InvoiceController.php` | Scope, comment, download, and paid lock |
 | `app/Services/InvoiceService.php` | PDF, regeneration, course-scoped planning link |

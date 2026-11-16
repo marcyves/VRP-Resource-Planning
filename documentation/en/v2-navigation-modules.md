@@ -46,12 +46,14 @@ Super admin sidebar: companies, electronic invoicing, connections, **Landing tra
 | `/home` | `home` | `SchoolController@index` | School list, billing stats, chart, link to annual workload |
 | `/dashboard` | `dashboard` | redirect | Alias → `home` |
 
-Post-login constant: `RouteServiceProvider::HOME = '/planning'` (agenda). `/home` remains the school list.
+Password sign-in (`AuthenticatedSessionController::store`) and the guest middleware send the user to `User::homePath()`: `/home` for a company user, `/super-admin/companies` for a super admin. `redirect()->intended()` still wins when a URL was stored before login. `SchoolHomeBudgetTest` asserts that company-admin login lands on `home`. `RouteServiceProvider::HOME` stays `/planning` and is what **registration** and **email verification** use. `tests/Feature/Auth/AuthenticationTest.php` still asserts that constant; that one test fails because `store()` returns `/home`.
 
 ### Per-school indicators (list)
 
-- **Invoiced incl. VAT** — sum of invoices for the current year
-- **Unbilled incl. VAT** — sessions without `invoice_id`
+- **Invoiced incl. VAT** — sum of `invoices.amount` whose `bill_date` falls in the session year
+- **Unbilled incl. VAT** — sessions with an empty `invoice_id`, valued with `planningGain` then × 1.2
+
+The home list always passes a concrete year into `User::getSchoolsAndBudget()` (session `current_year`, or the current year). Invoiced amount is a correlated subquery, not a `LEFT JOIN` plus `GROUP BY schools.id`. MySQL 8 with `ONLY_FULL_GROUP_BY` rejects `schools.name` after that outer join (fixed 2026-11-15, `SchoolHomeBudgetTest`). Unbilled figures are summed in PHP (`getUnbilledStatsBySchool`) from actual begin/end. Schools with no course that year are a separate inactive list (`getNoCourse`). Paging **Invoice** overwrites `current_year`, so this list follows the billing month’s year.
 
 ## Module tabs
 
@@ -76,6 +78,8 @@ Post-login constant: `RouteServiceProvider::HOME = '/planning'` (agenda). `/home
 Prev / next (`planning.previous` / `planning.next`) call `Tools::shiftPlanningPeriod()`: **±1 week** in week view (month/year follow the Monday), **±1 month** in month view. Week start is stored in `planning_week_start`; changing the month selector resets it to the first Monday of that month (or today if the displayed month is current).
 
 Visible-period totals (week or month) sit on one line under the title, in TTC (`gain × 1.2`). When work is still unbilled, one line links to Invoice. Events outside 08:00–20:00 are clamped / hidden (`Tools::weekEventPosition()`). Days that belong to the adjacent month get `--outside` styling.
+
+Today uses `calToday` on the month cell and `week-agenda__day-head--today` / `week-agenda__column--today` on the week grid. Background is `--cal-today-bg` (`#fde8e8`, dark `#4a2c32`); the date uses `--cal-today-date`. Weekend uses `calDay--weekend` and `week-agenda__*--weekend`, background `--cal-weekend-bg` (`#eceff3`, dark `#243044`). Tokens are in `global.css` and `theme.css`.
 
 Agenda lists sessions by **session date**, not by `courses.year`. A 2026 course with a January 2027 session still appears when browsing January 2027.
 

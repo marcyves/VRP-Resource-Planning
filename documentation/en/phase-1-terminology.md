@@ -11,8 +11,8 @@ Phase 1 switches application **labels** by company profile without changing the 
 ### Company profile
 
 - Column: `companies.terminology_profile`
-- Values: `education` (default) | `consulting`
-- Constants: `Company::PROFILE_EDUCATION`, `Company::PROFILE_CONSULTING`
+- Values: `education` (default) | `consulting` | `medical`
+- Constants: `Company::PROFILE_EDUCATION`, `Company::PROFILE_CONSULTING`, `Company::PROFILE_MEDICAL`
 - UI: **My company → Edit** (“Business context” dropdown)
 
 ### Locale resolution
@@ -22,16 +22,17 @@ Class: `App\Support\TerminologyLocale`
 ```text
 APP_LOCALE (fr | en | it)
         +
-terminology_profile (education | consulting)
+terminology_profile (education | consulting | medical)
         ↓
 education  → fr, en, it
 consulting → fr_consulting, en_consulting, it_consulting
+medical    → fr_medical, en_medical, it_medical
 ```
 
 ### Middleware
 
-- `App\Http\Middleware\SetTerminologyLocale`
-- Applied on `auth` route group — `routes/web.php`
+- `App\Http\Middleware\SetTerminologyLocale` — `auth` route group in `routes/web.php`. Signed-in labels.
+- `App\Http\Middleware\SetGuestLocale` — `web` group, **guests only**. Reads `session('locale')` when it is one of `config('terminology.base_locales')` (`fr`, `en`, `it`). The public header sets that key via `GET /langue/{locale}`. It does not run for a signed-in user, and it does not apply a terminology profile.
 
 ### Language files
 

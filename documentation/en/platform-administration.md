@@ -178,7 +178,13 @@ Geolocation: local GeoLite2-City file when present, otherwise a no-key HTTP look
 
 ## Landing traffic (platform)
 
-First-party visits to the public home page (`/`), plus guest `/login` and `/demande-acces`. Super-admin only: `/super-admin/landing-traffic`. Not scoped by `company_id`. Nothing is sent to Google Analytics or any other third party. `DNT` / `Sec-GPC` skips recording. Authenticated app usage is not logged. Raw IP is hashed (`ip_hash`) and never shown. Country is filled only from the local GeoLite2 MMDB (same file as login stats) — no HTTP geo lookup.
+First-party visits on the public marketing routes (`/`, `/fonctionnalites`, `/tarifs`, `/a-propos`, `/mentions-legales`), plus guest `/login` and `/demande-acces`. Super-admin only: `/super-admin/landing-traffic`. Not scoped by `company_id`. Nothing is sent to Google Analytics or any other third party. `DNT` / `Sec-GPC` skips recording. Authenticated requests are not logged (`LandingVisitRecorder::declined` when a user is present). Raw IP is hashed (`ip_hash`) and never shown. Country is filled only from the local GeoLite2 MMDB (same file as login stats) — no HTTP geo lookup.
+
+The `page` column has three buckets only: `login`, `register` (`/register` and `/demande-acces`), and `landing` for **every other** tracked route, including the product, pricing, about, and legal pages. Tell those apart with `landing_path`. The screen filter **Home** therefore includes `/tarifs` and the other marketing paths. `locale` is the guest locale after `SetGuestLocale` (session language, otherwise `APP_LOCALE`).
+
+A click on `[data-landing-cta]` (`login`, `register`, `pricing`) POSTs `/landing-visits/cta` (throttle 30/minute). That stamps `cta` on the latest row for this visitor cookie with `page = landing` and `cta` still null. A visit to `/tarifs` is itself a `landing` row, so a later click can land on that row instead of the home visit. Opening `/login` or `/demande-acces` sets `cta` to the page name immediately.
+
+`LANDING_TRAFFIC_ENABLED=false` turns recording off. Bots (`UserAgentParser`) and prefetch (`Sec-Purpose` / `Purpose` containing `prefetch`) are skipped. Only HTTP 200 GET responses are stored.
 
 Times are stored in UTC and displayed in `Europe/Rome`.
 

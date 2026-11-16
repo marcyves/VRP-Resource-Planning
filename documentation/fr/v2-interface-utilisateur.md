@@ -15,9 +15,9 @@ Cette refonte est **purement présentationnelle et navigationnelle** : le modèl
 | **CSS modulaire** | Feuilles dédiées par domaine (`resources/css/`), tokens dans `theme.css` / `global.css` — pas de Tailwind en dépendance npm |
 | **Composants Blade** | En-têtes de module, tableaux, formulaires (`nice-form`), KPI, sélecteur de période |
 | **Navigation latérale** | Sidebar 260 px, topbar, fil d’Ariane, mode sombre |
-| **Hub écoles** | Page d’accueil = liste des écoles avec indicateurs facturé / non facturé |
-| **Facturation contextualisée** | Préparation sur `school/show`, plus dans l’agenda |
-| **Canvas public** | Landing `/` et auth partagent le layout marketing — [design system CSS](v2-design-system-css.md#canvas-marketing-public) |
+| **Hub écoles** | `/home` = liste des écoles avec indicateurs facturé / non facturé |
+| **Facturation contextualisée** | Le menu **Facturer** est la liste du mois ; la préparation d’un client reste sur `school/show?panel=billing` |
+| **Canvas public** | Accueil, produit, tarifs, à propos et mentions partagent le layout marketing — [design system CSS](v2-design-system-css.md#canvas-marketing-public) |
 
 ## Fiches détaillées
 
@@ -33,14 +33,14 @@ Cette refonte est **purement présentationnelle et navigationnelle** : le modèl
 
 ## Parcours utilisateur type
 
-Les invités commencent sur la **landing** `/` (ou `/demande-acces`). Un utilisateur déjà connecté sur `/` va vers `User::homePath()`.
+Les invités commencent sur `/` et peuvent ouvrir `/fonctionnalites`, `/tarifs`, `/a-propos` et `/mentions-legales`, ou changer de langue via `/langue/{fr|en|it}`. L’ouverture de compte est `/demande-acces`. Une visite connectée de `/` va vers `User::homePath()`.
 
-1. **Connexion** → `/home` (liste des écoles)
-2. Consulter **facturé TTC** et **non facturé** par établissement
-3. Ouvrir une **école** → cours, adresse, factures, documents, **préparation facturation**
-4. Naviguer mois par mois ou **sauter aux sessions non facturées** (retour arrière)
-5. **Agenda** (menu latéral) pour saisir / modifier les sessions — vue **mois** ou **semaine**, clic sur un jour ou un créneau (fin préremplie depuis la durée standard du cours), duplication vers demain / la semaine suivante ; onglet **Calendrier** pour importer un `.ics` ou une URL ([import-calendrier.md](import-calendrier.md), [formulaires de séance](v2-navigation-modules.md#formulaire-nouvelle-séance))
-6. **Trésorerie** (menu latéral) pour les factures (émission e-facture si SuperPDP est configuré), le rapprochement bancaire, les dépenses et le suivi financier global
+1. **Connexion** → `User::homePath()` (`/home` pour un utilisateur d’entreprise). `RouteServiceProvider::HOME` (`/planning`) est la cible de l’inscription et de la vérification d’e-mail, pas celle du mot de passe — voir [navigation](v2-navigation-modules.md#page-daccueil).
+2. Consulter **facturé TTC** et **non facturé** par établissement, ou ouvrir **Agenda** / **Facturer** dans le menu.
+3. **Facturer** liste les clients qui ont des séances non facturées pour le mois de l’agenda, puis **Préparer** ouvre le panneau facturation de cette école.
+4. Sur la fiche, naviguer mois par mois ou **sauter aux sessions non facturées** (retour arrière).
+5. **Agenda** pour saisir / modifier les sessions — vue **mois** ou **semaine**, clic sur un jour ou un créneau (fin préremplie depuis la durée standard du cours), duplication vers demain / la semaine suivante. L’import ICS est **Importer un calendrier** ([import-calendrier.md](import-calendrier.md), [formulaires de séance](v2-navigation-modules.md#formulaire-nouvelle-séance)).
+6. **Finance** (factures, dépenses, banque) pour la liste des factures (émission e-facture si SuperPDP est configuré), les dépenses et le rapprochement bancaire.
 
 ## Compatibilité
 

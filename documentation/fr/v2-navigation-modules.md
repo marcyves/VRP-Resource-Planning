@@ -46,12 +46,14 @@ Sidebar super admin : entreprises, facturation électronique, connexions, **Traf
 | `/home` | `home` | `SchoolController@index` | Liste des écoles, stats facturation, graphique, lien plan de charge annuel |
 | `/dashboard` | `dashboard` | redirect | Alias → `home` |
 
-Constante post-login : `RouteServiceProvider::HOME = '/planning'` (agenda). `/home` reste la liste des écoles.
+La connexion par mot de passe (`AuthenticatedSessionController::store`) et le middleware invité envoient vers `User::homePath()` : `/home` pour un utilisateur d’entreprise, `/super-admin/companies` pour un super admin. `redirect()->intended()` gagne si une URL a été mémorisée avant la connexion. `SchoolHomeBudgetTest` vérifie que la connexion d’un admin d’entreprise arrive sur `home`. `RouteServiceProvider::HOME` reste `/planning` et sert à l’**inscription** et à la **vérification d’e-mail**. `tests/Feature/Auth/AuthenticationTest.php` affirme encore cette constante ; ce test échoue parce que `store()` renvoie `/home`.
 
 ### Indicateurs par école (liste)
 
-- **Facturé TTC** — somme des factures de l’année courante
-- **Non facturé TTC** — sessions sans `invoice_id` (TVA incluse à l’affichage)
+- **Facturé TTC** — somme de `invoices.amount` dont `bill_date` est dans l’année de session
+- **Non facturé TTC** — séances avec `invoice_id` vide, valorisées par `planningGain` puis × 1,2
+
+La liste passe toujours une année concrète à `User::getSchoolsAndBudget()` (`current_year` en session, sinon l’année en cours). Le facturé est une sous-requête corrélée, pas un `LEFT JOIN` plus `GROUP BY schools.id`. MySQL 8 en `ONLY_FULL_GROUP_BY` refuse `schools.name` après cette jointure externe (corrigé le 2026-11-15, `SchoolHomeBudgetTest`). Le non facturé est sommé en PHP (`getUnbilledStatsBySchool`) à partir du début et de la fin réels. Les écoles sans cours cette année-là forment une liste inactive à part (`getNoCourse`). Changer de mois dans **Facturer** écrase `current_year` : cette liste suit donc l’année du mois de facturation.
 
 ## Onglets de module
 
@@ -76,6 +78,8 @@ Les actions **Créer facture** / **Créer dépense** sont des boutons dans les p
 Précédent / suivant (`planning.previous` / `planning.next`) passe par `Tools::shiftPlanningPeriod()` : **±1 semaine** en vue semaine (mois/année suivent le lundi), **±1 mois** en vue mois. Le début de semaine est dans `planning_week_start` ; changer le sélecteur de mois le remet au premier lundi de ce mois (ou aujourd’hui si le mois affiché est le mois courant).
 
 Les totaux de la période visible (semaine ou mois) tiennent sur une ligne sous le titre, en TTC (`gain × 1,2`). S’il reste du non facturé, une ligne mène à Facturer. Les événements hors 08:00–20:00 sont clampés / masqués (`Tools::weekEventPosition()`). Les jours du mois adjacent ont le style `--outside`.
+
+Aujourd’hui utilise `calToday` sur la cellule du mois et `week-agenda__day-head--today` / `week-agenda__column--today` sur la semaine. Le fond est `--cal-today-bg` (`#fde8e8`, sombre `#4a2c32`) ; la date utilise `--cal-today-date`. Le week-end utilise `calDay--weekend` et `week-agenda__*--weekend`, fond `--cal-weekend-bg` (`#eceff3`, sombre `#243044`). Les tokens sont dans `global.css` et `theme.css`.
 
 L’agenda liste les sessions par **date de séance**, pas par `courses.year`. Un cours 2026 avec une séance en janvier 2027 apparaît bien en naviguant janvier 2027.
 
