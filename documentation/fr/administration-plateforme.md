@@ -178,7 +178,13 @@ Géolocalisation : fichier local GeoLite2-City si présent, sinon HTTP sans clé
 
 ## Trafic landing (plateforme)
 
-Visites first-party de la page d’accueil publique (`/`), plus `/login` et `/demande-acces` pour les invités. Super-admin uniquement : `/super-admin/landing-traffic`. Pas de `company_id`. Rien n’est envoyé à Google Analytics ni à un autre tiers. `DNT` / `Sec-GPC` : pas d’enregistrement. L’usage authentifié de l’application n’est pas journalisé. L’IP brute est hachée (`ip_hash`) et jamais affichée. Le pays n’est rempli que depuis le MMDB GeoLite2 local (le même que les stats de connexion) — pas d’appel HTTP de géoloc.
+Visites first-party des routes marketing publiques (`/`, `/fonctionnalites`, `/tarifs`, `/a-propos`, `/mentions-legales`), plus `/login` et `/demande-acces` pour les invités. Super-admin uniquement : `/super-admin/landing-traffic`. Pas de `company_id`. Rien n’est envoyé à Google Analytics ni à un autre tiers. `DNT` / `Sec-GPC` : pas d’enregistrement. Les requêtes authentifiées ne sont pas journalisées (`LandingVisitRecorder::declined` dès qu’un utilisateur est présent). L’IP brute est hachée (`ip_hash`) et jamais affichée. Le pays n’est rempli que depuis le MMDB GeoLite2 local (le même que les stats de connexion) — pas d’appel HTTP de géoloc.
+
+La colonne `page` n’a que trois valeurs : `login`, `register` (`/register` et `/demande-acces`), et `landing` pour **toute autre** route suivie, y compris produit, tarifs, à propos et mentions. On les distingue par `landing_path`. Le filtre **Accueil** de l’écran inclut donc `/tarifs` et les autres chemins marketing. `locale` est la locale invité après `SetGuestLocale` (langue de session, sinon `APP_LOCALE`).
+
+Un clic sur `[data-landing-cta]` (`login`, `register`, `pricing`) poste `/landing-visits/cta` (throttle 30/minute). Cela écrit `cta` sur la dernière ligne de ce cookie visiteur dont `page = landing` et `cta` est encore nul. Une visite de `/tarifs` est elle-même une ligne `landing` : un clic suivant peut donc marquer cette ligne plutôt que la visite d’accueil. Ouvrir `/login` ou `/demande-acces` pose `cta` tout de suite au nom de la page.
+
+`LANDING_TRAFFIC_ENABLED=false` coupe l’enregistrement. Les robots (`UserAgentParser`) et le prefetch (`Sec-Purpose` / `Purpose` contenant `prefetch`) sont ignorés. Seules les réponses GET en HTTP 200 sont stockées.
 
 Horodatage stocké en UTC, affiché en `Europe/Rome`.
 

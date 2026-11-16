@@ -71,26 +71,54 @@ Stores Alpine : `createDeleteStore()` dans `resources/js/delete-store.js` (`grou
 
 Les pages invitées partagent `resources/views/layouts/marketing.blade.php`. Source visuelle : `DESIGN.md` à la racine (et `.impeccable/design.json`). Périmètre produit : `PRODUCT.md` — la priorité design est le **prospect non authentifié**.
 
-| Surface | Route / composant | Layout |
-|---------|-------------------|--------|
-| Landing | `/` (`welcome`) → `welcome.blade.php` | `x-marketing-layout` (pleine largeur) |
-| Login, mot de passe, register | Vues Breeze | `x-guest-layout` |
-| Demande de compte | `/demande-acces` | `x-guest-layout` |
-| Maintenance | `maintenance.blade.php` | `x-guest-layout` |
+Le site public est un petit jeu de routes réelles (`WelcomeController`), plus une seule page à ancres d’en-tête. L’accueil garde des sections courtes qui renvoient vers ces routes.
 
-Un visiteur déjà connecté sur `/` est redirigé par `WelcomeController` vers `User::homePath()` (`/home`, ou `/super-admin/companies` pour un super admin).
+| Surface | Route | Vue | Layout |
+|---------|-------|-----|--------|
+| Accueil | `/` (`welcome`) | `welcome.blade.php` | `x-marketing-layout` |
+| Produit | `/fonctionnalites` (`marketing.product`) | `marketing/product.blade.php` | idem, avec `$title` |
+| Tarifs | `/tarifs` (`marketing.pricing`) | `marketing/pricing.blade.php` | idem |
+| À propos | `/a-propos` (`marketing.about`) | `marketing/about.blade.php` | idem |
+| Mentions | `/mentions-legales` (`marketing.legal`) | `marketing/legal.blade.php` | idem, sans bande CTA |
+| Login, mot de passe, register | Vues Breeze | `x-guest-layout` (`narrow=true`) | |
+| Demande de compte | `/demande-acces` | `x-guest-layout` | |
+| Maintenance | `maintenance.blade.php` | `x-guest-layout` | |
+
+Seul `/` redirige un visiteur déjà connecté (`WelcomeController::index` → `User::homePath()` : `/home`, ou `/super-admin/companies` pour un super admin). Produit, tarifs, à propos et mentions restent accessibles une fois connecté.
+
+### Ordre des sections d’accueil
+
+`LandingPageTest` fige cet ordre. Le hero est en premier et ne contient que `VRP-login.jpg` — les captures produit n’y sont pas.
+
+1. Hero — titre, chapô, ligne de confiance, demande de compte, connexion, lien vers `/fonctionnalites`
+2. Comparatif avant / après
+3. Trois étapes (agenda, facturation, trésorerie)
+4. `#captures` — scène Alpine, `landing-agenda.jpg` / `landing-treasury.jpg` (`marketing/partials/screens.blade.php`)
+5. `#fonctionnalites` — six cartes, puis un lien vers la page produit
+6. Secteurs (formation, conseil, médical) et trois personas
+7. `#tarifs` — partial d’offre partagé, puis un lien vers `/tarifs`
+8. Teaser `#a-propos`, puis la bande CTA
+
+`/fonctionnalites` liste huit modules (agenda, activité, facturation, dépenses, banque, documents, vocabulaire, tenants) et réinclut les captures. `/tarifs` réutilise `marketing/partials/pricing-offer.blade.php` et ajoute six FAQ en `<details>`. À propos couvre le produit, l’éditeur (XDM Consulting) et la licence. Les mentions couvrent éditeur, hébergement, vie privée, propriété intellectuelle et contact.
+
+Le menu central (`.marketing-menu`) pointe vers ces routes. Il est omis quand le layout est `narrow`. Sous 640 px, le menu et `.marketing-nav__link` disparaissent ; le wordmark, les codes de langue, le thème et le bouton compact de demande de compte restent.
+
+### Langue des invités
+
+`GET /langue/{locale}` (`locale.switch`, `fr` | `en` | `it`) enregistre `session('locale')` et revient en arrière (`route('welcome')` s’il n’y a pas d’URL précédente). `SetGuestLocale` est dans le groupe `web` et n’applique cette session que si la requête n’a **pas** d’utilisateur. Une entreprise connectée garde `SetTerminologyLocale`. Cliquer EN une fois connecté écrit quand même la clé de session ; elle prend effet après déconnexion. Les codes autorisés sont `config('terminology.base_locales')`. Sans locale de session, les invités utilisent `APP_LOCALE`.
 
 ### Contraintes (code + `LandingPageTest`)
 
 | Règle | Détail |
 |-------|--------|
 | Chrome wordmark | L’en-tête affiche seulement `config('app.name')`. Ne **pas** réintroduire `marketing-brand__logo` ni `public/images/VRP.jpeg` comme marque d’en-tête |
+| En-tête dans le flux | `.marketing-header` est en `position: relative`, **sans** `backdrop-filter`. Un chrome sticky peignait cette barre par-dessus l’offre `/tarifs` (`.marketing-pricing__offer` est aussi `position: relative`). Ne pas remettre le sticky |
 | Pas d’eyebrow | `messages.landing_eyebrow` existe encore dans les fichiers de langue mais n’est pas utilisé ; le titre hero est seul |
 | Skip link | `.marketing-skip` → `#main-content` est obligatoire |
 | Thème partagé | La bascule d’en-tête marketing utilise la même clé `vrp-theme` que la coque connectée |
 | Inversion canvas | En thème sombre, les primaires header/hero passent papier-sur-encre ; la bande CTA finale reste clair-sur-navy **dans tous les thèmes** |
 | Régions isolées | `body.marketing-page .marketing-main > section` ne doit pas hériter du chrome panneaux/listes de l’app |
-| Copie | Uniquement `messages.landing_*` — bloc tarif dédié (0 € le premier mois, puis 10 € / mois) ; pas de témoignages ni logos clients inventés |
+| Copie | Uniquement `messages.landing_*` — bloc tarif (0 € le premier mois, puis 10 € / mois) ; pas de témoignages ni logos clients inventés |
 | Illustration hero | `public/images/VRP-login.jpg` est une image, pas une marque (`aria-hidden`) |
 | Aperçu social résiduel | `x-metas` pointe encore itemprop / twitter:image vers `http://vrp.xdm-consulting.fr/images/VRP.jpeg`. Ce n’est **pas** le chrome d’en-tête |
 | Layout guest inutilisé | `resources/views/layouts/guest.blade.php` embarque encore `VRP.jpeg` ; les pages invitées en prod utilisent `layouts/marketing.blade.php` |

@@ -25,6 +25,8 @@
 | `SUPERPDP_SANDBOX_CLIENT_ID` / `SUPERPDP_SANDBOX_CLIENT_SECRET` | — | OAuth sandbox si `SUPERPDP_ENV=sandbox` |
 | `SUPERPDP_ACCESS_TOKEN` | — | Bearer optionnel (sans OAuth) |
 | `SUPERPDP_WEBHOOK_SECRET` | — | Repli HMAC optionnel ; préférer super-admin → Facturation électronique. Secret absent → webhook **401** |
+| `LANDING_TRAFFIC_ENABLED` | `true` | Journal first-party des routes marketing publiques, du login invité et de la demande de compte. `false` n’enregistre rien |
+| `LANDING_TRAFFIC_TIMEZONE` | `Europe/Rome` | Fuseau d’affichage de `/super-admin/landing-traffic`. Les timestamps stockés restent en UTC |
 
 Exemple `.env.example` :
 
@@ -41,6 +43,8 @@ VRP_ALLOW_REGISTRATION=false
 Runbook facturation électronique : [facturation-electronique.md](facturation-electronique.md).
 
 > Connecté : `companies.terminology_profile` **prime** sur `TERMINOLOGY_PROFILE`.
+
+Les invités basculent `fr` / `en` / `it` depuis l’en-tête public (`GET /langue/{locale}` → `session('locale')`). Cela ne change pas la langue d’une entreprise connectée. Voir [Langue des invités](v2-design-system-css.md#langue-des-invités).
 
 ## Super administrateur plateforme
 

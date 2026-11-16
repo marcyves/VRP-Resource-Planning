@@ -25,6 +25,8 @@
 | `SUPERPDP_SANDBOX_CLIENT_ID` / `SUPERPDP_SANDBOX_CLIENT_SECRET` | — | Sandbox OAuth when `SUPERPDP_ENV=sandbox` |
 | `SUPERPDP_ACCESS_TOKEN` | — | Optional bearer token (skips OAuth) |
 | `SUPERPDP_WEBHOOK_SECRET` | — | Optional HMAC fallback ; prefer super-admin → Electronic invoicing. Missing secret → webhook **401** |
+| `LANDING_TRAFFIC_ENABLED` | `true` | First-party visit log for the public marketing routes, guest login, and account request. `false` records nothing |
+| `LANDING_TRAFFIC_TIMEZONE` | `Europe/Rome` | Display timezone on `/super-admin/landing-traffic`. Stored timestamps stay UTC |
 
 Example `.env.example`:
 
@@ -41,6 +43,8 @@ VRP_ALLOW_REGISTRATION=false
 Electronic invoicing runbook: [electronic-invoicing.md](electronic-invoicing.md).
 
 > When signed in, `companies.terminology_profile` **overrides** `TERMINOLOGY_PROFILE`.
+
+Guests can switch `fr` / `en` / `it` from the public header (`GET /langue/{locale}` → `session('locale')`). That does not change a signed-in company’s language. See [Public marketing canvas](v2-design-system-css.md#guest-language).
 
 ## Platform super admin
 

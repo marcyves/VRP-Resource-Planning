@@ -4,7 +4,7 @@
 
 ## Changement majeur
 
-La **préparation de la facturation** n’est plus dans le module **Agenda** (`/billing`). Elle se trouve sur la **fiche école** (`school/show`), section ancrée `#billing`.
+La **préparation** d’un client est sur la fiche école (`school/show?panel=billing`). Le menu **Facturer** est la liste du mois devant cette fiche (`/facturer`). L’ancien onglet Agenda (`/billing`) n’est plus l’entrée.
 
 ### Avant (v1)
 
@@ -13,8 +13,38 @@ La **préparation de la facturation** n’est plus dans le module **Agenda** (`/
 
 ### Après (v2)
 
-- Agenda : Planning · Calendrier uniquement
-- Préparation : **une école à la fois**, avec navigation mensuelle propre
+- Le menu **Facturer** ouvre la liste du mois des clients qui ont encore des séances non facturées (`/facturer`).
+- La préparation d’un client reste sur `school/show?panel=billing`.
+- Les anciennes URL `/billing*` redirigent toujours vers l’école en session.
+
+## Liste du mois (`/facturer`)
+
+`BillingNavController` (`billing.prepare`). Aucune école n’est requise en session (`BillingNavTest`).
+
+| Route | Nom | Effet |
+|-------|-----|--------|
+| `GET /facturer` | `billing.prepare` | Mois déjà dans la session agenda |
+| `GET /facturer/previous` | `billing.prepare.previous` | −1 mois |
+| `GET /facturer/next` | `billing.prepare.next` | +1 mois |
+| `GET /nav/billing` | `nav.billing` | Redirection vers `billing.prepare` |
+
+La liste elle-même, ainsi que précédent et suivant, écrivent les clés de session de l’agenda : `current_year`, `current_month` et `billing_year`, toutes tirées de ce mois calendaire. Changer de mois dans Facturer déplace donc la période de l’agenda et le filtre d’année de la liste des écoles.
+
+Les lignes viennent de `Planning::getDetails` pour ce mois, regroupées par `PlanningBillingSummary::fromPlanning`. Le HT est `Tools::planningGain`. Le TTC est `round(HT × 1,2, 2)` par école (la classe écrit le littéral `1.2`, la même valeur que `Tools::VAT_MULTIPLIER`).
+
+Les trois chiffres sous la période couvrent **toutes** les écoles qui ont une séance ce mois-là, y compris celles déjà entièrement facturées :
+
+| Chiffre | Formule |
+|---------|---------|
+| Déjà facturé | `round(monthTotal − monthRemaining, 2)` |
+| Reste à facturer | somme de `unbilled_amount_ttc` |
+| Total | somme de `amount_ttc` |
+
+Les cartes utilisent `.resource-grid` / `.billing-prepare-card` (la même grille que les écoles et les groupes). Une carte n’apparaît que si `unbilled_sessions > 0`. Tri : nombre de séances non facturées, puis HT non facturé, puis heures (`courses.session_length` sur la ligne de planning — tri seulement, pas affiché). Le montant déjà facturé d’une carte est `amount_ttc − unbilled_amount_ttc`. **Préparer** ouvre `school.show` avec `panel=billing`.
+
+Une liste de cartes vide affiche quand même les totaux de la période et `messages.billing_prepare_empty`.
+
+Le titre de période passe par `TerminologyLocale::normalizeBaseLocale` et Carbon `translatedFormat('F')`, puis l’année.
 
 ## Écran fiche école
 
@@ -132,6 +162,8 @@ Si le PDF disparaît ensuite, l’ouverture de la facture le régénère avec `I
 
 | Fichier | Rôle |
 |---------|------|
+| `app/Http/Controllers/BillingNavController.php` | Liste Facturer du mois |
+| `app/Support/PlanningBillingSummary.php` | HT / TTC par école pour cette liste |
 | `app/Http/Controllers/BillingController.php` | Navigation période, setBill, jump unbilled |
 | `app/Http/Controllers/InvoiceController.php` | Périmètre, commentaire, téléchargement, verrou payé |
 | `app/Services/InvoiceService.php` | PDF, régénération, rattachement planning selon le cours |

@@ -31,8 +31,8 @@ medical    → fr_medical, en_medical, it_medical
 
 ### Middleware
 
-- `App\Http\Middleware\SetTerminologyLocale`
-- Groupe de routes `auth` — `routes/web.php`
+- `App\Http\Middleware\SetTerminologyLocale` — groupe `auth` dans `routes/web.php`. Libellés une fois connecté.
+- `App\Http\Middleware\SetGuestLocale` — groupe `web`, **invités seulement**. Lit `session('locale')` si elle est dans `config('terminology.base_locales')` (`fr`, `en`, `it`). L’en-tête public pose cette clé via `GET /langue/{locale}`. Il ne s’exécute pas pour un utilisateur connecté, et il n’applique pas de profil terminologique.
 
 ### Fichiers de langue
 

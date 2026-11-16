@@ -163,7 +163,7 @@ components:
 
 VRP Plan presents as a dusk-harbor desk: a deep navy field, a quiet wordmark, and Inter set with the restraint of an operations brief. The public canvas persuades without theatre — no second brand mark, no decorative kicker, no invented social proof. Paper cards and a single navy voice do the work.
 
-Two surfaces share one system. Marketing (the design-priority surface) is a prospect briefing: sticky frosted chrome, a two-column hero, glass-edged feature cards, and a navy close. The signed-in shell reuses the same navy, Inter, radii, and buttons for daily operation; it is not the surface this system is optimized for.
+Two surfaces share one system. Marketing (the design-priority surface) is a prospect briefing: in-flow wordmark chrome, a two-column hero, glass-edged feature cards, and a navy close. The signed-in shell reuses the same navy, Inter, radii, and buttons for daily operation; it is not the surface this system is optimized for.
 
 The material is professional and slightly maritime — cool paper, mist borders, modest downward shadows — aligned with the EduProf navy lineage. Imagery is documentary (the login photograph as a hero illustration), never a logo.
 
@@ -240,9 +240,9 @@ Inter is served from fonts.bunny.net at 400 / 500 / 600 / 700. Display asks for 
 
 ## Layout
 
-Marketing content lives in a centered column (`min(72rem, 100%)`) with vertical padding of `{spacing.spacing-6}` / `{spacing.spacing-8}`. The hero is one column until 900px, then a 1.05 / 0.95 split. Feature cards are an auto-fit grid that locks to three columns at 900px. Below 640px, header text links hide and hero actions go full-width.
+Marketing content lives in a centered column (`min(72rem, 100%)`) with vertical padding of `{spacing.spacing-6}` / `{spacing.spacing-8}`. The hero is one column until 900px, then a 1.05 / 0.95 split. Feature cards are an auto-fit grid that locks to three columns at 900px. Below 640px, header text links hide and hero actions go full-width. Locale codes stay visible.
 
-The header is a sticky frosted bar: wordmark left, theme control and actions right, `{spacing.spacing-3}` / `{spacing.spacing-6}` padding. A skip link sits above the fold and appears on focus.
+The header is an in-flow bar (`position: relative`, no backdrop-filter): wordmark, a center menu of the real routes (features, pricing, about), then locale, theme, and actions. Sticky chrome was removed because it painted over the `/tarifs` offer. A skip link sits above the fold and appears on focus.
 
 Public page regions are isolated from signed-in section chrome. Marketing sections do not pick up the app’s frosted panel, list, or header treatments.
 
@@ -253,7 +253,7 @@ The signed-in shell (lower design priority) is a fixed navy sidebar (16.25rem ex
 
 ## Elevation & Depth
 
-Depth is a hybrid: tonal navy (the canvas, the sidebar, the CTA band) plus a small set of soft offset shadows. Nothing is flat-by-default and nothing uses a zero-offset halo. Frosted chrome (`blur(12px)` on the header, `blur(8px)` on feature cards) is a marketing-only veil, not a global glass language.
+Depth is a hybrid: tonal navy (the canvas, the sidebar, the CTA band) plus a small set of soft offset shadows. Nothing is flat-by-default and nothing uses a zero-offset halo. Feature cards keep a marketing-only veil (`blur(8px)`). The public header does not blur.
 
 ### Shadow Vocabulary
 - **Resting lift** (`0 1px 3px 0 #0f172a0d`): Inputs and compact resting surfaces.
@@ -303,7 +303,7 @@ Controls are shared and tactile: a 2.5rem minimum, 600-weight Inter, a 150ms col
 - **Error:** Alert Crimson at 0.875rem.
 
 ### Navigation
-- **Public header:** Wordmark only (product name). Text links 0.9375rem / 500, medium-radius hit area, 2.5rem min height. Compact primary for “Demander un compte”. Theme toggle is a 2.5rem medium-radius square. Below 640px, text links hide; the wordmark, toggle, and compact primary remain.
+- **Public header:** Wordmark (product name), center links to `/fonctionnalites`, `/tarifs`, and `/a-propos`, then `FR` / `EN` / `IT`, theme, and actions. Text links 0.9375rem / 500, medium-radius hit area, 2.5rem min height. Compact primary for “Demander un compte”. Theme toggle is a 2.5rem medium-radius square. Below 640px, the center menu and text links hide; the wordmark, locale codes, toggle, and compact primary remain. The bar stays in normal flow.
 - **Skip link:** Medium radius, primary fill, parked above the viewport, revealed on focus.
 - **Signed-in (lower priority):** Night Dock sidebar, frosted topbar, Night Beacon on the active item.
 
@@ -321,6 +321,7 @@ A 2.5rem medium-radius control. Sun and moon are stroke icons; one shows per the
 ## Do's and Don'ts
 
 ### Do:
+- **Do** keep the public header in normal flow (no sticky, no backdrop-filter).
 - **Do** set public chrome as the Inter wordmark at 1.125rem / 700.
 - **Do** invert header and hero primaries on the dark canvas; keep the CTA-band primary light-on-navy in every theme.
 - **Do** use Inter at 400 / 500 / 600 / 700 from fonts.bunny.net on marketing and app layouts.
@@ -329,6 +330,7 @@ A 2.5rem medium-radius control. Sun and moon are stroke icons; one shows per the
 - **Do** isolate marketing regions from signed-in section, list, and header treatments.
 
 ### Don't:
+- **Don't** make the public header sticky or give it a backdrop-filter — it covers the pricing offer.
 - **Don't** use `VRP.jpeg` as a header mark, favicon stand-in, or brand tile on public pages.
 - **Don't** place a kicker, eyebrow, or category line above the hero title.
 - **Don't** invent testimonials, customer logos, pricing, or a second brand mark.
