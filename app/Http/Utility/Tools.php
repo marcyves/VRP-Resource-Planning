@@ -2,9 +2,9 @@
 
 namespace App\Http\Utility;
 
-use Illuminate\Http\Request;
-use Carbon\Carbon;
 use App\Models\Planning;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
 
 class Tools
 {
@@ -15,10 +15,11 @@ class Tools
             session(['current_day' => $current_day]);
         } else {
             $current_day = session('current_day');
-            if (!isset($current_day)) {
+            if (! isset($current_day)) {
                 $current_day = now()->format('d');
             }
         }
+
         return $current_day;
     }
 
@@ -30,7 +31,7 @@ class Tools
             session(['current_year' => $current_year]);
         } else {
             $current_year = session('current_year');
-            if (!isset($current_year)) {
+            if (! isset($current_year)) {
                 $current_year = now()->format('Y');
             }
         }
@@ -45,7 +46,7 @@ class Tools
             session(['current_month' => $current_month]);
         } else {
             $current_month = session('current_month');
-            if (!isset($current_month)) {
+            if (! isset($current_month)) {
                 $current_month = now()->format('m');
             }
         }
@@ -200,6 +201,77 @@ class Tools
         return round(self::parseDecimal($htAmount) * self::VAT_MULTIPLIER, 2);
     }
 
+    public static function vatRatePercent(): float
+    {
+        return round((self::VAT_MULTIPLIER - 1) * 100, 2);
+    }
+
+    public static function vatRateLabel(): string
+    {
+        $percent = self::vatRatePercent();
+        $formatted = fmod($percent, 1.0) === 0.0
+            ? (string) (int) $percent
+            : rtrim(rtrim(number_format($percent, 2, '.', ''), '0'), '.');
+
+        return $formatted.'%';
+    }
+
+    public static function amountHtFromTtc(mixed $ttc): float
+    {
+        return round(self::parseDecimal($ttc) / self::VAT_MULTIPLIER, 2);
+    }
+
+    public static function amountTtcFromHt(mixed $ht): float
+    {
+        return round(self::parseDecimal($ht) * self::VAT_MULTIPLIER, 2);
+    }
+
+    /**
+     * HT source of truth for an on-demand invoice form.
+     * A positive HT wins; otherwise TTC (including legacy `amount`) is converted.
+     * Zero and negative values are returned so callers can reject them.
+     */
+    public static function invoiceHtFromForm(mixed $amountHt, mixed $amountTtc, mixed $legacyAmount = null): float
+    {
+        $ht = self::optionalDecimal($amountHt);
+        if ($ht !== null && $ht > 0) {
+            return round($ht, 2);
+        }
+
+        foreach ([$amountTtc, $legacyAmount] as $candidate) {
+            $ttc = self::optionalDecimal($candidate);
+            if ($ttc !== null && $ttc > 0) {
+                return self::amountHtFromTtc($ttc);
+            }
+        }
+
+        if ($ht !== null) {
+            return round($ht, 2);
+        }
+
+        foreach ([$amountTtc, $legacyAmount] as $candidate) {
+            $ttc = self::optionalDecimal($candidate);
+            if ($ttc !== null) {
+                return self::amountHtFromTtc($ttc);
+            }
+        }
+
+        return 0.0;
+    }
+
+    private static function optionalDecimal(mixed $value): ?float
+    {
+        if ($value === null || $value === '') {
+            return null;
+        }
+
+        if (is_string($value) && trim($value) === '') {
+            return null;
+        }
+
+        return self::parseDecimal($value);
+    }
+
     public static function defaultCourseSemester(?int $month = null): string
     {
         $month ??= (int) now()->month;
@@ -229,8 +301,8 @@ class Tools
             session(['current_semester' => $current_semester]);
         } else {
             $current_semester = session('current_semester');
-            if (!isset($current_semester)) {
-                $current_semester = "all";
+            if (! isset($current_semester)) {
+                $current_semester = 'all';
             }
         }
 
@@ -321,119 +393,119 @@ class Tools
 
     public static function getBillingInformation($planning)
     {
-        $current_school = "";
-        $course_name = "";
+        $current_school = '';
+        $course_name = '';
         $course_id = 0;
-        $course_hours  = 0;
-        $course_gain   = 0;
+        $course_hours = 0;
+        $course_gain = 0;
 
         $monthly_hours = 0;
-        $monthly_gain  = 0;
-        $schools = array();
-        $schedules = array();
+        $monthly_gain = 0;
+        $schools = [];
+        $schedules = [];
 
         foreach ($planning as $event) {
             // Collect Course entry
             if ($course_id != $event->course_id) {
                 // New course, if it is not the first one, add the previous entry in the array
                 if ($course_id != 0) {
-                    $courses[$course_id] = array(
-                        "schedule"  => $schedules,
-                        "course_name" => $course_name,
-                        "hours"     => $course_hours,
-                        "gain"      => $course_gain,
-                        "billable_rate" => $event->billable_rate,
-                        "duration"  => $event->session_length
-                    );
+                    $courses[$course_id] = [
+                        'schedule' => $schedules,
+                        'course_name' => $course_name,
+                        'hours' => $course_hours,
+                        'gain' => $course_gain,
+                        'billable_rate' => $event->billable_rate,
+                        'duration' => $event->session_length,
+                    ];
                 }
                 // New course start
                 $course_name = $event->course_name;
-                $course_id  = $event->course_id;
-                $schedules = array();
-                $course_hours  = 0;
-                $course_gain   = 0;
+                $course_id = $event->course_id;
+                $schedules = [];
+                $course_hours = 0;
+                $course_gain = 0;
             }
 
             if ($current_school != $event->school_name) {
                 // New school, if it is not the first one, add the previous entry in the array
-                if ($current_school != "") {
-                    $schools[$current_school] = array(
-                        "courses" => $courses,
-                        "school_id" => $school_id,
-                        "hours"   => $school_hours,
-                        "gain"    => $school_gain
-                    );
+                if ($current_school != '') {
+                    $schools[$current_school] = [
+                        'courses' => $courses,
+                        'school_id' => $school_id,
+                        'hours' => $school_hours,
+                        'gain' => $school_gain,
+                    ];
                 }
                 // New school start
                 $current_school = $event->school_name;
                 $school_id = $event->school_id;
-                $courses = array();
-                $school_hours  = 0;
-                $school_gain   = 0;
+                $courses = [];
+                $school_hours = 0;
+                $school_gain = 0;
             }
             // Collect Schedule entry
             $duration = self::sessionDurationHours($event->begin, $event->end);
-            $gain     = self::planningGain($event->begin, $event->end, $event->rate, $event->billable_rate);
+            $gain = self::planningGain($event->begin, $event->end, $event->rate, $event->billable_rate);
 
-            $course_hours  += $duration;
-            $course_gain   += $gain;
+            $course_hours += $duration;
+            $course_gain += $gain;
 
-            $school_hours  += $duration;
-            $school_gain   += $gain;
+            $school_hours += $duration;
+            $school_gain += $gain;
 
             $monthly_hours += $duration;
-            $monthly_gain  += $gain;
+            $monthly_gain += $gain;
 
             // Add the schedule entry to the array
-            $schedules[$event->planning_id] = array(
-                "group"    => $event->group_name,
-                "begin"    => $event->begin,
-                "end"      => $event->end,
-                "duration" => $duration,
-                "billable_rate" => $event->billable_rate,
-                "gain"     => $gain,
-                "gain_ttc" => round($gain * self::VAT_MULTIPLIER, 2),
-                "bill"     => $event->invoice_id
-            );
+            $schedules[$event->planning_id] = [
+                'group' => $event->group_name,
+                'begin' => $event->begin,
+                'end' => $event->end,
+                'duration' => $duration,
+                'billable_rate' => $event->billable_rate,
+                'gain' => $gain,
+                'gain_ttc' => round($gain * self::VAT_MULTIPLIER, 2),
+                'bill' => $event->invoice_id,
+            ];
         }
 
-        $courses[$course_id] = array(
-            "schedule" => $schedules,
-            "course_name" => $course_name,
-            "hours"  => $course_hours,
-            "gain"   => $course_gain,
-            "duration" => $event->session_length
-        );
+        $courses[$course_id] = [
+            'schedule' => $schedules,
+            'course_name' => $course_name,
+            'hours' => $course_hours,
+            'gain' => $course_gain,
+            'duration' => $event->session_length,
+        ];
 
-        $schools[$current_school] = array(
-            "courses" => $courses,
-            "school_id" => $school_id,
-            "hours"   => $school_hours,
-            "gain"    => $school_gain
-        );
+        $schools[$current_school] = [
+            'courses' => $courses,
+            'school_id' => $school_id,
+            'hours' => $school_hours,
+            'gain' => $school_gain,
+        ];
 
         return [$schools, $monthly_gain, $monthly_hours];
     }
 
     public static function getInvoiceDetails($school_id, $month, $year, $invoice_id, $store = false, $course_id = null)
     {
-        $start_date =  trim($year) . "-" . substr("0" . trim($month), -2) . "-0 00:00:00";
+        $start_date = trim($year).'-'.substr('0'.trim($month), -2).'-0 00:00:00';
         $month++;
         $end_year = $year;
 
-        if ($month == "13") {
-            $month = "01";
+        if ($month == '13') {
+            $month = '01';
             $end_year++;
         }
 
-        $end_date   =  trim($end_year) . "-" . substr("0" . trim($month), -2) . "-0 00:00:00";
+        $end_date = trim($end_year).'-'.substr('0'.trim($month), -2).'-0 00:00:00';
 
         $planning_list = Planning::getPlanningBySchoolAndDate($school_id, $start_date, $end_date, $course_id);
 
-        $course_name = "";
-        $group_name = "";
+        $course_name = '';
+        $group_name = '';
         $course_hours = 0;
-        $course_gain  = 0;
+        $course_gain = 0;
         $total_amount = 0;
         $items = [];
         $items_total = [];
@@ -442,33 +514,33 @@ class Tools
         foreach ($planning_list as $planning_detail) {
             if ($course_name != $planning_detail['course_name']) {
                 // When a new course is detected we write previous course details and initialise counters
-                if (!$first_course) {
+                if (! $first_course) {
                     // Skip first course to wait for planning data collection
-                    array_unshift($items, [$course_name, "20%", $rate, $course_hours, "", "T"]);
+                    array_unshift($items, [$course_name, '20%', $rate, $course_hours, '', 'T']);
                     $items_total = array_merge($items_total, $items);
                     $items = [];
                     $total_amount += $course_gain;
                     $course_hours = 0;
-                    $course_gain  = 0;
+                    $course_gain = 0;
                 }
                 $first_course = false;
                 $course_name = $planning_detail['course_name'];
                 $rate = $planning_detail['rate'];
-                $group_name = "";
+                $group_name = '';
             }
             if ($group_name != $planning_detail['group_name']) {
                 $group_name = $planning_detail['group_name'];
-                array_push($items, [__('messages.invoice_line_group', ['name' => $group_name]), "", "", "", "", "S"]);
+                array_push($items, [__('messages.invoice_line_group', ['name' => $group_name]), '', '', '', '', 'S']);
             }
             // Get planning details
             $planning = Planning::find($planning_detail['id']);
             $duration = self::sessionDurationHours($planning->begin, $planning->end);
             $billable_rate = self::billableMultiplier((float) $planning->billable_rate, (float) $rate);
             $duration = $duration * $billable_rate;
-            $gain     = $duration * $rate;
-            $course_hours  += $duration;
-            $course_gain   += $gain;
-            array_push($items, [" - " . date('d/m/Y H:i', strtotime($planning->begin)) . " - " . date('H:i', strtotime($planning->end)), "", "", $duration, $billable_rate, "N"]);
+            $gain = $duration * $rate;
+            $course_hours += $duration;
+            $course_gain += $gain;
+            array_push($items, [' - '.date('d/m/Y H:i', strtotime($planning->begin)).' - '.date('H:i', strtotime($planning->end)), '', '', $duration, $billable_rate, 'N']);
             if ($store) {
                 $planning->invoice_id = $invoice_id;
                 $planning->update();
@@ -477,7 +549,7 @@ class Tools
 
         // Loop ended, we write current course details at top of current items list
         if (count($planning_list) > 0) {
-            array_unshift($items, [$course_name, "20%", $rate, $course_hours, "", "T"]);
+            array_unshift($items, [$course_name, '20%', $rate, $course_hours, '', 'T']);
             $items_total = array_merge($items_total, $items);
             $total_amount += $course_gain;
         }

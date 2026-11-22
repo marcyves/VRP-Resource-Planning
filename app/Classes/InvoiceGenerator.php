@@ -278,6 +278,7 @@ class InvoiceGenerator extends TCPDF
             $this->drawDesignationComment($x + 2, $invoiceY, $comment);
         }
 
+        $lineHeight = 4;
         $currentY += $invoice_lines * $lineHeight + 2;
         // Add total line
         $this->SetFont('helvetica', 'B', 9);
@@ -286,13 +287,14 @@ class InvoiceGenerator extends TCPDF
         $this->writeLine($x + 40, $currentY, $lineHeight, 'paiement comptant', 'L');
 
         $this->writeLine($x + 120, $currentY, $lineHeight, 'Total HT', 'L');
-        $total_ht = $this->invoice->amount / 1.2;
-        $currentY = $this->writeLine($x + 140, $currentY, $lineHeight, number_format($total_ht, 2), 'R');
+        $totalHt = $this->invoice->amountHt();
+        $totalTtc = $this->invoice->amountTtc();
+        $currentY = $this->writeLine($x + 140, $currentY, $lineHeight, number_format($totalHt, 2), 'R');
         $this->writeLine($x + 120, $currentY, $lineHeight, 'Total TVA 20%', 'L');
-        $currentY = $this->writeLine($x + 140, $currentY, $lineHeight, number_format($total_ht * 0.2, 2), 'R');
+        $currentY = $this->writeLine($x + 140, $currentY, $lineHeight, number_format($totalTtc - $totalHt, 2), 'R');
         $this->Rect($x + 120, $currentY, 60, $lineHeight, 'F'); // 'F' = fill
         $this->writeLine($x + 120, $currentY, $lineHeight, 'Total TTC', 'L');
-        $currentY = $this->writeLine($x + 140, $currentY, $lineHeight, number_format($this->invoice->amount, 2), 'R');
+        $currentY = $this->writeLine($x + 140, $currentY, $lineHeight, number_format($totalTtc, 2), 'R');
 
         return $currentY;
     }

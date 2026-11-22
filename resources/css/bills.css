@@ -443,12 +443,35 @@ form.company-edit-form {
 }
 
 .invoice-create-fields {
-   display: grid;
-   gap: var(--spacing-2);
-   grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
-   margin-top: var(--spacing-4);
-   padding-top: var(--spacing-4);
-   border-top: var(--border-standard);
+    display: grid;
+    gap: var(--spacing-2);
+    grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+    margin-top: var(--spacing-4);
+    padding-top: var(--spacing-4);
+    border-top: var(--border-standard);
+}
+
+.invoice-amount-pair {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--spacing-3);
+    grid-column: 1 / -1;
+}
+
+.invoice-amount-pair .form-group {
+    margin-bottom: 0;
+}
+
+.invoice-amount-pair__hint,
+.invoice-amount-pair .form-error {
+    grid-column: 1 / -1;
+    margin: 0;
+}
+
+@media (max-width: 40rem) {
+    .invoice-amount-pair {
+        grid-template-columns: 1fr;
+    }
 }
 
 .invoice-create-fields__description,
