@@ -80,9 +80,18 @@ class InvoiceService
             }
         }
 
+        return $this->buildOnDemandLines((string) $invoice->description, $invoice->amountHt());
+    }
+
+    /**
+     * Single PDF line for an on-demand (hors agenda) invoice: designation, VAT, PU HT, qty 1, total HT.
+     *
+     * @return array<int, array<int, mixed>>
+     */
+    public function buildOnDemandLines(string $description, float $amountHt): array
+    {
         return [
-            [$invoice->description, '', '', '', '', 'T'],
-            ['Montant forfaitaire', '20%', $invoice->amountHt(), 1, 1, 'N'],
+            [$description, Tools::vatRateLabel(), $amountHt, 1, 1, 'T'],
         ];
     }
 

@@ -159,11 +159,15 @@ class InvoiceController extends Controller
     {
         $this->authorizeInvoiceEditor();
 
+        $this->mergeInvoiceDecimalFields($request);
+
         $validated = $request->validate([
             'invoice_id' => 'required',
             'description' => 'required',
             'comment' => 'nullable|string|max:2000',
             'amount' => 'nullable|numeric',
+            'amount_ht' => 'nullable|numeric',
+            'amount_ttc' => 'nullable|numeric',
             'month' => 'required|numeric',
             'year' => 'required|numeric',
             'bill_date' => 'required|date_format:d/m/Y',
@@ -188,25 +192,31 @@ class InvoiceController extends Controller
         $courseId = $selectedCourse?->id;
 
         // 1. Always fetch planning details first to see if this constitutes a valid agenda invoice
-        [$items, $calculated_amount] = Tools::getInvoiceDetails($school->id, $month, $year, $invoice_name, false, $courseId);
+        [$items, $calculatedHt] = Tools::getInvoiceDetails($school->id, $month, $year, $invoice_name, false, $courseId);
 
-        // 2. If planning items exist, we prefer them (Agenda Invoice)
-        // If NO planning items exist, but we have a manual amount, we use that (Manual Invoice)
-        if (empty($items) && $request->filled('amount')) {
-            $total_amount = $request->amount;
+        $hasPlanningItems = $items !== [];
 
-            $items = [
-                [$request->description, '', '', '', '', 'T'],
-                ['Montant forfaitaire', '20%', $total_amount, 1, 1, 'N'],
-            ];
-        } else {
-            // Use the calculated total from planning
-            $total_amount = $calculated_amount;
+        // Agenda invoices keep planning HT as the line source of truth.
+        // On-demand invoices: HT from the form (convert TTC → HT when the user typed TTC).
+        $amountHt = $hasPlanningItems
+            ? round((float) $calculatedHt, 2)
+            : Tools::invoiceHtFromForm(
+                $request->input('amount_ht'),
+                $request->input('amount_ttc'),
+                $request->input('amount'),
+            );
+
+        if ($amountHt <= 0) {
+            return redirect()->back()
+                ->withInput()
+                ->withErrors(['amount_ht' => __('messages.invoice_amount_must_be_positive')]);
         }
 
-        $amountTtc = $request->filled('amount')
-            ? (float) $request->amount
-            : round($calculated_amount * 1.2, 2);
+        $amountTtc = Tools::amountTtcFromHt($amountHt);
+
+        if (! $hasPlanningItems) {
+            $items = $this->invoiceService->buildOnDemandLines($request->description, $amountHt);
+        }
 
         try {
             // 1. Logique de création de l'enregistrement en base de données
@@ -304,16 +314,26 @@ class InvoiceController extends Controller
             return redirect()->route('treasury.invoices.index');
         }
 
+        $this->mergeInvoiceDecimalFields($request);
+
         $validated = $request->validate([
             'id' => 'required',
             'description' => 'required',
             'comment' => 'nullable|string|max:2000',
+            'amount' => 'nullable|numeric',
         ]);
+
+        $amountHt = round(Tools::parseDecimal($request->input('amount')), 2);
+        if ($amountHt <= 0) {
+            return redirect()->back()
+                ->withInput()
+                ->withErrors(['amount' => __('messages.invoice_amount_must_be_positive')]);
+        }
 
         try {
             $invoice->description = $request->description;
             $invoice->comment = $request->input('comment') ?: null;
-            $invoice->amount = round((float) $request->amount * 1.2, 2);
+            $invoice->amount = Tools::amountTtcFromHt($amountHt);
             $invoice->created_at = $request->created_at;
             $invoice->paid_at = $request->paid_at;
 
@@ -405,6 +425,19 @@ class InvoiceController extends Controller
 
         if (! $user->isAdmin() && ! $user->isEditor()) {
             abort(403);
+        }
+    }
+
+    private function mergeInvoiceDecimalFields(Request $request): void
+    {
+        foreach (['amount', 'amount_ht', 'amount_ttc'] as $field) {
+            if (! $request->exists($field) || $request->input($field) === null || $request->input($field) === '') {
+                continue;
+            }
+
+            $normalized = str_replace([' ', "\u{00A0}"], '', (string) $request->input($field));
+            $normalized = str_replace(',', '.', $normalized);
+            $request->merge([$field => $normalized]);
         }
     }
 
