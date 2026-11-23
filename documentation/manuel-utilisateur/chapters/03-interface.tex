@@ -6,34 +6,32 @@
 Une fois connecté, toutes les pages métier partagent la même coque~:
 
 \begin{description}[style=nextline, leftmargin=2.2cm]
-  \item[Barre latérale] Menu principal compact ou étendu. Ordre~: \menu{Agenda}, \menu{Écoles} (libellé selon le profil), \menu{Trésorerie}, puis \menu{Référentiel} (Programmes · Groupes). Le logo ramène à \texttt{/home}.
+  \item[Barre latérale] Menu principal, déplié par défaut. Sections~: \menu{Quotidien} (Agenda, Facturer), \menu{Activité} (Écoles, Groupes, Programmes), \menu{Finance} (Factures, Dépenses, Banque), \menu{Plus} (Entreprise, Profil, et Connexions pour un admin). Le logo ouvre l'agenda (\texttt{/planning}), pas \texttt{/home}.
   \item[Bandeau supérieur] Titre de la page courante, fil d'Ariane, bascule \textbf{Édition}/\textbf{Consultation}, bascule thème.
-  \item[Zone de contenu] Onglets de module et tableaux selon le contexte.
+  \item[Zone de contenu] Tableaux et, sur les factures, les onglets Factures / Synthèse.
 \end{description}
 
-La sidebar démarre en mode \textbf{compact}~; cliquez sur le chevron pour l'élargir. L'état est mémorisé dans le navigateur (\texttt{localStorage}).
+Le menu démarre déplié. Le chevron le réduit ; ce choix est mémorisé dans le navigateur.
 
-\section{Onglets par module}
-
-Chaque grand module propose des sous-onglets~:
+\section{Où aller}
 
 \begin{table}[htbp]
   \centering
-  \caption{Onglets des modules principaux}
+  \caption{Entrées du menu latéral}
   \begin{tabular}{@{}lp{9cm}@{}}
     \toprule
-    \textbf{Module} & \textbf{Onglets} \\
+    \textbf{Section} & \textbf{Entrées} \\
     \midrule
-    Agenda          & Planning · Calendrier (import ICS, admin) --- vues \textbf{mois} / \textbf{semaine} \\
-    Trésorerie      & Synthèse · Factures · Banque · Dépenses \\
-    Référentiel     & Programmes · Groupes \\
-    Paramètres      & Entreprise · Profil utilisateur \\
+    Quotidien   & Agenda (vues \textbf{mois} / \textbf{semaine}, bouton \menu{Importer un calendrier}) · Facturer (\texttt{/facturer}) \\
+    Activité    & Écoles (\texttt{/home}) · Groupes · Programmes \\
+    Finance     & Factures (onglet Synthèse = \texttt{/treasury}) · Dépenses · Banque \\
+    Plus        & Entreprise · Profil \\
     \bottomrule
   \end{tabular}
 \end{table}
 
-Les actions \menu{Créer facture} et \menu{Créer dépense} sont des boutons dans la page, pas des onglets.
-La préparation de facturation reste sur la fiche école (\texttt{\#billing}), pas dans la sidebar.
+Les actions \menu{Créer une facture} et \menu{Créer une dépense} sont des boutons dans la page, pas des entrées de menu.
+\menu{Facturer} liste les établissements qui ont encore des séances non facturées, puis ouvre la préparation sur la fiche (\texttt{?panel=billing}).
 
 \section{Modes Édition et Consultation}
 
@@ -57,7 +55,7 @@ Deux écrans proches mais complémentaires~:
 
 \section{Paramètres entreprise}
 
-Accessible via \menu{Paramètres}, l'onglet \menu{Entreprise} regroupe~:
+\menu{Plus → Entreprise} regroupe~:
 
 \begin{itemize}[leftmargin=*]
   \item Identité de la société (raison sociale, adresse, SIRET, TVA).
@@ -69,7 +67,7 @@ Accessible via \menu{Paramètres}, l'onglet \menu{Entreprise} regroupe~:
 \section{Raccourcis de navigation}
 
 \begin{workflowstep}[Retour accueil]
-  Cliquez sur le logo ou sur \menu{Écoles} dans la barre latérale → \texttt{/home}.
+  \menu{Écoles} dans la barre latérale → \texttt{/home}. Le logo ouvre l'agenda.
 \end{workflowstep}
 
 \begin{workflowstep}[Ouvrir une école]
@@ -80,8 +78,8 @@ Accessible via \menu{Paramètres}, l'onglet \menu{Entreprise} regroupe~:
   \menu{Agenda} dans la sidebar → \texttt{/planning}.
 \end{workflowstep}
 
-\begin{workflowstep}[Accéder à la trésorerie]
-  \menu{Trésorerie} → \texttt{/treasury} (synthèse mensuelle).
+\begin{workflowstep}[Accéder aux factures]
+  \menu{Finance → Factures}. L'onglet \menu{Synthèse} ouvre \texttt{/treasury}.
 \end{workflowstep}
 
 \screenshot[keepaspectratio]{07-programs.png}{Module Programmes — création des offres globales à l'entreprise}

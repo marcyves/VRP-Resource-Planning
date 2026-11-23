@@ -105,7 +105,32 @@ From school billing, scope is a hidden `course_id`. The hint shows the course na
 
 Outside school billing, create shows a **Scope** select (`invoice_scope`): empty = entire month, otherwise every course of the school (`$school->courses()`, name order, **including archived** — not `SchoolCourseOptions`). The select does not reload the preview. The preview follows the GET `course_id`; `store` links whatever `course_id` is posted. Re-open create with the intended query to change the lines.
 
-Stored `amount`: a filled `amount` is saved as TTC. An empty amount becomes `round(planning HT × 1.2, 2)`. Matching planning rows still drive the PDF. A manual invoice (no sessions, amount filled) stores one flat line and still keeps `course_id` when one was posted.
+### Invoice amounts
+
+VAT on invoices is fixed: `Tools::VAT_MULTIPLIER` is **1.2** (`Tools::vatRateLabel()` → `20%`). This is not the expense `tax_amount` percent.
+
+`invoices.amount` is stored as **TTC** on create and on edit: `Tools::amountTtcFromHt($ht)` = `round(HT × 1.2, 2)`.
+
+`InvoiceController::store` picks the HT first, then converts. It always calls `Tools::getInvoiceDetails` for the posted school, month, year, and course (blank course = whole month), even when the create screen showed an empty preview.
+
+| Situation | HT that is stored (as TTC) | PDF lines |
+|-----------|----------------------------|-----------|
+| Planning rows exist in that window | `round(planning HT, 2)`. Posted `amount_ht`, `amount_ttc`, and legacy `amount` are ignored. | Planning rows. **P.U. HT** is the hourly rate, quantity is the hours. |
+| No planning rows (on-demand, hors agenda) | `Tools::invoiceHtFromForm`. A **positive** `amount_ht` wins. Otherwise a positive `amount_ttc`, then a positive legacy `amount`, is TTC and becomes `round(TTC / 1.2, 2)`. | One type `T` line from `InvoiceService::buildOnDemandLines`: `[description, "20%", HT, 1, 1, "T"]`. **P.U. HT** and the line total are that HT, quantity **1.00**. |
+
+`course_id` is still saved when one was posted.
+
+An HT of **0**, an empty form, or a negative result is rejected (`amount_ht` error `invoice_amount_must_be_positive`). No invoice row is created. `invoiceHtFromForm(0, 120)` still yields 100, because a non-positive HT falls through to a positive TTC.
+
+The footer (`InvoiceGenerator::drawInvoiceDetailsTable`) does not sum the lines. **Total HT** is `Invoice::amountHt()`, **Total TVA 20%** is `amountTtc() − amountHt()`, **Total TTC** is `amountTtc()`. `amountStoredAsHt()` is true only when the stored figure matches the linked planning HT within 0.02, so a current on-demand row (no matching planning total) is read back as TTC.
+
+Create form (`resources/views/invoice/create.blade.php`): text fields `amount_ht` and `amount_ttc`. Alpine converts live (`× 1.2` / `÷ 1.2`, two decimals). Hint: `invoice_amount_vat_hint`. `mergeInvoiceDecimalFields` strips spaces and NBSP and turns commas into dots before validation. When the GET loaded planning lines (`cmd=detailed` and sessions exist), both fields are **readonly** and prefilled from that HT. The preview total is HT × 1.2.
+
+School billing **Invoice** / **Invoice entire month** pass `cmd=detailed`, so the preview matches what `store` will price. Treasury **Create invoice** (`invoice.create?school_id=`) does not pass `cmd`. The preview can be empty and the fields editable while sessions exist for the posted month. `store` then ignores the typed amounts and prices the planning. Change month, year, or scope and the lookup window changes with the posted values; the scope select still does not reload the preview.
+
+Edit (`invoice/edit`): one field named `amount`, label **Amount excl. tax**, value `amountHt()`. Update treats that field as HT (the legacy create field `amount` is TTC). It stores TTC and regenerates the PDF with `resolveLines`: linked planning, then `getInvoiceDetails`, then one on-demand line from the description and the new HT. Editing the HT of an agenda invoice changes the footer and leaves the line unit prices on the planning rates. A paid invoice (`paid_at` set) cannot be edited.
+
+Tests: `tests/Feature/OnDemandInvoiceAmountTest.php`, `tests/Unit/InvoiceAmountConversionTest.php`.
 
 ### Invoice comment
 
@@ -133,7 +158,8 @@ If the PDF later disappears, viewing the invoice regenerates it with `InvoiceSer
 | File | Role |
 |------|------|
 | `app/Http/Controllers/BillingController.php` | Period navigation, setBill, jump unbilled |
-| `app/Http/Controllers/InvoiceController.php` | Scope, comment, download, and paid lock |
+| `app/Http/Controllers/InvoiceController.php` | HT/TTC amounts, scope, comment, download, and paid lock |
+| `app/Http/Utility/Tools.php` | VAT 1.2, `invoiceHtFromForm`, `getInvoiceDetails` |
 | `app/Services/InvoiceService.php` | PDF, regeneration, course-scoped planning link |
 | `app/Classes/InvoiceGenerator.php` | Comment in the Désignation column |
 | `app/Http/Controllers/SchoolController.php` | Billing data on `show` |

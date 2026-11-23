@@ -47,7 +47,7 @@ La page de connexion (\texttt{/login}) est distincte de la landing. Elle propose
 
 \section{Après la connexion}
 
-La constante \texttt{HOME} de l'application pointe vers \texttt{/home}. L'ancienne route \texttt{/dashboard} redirige vers la même page. Vous y retrouvez la \textbf{liste des écoles} et les indicateurs de facturation de l'année en cours.
+Vous arrivez sur \texttt{/home} (\texttt{User::homePath()} pour un utilisateur d'entreprise). L'ancienne route \texttt{/dashboard} redirige vers la même page. Vous y retrouvez la \textbf{liste des écoles} et les indicateurs de facturation de l'année en cours. La constante \texttt{RouteServiceProvider::HOME} reste \texttt{/planning}~: elle sert à l'inscription et à la vérification d'e-mail, pas à ce bouton. Le logo de la barre latérale ouvre l'agenda.
 
 \screenshot[keepaspectratio]{04-home.png}{Plan de charge — liste des écoles et indicateurs TTC}
 

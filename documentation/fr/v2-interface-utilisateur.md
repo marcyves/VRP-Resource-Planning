@@ -6,7 +6,7 @@
 
 La **v2** modernise l’expérience de VRP Resource Planning : coque applicative unifiée, design system CSS, composants Blade factorisés, et réorganisation de la **préparation de facturation** (déplacée du module Agenda vers le détail de chaque école).
 
-Cette refonte est **purement présentationnelle et navigationnelle** : le modèle de données, les routes métier (`school`, `course`, `planning`, …) et la logique facture PDF restent les mêmes.
+Cette refonte est **présentationnelle et navigationnelle** : le modèle de données et les routes métier (`school`, `course`, `planning`, …) restent. Les règles HT/TTC des factures sont dans [Facturation par école](v2-facturation-par-ecole.md#montants-de-facture).
 
 ## Principes directeurs
 
@@ -39,8 +39,8 @@ Les invités commencent sur la **landing** `/` (ou `/demande-acces`). Un utilisa
 2. Consulter **facturé TTC** et **non facturé** par établissement
 3. Ouvrir une **école** → cours, adresse, factures, documents, **préparation facturation**
 4. Naviguer mois par mois ou **sauter aux sessions non facturées** (retour arrière)
-5. **Agenda** (menu latéral) pour saisir / modifier les sessions — vue **mois** ou **semaine**, clic sur un jour ou un créneau (fin préremplie depuis la durée standard du cours), duplication vers demain / la semaine suivante ; onglet **Calendrier** pour importer un `.ics` ou une URL ([import-calendrier.md](import-calendrier.md), [formulaires de séance](v2-navigation-modules.md#formulaire-nouvelle-séance))
-6. **Trésorerie** (menu latéral) pour les factures (émission e-facture si SuperPDP est configuré), le rapprochement bancaire, les dépenses et le suivi financier global
+5. **Agenda** (menu latéral, Quotidien) pour saisir / modifier les sessions — vue **mois** ou **semaine**, clic sur un jour ou un créneau (fin préremplie depuis la durée standard du cours), duplication vers demain / la semaine suivante ; bouton **Importer un calendrier** sur cette page pour un `.ics` ou une URL ([import-calendrier.md](import-calendrier.md), [formulaires de séance](v2-navigation-modules.md#formulaire-nouvelle-séance))
+6. **Facturer** (`/facturer`) liste les écoles qui ont encore des séances non facturées, puis ouvre la facturation de la fiche. **Finance** regroupe **Factures** (liste, plus l’onglet Synthèse sur `/treasury`), **Dépenses** et **Banque** — l’émission e-facture reste sur la liste des factures si SuperPDP est configuré
 
 ## Compatibilité
 

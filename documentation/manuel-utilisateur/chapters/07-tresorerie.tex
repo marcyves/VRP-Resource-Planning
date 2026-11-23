@@ -1,11 +1,11 @@
 \chapter{Trésorerie}
 \label{ch:tresorerie}
 
-Le module \textbf{Trésorerie} offre une vision globale de votre cash~: factures, soldes bancaires, rapprochement et dépenses.
+Le menu \textbf{Finance} sépare les factures, les dépenses et la banque. La synthèse mensuelle est un onglet de la liste des factures.
 
 \section{Synthèse}
 
-\menu{Trésorerie} → \texttt{/treasury}. L'écran de synthèse combine~:
+\menu{Finance → Factures}, puis l'onglet \menu{Synthèse} (\texttt{/treasury}). L'écran combine~:
 
 \begin{itemize}[leftmargin=*]
   \item un \textbf{histogramme} mensuel (émis, payé, planifié)~;
@@ -17,16 +17,16 @@ Le module \textbf{Trésorerie} offre une vision globale de votre cash~: factures
 
 La barre \textbf{planifiée} utilise la couleur d'accent \emph{pending} (orange), alignée sur les montants non facturés des écoles. Les montants planifiés du tableau sont exprimés en \textbf{TTC}.
 
-\section{Onglets du module}
+\section{Entrées Finance}
 
 \begin{description}[style=nextline, leftmargin=2.5cm]
-  \item[Synthèse] Histogramme et totaux TTC.
-  \item[Factures] Liste filtrable (la recherche porte sur la description, pas sur le commentaire), statut payé/impayé, PDF, bouton \textbf{Émettre e-facture} si SuperPDP est configuré. Le commentaire, s'il existe, s'affiche sous la description. Une facture payée ne s'édite plus.
-  \item[Banque] Banques, comptes, imports de relevés \texttt{.xlsx}.
-  \item[Dépenses] Notes de frais mensuelles (\texttt{\#expense-reports}) et dépenses hors note (\texttt{\#standalone-expenses}).
+  \item[Factures] Liste filtrable (la recherche porte sur la description, pas sur le commentaire), statut payé/impayé, PDF, bouton \textbf{Émettre e-facture} si SuperPDP est configuré. Le commentaire, s'il existe, s'affiche sous la description. Une facture payée ne s'édite plus. L'édition d'une facture impayée demande le montant \textbf{HT}.
+  \item[Synthèse] Onglet de la liste des factures. Histogramme et totaux TTC (\texttt{/treasury}).
+  \item[Dépenses] Menu \menu{Finance}. Notes de frais mensuelles (\texttt{\#expense-reports}) et dépenses hors note (\texttt{\#standalone-expenses}).
+  \item[Banque] Menu \menu{Finance}. Banques, comptes, imports de relevés \texttt{.xlsx}.
 \end{description}
 
-\menu{Créer facture} et \menu{Créer dépense} sont des boutons dans la page, pas des onglets. Créer une facture depuis cet onglet exige une école déjà ouverte~; sinon le bouton renvoie vers la préparation sur la fiche école (\texttt{\#billing}). Le \menu{Périmètre} (tout le mois ou un cours) est décrit au chapitre~\ref{ch:facturation}.
+\menu{Créer une facture} et \menu{Créer une dépense} sont des boutons dans la page, pas des entrées de menu. Créer une facture depuis Factures exige une école déjà ouverte~; sinon le bouton mène à \menu{Facturer}. Le \menu{Périmètre} (tout le mois ou un cours) et la règle HT/TTC sont au chapitre~\ref{ch:facturation}.
 
 \section{Import bancaire}
 

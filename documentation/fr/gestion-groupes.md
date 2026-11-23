@@ -26,7 +26,7 @@ Le schéma reste N–N. **Les règles métier sont appliquées en UI + validatio
 4. **Mentoring seulement** : section « Étudiants disponibles » pour rattacher un étudiant déjà créé à une autre activité.
 5. **Archiver** / **délier** depuis la fiche cours.
 
-**Référentiel → Groupes** : catalogue de consultation (actif / inactif). La **création** se fait depuis la fiche cours.
+**Activité → Groupes** (`group.index`) : catalogue de consultation (actif / inactif). La **création** se fait depuis la fiche cours.
 
 ## Différence archive / délier
 

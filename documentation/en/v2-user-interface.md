@@ -6,7 +6,7 @@
 
 **V2** modernizes the VRP Resource Planning experience: unified app shell, CSS design system, factored Blade components, and **billing preparation** moved from the Scheduling module to each school's detail page.
 
-This is a **presentation and navigation** refactor: data model, business routes (`school`, `course`, `planning`, …), and PDF invoice logic are unchanged.
+This is a **presentation and navigation** refactor: data model and business routes (`school`, `course`, `planning`, …) stay. Invoice HT/TTC rules are in [Billing per school](v2-billing-per-school.md#invoice-amounts).
 
 ## Guiding principles
 
@@ -39,8 +39,8 @@ Guests start on the **landing** `/` (or `/demande-acces`). Signed-in users hitti
 2. Review **invoiced incl. VAT** and **unbilled** per school
 3. Open a **school** → courses, address, invoices, documents, **billing preparation**
 4. Browse by month or **jump to unbilled sessions** (backwards in time)
-5. **Scheduling** (sidebar) to create / edit sessions — **month** or **week** view, click a day or week slot (end time prefilled from the course standard duration), duplicate to tomorrow / next week; **Calendar** tab to import an `.ics` file or URL ([calendar-import.md](calendar-import.md), [session forms](v2-navigation-modules.md#new-session-form))
-6. **Treasury** (sidebar) for invoices (including e-invoice submit when SuperPDP is configured), bank reconciliation, expenses, and global financial tracking
+5. **Agenda** (sidebar, Today) to create / edit sessions — **month** or **week** view, click a day or week slot (end time prefilled from the course standard duration), duplicate to tomorrow / next week; **Import a calendar** on that page for an `.ics` file or URL ([calendar-import.md](calendar-import.md), [session forms](v2-navigation-modules.md#new-session-form))
+6. **Invoice** (`/facturer`) lists schools that still have unbilled sessions, then opens school billing. **Finance** is **Invoices** (list, plus the Summary tab at `/treasury`), **Expenses**, and **Bank** — e-invoice submit stays on the invoice list when SuperPDP is configured
 
 ## Compatibility
 

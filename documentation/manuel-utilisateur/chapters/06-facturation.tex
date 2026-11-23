@@ -6,7 +6,8 @@ Depuis la v2, la \textbf{préparation de facturation} est \textbf{contextualisé
 \section{Accès}
 
 \begin{workflowstep}[Ouvrir la facturation]
-  \texttt{/home} → cliquez sur une école → descendez à la section \textbf{Facturation} ou utilisez l'ancre \texttt{\#billing} dans l'URL.
+  \menu{Quotidien → Facturer} (\texttt{/facturer}) liste les établissements qui ont encore des séances non facturées ce mois-ci. \menu{Préparer} ouvre la fiche (\texttt{?panel=billing}).
+  Vous pouvez aussi ouvrir une école depuis \texttt{/home} et descendre à la section \textbf{Facturation} (\texttt{\#billing}).
 \end{workflowstep}
 
 \screenshot[keepaspectratio]{09-school-billing.png}{Section facturation — la capture précède l'en-tête de cours (date et bouton Facturer)}
@@ -64,7 +65,8 @@ Chaque cours du mois est un bloc. L'en-tête tient sur une ligne~: nom du cours,
 \begin{workflowstep}[Facturer un cours]
   Mode Édition → fiche école → section \textbf{Facturation}. Sur le cours, choisissez la date puis \menu{Facturer}.
   L'écran indique le \textbf{périmètre} (nom du cours). La description est préremplie avec ce nom.
-  Le commentaire est facultatif. Vérifiez le montant TTC, puis enregistrez~: vous revenez sur \texttt{\#billing}.
+  Les montants HT et TTC sont en lecture seule~: ils reprennent les sessions. Le PDF met le \textbf{HT} en prix unitaire et le \textbf{TTC} au pied (TVA 20\,\%, ×\,1{,}2).
+  Le commentaire est facultatif. Enregistrez~: vous revenez sur \texttt{\#billing}.
 \end{workflowstep}
 
 Seules les sessions de \emph{ce} cours, pour le mois affiché, sont rattachées. Les autres cours restent non facturés. Le n° enregistré est le préfixe de l'entreprise suivi de l'identifiant de facture. \texttt{invoices.course\_id} mémorise le cours~; une facture de mois entier laisse cette colonne vide.
@@ -91,26 +93,28 @@ Dès qu'une session est facturée, ces deux actions disparaissent. Les cours enc
 Le champ \menu{Commentaire} accepte au plus 2\,000 caractères. Un texte vide n'est pas enregistré.
 
 \begin{itemize}[leftmargin=*]
-  \item \menu{Trésorerie → Factures}~: sous la description. Le filtre de description ne cherche pas dans le commentaire.
+  \item \menu{Finance → Factures}~: sous la description. Le filtre de description ne cherche pas dans le commentaire.
   \item PDF~: une seule fois, colonne \textbf{Désignation}, juste sous la première ligne de titre (nom du cours, ou description d'un forfait), en Helvetica gras 12~pt. Pas de répétition sous les cours suivants, et pas sous les conditions de règlement.
   \item Facture électronique~: note complémentaire de code \texttt{AAI}, après les mentions légales. Ce n'est pas une ligne tarifée.
 \end{itemize}
 
 Une facture payée ne se modifie plus, commentaire compris. Tant qu'elle est impayée, enregistrer le commentaire régénère le PDF.
 
-\begin{astuce}
-  Le montant TTC proposé reprend les sessions du périmètre. Si vous le remplacez, le pied du PDF suit ce montant saisi~; les lignes de sessions, elles, restent calculées depuis le planning.
+\begin{astuce}[HT ou TTC]
+  Saisissez le \textbf{HT} ou le \textbf{TTC}~: l'autre se calcule (TVA 20\,\%). Un montant nul ou négatif est refusé.
+  Tant que des sessions existent pour l'école, le mois et le périmètre, l'enregistrement \textbf{ignore} le montant saisi et tarifie le planning. Le pied du PDF suit ce total, pas un forfait tapé à la place.
+  Sans aucune session dans la fenêtre, la facture est un forfait~: le prix unitaire du PDF est le HT, la quantité est 1, et la base garde le TTC.
 \end{astuce}
 
 \subsection{Création depuis la trésorerie}
 
-\menu{Trésorerie → Factures → Créer une facture} exige une école déjà ouverte (fil d'Ariane ou dernière école). Sinon le bouton renvoie vers la fiche école. Le formulaire propose alors un \menu{Périmètre}~: \menu{Tout le mois}, ou un cours de l'école, y compris un cours archivé.
+\menu{Finance → Factures → Créer une facture} exige une école déjà ouverte (session). Sinon le bouton mène à \menu{Facturer}. Le formulaire propose alors un \menu{Périmètre}~: \menu{Tout le mois}, ou un cours de l'école, y compris un cours archivé. Cet écran n'affiche pas les lignes de planning tant que vous n'avez pas ouvert la création depuis \menu{Facturer} un cours. S'il existe des sessions, le montant saisi ici n'est pas celui qui sera enregistré.
 
 \begin{astuce}
   Changer le périmètre dans la liste ne recalcule pas l'aperçu. Rouvrez la création avec le cours voulu pour contrôler les lignes. L'enregistrement suit le périmètre choisi dans la liste.
 \end{astuce}
 
-Les factures créées apparaissent dans \menu{Trésorerie → Factures}.
+Les factures créées apparaissent dans \menu{Finance → Factures}.
 
 \section{Indicateurs sur la liste des écoles}
 
