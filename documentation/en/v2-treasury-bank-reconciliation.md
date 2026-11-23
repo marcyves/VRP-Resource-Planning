@@ -86,7 +86,7 @@ Validate on a paid report is **403**. Pay when status is neither `validated` nor
 
 ## Invoice amounts and PDF files
 
-Invoices store their primary `amount` as the TTC amount for current create and edit flows. `Invoice::amountHt()` and `Invoice::amountTtc()` normalize editing and bank matching, including older planning invoices whose stored amount may equal the HT planning total.
+Invoices store their primary `amount` as **TTC** on current create and edit. The create form prices the PDF line in **HT**; rules, the on-demand line, and the `cmd=detailed` pitfall are in [Invoice amounts](v2-billing-per-school.md#invoice-amounts). `Invoice::amountHt()` and `Invoice::amountTtc()` normalize editing and bank matching, including older planning invoices whose stored amount may equal the HT planning total. The PDF footer uses those two methods (Total HT, TVA 20%, Total TTC) and does not sum the designation lines.
 
 The invoice PDF action (`GET /invoice/{invoice}`) is resilient to missing files: `InvoiceController@show` calls `InvoiceService::ensurePdfOnDisk()` before returning `Storage::download()`. If the expected file (`invoices/{company bill prefix}{invoice id}.pdf`) is absent, the service rebuilds it from the database:
 

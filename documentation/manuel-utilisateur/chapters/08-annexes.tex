@@ -62,7 +62,8 @@ Pour les détails d'implémentation, consultez le dossier \texttt{documentation/
     \textbf{Symptôme} & \textbf{Piste de résolution} \\
     \midrule
     Bouton Planifier inactif & Mode Édition, cours sélectionné dans le fil d'Ariane, pas de formulaire imbriqué. \\
-    Montants incohérents & HT (lignes facturation) vs TTC (liste écoles, KPI agenda, trésorerie planifiée). Ne pas ajouter un second «~€~» autour de \texttt{@money}. \\
+    Montants incohérents & Lignes de facture et prix unitaire PDF en HT. Liste écoles, KPI agenda, pied de facture et synthèse en TTC (×\,1{,}2). Une facture avec sessions ignore le montant saisi. \\
+    Forfait au prix TTC sur le PDF & La colonne \textbf{P.U. HT} doit montrer le hors taxe. Saisir 120\,€ TTC enregistre 100\,€ HT en prix unitaire et 120\,€ en base. \\
     Import bancaire refusé & Fichier \texttt{.xlsx} avec colonnes attendues, $<$ 10\,Mo. \\
     Pas de suggestion rapprochement & Facture déjà rapprochée ou montant hors tolérance 0{,}02\,€. \\
     Bouton e-facture absent & \texttt{E\_INVOICE\_PLATFORM=superpdp} et credentials OAuth~; statut facture «~Prête~». \\

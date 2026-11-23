@@ -86,7 +86,7 @@ Valider une note payée renvoie **403**. Payer une note qui n'est ni `validated`
 
 ## Montants de facture et fichiers PDF
 
-Les factures stockent leur `amount` principal comme montant TTC dans les parcours actuels de création et d'édition. `Invoice::amountHt()` et `Invoice::amountTtc()` normalisent l'édition et le rapprochement bancaire, y compris pour d'anciennes factures planning dont le montant stocké peut correspondre au total HT.
+Les factures stockent leur `amount` principal en **TTC** dans les parcours actuels de création et d'édition. Le formulaire de création met le **HT** sur la ligne du PDF ; règles, ligne à la demande et piège `cmd=detailed` : [Montants de facture](v2-facturation-par-ecole.md#montants-de-facture). `Invoice::amountHt()` et `Invoice::amountTtc()` normalisent l'édition et le rapprochement bancaire, y compris pour d'anciennes factures planning dont le montant stocké peut correspondre au total HT. Le pied du PDF utilise ces deux méthodes (Total HT, TVA 20 %, Total TTC) et ne somme pas les lignes de désignation.
 
 L'action PDF (`GET /invoice/{invoice}`) résiste aux fichiers manquants : `InvoiceController@show` appelle `InvoiceService::ensurePdfOnDisk()` avant de retourner `Storage::download()`. Si le fichier attendu (`invoices/{préfixe facture entreprise}{id facture}.pdf`) est absent, le service le reconstruit depuis la base :
 

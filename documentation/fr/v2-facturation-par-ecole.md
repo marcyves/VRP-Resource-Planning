@@ -105,7 +105,32 @@ Depuis la facturation école, le périmètre est un `course_id` caché. L’indi
 
 Hors facturation école, le formulaire de création affiche un select **Périmètre** (`invoice_scope`) : vide = tout le mois, sinon chaque cours de l’école (`$school->courses()`, ordre du nom, **y compris les cours archivés** — pas `SchoolCourseOptions`). Le select ne recharge pas l’aperçu. L’aperçu suit le `course_id` du GET ; `store` rattache le `course_id` posté. Pour changer les lignes, rouvrir la création avec la query voulue.
 
-`amount` stocké : un `amount` renseigné est enregistré en TTC. Un montant vide devient `round(HT planning × 1,2, 2)`. Les sessions trouvées pilotent toujours le PDF. Une facture manuelle (aucune session, montant renseigné) stocke une ligne forfaitaire et conserve `course_id` s’il a été posté.
+### Montants de facture
+
+La TVA des factures est fixe : `Tools::VAT_MULTIPLIER` vaut **1,2** (`Tools::vatRateLabel()` → `20%`). Ce n’est pas le pourcentage `tax_amount` des dépenses.
+
+`invoices.amount` est stocké en **TTC** à la création et à l’édition : `Tools::amountTtcFromHt($ht)` = `round(HT × 1,2, 2)`.
+
+`InvoiceController::store` choisit d’abord le HT, puis convertit. Il appelle toujours `Tools::getInvoiceDetails` pour l’école, le mois, l’année et le cours postés (cours vide = mois entier), même si l’écran de création affichait un aperçu vide.
+
+| Situation | HT retenu (stocké en TTC) | Lignes PDF |
+|-----------|---------------------------|------------|
+| Des sessions existent dans cette fenêtre | `round(HT planning, 2)`. Les champs postés `amount_ht`, `amount_ttc` et l’ancien `amount` sont ignorés. | Lignes de planning. **P.U. HT** = tarif horaire, quantité = heures. |
+| Aucune session (facture à la demande, hors agenda) | `Tools::invoiceHtFromForm`. Un `amount_ht` **positif** l’emporte. Sinon un `amount_ttc` positif, puis un ancien `amount` positif, est un TTC converti en `round(TTC / 1,2, 2)`. | Une ligne de type `T` via `InvoiceService::buildOnDemandLines` : `[description, "20%", HT, 1, 1, "T"]`. **P.U. HT** et le total de ligne sont ce HT, quantité **1,00**. |
+
+`course_id` est toujours enregistré s’il a été posté.
+
+Un HT à **0**, un formulaire vide ou un résultat négatif est refusé (erreur `amount_ht`, `invoice_amount_must_be_positive`). Aucune facture n’est créée. `invoiceHtFromForm(0, 120)` vaut quand même 100 : un HT non positif laisse passer un TTC positif.
+
+Le pied (`InvoiceGenerator::drawInvoiceDetailsTable`) ne somme pas les lignes. **Total HT** = `Invoice::amountHt()`, **Total TVA 20%** = `amountTtc() − amountHt()`, **Total TTC** = `amountTtc()`. `amountStoredAsHt()` n’est vrai que si le montant stocké égale le HT planning lié à 0,02 près. Une facture à la demande actuelle (pas de total planning correspondant) est donc relue en TTC.
+
+Formulaire de création (`resources/views/invoice/create.blade.php`) : champs texte `amount_ht` et `amount_ttc`. Alpine convertit en direct (`× 1,2` / `÷ 1,2`, deux décimales). Indication : `invoice_amount_vat_hint`. `mergeInvoiceDecimalFields` retire les espaces et les espaces insécables, et change les virgules en points avant validation. Quand le GET a chargé des lignes de planning (`cmd=detailed` et des sessions existent), les deux champs sont **en lecture seule** et préremplis avec ce HT. Le total d’aperçu est HT × 1,2.
+
+**Facturer** / **Facturer tout le mois** depuis l’école passent `cmd=detailed` : l’aperçu correspond à ce que `store` tarifiera. **Créer une facture** depuis les factures (`invoice.create?school_id=`) ne passe pas `cmd`. L’aperçu peut être vide et les champs saisissables alors que des sessions existent pour le mois posté. `store` ignore alors les montants saisis et tarifie le planning. Changer le mois, l’année ou le périmètre change la fenêtre de recherche avec les valeurs postées ; le select de périmètre ne recharge toujours pas l’aperçu.
+
+Édition (`invoice/edit`) : un champ nommé `amount`, libellé **Montant HT**, valeur `amountHt()`. La mise à jour traite ce champ comme du HT (à la création, l’ancien champ `amount` est du TTC). Elle stocke le TTC et régénère le PDF avec `resolveLines` : planning lié, puis `getInvoiceDetails`, puis une ligne à la demande à partir de la description et du nouveau HT. Modifier le HT d’une facture d’agenda change le pied et laisse les prix unitaires des lignes sur les tarifs du planning. Une facture payée (`paid_at` renseigné) n’est pas éditable.
+
+Tests : `tests/Feature/OnDemandInvoiceAmountTest.php`, `tests/Unit/InvoiceAmountConversionTest.php`.
 
 ### Commentaire de facture
 
@@ -133,7 +158,8 @@ Si le PDF disparaît ensuite, l’ouverture de la facture le régénère avec `I
 | Fichier | Rôle |
 |---------|------|
 | `app/Http/Controllers/BillingController.php` | Navigation période, setBill, jump unbilled |
-| `app/Http/Controllers/InvoiceController.php` | Périmètre, commentaire, téléchargement, verrou payé |
+| `app/Http/Controllers/InvoiceController.php` | Montants HT/TTC, périmètre, commentaire, téléchargement, verrou payé |
+| `app/Http/Utility/Tools.php` | TVA 1,2, `invoiceHtFromForm`, `getInvoiceDetails` |
 | `app/Services/InvoiceService.php` | PDF, régénération, rattachement planning selon le cours |
 | `app/Classes/InvoiceGenerator.php` | Commentaire dans la colonne Désignation |
 | `app/Http/Controllers/SchoolController.php` | Chargement données billing sur `show` |

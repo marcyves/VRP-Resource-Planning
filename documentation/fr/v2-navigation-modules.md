@@ -46,7 +46,7 @@ Sidebar super admin : entreprises, facturation électronique, connexions, **Traf
 | `/home` | `home` | `SchoolController@index` | Liste des écoles, stats facturation, graphique, lien plan de charge annuel |
 | `/dashboard` | `dashboard` | redirect | Alias → `home` |
 
-Constante post-login : `RouteServiceProvider::HOME = '/planning'` (agenda). `/home` reste la liste des écoles.
+La connexion (`AuthenticatedSessionController::store`) et `RedirectIfAuthenticated` envoient vers `User::homePath()` : `/home` pour un utilisateur d’entreprise, l’index des entreprises pour un super admin. Le logo de la sidebar ouvre l’agenda (`planning.index`), pas `/home`. `RouteServiceProvider::HOME` reste `/planning` et sert encore à l’inscription et à la vérification d’e-mail. `/home` reste la liste des écoles.
 
 ### Indicateurs par école (liste)
 

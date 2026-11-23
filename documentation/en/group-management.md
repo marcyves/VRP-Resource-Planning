@@ -26,7 +26,7 @@ Schema stays many-to-many. **Business rules are UI + validation**, by school mod
 4. **Mentoring only**: “Available students” to attach an existing student to another activity.
 5. **Archive** / **unlink** from the course page.
 
-**Referential → Groups**: browse catalog (active / inactive). **Create** from the course page.
+**Activity → Groups** (`group.index`): browse catalog (active / inactive). **Create** from the course page.
 
 ## Archive vs unlink
 

@@ -12,7 +12,7 @@ This is one-way. VRP does not export an ICS feed.
 
 ## Where it lives
 
-Agenda sidebar → **Calendar** tab (`scheduling-module-tabs`).
+Agenda page → secondary button **Import a calendar** (`calendar.index`). There is no Calendar tab; `scheduling-module-tabs` is not on this path.
 
 | Route | Name | Action |
 |-------|------|--------|
@@ -25,7 +25,7 @@ Agenda sidebar → **Calendar** tab (`scheduling-module-tabs`).
 Auth + tenant middleware. **Reimport** and **Delete** buttons render only in **Edit** mode.
 
 ```text
-Agenda → Calendar
+Agenda → Import a calendar
   POST /admin/calendars/upload
     → CalendarFileController::upload
         → CalendarService::getUniqueLabelsFromIcs (SUMMARY)
@@ -38,7 +38,7 @@ Agenda → Calendar
 
 ## Workflow
 
-1. Open **Agenda → Calendar**.
+1. Open **Agenda**, then **Import a calendar**.
 2. Choose the **destination school**.
 3. Either upload an `.ics` file **or** paste a public ICS URL (not both required by validation — supply one).
 4. **Analyse** opens the mapping screen with one sample event (summary, schedule, location, description).

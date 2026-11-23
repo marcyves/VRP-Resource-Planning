@@ -12,7 +12,7 @@ Flux unidirectionnel : VRP n’exporte pas de flux ICS.
 
 ## Où ça vit
 
-Agenda (sidebar) → onglet **Calendrier** (`scheduling-module-tabs`).
+Page Agenda → bouton secondaire **Importer un calendrier** (`calendar.index`). Il n’y a pas d’onglet Calendrier ; `scheduling-module-tabs` n’est pas sur ce chemin.
 
 | Route | Nom | Action |
 |-------|-----|--------|
@@ -25,7 +25,7 @@ Agenda (sidebar) → onglet **Calendrier** (`scheduling-module-tabs`).
 Middleware `auth` + `tenant`. Boutons **Réimporter** / **Supprimer** uniquement en mode **Édition**.
 
 ```text
-Agenda → Calendrier
+Agenda → Importer un calendrier
   POST /admin/calendars/upload
     → CalendarFileController::upload
         → CalendarService::getUniqueLabelsFromIcs (SUMMARY)
@@ -38,7 +38,7 @@ Agenda → Calendrier
 
 ## Parcours
 
-1. Ouvrir **Agenda → Calendrier**.
+1. Ouvrir **Agenda**, puis **Importer un calendrier**.
 2. Choisir l’**école de destination**.
 3. Téléverser un `.ics` **ou** coller une URL ICS publique (la validation n’exige pas les deux — en fournir un).
 4. **Analyser** ouvre l’écran de mapping avec un événement exemple (titre, horaires, lieu, description).

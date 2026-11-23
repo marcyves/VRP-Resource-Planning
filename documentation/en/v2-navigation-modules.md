@@ -46,7 +46,7 @@ Super admin sidebar: companies, electronic invoicing, connections, **Landing tra
 | `/home` | `home` | `SchoolController@index` | School list, billing stats, chart, link to annual workload |
 | `/dashboard` | `dashboard` | redirect | Alias → `home` |
 
-Post-login constant: `RouteServiceProvider::HOME = '/planning'` (agenda). `/home` remains the school list.
+Sign-in (`AuthenticatedSessionController::store`) and `RedirectIfAuthenticated` send the user to `User::homePath()`: `/home` for a company user, the companies index for a super admin. The sidebar logo goes to the agenda (`planning.index`), not `/home`. `RouteServiceProvider::HOME` stays `/planning` and is still the target for registration and email verification. `/home` remains the school list.
 
 ### Per-school indicators (list)
 
